@@ -1,0 +1,35 @@
+Fluid-infusion
+==============
+
+Rails plugin for the {Fluid Infusion Framework}[http://fluidproject.org/products/infusion/], which provides a number of useful components[http://wiki.fluidproject.org/display/fluid/Components].  Initial implementation focuses on the Uploader[http://wiki.fluidproject.org/display/fluid/Uploader] component.
+
+If you want to push this code along, {get involved}[http://wiki.fluidproject.org/display/fluid/Get+Involved].
+
+Usage
+=====
+
+In its simplest form, this plugin makes it simple to include an up-to-date copy of the fluid infusion framework code into your views.
+
+You can include the files manually using the ActionView javascript_include_tag and stylesheet_link_tag helper methods
+
+  javascript_include_tag '../infusion/InfusionAll.js', :cache=>true, :plugin=>"fluid-infusion"
+  
+  stylesheet_link_tag '../infusion/framework/fss/css/fss-reset.css', '../infusion/framework/fss/css/fss-layout.css', '../infusion/components/uploader/css/Uploader.css', :plugin=>"fluid-infusion"
+
+Alternatively, you can use the plugin's helper methods.
+
+  infusion_javascripts(:inline_edit, :debug=>true) 
+  
+  infusion_stylesheets(:uploader)
+
+
+Partials to help you display components
+=======================================
+
+Put this into one of your views to display the SWFUpload-based Uploader Component.
+
+<%= render :partial=>"fluid_infusion/uploader" %>
+<%= render :partial=>"fluid_infusion/uploader_js" %>
+
+
+Copyright (c) 2009 MediaShelf, LLC, released under the MIT license
