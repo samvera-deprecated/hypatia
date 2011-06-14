@@ -17,6 +17,9 @@ module NavigationHelpers
     #   when /^(.*)'s profile page$/i
     #     user_profile_path(User.find_by_login($1))
 
+    when /^the document page for id "(.+)"$/ 
+      catalog_path($1)
+
     else
       begin
         page_name =~ /the (.*) page/
