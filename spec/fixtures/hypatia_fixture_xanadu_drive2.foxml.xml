@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject VERSION="1.1" PID="hypatia:fixture_xanadu_drive2" xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+  <foxml:objectProperties>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE=""/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#ownerId" VALUE="fedoraAdmin"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#createdDate" VALUE="2011-06-08T12:34:56.789Z"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/view#lastModifiedDate" VALUE="2011-06-08T12:34:56.789Z"/>
+  </foxml:objectProperties>
+  
+  <foxml:datastream ID="DC" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="DC1.0" LABEL="Dublin Core Record for this object" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/" SIZE="406">
+      <foxml:xmlContent>
+        <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/
+          http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+          <dc:title>CM02</dc:title>
+          <dc:creator>Henson, Keith</dc:creator>
+          <dc:identifier>uuid:25d42791-cc45-53f3-3b29-1ba85600680a</dc:identifier>
+          <dc:identifier>druid:vv177dp1005</dc:identifier>
+          <dc:identifier>local:CM02</dc:identifier> 
+        </oai_dc:dc> 
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="RELS-EXT" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="RELS-EXT.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
+      <foxml:xmlContent>
+        <rdf:RDF xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rel="info:fedora/fedora-system:def/relations-external#" xmlns:hydra="http://projecthydra.org/ns/relations#">
+          <rdf:Description rdf:about="info:fedora/hypatia:fixture_xanadu_drive2">
+            <hydra:isGovernedBy rdf:resource="info:fedora/druid:ww057vk7675"></hydra:isGovernedBy>
+            <isMemberOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/druid:gb021jg8190"></isMemberOf>
+            <hasModel xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/afmodel:HypatiaXanaduItem"></hasModel>
+          </rdf:Description>
+        </rdf:RDF> 
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="descMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="descMetadata.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="276">
+      <foxml:xmlContent>
+        <mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+          <mods:titleInfo>
+            <mods:title>CM02</mods:title>
+          </mods:titleInfo>
+          <mods:physicalDescription>
+            <mods:extent>1.0 computer media</mods:extent>
+            <mods:extent>hard drive</mods:extent>
+            <mods:digitalOrigin>born digital</mods:digitalOrigin>
+          </mods:physicalDescription>
+          <mods:note displayLabel="Located in">Carton 11 - Computer disks / tapes</mods:note>
+          <mods:abstract displayLabel="Processing Information note">The capacity of CM02 is 965 MB and CM02.dd is the image file created by AccessData's FTK software; CM021.csv is the directory listing of the files in the image; CM02.txt is the log for the imaging process. CM02_1.jpg and CM02_2.jpg are the photograph images of the drive.</mods:abstract>
+          <mods:identifier type="local">CM02</mods:identifier>
+        </mods:mods> 
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="contentMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="contentMetadata.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="276">
+      <foxml:xmlContent> 
+        <contentMetadata type="born-digital" objectId="druid:tk694zs2244">
+          <resource id="disk-image" type="disk-image" data="content" objectId="druid:mc116fw4648">
+            <file id="CM02.dd" format="BINARY" mimetype="application/octet-stream" size="7720" preserve="yes" shelve="yes" deliver="yes">
+              <location type="url">http://stacks.stanford.edu/file/druid:mc116fw4648/CM02.dd</location>
+              <checksum type="md5">a4257865e1a816da0bea784911d9fe00</checksum>
+              <checksum type="sha1">a8e508a2127c179767c1b5f4c91cb37067994027</checksum>
+            </file>
+          </resource>
+          <resource id="photo-1" type="photo" data="metadata" objectId="druid:xg062my4398">
+            <file id="CM02_01.JPG" format="JPEG" mimetype="image/jpg" size="3958697" preserve="yes" shelve="yes" deliver="yes">
+              <location type="url">http://stacks.stanford.edu/file/druid:xg062my4398/CM02_1.JPG</location>
+              <checksum type="md5">e5f6bd0989c6a464c8c4b4d393c09c99</checksum>
+              <checksum type="sha1">10343deb61f2047d8e535162665d4cf6e9a77cd4</checksum>
+            </file>
+          </resource>
+          <resource id="photo-2" type="photo" data="metadata" objectId="druid:nb727vy7154">
+            <file id="CM02_02.JPG" format="JPEG" mimetype="image/jpg" size="3249254" preserve="yes" shelve="yes" deliver="yes">
+              <location type="url">http://stacks.stanford.edu/file/druid:nb727vy7154/CM02_2.JPG</location>
+              <checksum type="md5">038f707a457ba3d7659fe8dd69457948</checksum>
+              <checksum type="sha1">0e12afca854f04bf73a1b6d585693c291bc930dc</checksum>
+            </file>
+          </resource>
+          <resource id="analysis-text" type="analysis" data="metadata" objectId="druid:nd615pr9748">
+            <file id="CM02.txt" format="TEXT" mimetype="text/plain" encoding="UTF-8" size="1249" preserve="yes" shelve="yes" deliver="yes">
+              <location type="url">http://stacks.stanford.edu/file/druid:nd615pr9748/CM02.txt</location>
+              <checksum type="md5">fb1a633405f1c7058fe5da1a4b88e9d0</checksum>
+              <checksum type="sha1">a25bc23d85ac1d584bfdce4976149842e8280ad6</checksum>
+            </file>
+          </resource>
+          <resource id="analysis-contents" type="analysis" data="metadata" objectId="druid:ct102pd5508">
+            <file id="CM02.csv" format="PDF" mimetype="text/csv" encoding="UTF-8" size="574718" preserve="yes" shelve="yes" deliver="yes">
+              <location type="url">http://stacks.stanford.edu/file/druid:ct102pd5508/CM02.csv</location>
+              <checksum type="md5">eaf4f117b078cd6b20e3ec4041f7c2ea</checksum>
+              <checksum type="sha1">fd65587954b0cc6dcf159da52e745866eee43db1</checksum>
+            </file>
+          </resource>
+        </contentMetadata> 
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="rightsMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="rightsMetadata.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
+      <foxml:xmlContent>
+        <rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
+          <copyright>
+            <human type="copyright">This work is in the Public Domain.</human>
+          </copyright>
+          <access type="discover">
+            <machine>
+              <group>public</group>
+            </machine>
+          </access>
+          <access type="read">
+            <machine>
+              <group>public</group>
+            </machine>
+          </access> 
+        </rightsMetadata>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="identityMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="identityMetadata.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
+      <foxml:xmlContent>
+        <identityMetadata>
+          <objectId>druid:vv177dp1005</objectId>
+          <objectType>item</objectType>
+          <objectLabel>Xanadu Hard Drive CM02</objectLabel>
+          <objectCreator>DOR</objectCreator>
+          <sourceId source="hypatia">M1292_CM02</sourceId>
+          <otherId name="uuid">25d42791-cc45-53f3-3b29-1ba85600680a</otherId>
+          <agreementId>druid:ww057vk7675</agreementId>
+          <tag>Project : Xanadu</tag>
+        </identityMetadata> 
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+</foxml:digitalObject>

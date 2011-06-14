@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject VERSION="1.1" PID="hypatia:fixture_xanadu_collection" xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+  <foxml:objectProperties>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE=""/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#ownerId" VALUE="fedoraAdmin"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#createdDate" VALUE="2011-06-08T12:34:56.789Z"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/view#lastModifiedDate" VALUE="2011-06-08T12:34:56.789Z"/>
+  </foxml:objectProperties>
+
+  <foxml:datastream ID="DC" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="DC1.0" LABEL="Dublin Core Record for this object" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/" SIZE="406">
+      <foxml:xmlContent>
+        <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+          <dc:title>Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler</dc:title>
+          <dc:creator>Henson, Keith</dc:creator>
+          <dc:identifier>uuid:a78e70c8-bb8b-f4e9-63ba-226f60a17c58</dc:identifier>
+          <dc:identifier>druid:gb021jg8190</dc:identifier>
+          <dc:identifier>hypatia:M1292</dc:identifier>
+        </oai_dc:dc>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="RELS-EXT" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="RELS-EXT.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
+      <foxml:xmlContent>
+        <rdf:RDF xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rel="info:fedora/fedora-system:def/relations-external#" xmlns:hydra="http://projecthydra.org/ns/relations#">
+          <rdf:Description rdf:about="info:fedora/hypatia:fixture_xanadu_collection">
+            <hydra:isGovernedBy rdf:resource="info:fedora/druid:hv992ry2431"/>
+            <hasModel xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/afmodel:HypatiaSet"></hasModel>
+          </rdf:Description>
+        </rdf:RDF>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="descMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="descMetadata.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="276">
+      <foxml:xmlContent>
+        <mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+          <mods:titleInfo>
+            <mods:title>Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler</mods:title>
+          </mods:titleInfo>
+          <mods:name type="personal">
+            <mods:namePart>Henson, Keith</mods:namePart>
+            <mods:role>
+              <mods:roleTerm authority="marcrelator" type="text">creator</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:name type="corporate">
+            <mods:namePart>Stanford University. Department of Special Collections and University Archives</mods:namePart>
+            <mods:role>
+              <mods:roleTerm authority="local" type="text">repository</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:typeOfResource collection="yes"/>
+          <mods:genre authority="aat">Videorecordings</mods:genre>
+          <mods:originInfo>
+            <mods:dateCreated>1977-1997</mods:dateCreated>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">eng</mods:languageTerm>
+          </mods:language>
+          <mods:physicalDescription>
+            <mods:extent>6.0 Linear feet</mods:extent>
+          </mods:physicalDescription>
+          <mods:abstract>The collection includes files from XOC, VHS tapes, and Drexler drafts and galley proofs.</mods:abstract>
+          <mods:abstract displayLabel="Collection Scope and Content Summary">The collection includes files from XOC, VHS tapes, and Drexler drafts and galley proofs.</mods:abstract>
+          <mods:abstract displayLabel="Biography">Keith Henson and his wife Arel Lucas founded XOC (Xanadu Operating Company).</mods:abstract>
+          <mods:abstract displayLabel="Acquisition Information">Gift of Arel Lucas, 2001 and 2002.</mods:abstract>
+          <mods:abstract displayLabel="Preferred Citation">Keith Henson's Papers relating to Project Xanadu, XOC, and Eric Drexler. M1292. Dept. of Special Collections, Stanford University Libraries, Stanford, Calif.</mods:abstract>
+          <mods:subject authority="lcsh">
+            <mods:topic>Electronic publishing.</mods:topic>
+            <mods:topic>Hypertext systems.</mods:topic>
+            <mods:topic>Microcomputers--Programming.</mods:topic>
+            <mods:topic>Nanotechnology.</mods:topic>
+            <mods:topic>Self-publishing--Dataprocessing.</mods:topic>
+            <mods:topic>Technological innovations.</mods:topic>
+            <mods:topic>Word processing.</mods:topic>
+          </mods:subject>
+          <mods:accessCondition displayLabel="Publication Rights" type="useAndReproduction">Property rights reside with the repository. Literary rights reside with the creators of the documents or their heirs. To obtain permission to publish or reproduce, please contact the Public Services Librarian
+            of the Dept. of Special Collections.</mods:accessCondition>
+          <mods:accessCondition displayLabel="Access" type="restrictionOnAccess">The Media materials require at least two weeks advance notice to use in order to allow staff time to have use copies made from the original items.</mods:accessCondition>
+          <mods:identifier type="local">M1292</mods:identifier>
+        </mods:mods>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="rightsMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="rightsMetadata.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
+      <foxml:xmlContent>
+        <rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
+          <access type="discover">
+            <machine>
+              <group>public</group>
+            </machine>
+          </access>
+          <access type="read">
+            <machine>
+              <group>public</group>
+            </machine>
+          </access>
+        </rightsMetadata>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="identityMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="identityMetadata.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
+      <foxml:xmlContent>
+        <identityMetadata>
+          <objectId>druid:gb021jg8190</objectId>
+          <objectType>set</objectType>
+          <objectCreator>DOR</objectCreator>
+          <setType>collection</setType>
+          <sourceId source="hypatia">M1292</sourceId>
+          <objectLabel>Xanadu papers</objectLabel>
+          <adminPolicy>druid:hv992ry2431</adminPolicy>
+          <tag>Project : Xanadu</tag>
+          <otherId name="uuid">a78e70c8-bb8b-f4e9-63ba-226f60a17c58</otherId>
+        </identityMetadata>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+</foxml:digitalObject>
