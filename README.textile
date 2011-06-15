@@ -54,7 +54,7 @@ Note that if you will be running tests (and you should!!!!), you will also need 
   rake db:migrate RAILS_ENV=test  
 </pre>
 
-See "README_TESTING":https://github.com/projecthydra/hypatia/blob/master/README_TESTING.textile.
+See "README_TESTING":https://github.com/projecthydra/hypatia/blob/master/README_TESTING.textile for more information on testing.
 
 h4. (5) Get hydra-jetty (Jetty Pre-configured with Fedora and Solr)
 
@@ -73,7 +73,19 @@ _Stop any copies of jetty (or anything else using port 8983) before running this
 The following will copy Solr and Fedora configuration files over to jetty in addition to starting it:
 
 <pre>
-  rake hydra:jetty:start
+  rake hydra:jetty:load
+</pre>
+
+You can check if Solr is running:
+
+<pre>
+  localhost:8983/solr
+</pre>
+
+You can check if Fedora is running:
+
+<pre>
+  localhost:8983/fedora
 </pre>
 
 h4. (7) Run the Hypatia Application
@@ -84,6 +96,6 @@ h4. (7) Run the Hypatia Application
 
 You should now be able to go to your application at http://localhost:3000.
 
-Note that there are no objects pre-installed into Fedora (or Solr).  See "README_FIXTURES"::https://github.com/projecthydra/hypatia/blob/master/README_FIXTURES.textile for information on how to pre-install fixture objects into Fedora and Solr.
+Note that there are no objects pre-installed into Fedora (or Solr).  See "README_FIXTURES":https://github.com/projecthydra/hypatia/blob/master/README_FIXTURES.textile for information on how to pre-install fixture objects into Fedora and Solr.
 
 
