@@ -1,6 +1,7 @@
 h1. Hypatia
 
 Hypatia (see "https://wiki.duraspace.org/display/HYPAT/Home":https://wiki.duraspace.org/display/HYPAT/Home) is a Hydra application (see "https://wiki.duraspace.org/display/hydra/The+Hydra+Project":https://wiki.duraspace.org/display/hydra/The+Hydra+Project) which supports accessioning, arrangement, description, discovery, delivery, and long term preservation of born digital collections. 
+
 Hypatia is being developed as part of the AIMS Project ("http://www2.lib.virginia.edu/aims/":http://www2.lib.virginia.edu/aims/) ("Born-Digital Collections: An Inter-Institutional Model for Stewardship") funded by the Andrew W. Mellon Foundation.
 
 For a more thorough overview of the Hydra framework, see "HYDRA_OVERVIEW.textile":https://github.com/projecthydra/hydrangea/blob/master/HYDRA_OVERVIEW.textile.
