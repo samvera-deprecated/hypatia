@@ -1,0 +1,88 @@
+h1. Hypatia
+
+Hypatia (see "https://wiki.duraspace.org/display/HYPAT/Home":https://wiki.duraspace.org/display/HYPAT/Home) is a Hydra application (see "https://wiki.duraspace.org/display/hydra/The+Hydra+Project":https://wiki.duraspace.org/display/hydra/The+Hydra+Project) which supports accessioning, arrangement, description, discovery, delivery, and long term preservation of born digital collections. 
+Hypatia is being developed as part of the AIMS Project ("http://www2.lib.virginia.edu/aims/":http://www2.lib.virginia.edu/aims/) ("Born-Digital Collections: An Inter-Institutional Model for Stewardship") funded by the Andrew W. Mellon Foundation.
+
+For a more thorough overview of the Hydra framework, see "HYDRA_OVERVIEW.textile":https://github.com/projecthydra/hydrangea/blob/master/HYDRA_OVERVIEW.textile.
+
+h2. Installation/Setup
+
+h4. (0) Install Prerequisites
+
+* "ruby":http://www.ruby-lang.org/en/    NOTE: version 1.8.7 or higher
+* "rubygems":http://rubygems.org/pages/download
+* these ruby gems:
+** "bundler":http://gembundler.com/
+** "rails":http://rubyonrails.org/    NOTE: version < 3.
+* "git":http://git-scm.com/
+* "java":http://www.java.com/en/    NOTE:  version 1.6 or higher
+* "sqlite3":http://www.sqlite.org/
+
+* "RVM":http://rvm.beginrescueend.com/  (Ruby Version Manager)
+** We strongly suggest using RVM as a means of keeping your different ruby applications with their specific gem requirements from having version clashes. 
+** If you don't have the desired ruby version in RVM, e.g. ree-1.8.7, then install it. The following instructions assume the use of RVM.
+
+<pre>
+  rvm install ree-1.8.7
+</pre>
+
+h4. (2) Get the Hypatia Application Code
+
+<pre>
+  git clone git@github.com:projecthydra/hypatia.git
+  cd hypatia
+</pre>
+
+h4. (3) Use Bundler to Install the Gem Dependencies.
+
+<pre>
+  bundle install
+</pre>
+
+Note that if you have RVM installed, it will create/use a gemset called "hypatia".
+
+h4. (4) Migrate the Databases
+
+<pre>
+  rake db:migrate
+</pre>
+
+Note that if you will be running tests (and you should!!!!), you will also need to migrate the test databases:
+
+<pre>
+  rake db:migrate RAILS_ENV=test  
+</pre>
+
+See "README_TESTING":https://github.com/projecthydra/hypatia/blob/master/README_TESTING.textile.
+
+h4. (5) Get hydra-jetty (Jetty Pre-configured with Fedora and Solr)
+
+The following will pull down a copy of hydra-jetty into the "jetty" directory as a git submodule:
+
+<pre>
+  git submodule init
+  git submodule update
+</pre>
+
+h4. (6) Run Jetty
+
+_Stop any copies of jetty (or anything else using port 8983) before running this command._
+(Note that java 1.6 must be invoked by the "java" command or Fedora won't work.)
+
+The following will copy Solr and Fedora configuration files over to jetty in addition to starting it:
+
+<pre>
+  rake hydra:jetty:start
+</pre>
+
+h4. (7) Run the Hypatia Application
+
+<pre>
+  script/server
+</pre>
+
+You should now be able to go to your application at http://localhost:3000.
+
+Note that there are no objects pre-installed into Fedora (or Solr).  See "README_FIXTURES"::https://github.com/projecthydra/hypatia/blob/master/README_FIXTURES.textile for information on how to pre-install fixture objects into Fedora and Solr.
+
+

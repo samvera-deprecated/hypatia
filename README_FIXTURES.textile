@@ -1,0 +1,71 @@
+h2.  Hypatia Fixture Objects
+
+These are objects creating for testing purposes.  They are represented as foxml in
+
+<pre>
+  spec/fixtures
+</pre>
+
+The ActiveFedora and OM configurations for these fixtures are already provided.  See:
+
+<pre>
+  app/models
+</pre>
+
+For more documentation on ActiveFedora and OM configuration files, see ...
+
+
+h2.  Loading Fixture Objects
+
+There are rake tasks to help with these chores.  To see all rake tasks:
+
+<pre>
+  rake -T
+</pre>
+
+To see pertinent rake tasks:
+
+<pre>
+  rake -T hypatia
+</pre>
+
+!!! Does this empty out solr?  !!!
+
+h4.  To load fixtures into test
+
+<pre>
+  rake hypatia:fixtures:xanadu:load environment=test
+</pre>
+
+h4.  To load fixtures into development
+
+<pre>
+  rake hypatia:fixtures:xanadu:load environment=development
+</pre>
+
+h4.  To delete fixtures
+
+<pre>
+  rake hypatia:fixtures:xanadu:delete environment=test
+    OR
+  rake hypatia:fixtures:xanadu:delete environment=development 
+</pre>
+
+h4. Refresh fixtures
+
+Refresh deletes all the fixtures, then adds them again.
+
+<pre>
+  rake hypatia:fixtures:xanadu:refresh environment=test
+    OR
+  rake hypatia:fixtures:xanadu:refresh environment=development 
+</pre>
+
+
+h3. To make jetty squeaky clean
+
+<pre>
+  cd jetty
+  git clean -df
+  git checkout .
+</pre>

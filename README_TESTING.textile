@@ -1,0 +1,69 @@
+h1. Testing basics for Hypatia
+
+h2. Prerequisites for testing:
+
+h4. (1) Migrate the Test Databases
+
+<pre>
+  rake db:migrate RAILS_ENV=test  
+</pre>
+
+h4. (2) Spin up Jetty for Fedora and Solr test instances
+
+blah blah  config/solr.yml   config/fedora.yml
+
+blah blah  copy of jetty for testing configured to correct ports  
+  (separate submodule?  rake task to copy development jetty and change port?)
+
+blah blah spin up jetty  (rake task?)
+
+h2. Running All Tests
+
+
+h2. Running Specs Only
+
+h2. Running Features Only
+
+
+h2. Writing tests
+
+
+h3. Writing Specs
+
+
+h3. Writing Features
+
+h4. (0) create a git branch for the feature
+
+<pre>
+  git checkout -b neat_idea
+</pre>
+
+h4. (1) create feature file
+
+h4. (2) write the scenario(s)
+
+h4. (3) run the new feature - it should fail
+
+the feature should run, but it should fail.  (Avoid false positives.)
+
+all other features should pass.
+
+h4. (4) code the change
+
+h4. (5) run the new feature - it should pass
+
+h4. (6) run ALL features - they should pass
+
+h4. (7) run ALL tests - they should pass
+
+h4. (8) check in the new feature and the changed code
+
+<pre>
+  git add
+  git commit -m "coded neat idea feature"
+</pre>
+
+you may want to bring this change into the master branch
+
+you may want to push this change to your remote git repos.
