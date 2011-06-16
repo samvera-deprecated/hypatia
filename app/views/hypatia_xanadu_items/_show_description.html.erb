@@ -1,0 +1,39 @@
+<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:identifier]).first.empty? -%>
+<fieldset><legend>Identifier</legend>
+	<div class="browse_value">
+	  <%= get_values_from_datastream(@document_fedora,"descMetadata", [:identifier]).join(', ') -%>
+	</div>
+</fieldset>
+<% end -%>
+
+<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:extent]).first.empty? -%>
+<fieldset><legend>Extent</legend>
+	<div class="browse_value">
+	  <%= get_values_from_datastream(@document_fedora,"descMetadata", [:extent]).join(', ') -%>
+	</div>
+</fieldset>
+<% end -%>
+	
+<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:digital_origin]).first.empty? -%>
+<fieldset><legend>Digital Origin</legend>
+	<div class="browse_value">
+	  <%= get_values_from_datastream(@document_fedora,"descMetadata", [:digital_origin]).join(', ') -%>
+	</div>
+</fieldset>
+<% end -%>
+	
+<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:located_in]).first.empty? -%>
+<fieldset><legend>Located In</legend>
+	<div class="browse_value">
+	  <%= get_values_from_datastream(@document_fedora,"descMetadata", [:located_in]).join(', ') -%>
+	</div>
+</fieldset>
+<% end -%>
+
+<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:processing_info]).first.empty? -%>
+<fieldset><legend>Processing Info</legend>
+	<div class="browse_value">
+	  <%= get_values_from_datastream(@document_fedora,"descMetadata", [:processing_info]).join(', ') -%>
+	</div>
+</fieldset>
+<% end -%>
