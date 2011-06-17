@@ -10,31 +10,16 @@ h2. Installation/Setup
 
 h4. (0) Install Prerequisites
 
-* "ruby":http://www.ruby-lang.org/en/    NOTE: version 1.8.7 or higher
-* "rubygems":http://rubygems.org/pages/download
-* these ruby gems:
-** "bundler":http://gembundler.com/
-** "rails":http://rubyonrails.org/    NOTE: version < 3.
-* "git":http://git-scm.com/
-* "java":http://www.java.com/en/    NOTE:  version 1.6 or higher
-* "sqlite3":http://www.sqlite.org/
+See the Hydra-Head project prerequisite document: "INSTALL_PREREQ":/projecthydra/hydra-head/blob/master/INSTALL_PREREQ.textile
 
-* "RVM":http://rvm.beginrescueend.com/  (Ruby Version Manager)
-** We strongly suggest using RVM as a means of keeping your different ruby applications with their specific gem requirements from having version clashes. 
-** If you don't have the desired ruby version in RVM, e.g. ree-1.8.7, then install it. The following instructions assume the use of RVM.
-
-<pre>
-  rvm install ree-1.8.7
-</pre>
-
-h4. (2) Get the Hypatia Application Code
+h4. (1) Get the Hypatia Application Code
 
 <pre>
   git clone git@github.com:projecthydra/hypatia.git
   cd hypatia
 </pre>
 
-h4. (3) Use Bundler to Install the Gem Dependencies.
+h4. (2) Use Bundler to Install the Gem Dependencies.
 
 <pre>
   bundle install
@@ -42,7 +27,7 @@ h4. (3) Use Bundler to Install the Gem Dependencies.
 
 Note that if you have RVM installed, it will create/use a gemset called "hypatia".
 
-h4. (4) Migrate the Databases
+h4. (3) Migrate the Databases
 
 <pre>
   rake db:migrate
@@ -56,7 +41,7 @@ Note that if you will be running tests (and you should!!!!), you will also need 
 
 See "README_TESTING":https://github.com/projecthydra/hypatia/blob/master/README_TESTING.textile for more information on testing.
 
-h4. (5) Get hydra-jetty (Jetty Pre-configured with Fedora and Solr)
+h4. (4) Get hydra-jetty (Jetty Pre-configured with Fedora and Solr)
 
 The following will pull down a copy of hydra-jetty into the "jetty" directory as a git submodule:
 
@@ -65,7 +50,7 @@ The following will pull down a copy of hydra-jetty into the "jetty" directory as
   git submodule update
 </pre>
 
-h4. (6) Run Jetty
+h4. (5) Run Jetty
 
 _Stop any copies of jetty (or anything else using port 8983) before running this command._
 (Note that java 1.6 must be invoked by the "java" command or Fedora won't work.)
@@ -88,7 +73,7 @@ You can check if Fedora is running:
   localhost:8983/fedora
 </pre>
 
-h4. (7) Run the Hypatia Application
+h4. (6) Run the Hypatia Application
 
 <pre>
   script/server

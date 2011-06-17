@@ -1,6 +1,6 @@
 h2.  Hypatia Fixture Objects
 
-These are objects creating for testing purposes.  They are represented as foxml in
+These are objects creating for testing purposes.  They are represented as foxml in:
 
 <pre>
   spec/fixtures
