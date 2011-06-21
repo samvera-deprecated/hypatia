@@ -1,15 +1,15 @@
 require 'spec/rake/spectask'
 require "cucumber/rake/task"
 
+# number of seconds to pause after issuing commands to return a git repos to it's pristine state (e.g. make jetty squeaky clean)
+GIT_RESET_WAIT = 15
+
 namespace :hypatia do
 
   desc "Execute Continuous Integration build (docs, tests with coverage)"
-  task :ci do
-    
-    Rake::Task["hypatia:reset"].invoke
-    
+  task :ci do   
+#    Rake::Task["hypatia:reset"].invoke    
     Rake::Task["hypatia:doc"].invoke
-
     Rake::Task["hypatia:db:test:reset"].invoke
     Rake::Task["hypatia:jetty:test:reset_then_config"].invoke
     
@@ -23,7 +23,7 @@ namespace :hypatia do
       :startup_wait => 20
       }
     
-    # does this make jetty run in TEST environment???
+# FIXME:  does this make jetty run in TEST environment???
     error = Jettywrapper.wrap(jetty_params) do
       Rake::Task["hypatia:spec"].invoke
       system("rake hypatia:fixtures:refresh environment=test")
@@ -35,7 +35,7 @@ namespace :hypatia do
   desc "return hypatia project code to pristine latest from git"
   task :reset do
       system("git reset --hard HEAD && git clean -dfx")
-      sleep 15
+      sleep GIT_RESET_WAIT
   end
 
 #============= TESTING TASKS (SPECS, FEATURES) ================
@@ -55,13 +55,11 @@ namespace :hypatia do
   task :cucumber => "cucumber:fixtures_then_run"
 
   namespace :cucumber do
-
+# NOTE: features fail if test solr is empty. - must load features fresh first (?)
     desc "Run cucumber features for hypatia. Must have jetty already running and fixtures loaded."
     task :run do
-      Cucumber::Rake::Task.new(:run) do |t|
-        t.rcov = true
-        t.cucumber_opts = %w{--color --tags ~@pending --tags ~@overwritten features}
-      end
+      puts %x[cucumber --color features]
+      raise "Cucumber tests failed" unless $?.success?
     end
 
     desc "(Re)loads fixtures, then runs cucumber features.  Must have jetty already running."
@@ -99,7 +97,7 @@ namespace :hypatia do
       desc "return test jetty to its pristine state, as pulled from git"
       task :reset do
         system("cd jetty && git reset --hard HEAD && git clean -dfx & cd ..")
-        sleep 15
+        sleep GIT_RESET_WAIT
       end
       
       desc "return test jetty to its pristine state, then load our Solr and Fedora config files"
@@ -113,7 +111,7 @@ namespace :hypatia do
       desc "return development jetty to its pristine state, as pulled from git"
       task :reset do
         system("cd jetty && git reset --hard HEAD && git clean -dfx & cd ..")
-        sleep 15
+        sleep GIT_RESET_WAIT
       end
 
       desc "return development jetty to its pristine state, then load our Solr and Fedora config files"
