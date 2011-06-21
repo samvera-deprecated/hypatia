@@ -8,7 +8,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
 
 Rails::Initializer.run do |config|
-  config.plugin_paths += ["#{RAILS_ROOT}/vendor/plugins/blacklight/vendor/plugins"]
+#  config.plugin_paths += ["#{RAILS_ROOT}/vendor/plugins/blacklight/vendor/plugins"]
   config.gem 'authlogic', :version => '2.1.2'
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
