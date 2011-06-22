@@ -8,7 +8,7 @@ namespace :hypatia do
 
   desc "Execute Continuous Integration build (docs, tests with coverage)"
   task :ci do   
-    Rake::Task["hypatia:doc"].execute
+    Rake::Task["hypatia:doc"].invoke
     Rake::Task["hypatia:db:test:reset"].invoke
     Rake::Task["hypatia:jetty:test:reset_then_config"].invoke
 
