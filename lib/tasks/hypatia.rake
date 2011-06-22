@@ -2,7 +2,7 @@ require 'spec/rake/spectask'
 require "cucumber/rake/task"
 
 # number of seconds to pause after issuing commands to return a git repos to it's pristine state (e.g. make jetty squeaky clean)
-GIT_RESET_WAIT = 15
+GIT_RESET_WAIT = 7
 
 namespace :hypatia do
 
