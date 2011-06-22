@@ -2,8 +2,7 @@ Feature: Xanadu Item Object Show View Fixtures
   I want to ensure Xanadu item objects display correctly in the show view
 
   Scenario: Xanadu item object  descMetadata
-    When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
-#    Then I should see "hypatia:fixture_xanadu_drive1"
+    When I am on the document page for id "hypatia:fixture_xanadu_drive1"
     And I should see "CM01"
     And I should see "1.0 computer media"
     And I should see "hard drive"
@@ -14,7 +13,7 @@ Feature: Xanadu Item Object Show View Fixtures
   Scenario: Xanadu item object  technical information (from Fedora, not EAD)
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
     # repository object ID
-    Then outcome
+    Then I should see "hypatia:fixture_xanadu_drive1"
   
   
   
