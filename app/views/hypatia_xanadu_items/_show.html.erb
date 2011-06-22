@@ -13,6 +13,8 @@
 		 <% end -%>
 	</h1>
   	
+  <h2>Description</h2>
+  
   <%= render :partial => 'hypatia_xanadu_items/show_description' -%>
 
 	<% unless @document_fedora.file_objects(:response_format=>:solr).hits.empty? -%>
@@ -43,6 +45,8 @@
 			</div>
  		</fieldset>
 	<% end -%>
+	
+	<h2>Technical info</h2>
 	
 	<div class="pid"><dl><dt>ID:</dt><dd><%=params[:id]%></dd></dl></div>  
 
