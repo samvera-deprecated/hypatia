@@ -11,7 +11,7 @@ namespace :hypatia do
     Rake::Task["hypatia:doc"].execute
     Rake::Task["hypatia:db:test:reset"].invoke
     Rake::Task["hypatia:jetty:test:reset_then_config"].invoke
-    
+
     require 'jettywrapper'
     jetty_params = {
       :jetty_home => File.expand_path(File.dirname(__FILE__) + '/../../jetty'),
@@ -29,6 +29,7 @@ namespace :hypatia do
       Rake::Task["hypatia:cucumber:run"].invoke
     end
     raise "test failures: #{error}" if error
+
   end
 
 #============= TESTING TASKS (SPECS, FEATURES) ================
