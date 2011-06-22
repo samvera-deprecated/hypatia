@@ -8,8 +8,7 @@ namespace :hypatia do
 
   desc "Execute Continuous Integration build (docs, tests with coverage)"
   task :ci do   
-#    Rake::Task["hypatia:reset"].invoke    
-    Rake::Task["hypatia:doc"].invoke
+    Rake::Task["hypatia:doc"].execute
     Rake::Task["hypatia:db:test:reset"].invoke
     Rake::Task["hypatia:jetty:test:reset_then_config"].invoke
     
@@ -32,12 +31,6 @@ namespace :hypatia do
     raise "test failures: #{error}" if error
   end
 
-  desc "return hypatia project code to pristine latest from git"
-  task :reset do
-      system("git reset --hard HEAD && git clean -dfx")
-      sleep GIT_RESET_WAIT
-  end
-
 #============= TESTING TASKS (SPECS, FEATURES) ================
 
   desc "Run the hypatia specs.  Must have jetty already running and fixtures loaded."
@@ -58,7 +51,7 @@ namespace :hypatia do
 # NOTE: features fail if test solr is empty. - must load features fresh first (?)
     desc "Run cucumber features for hypatia. Must have jetty already running and fixtures loaded."
     task :run do
-      puts %x[cucumber --color features]
+      puts %x[cucumber --color --format progress features]
       raise "Cucumber tests failed" unless $?.success?
     end
 
