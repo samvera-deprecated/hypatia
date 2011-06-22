@@ -15,9 +15,6 @@ Feature: Xanadu Item Object Show View Fixtures
     # repository object ID
     Then I should see "hypatia:fixture_xanadu_drive1"
   
-  
-  
-
   Scenario: Xanadu item object  contentMetadata (contained files)
     # file name, downloadable link, file size
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
