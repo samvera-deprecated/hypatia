@@ -25,8 +25,7 @@ namespace :hypatia do
 # FIXME:  does this make jetty run in TEST environment???
     error = Jettywrapper.wrap(jetty_params) do
       Rake::Task["hypatia:spec"].invoke
-      system("rake hypatia:fixtures:refresh environment=test")
-      Rake::Task["hypatia:cucumber:run"].invoke
+      Rake::Task["hypatia:cucumber:fixtures_then_run"].invoke
     end
     raise "test failures: #{error}" if error
 
@@ -179,10 +178,9 @@ namespace :hypatia do
     require 'yard/rake/yardoc_task'
     project_root = File.expand_path("#{File.dirname(__FILE__)}/../../")
     doc_destination = File.join(project_root, 'doc')
-    if File.exists?(doc_destination) 
-      FileUtils.remove_dir(doc_destination)
+    if !File.exists?(doc_destination) 
+      FileUtils.mkdir_p(doc_destination)
     end
-    FileUtils.mkdir_p(doc_destination)
 
     YARD::Rake::YardocTask.new(:doc) do |yt|
       readme_filename = 'README.textile'
