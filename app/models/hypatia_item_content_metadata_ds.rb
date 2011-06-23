@@ -9,7 +9,16 @@ class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream
 # these are attributes on contentMetadata element ...    
 #    t.type
 #    t.object_id(:xpath=>"@objectId", :index_as=>[:searchable, :displayable])
-#    t.object_id(:attributes=>{:type=>"objectId"}, :index_as=>[:searchable, :displayable])
+#    t.object_id(:path => {:attribute => "objectId"}, :index_as=>[:searchable, :displayable])
+#    t.object_id(:path => [:attribute => "objectId"], :index_as=>[:searchable, :displayable])
+#    t.object_id(:attribute => "objectId", :index_as=>[:searchable, :displayable])
+#    t.try(:ref => :root, {:attribute => "objectId"}, :index_as=>[:searchable, :displayable])
+#    t.try(:path => [:resource, {:attribute => "objectId"}], :index_as=>[:searchable, :displayable])
+
+    t.oid(:path=>{:attribute=>"objectId"}, :index_as=>[:searchable, :displayable])
+
+          
+          
     t.resource (:path=>"resource") {
 # these are attributes on resource element      
 #      t.id
