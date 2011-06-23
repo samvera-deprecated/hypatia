@@ -1,7 +1,6 @@
 <div class="techInfo">
   <h2>Technical info</h2>
   <dl>
-  <% unless get_values_from_datastream(@document_fedora, "identityMetadata", [:tag]).first.empty? -%>
     <%= display_ds_values_as_dl_element("identityMetadata", :adminPolicy, "Admin Policy") %>
     <%= display_ds_values_as_dl_element("identityMetadata", :agreementId, "Agreement ID") %>
     <%= display_ds_values_as_dl_element("identityMetadata", :objectCreator, "Object Creator") %>
@@ -12,6 +11,5 @@
     <%= display_ds_values_as_dl_element("identityMetadata", :setType, "Set Type") %>
     <%= display_ds_values_as_dl_element("identityMetadata", :tag, "Tag") %>
     <%= display_ds_values_as_dl_element("identityMetadata", :uuid, "UUID") %>
-  <% end -%>
   </dl>
 </div>
