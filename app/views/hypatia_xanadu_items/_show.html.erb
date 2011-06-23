@@ -6,8 +6,8 @@
 <div class="document_viewer" id="cover_container">
 
 	<h1>
-		<% unless get_values_from_datastream(@document_fedora,"descMetadata", [:title]).first.empty? -%>
-	      <%= get_values_from_datastream(@document_fedora,"descMetadata", [:title]).first %>
+		<% unless get_values_from_datastream(@document_fedora, "descMetadata", [:title]).first.empty? -%>
+	      <%= get_values_from_datastream(@document_fedora, "descMetadata", [:title]).first %>
 		<% else -%>
 			<%= params[:id] %>
 		 <% end -%>
@@ -16,6 +16,8 @@
   <h2>Description</h2>
   
   <%= render :partial => 'hypatia_xanadu_items/show_description' -%>
+
+  <h2>Files</h2>
 
 	<% unless @document_fedora.file_objects(:response_format=>:solr).hits.empty? -%>
 		<fieldset><legend>Files</legend>
@@ -48,6 +50,7 @@
 	
 	<h2>Technical info</h2>
 	
-	<div class="pid"><dl><dt>ID:</dt><dd><%=params[:id]%></dd></dl></div>  
+	<div class="pid"><dl><dt>ID</dt><dd><%=params[:id]%></dd></dl></div>  
+  <%= render :partial => 'hypatia_xanadu_items/show_technical' -%>
 
 </div>

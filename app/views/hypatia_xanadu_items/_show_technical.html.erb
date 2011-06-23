@@ -1,0 +1,12 @@
+<% unless get_values_from_datastream(@document_fedora, "identityMetadata", [:tag]).first.empty? -%>
+  <%= display_ds_values_in_div_dl("identityMetadata", :adminPolicy, "Admin Policy", "techInfo") %>
+  <%= display_ds_values_in_div_dl("identityMetadata", :agreementId, "Agreement ID", "techInfo") %>
+  <%= display_ds_values_in_div_dl("identityMetadata", :objectCreator, "Object Creator", "techInfo") %>
+  <%= display_ds_values_in_div_dl("identityMetadata", :objectId, "Object ID", "techInfo") %>
+  <%= display_ds_values_in_div_dl("identityMetadata", :objectLabel, "Object Label", "techInfo") %>
+  <%= display_ds_values_in_div_dl("identityMetadata", :objectType, "Object Type", "techInfo") %>
+  <%= display_ds_values_in_div_dl("identityMetadata", :otherId, "Additional ID", "techInfo") %>
+  <%= display_ds_values_in_div_dl("identityMetadata", :setType, "Set Type", "techInfo") %>
+  <%= display_ds_values_in_div_dl("identityMetadata", :sourceId, "Source ID", "techInfo") %>
+  <%= display_ds_values_in_div_dl("identityMetadata", :tag, "Tag", "techInfo") %>
+<% end -%>
