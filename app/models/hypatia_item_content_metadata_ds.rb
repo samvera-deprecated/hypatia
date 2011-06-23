@@ -10,13 +10,13 @@ class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream
 #    t.type
 #    t.object_id(:xpath=>"@objectId", :index_as=>[:searchable, :displayable])
 #    t.object_id(:attributes=>{:type=>"objectId"}, :index_as=>[:searchable, :displayable])
-    t.resource {
+    t.resource (:path=>"resource") {
 # these are attributes on resource element      
 #      t.id
 #      t.type
 #      t.data
-#      t.object_id
-      t.file {
+#      t.object_id(:path=>{:attribute=>"objectId"}, :index_as=>[:displayable])
+      t.file (:path=>"file") {
 # these are attributes on file elements
 #        t.id(:path=>"@id", :index_as=>[:searchable, :displayable])
 #        t.format
@@ -26,6 +26,7 @@ class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream
 #        t.shelve(:xpath=>"//file@shelve", :index_as=>[:displayable, :facetable])
 #        t.deliver(:xpath=>"//file@display", :index_as=>[:displayable, :facetable])
         
+        t.urla(:path=>"location", :attributes=>{:type=>"url"}, :index_as=>[:displayable, :searchable])
         t.location(:path=>"location", :attributes=>{:type=>"url"}, :index_as=>[:displayable])
         t.checksum_md5(:path=>"checksum", :attributes=>{:type=>"md5"}, :index_as=>[:displayable])
         t.checksum_sha1(:path=>"checksum", :attributes=>{:type=>"sha1"}, :index_as=>[:displayable])
@@ -36,6 +37,7 @@ class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream
 #    t.file_id(:proxy=>[:resource, :file, :id])
 #    t.file_mime(:proxy=>[:resource, :file, :mime])
     t.file_location(:proxy=>[:resource, :file, :location])
+    t.url(:proxy=>[:resource, :file, :urla])
 
   end # set_terminology
 
