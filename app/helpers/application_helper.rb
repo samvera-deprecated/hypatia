@@ -16,15 +16,14 @@ module ApplicationHelper
     end
     result 
   end
-  
-  # display the Solr values populated per the datastream model within <div><dl> html tags
-  def display_ds_values_in_div_dl(dsid, solr_fld_sym, display_label, div_class=dsid)
+
+  # display the Solr values populated per the datastream model with dt and dd html tags
+  def display_ds_values_as_dl_element(dsid, solr_fld_sym, display_label)
     values = get_values_from_datastream(@document_fedora, dsid, [solr_fld_sym])
     unless values.first.empty?
-      result = "<div class=\"#{div_class}\"><dl><dt>#{display_label}</dt><dd>#{values.join(', ')}</dd></dl></div>"
+      result = "<dt>#{display_label}</dt><dd>#{values.join(', ')}</dd>"
     end
     result 
-    
   end
   
 end

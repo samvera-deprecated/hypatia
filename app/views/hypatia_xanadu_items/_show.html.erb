@@ -13,8 +13,6 @@
 		 <% end -%>
 	</h1>
   	
-  <h2>Description</h2>
-  
   <%= render :partial => 'hypatia_xanadu_items/show_description' -%>
 
   <h2>Files</h2>
@@ -48,9 +46,8 @@
  		</fieldset>
 	<% end -%>
 	
-	<h2>Technical info</h2>
-	
-	<div class="pid"><dl><dt>ID</dt><dd><%=params[:id]%></dd></dl></div>  
   <%= render :partial => 'hypatia_xanadu_items/show_technical' -%>
+
+	<div class="pid"><dl><dt>PID</dt><dd><%=params[:id]%></dd></dl></div>  
 
 </div>
