@@ -5,7 +5,8 @@ class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream
   # OM (Opinionated Metadata) terminology mapping for the mods xml
   set_terminology do |t|
     t.root(:path=>"contentMetadata", :xmlns => '', :namespace_prefix => nil)
-    t.content_object_id(:path=>{:attribute=>"objectId"}, :index_as=>[:searchable, :displayable, :sortable], :namespace_prefix => nil)
+# FIXME: want this sortable, but sort field can't be multi-valued ... but without resource element matches, it really isn't multi-valued
+    t.content_object_id(:path=>{:attribute=>"objectId"}, :index_as=>[:searchable, :displayable], :namespace_prefix => nil)
     
     t.resource(:namespace_prefix => nil) {
 

@@ -26,7 +26,12 @@ Feature: Xanadu Item Object Show View Fixtures
     And I should see "c097de5b-bd21-b95e-944a-769bd46f1928"
     And I should see "druid:ww057vk7675"
     And I should see "Project : Xanadu"
-  
+
+  Scenario: Xanadu item object  technical information should include the contentMetadata Object id
+    When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
+    Then I should see "Content Object ID"
+    And I should see "druid:tk694zs2244"
+
   Scenario: Xanadu item object  contentMetadata (contained files)
     # file name, downloadable link, file size
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
