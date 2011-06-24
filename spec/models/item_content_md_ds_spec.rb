@@ -2,13 +2,17 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe HypatiaItemContentMetadataDS do
   
-#  content_md_ds.term_values().should == ["", "", "", "", ""]
+  it "should be able to distinguish between content level and resource level object ids" do
+    content_md_ds = HypatiaItemContentMetadataDS.from_xml(active_fedora_fixture("item_content_metadata.xml"))
+    content_md_ds.term_values(:content_oid).should == ["druid:tk694zs2244"]
+    content_md_ds.term_values(:resource_oid).should == ["druid:mc116fw4648", "druid:xg062my4398", "druid:nb727vy7154", "druid:nd615pr9748", "druid:ct102pd5508"]
+  end
   
   it "should have term values from resource element attributes" do
     content_md_ds = HypatiaItemContentMetadataDS.from_xml(active_fedora_fixture("item_content_metadata.xml"))
     content_md_ds.term_values(:resource_type).should == ["disk-image", "photo", "photo", "analysis", "analysis"]
     content_md_ds.term_values(:resource_id).should == ["disk-image", "photo-1", "photo-2", "analysis-text", "analysis-contents"]
-    content_md_ds.term_values(:resource_object_id).should == ["druid:mc116fw4648", "druid:xg062my4398", "druid:nb727vy7154", "druid:nd615pr9748", "druid:ct102pd5508"]
+    content_md_ds.term_values(:resource_oid).should == ["druid:mc116fw4648", "druid:xg062my4398", "druid:nb727vy7154", "druid:nd615pr9748", "druid:ct102pd5508"]
   end
   
   it "should have term values from file element attributes" do
@@ -23,10 +27,6 @@ describe HypatiaItemContentMetadataDS do
          "http://stacks.stanford.edu/file/druid:nb727vy7154/CM01_2.JPG",
           "http://stacks.stanford.edu/file/druid:nd615pr9748/CM01.txt",
            "http://stacks.stanford.edu/file/druid:ct102pd5508/CM01.csv"]
-  end
-
-  it "should have a url for each file" do
-    pending
   end
 
 end

@@ -5,7 +5,8 @@ class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream
   # OM (Opinionated Metadata) terminology mapping for the mods xml
   set_terminology do |t|
     t.root(:path=>"contentMetadata", :xmlns => '', :namespace_prefix => nil)
-
+    t.content_object_id(:path=>{:attribute=>"objectId"}, :index_as=>[:searchable, :displayable, :sortable], :namespace_prefix => nil)
+    
     t.resource(:namespace_prefix => nil) {
 
       t.resource_id(:path=>{:attribute=>"id"}, :index_as=>[:searchable, :displayable, :facetable], :namespace_prefix => nil)
@@ -31,9 +32,11 @@ class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream
     }
     
     # proxy declarations
+    t.content_oid(:proxy => [:contentMetadata, :content_object_id])
+
     t.resource_id(:proxy => [:resource, :resource_id])
     t.resource_type(:proxy => [:resource, :resource_type])
-    t.resource_object_id(:proxy => [:resource, :resource_object_id])
+    t.resource_oid(:proxy => [:resource, :resource_object_id])
 
     t.file_id(:proxy=>[:resource, :file, :file_id])
     t.file_format(:proxy=>[:resource, :file, :file_format])
