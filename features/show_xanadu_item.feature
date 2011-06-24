@@ -32,6 +32,15 @@ Feature: Xanadu Item Object Show View Fixtures
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
     Then outcome
 
+  Scenario: images of the media should display as thumbnails
+    When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
+    Then outcome
+    
+  Scenario: images of the media should not be included in downloadable files
+    When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
+#    Then I should see 3 files
+    
+
   Scenario: Xanadu item object contained files are downloadable
     # the download link works ... probably this is in more generic place
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
