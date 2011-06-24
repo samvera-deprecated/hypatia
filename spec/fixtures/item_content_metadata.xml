@@ -29,7 +29,7 @@
     </file>
   </resource>
   <resource id="analysis-contents" type="analysis" data="metadata" objectId="druid:ct102pd5508">
-    <file id="CM01.csv" format="PDF" mimetype="text/csv" encoding="UTF-8" size="10750" preserve="yes" shelve="yes" deliver="yes">
+    <file id="CM01.csv" format="CSV" mimetype="text/csv" encoding="UTF-8" size="10750" preserve="yes" shelve="yes" deliver="yes">
       <location type="url">http://stacks.stanford.edu/file/druid:ct102pd5508/CM01.csv</location>
       <checksum type="md5">3600328998a00fbdefd5d10f72245a84</checksum>
       <checksum type="sha1">fd65587954b0cc6dcf159da52e745866eee43db1</checksum>

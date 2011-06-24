@@ -6,43 +6,44 @@ class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream
   set_terminology do |t|
     t.root(:path=>"contentMetadata", :xmlns => '', :namespace_prefix => nil)
 
-    t.content_oid(:path=>{:attribute=>"objectId"}, :index_as=>[:searchable, :displayable], :namespace_prefix => nil)
-
-# associating a sub-sub element or attribute with contentMetadata top element ... maybe should just do inline with unique term
-#    t.photo_resource(:path=>"resource", :attributes=>{:type=>"photo"}, :index_as=>[:searchable,  :displayable])
-
     t.resource(:namespace_prefix => nil) {
-# these are attributes on resource element      
-#      t.id
-#      t.data
-#      t.object_id(:path=>{:attribute=>"objectId"}, :index_as=>[:displayable])
-      t.resource_oid(:path=>{:attribute=>"objectId"}, :index_as=>[:searchable, :displayable], :namespace_prefix => nil)
+
+      t.resource_id(:path=>{:attribute=>"id"}, :index_as=>[:searchable, :displayable, :facetable], :namespace_prefix => nil)
       t.resource_type(:path=>{:attribute=>"type"}, :index_as=>[:searchable, :displayable], :namespace_prefix => nil)
+# FIXME: want this sortable, but sort field can't be multi-valued ... but at resource element level, it really isn't multi-valued
+      t.resource_object_id(:path=>{:attribute=>"objectId"}, :index_as=>[:searchable, :displayable], :namespace_prefix => nil)
+
       t.file(:path=>"file", :namespace_prefix => nil) {
-# these are attributes on file elements
-#        t.file_id(:path=>{:attribute=>"id"}, :index_as=>[:searchable, :displayable])
-#        t.format(:path=>{:attribute=>"format"}, :index_as=>[:searchable, :facetable, :displayable])
-        t.mime(:path=>{:attribute=>"mimeytpe"}, :index_as=>[:searchable, :facetable, :displayable], :namespace_prefix => nil)
-#        t.size(:path=>{:attribute=>"size"}, :index_as=>[:searchable, :facetable, :displayable])
-#        t.preserve(:xpath=>"//file@preserve", :index_as=>[:displayable, :facetable])
-#        t.shelve(:xpath=>"//file@shelve", :index_as=>[:displayable, :facetable])
-#        t.deliver(:xpath=>"//file@display", :index_as=>[:displayable, :facetable])
+
+        t.file_id(:path=>{:attribute=>"id"}, :index_as=>[:displayable], :namespace_prefix => nil)
+        t.file_format(:path=>{:attribute=>"format"}, :index_as=>[:searchable, :displayable, :facetable], :namespace_prefix => nil)
+        t.file_mimetype(:path=>{:attribute=>"mimetype"}, :index_as=>[:searchable, :displayable, :facetable], :namespace_prefix => nil)
+# FIXME: want this sortable, but sort field can't be multi-valued ... but at file element level, it really isn't multi-valued
+        t.file_size(:path=>{:attribute=>"size"}, :index_as=>[:searchable, :displayable], :namespace_prefix => nil)
+#        t.preserve(:path=>{:attribute=>"preserve"}, :index_as=>[:displayable, :facetable])
+#        t.shelve(:path=>{:attribute=>"shelve"}, :index_as=>[:displayable, :facetable])
+#        t.deliver(:path=>{:attribute=>"deliver"}, :index_as=>[:displayable, :facetable])
         
-        t.urla(:path=>"location", :attributes=>{:type=>"url"}, :index_as=>[:displayable, :searchable], :namespace_prefix => nil)
-        t.location(:path=>"location", :attributes=>{:type=>"url"}, :index_as=>[:displayable], :namespace_prefix => nil)
-        t.checksum_md5(:path=>"checksum", :attributes=>{:type=>"md5"}, :index_as=>[:displayable], :namespace_prefix => nil)
-        t.checksum_sha1(:path=>"checksum", :attributes=>{:type=>"sha1"}, :index_as=>[:displayable], :namespace_prefix => nil)
+        t.file_url(:path=>"location", :attributes=>{:type=>"url"}, :index_as=>[:displayable], :namespace_prefix => nil)
+#        t.checksum_md5(:path=>"checksum", :attributes=>{:type=>"md5"}, :index_as=>[:displayable], :namespace_prefix => nil)
+#        t.checksum_sha1(:path=>"checksum", :attributes=>{:type=>"sha1"}, :index_as=>[:displayable], :namespace_prefix => nil)
       }
     }
     
     # proxy declarations
-    t.cont_oid(:proxy => [:contentMetadata, :content_oid])
+    t.resource_id(:proxy => [:resource, :resource_id])
+    t.resource_type(:proxy => [:resource, :resource_type])
+    t.resource_object_id(:proxy => [:resource, :resource_object_id])
 
- #    t.file_id(:proxy=>[:resource, :file, :id])
-#    t.file_mime(:proxy=>[:resource, :file, :mime])
-    t.file_location(:proxy=>[:resource, :file, :location])
-    t.url(:proxy=>[:resource, :file, :urla])
-
+    t.file_id(:proxy=>[:resource, :file, :file_id])
+    t.file_format(:proxy=>[:resource, :file, :file_format])
+    t.format(:proxy=>[:resource, :file, :file_format])
+    t.file_mimetype(:proxy=>[:resource, :file, :file_mimetype])
+    t.mimetype(:proxy=>[:resource, :file, :file_mimetype])
+    t.file_size(:proxy=>[:resource, :file, :file_size])
+    t.size(:proxy=>[:resource, :file, :file_size])
+    t.file_url(:proxy=>[:resource, :file, :file_url])
+    t.url(:proxy=>[:resource, :file, :file_url])
 
   end # set_terminology
 
