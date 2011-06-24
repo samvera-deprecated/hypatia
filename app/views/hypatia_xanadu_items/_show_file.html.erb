@@ -1,0 +1,7 @@
+<dl>
+  ds.term_values(:author, :first_name)
+  
+  <%= display_ds_values_as_dl_element("contentMetadata", :resource, "Resource") %>
+  <%= display_ds_values_as_dl_element("contentMetadata", [:resource, :file], "File") %>
+  <%= display_ds_values_as_dl_element("contentMetadata", [:resource, :file, :mime], "Mime Type") %>
+</dl>

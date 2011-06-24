@@ -1,7 +1,10 @@
 <div class="files">
   <h2>Files</h2>
+  <%= render :partial => 'hypatia_xanadu_items/show_file' -%>
   <dl>
     <%= display_ds_values_as_dl_element("contentMetadata", :oid, "Root Object Id Attrib") %>
+    <%= display_ds_values_as_dl_element("contentMetadata", [:resource, :mime], "Resource Mimetype") %>
+    <%#= display_ds_values_as_dl_element("contentMetadata", [:resource, :druid], "Root Object Id Attrib") %>
     <%= display_ds_values_as_dl_element("contentMetadata", :url, "url") %>
     <%= display_ds_values_as_dl_element("contentMetadata", :resource, "Resource") %>
     <%#= display_ds_values_as_dl_element("contentMetadata", :location, "Location") %>
