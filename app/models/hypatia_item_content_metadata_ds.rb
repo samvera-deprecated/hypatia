@@ -11,7 +11,7 @@ class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream
 # associating a sub-sub element or attribute with contentMetadata top element ... maybe should just do inline with unique term
 #    t.photo_resource(:path=>"resource", :attributes=>{:type=>"photo"}, :index_as=>[:searchable,  :displayable])
 
-    t.resource (:namespace_prefix => nil){
+    t.resource(:namespace_prefix => nil) {
 # these are attributes on resource element      
 #      t.id
 #      t.data

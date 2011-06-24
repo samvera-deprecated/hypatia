@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+  <mods:titleInfo>
+    <mods:title>CM01</mods:title>
+  </mods:titleInfo>
+  <mods:physicalDescription>
+    <mods:extent>1.0 computer media</mods:extent>
+    <mods:extent>hard drive</mods:extent>
+    <mods:digitalOrigin>born digital</mods:digitalOrigin>
+  </mods:physicalDescription>
+  <mods:note displayLabel="Located in">Born-Digital Materials - Carton 11 - Computer disks / tapes</mods:note>
+  <mods:abstract displayLabel="Processing Information note">The capacity of CM01 is 2049 MB and CM01.dd is the image file created by AccessData's FTK software. CM01.txt is the log for the imaging process; CM01.csv is the directory listing of the files in the image; CM01_1.jpg and CM01_2.jpg are the photograph images of the drive.</mods:abstract>
+  <mods:identifier type="local">CM01</mods:identifier>
+</mods:mods>
