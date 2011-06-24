@@ -1,3 +1,4 @@
+# this defines properties that can be assigned to OM terms
 id: id
 default: searchable
 searchable: 
