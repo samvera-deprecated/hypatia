@@ -6,26 +6,11 @@ It does NOT describe how to get the hydra-head plugin code with the pre-configur
 
 h3. I. Install Prerequisites
 
-* "ruby":http://www.ruby-lang.org/en/    NOTE: version 1.8.7 or higher
-* "rubygems":http://rubygems.org/pages/download
-* these ruby gems:
-** "bundler":http://gembundler.com/
-** "rails":http://rubyonrails.org/    NOTE: version < 3.
-* "git":http://git-scm.com/
-* "java":http://www.java.com/en/    NOTE:  version 1.6 or higher
-* "sqlite3":http://www.sqlite.org/
-
-* "RVM":http://rvm.beginrescueend.com/  (Ruby Version Manager)
-** We strongly suggest using RVM as a means of keeping your different ruby applications with their specific gem requirements from having version clashes. 
-** If you don't have the desired ruby version in RVM, e.g. ree-1.8.7, then install it. The following instructions assume the use of RVM.
-
-<pre>
-  rvm install ree-1.8.7
-</pre>
+See "INSTALL_PREREQ":/projecthydra/hydra-head/blob/master/INSTALL_PREREQ.textile
 
 h2. II. Install a Blacklight Application
 
-This process begins with the installation of a rails application.
+This process begins with the installation of the Blacklight ("http://projectblacklight.org":http://projectblacklight.org) rails application.
 
 h4. (1) Create the RVM Gemset and Install Pre-Requisite Gems.
 
@@ -106,6 +91,14 @@ cp -R ../hydra-head/config/* config/
 mv routes-copy.rb config/routes.rb 
 </pre>
 
+Copy the fedora and solr config files into the application. This is where you will keep your application-specific copies of solr and fedora configuration. When running the app, you need to copy these files into your copies of Fedora and Solr. When you're using the copy of hydra-jetty in the"jetty" directory, running rake hydra:jetty:load will copy them into the jetty directory for you.
+
+<pre>
+cp -R ../hydra-head/solr ./
+cp -R ../hydra-head/fedora ./
+</pre>
+
+
 When you run @git status@ you should see something like this: 
 
 <pre>
@@ -116,7 +109,6 @@ When you run @git status@ you should see something like this:
 # Untracked files:
 #	         Gemfile
 #	         config/fedora.yml
-#	         config/hydra_types.yml
 #	         config/initializers/fedora_config.rb
 #	         config/initializers/hydra_config.rb
 #	         config/role_map_cucumber.yml
@@ -191,7 +183,9 @@ script/plugin install  git://github.com/mediashelf/fluid-infusion.git
 
 h3. (5) blacklight plugin: patch CatalogController
 
-Note: the long-term fix to this will be to implement before_render callbacks in CatalogController.show and refactor hydra-head to use those callbacks instead of aliasing the show method itself.
+Note: (this may no longer be necessary 2011-06-14)
+
+(or maybe: the long-term fix to this will be to implement before_render callbacks in CatalogController.show and refactor hydra-head to use those callbacks instead of aliasing the show method itself.)
 
 Blacklight's CatalogController.show method breaks the hydra-head overrides.  To fix this, comment out lines 47-51 in vendor/plugins/blacklight/app/controllers/catalog-controller.rb:
 
@@ -235,11 +229,48 @@ h4. (2) Commit the changes to git.
 git commit config/ -m "Update config/environment.rb to load plugins in the right order"
 </pre>
 
-h2. VII. If You Plan to Use This Rails App For Running the Automated Tests
+h2. VII. Update Application's application_controller and application_helper to Use Hydra-Head Plugin
+
+h4. (1) Edit app/controllers/application_controller.rb
+
+Change the first line to require the hydra-head plugin's controller rather than blacklight's:
+
+<pre>
+require_dependency( 'vendor/plugins/blacklight/app/controllers/application_controller.rb')
+</pre>
+
+becomes
+
+<pre>
+require_dependency( 'vendor/plugins/hydra-head/app/controllers/application_controller.rb')
+</pre>
+
+h4. (2) Edit app/helpers/application_helper.rb
+
+Change the first line to require the hydra-head plugin's helper rather than blacklight's:
+
+<pre>
+require 'vendor/plugins/blacklight/app/helpers/application_helper.rb'
+</pre>
+
+becomes
+
+<pre>
+require 'vendor/plugins/hydra-head/app/helpers/application_helper.rb'
+</pre>
+
+h4. (3) Commit the changes to git.
+
+<pre>
+git commit app/ -m "Update application_controller and application_helper to require hydra-head plugin, not blacklight"
+</pre>
+
+
+h2. VIII. If You Plan to Use This Rails App For Running the Automated Tests
 
 Stop here and go to "DEVELOP_PLUGIN":https://github.com/projecthydra/hydra-head/blob/master/DEVELOP_PLUGIN.textile.
 
-h2. VIII. Run the Database Migrations
+h2. IX. Run the Database Migrations
 
 The following will run the migrations for the app and for its plugins:
 
@@ -247,7 +278,7 @@ The following will run the migrations for the app and for its plugins:
 rake db:migrate:all
 </pre>
 
-h2. VIII. Spin up Solr and Fedora
+h2. X. Spin up Solr and Fedora
 
 The easiest way is to put a copy of hydra-jetty into the jetty directory within your app. This provides copies of solr and fedora that you can use for testing and development purposes.
 
@@ -273,10 +304,10 @@ _Stop any copies of jetty (or anything else using port 8983) before running this
 The following will copy Solr and Fedora configuration files over to jetty in addition to starting it:
 
 <pre>
-rake hydra:jetty:start
+rake hydra:jetty:load
 </pre>
 
-h2. IX. Run Your New Hydra Application
+h2. XI. Run Your New Hydra Application
 
 <pre>
   script/server
@@ -286,7 +317,7 @@ You should now be able to go to your application at http://localhost:3000.
 
 Note that there are no objects pre-installed into Fedora (or Solr).
 
-h2. X. Develop your Hydra Application with ActiveFedora and OM
+h2. XII. Develop your Hydra Application with ActiveFedora and OM
 
 See "HOW_TO_GET_STARTED":https://github.com/mediashelf/om/blob/master/HOW_TO_GET_STARTED.textile.
 

@@ -15,7 +15,7 @@ namespace :hyhead do
       :jetty_port => 8983,
       :solr_home => File.expand_path(File.dirname(__FILE__) + '/../../jetty/solr'),
       :fedora_home => File.expand_path(File.dirname(__FILE__) + '/../../jetty/fedora/default'),
-      :startup_wait => 20
+      :startup_wait => 30
       }
     
     Rake::Task["hyhead:setup_test_host"].invoke
@@ -75,7 +75,6 @@ namespace :hyhead do
       end
       yt.files   = Dir.glob(File.join(project_root, '*.rb')) + 
                    Dir.glob(File.join(project_root, 'app', '**', '*.rb')) + 
-                   Dir.glob(File.join(project_root, 'config', '**', '*.rb')) + 
                    Dir.glob(File.join(project_root, 'lib', '**', '*.rb')) + 
                    textile_docs
       yt.options = ['--output-dir', doc_destination, '--readme', readme_filename]

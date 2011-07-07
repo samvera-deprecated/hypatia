@@ -3,7 +3,7 @@ h1. Getting Started Building Your Own Hydra Application
 
 *!!! This is a WORK IN PROGRESS !!!*
 
-h3. What you will learn form this document:
+h3. What you will learn from this document:
 
 Set up a Hydra application (a rails app that uses the hydra-head plugin) and run it
 Define a new Content Type called JournalArticle
@@ -15,11 +15,7 @@ Define a new Content Type called JournalArticle
 
 h2. Set up a Hydra Application
 
-For the purposes of this tutorial, we have set up a preconfigured rails app that you can download from github.
-
-!!! link to download the preconfigured rails app
-
-For now, see "CREATE_RAILS_APP":https://github.com/projecthydra/hydra-head/blob/master/CREATE_RAILS_APP.textile.
+See "CREATE_RAILS_APP":https://github.com/projecthydra/hydra-head/blob/master/CREATE_RAILS_APP.textile.
 
 h3. Starting the App out of the Box
 
@@ -74,170 +70,20 @@ h3. Exploring what comes out of the box
 
 h2. Making local changes to your Hydra Application
 
-In order to make it easy to get new functionality added to the hydra stack (see "README":https://github.com/projecthydra/hydra-head/blob/master/README.textile), while retaining your localizations, your local code should be set up to override the upstream Hydra stack code.
+In order to make it easy to get any new functionality added to the hydra stack (see "README":https://github.com/projecthydra/hydra-head/blob/master/README.textile), while retaining your Hydra application's localizations, your local hydra application code should be set up to override the upstream Hydra stack code. 
 
-Luckily, rails engines has made this easy.  
+Luckily, rails engines has made this easy - the Hydra code is organized so your localizations are kept separate from the core hydra application code.
 
-1.  always write tests for your local modifications
-2.  always change code at the app level, and never change anything in vendor/plugins.
+Moreover, to ensure your localizations won't be broken by upgrading the Hydra core code, we STRONGLY recommend that you write tests for every local change you make.  This will allow you to ensure that upgrading the core code doesn't break any local changes you have made.
 
-h3.  tests tests tests
+So, two key points:
 
-We STRONGLY recommend that you write tests for every local change you make.  This will allow you to ensure that upgrading the core code doesn't break any local changes you have made.
+<b>
+# always write tests for your local modifications
+# always change code at the app level, and never change anything in vendor/plugins.
+</b>
 
-(when should it be a feature rather than a spec)
-very basic rule:  if it's testing something created with view, use a cucumber feature to test.  If it's not created by view code, use a spec to test. 
-
-h4. Run generator for specs
-
-To create the infrastructure pieces to write specs:
-
-<pre>
-  ./script/generate rspec
-</pre>
-
-h4. Run generator for features
-
-To create the infrastructure pieces to write cucumber features:
-
-<pre>
-  ./script/generate cucumber
-</pre>
-
-
-h3. Easy Changes for Practice.
-
-
-h3. Changing the Home Text (also Demonstrates Writing a Feature)
-
-The home text is set in the view partial (vendor/plugins/blah/)app/views/catalog/_home_text.html.erb
-
-Because it is set in a view, a cucumber feature is the most appropriate test (rather than an rspec test).
-
-h4. (1) Write the test.
-
-Create a file "features/home_page.feature" containing this:
-
-<pre>
-  Feature: Homepage
-    I want the home page to reflect localizations properly
-</pre>
-
-A test for checking the home text might be inserted like so:
-
-<pre>
-  Feature: Homepage
-    I want the home page to reflect localizations properly
-    
-    Scenario: home page text
-      When I am on the home page
-      Then I should not see "override"
-      And I should see "My Local Hydra App"
-      And I should see "Isn't it great?"
-      And I should see "Search"
-</pre>
-
-h4. (2) Run the test - it should fail
-
-When you run this feature, the feature should run, but this test should fail (because you haven't changed anything yet.)
-
-h4. (3) Change the code
-
-We want to override the text on the home page locally, keeping our local changes separate from upstream changes to the plugins' code.
-
-Since the home text is set in vendor/plugins/(blah)/app/views/catalog/_home_text.html.erb, we will override that code by creating a local app/views/catalog/_home_text.html.erb file.  
-
-Our app/views/catalog/_home_text.html.erb might look like this
-
-<pre>
-<div id="results">
-	
-	<%= render :partial=>'search_form' %>
-	
-	<div class="home_text">
-		<h1>Welcome to My Local Hydra App</h1>
-		<br/>
-		<p>This is my local Hydra application.  Isn't it great?
-		</p>
-	</div>
-
-</div>
-</pre>
-
-h4. (4) Run the test - it should now pass
-
-Now when you run the feature, it should pass.  If it doesn't, iterate until it does.
-
-
-h3. Overriding a Helper Method (also Demonstrates Writing a Spec)
-
-We want to change the application name (what displays as the html page's title).  This is set in a plugin's app/helper/application_helper.rb file.  Because it is set in a helper file, it is a good candidate for an rspec test (rather than a feature).
-
-h4. (1) Write the test.
-
-Since the application name is set in (vendor/plugins/blah/)app/helpers/application_helper.rb, we need a spec to run against the application_helper file.
-
-Create a file "spec/helpers/application_helper_spec.rb" containing this:
-
-<pre>
-  require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-
-  describe ApplicationHelper do
-    include ApplicationHelper
-  end
-</pre>
-
-A test for checking the application name might be inserted like so:
-
-<pre>
-  require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-
-  describe ApplicationHelper do
-    include ApplicationHelper
-
-    describe "Overall UI methods" do
-      it "should get the local application name" do
-        application_name.should == "My Hydra"
-      end
-    end
-
-  end
-</pre>
-
-h4. (2) Run the test - it should fail
-
-When you run this spec, the spec should run, but this test should fail (because you haven't changed anything yet.)
-
-h4. (3) Change the code
-
-We want to override the application name locally, keeping our local changes separate from upstream changes to the plugins' code.
-
-Since the application name is set in vendor/plugins/(blah)/app/helpers/application_helper.rb, we will override that code by putting a method of the same name in app/helpers/application_helper.rb.  The current app/helpers/application_helper.rb file may look like this:
-
-<pre>
-  require_plugin_dependency 'vendor/plugins/blacklight/app/helpers/application_helper.rb'
-  # Methods added to this helper will be available to all templates in the application.
-  module ApplicationHelper
-  end
-</pre>
-
-Code for changing the application name might be inserted like so:
-
-<pre>
-  require_plugin_dependency 'vendor/plugins/blacklight/app/helpers/application_helper.rb'
-  # Methods added to this helper will be available to all templates in the application.
-  module ApplicationHelper
-
-    def application_name
-      'My Hydra'
-    end
-
-  end
-</pre>
-
-h4. (4) Run the test - it should now pass
-
-Now when you run the spec, it should pass.  If it doesn't, iterate until it does.
+"INITIAL_APP_MODS":https://github.com/projecthydra/hydra-head/blob/master/INITIAL_APP_MODS.textile explains how to make two basic changes to your hydra rails application and how to write the appropriate tests for them.
 
 
 h2. The new Content Type: JournalArticle
@@ -453,6 +299,8 @@ h2. Defining the Model and adding the Datastreams to it
 <pre>
 # a Fedora object for the Journal Article hydra content type
 class JournalArticle < ActiveFedora::Base
+  include Hydra::ModelMethods
+  
   has_metadata :name => "descMetadata", :type=> JournalArticleModsDatastream
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata
 end
@@ -513,8 +361,67 @@ In reality, when you want to re-index an object in Solr, you should use Solrizer
 
 Solrizer is able to figure out how to index XML based on the OM Terminologies you've defined.  It defaults to indexing nearly everything in generic ways, but there are many ways to customize this behavior. See the "Solrizer Documentation":http://hudson.projecthydra.org/job/solrizer/Documentation/ for more information about how it works.
 
+h2. Basic Access Controls
+
+The access controls in the hydra-head plugin work on the assumption that you will put your access controls information into a datastream called rightsMetadata and then index the values from that datastream into Solr.  The plugin provides all the tools that you need in order to do this.  Most of the work is handled for you by this line in your model:
+
+<pre>
+  has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata
+</pre>
+
+The plugin defaults to *denying access* when the permissions are unclear.  This means that in cases where there is no rightsMetadata datastream or the information in the datastream is unclear or incomplete, the Hydra head will act like the object does not exist.  _The object will not show up in search results and you will not be able to view it._
+
+To give yourself permission to view and edit an object, you need to set those permissions.  For example, if we want the object to show up in search results for everyone but we only want a user called archivist1 to edit it, we can do the following:
+
+<pre>
+  article = JournalArticle.load_instance("changeme:30")
+  article.permissions({"group"=>"public"}, "read")
+  article.permissions({"person"=>"archivist1"}, "edit")
+  article.save
+</pre>
+
+hydra-head provides you with tools to expose a permissions editor to your end-users.  This allows them to control who can discover/read/download/edit the objects they create.
+
+h2. Logging into the Hydra Head and creating a User Account
+
+Blacklight & the hydra-head plugin provide a basic user authentication that is meant to be replaced by code that connects to your institutional authentication system like LDAP or Shibboleth.  While setting up this sample hydra-head, you need to create user accounts in that system.  To do this, run the application, visit http://localhost:3000 and click on "login" then click on "create an account" below the login form.  
+
+In thes sample above, we gave "edit" permissions to a user called "archivist1", so create an account with that login id.  Choose whatever email & password you want.  Now you can log in as that user when you want to test features that require you to be logged into the hydra head.
+
 h2. Defining Custom Views
 
+Now that you've created a couple objects and indexed them, you can view them in the application.  Remember, _objects will not show up in search results unless the permissions are set properly in rightsMetadata_.
+
+h3. Add a link to create an Article
+
+First, we need to add a link to the Hydra Head that lets you create Journal Articles.  To do this, you need to override the _add_asset_links view partial.  Here's the cucumber test for what you want:
+
+<pre>
+  Feature: Button to Add Articles
+    In order to create Journal Articles
+    As a person with submit permissions
+    I want to see a button for adding articles
+
+    Scenario: button to add articles on home page
+      Given I am logged in as "archivist1"
+      When I am on the home page
+      Then I should not see "Add a MODS Asset"
+      And I should see "Add an Article"
+</pre>
+
+hydra-head puts a list of "add asset" links into the user_util_links section of the page.  This list is defined in app/views/_add_asset_links.html.erb. By default, this list includes links for adding Images, MODS Assets and Generic Content.  We want it to have just one link -- create an Article.  To override the list, create a file at app/views/_add_asset_links.html.erb and put this into it:
+
+<pre>
+  <div id="select-item-box">
+    <ul id="select-item-list">
+      <li>
+        <%= link_to_create_asset 'Add an Article', 'journal_article' %>
+      </li>
+    </ul>
+  </div>
+</pre>
+
+Now start your application and visit http://localhost:3000
 
 h3. Default Views
 
@@ -523,13 +430,10 @@ JournalArticles will show up with the default views until you create custom view
 
 search results, facets
 detail & edit views
-h3. Add a link to create an Article
-
-
-Overriding the user_util_links partial
 
 h3. Customize how JournalArticles appear in search results
 
+h3. Change the Search Result Headings
 
 h3. Define JournalArticles “show” view
 
