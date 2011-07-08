@@ -33,5 +33,9 @@ Feature: HTML validity
 #    Then the page should be HTML5 valid
     
 # Xanadu collection view
+  Scenario: Xanadu collection show view (unauthenticated)
+    When I am on the document page for id "hypatia:fixture_xanadu_collection"
+    Then the page should be HTML5 valid
+
 
 # other collections item and sets
