@@ -3,7 +3,7 @@ Feature: Xanadu Item Object Show View Fixtures
 
   Scenario: Xanadu item object descMetadata
     When I am on the document page for id "hypatia:fixture_xanadu_drive1"
-    And I should see "CM01"
+    Then I should see "CM01"
     And I should see "1.0 computer media"
     And I should see "hard drive"
     And I should see "born digital"
