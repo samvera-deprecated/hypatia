@@ -1,0 +1,26 @@
+<div class="descMetadata">
+  <h2>Description</h2>
+  <h3>Collection</h3>
+  <dl>
+    <%= display_ds_values_as_dl_element("descMetadata", :local_id, "Local Identifier") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :genre, "Genre") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :create_date, "Created") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :extent, "Extent") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :abstract, "Description") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :scope_and_summary, "Summary") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :citation, "Preferred Citation") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :topic, "Subject") %>
+  </dl>
+  <h3>Creator</h3>
+  <dl>
+    <%= display_ds_values_as_dl_element("descMetadata", :person, "Creator") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :biography, "Biography") %>
+  </dl>
+  <h3>Repository</h3>
+  <dl>
+    <%= display_ds_values_as_dl_element("descMetadata", :organization, "Repository") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :use_and_repro_rights, "Publication Rights") %>
+    <%= display_ds_values_as_dl_element("descMetadata", :access, "Access Notes") %>
+  </dl>
+</div>
+

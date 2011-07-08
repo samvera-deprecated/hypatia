@@ -1,0 +1,14 @@
+<%-
+  doc_title = (document_show_html_title.nil? || document_show_html_title.empty?) ? @document[:id] : document_show_html_title.first
+  @page_title = "#{doc_title} - #{application_name}" 
+-%>
+
+<div class="document_viewer" id="cover_container">
+
+	<div class="pid"><dl><dt>PID</dt><dd><%=params[:id]%></dd></dl></div>  
+  	
+  <%= render :partial => 'hypatia_sets/show_description' -%>
+
+  <%= render :partial => 'hypatia_sets/show_technical' -%>
+
+</div>

@@ -5,25 +5,39 @@ class HypatiaSetDescMetadataDS < ActiveFedora::NokogiriDatastream
   # OM (Opinionated Metadata) terminology mapping for the mods xml
   set_terminology do |t|
     t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-3.xsd", :namespace_prefix => "mods")
+
     t.title_info(:path=>"titleInfo") {
-      t.main_title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable], :label=>"title")
+      t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable], :label=>"title")
     }
-# trying it  - didn't work  
-    t.creator(:xpath=>"//name/namePart[../role/roleTerm.text()='creator']", :namespace_prefix => "mods", :index_as=>[:searchable, :displayable, :facetable, :sortable])
-# trying it - didn't work
-    t.repository(:xpath=>"//name[@type=corporate]/namePart[../role/roleTerm.text()='repository']", :namespace_prefix => "mods", :index_as=>[:searchable, :displayable, :facetable, :sortable])
+    
+# FIXME:    t.creator(:xpath=>"//name/namePart[../role/roleTerm.text()='creator']", :namespace_prefix => "mods", :index_as=>[:searchable, :displayable, :facetable, :sortable])
+# FIXME:    t.repository(:xpath=>"//name[@type=corporate]/namePart[../role/roleTerm.text()='repository']", :namespace_prefix => "mods", :index_as=>[:searchable, :displayable, :facetable, :sortable])
+    t.name_ {
+      t.name_part
+      t.role(:ref=>[:role])
+      t.family_name(:path=>"namePart", :attributes=>{:type=>"family"})
+      t.given_name(:path=>"namePart", :attributes=>{:type=>"given"}, :label=>"first name")
+      t.terms_of_address(:path=>"namePart", :attributes=>{:type=>"termsOfAddress"})
+    }
+    t.role {
+      t.text(:path=>"roleTerm", :attributes=>{:type=>"text"})
+      t.authority(:path=>"roleTerm", :attributes=>{:type=>"marcrelator"})
+    }
+    t.person(:ref=>:name, :attributes=>{:type=>"personal"})
+    t.organization(:ref=>:name, :attributes=>{:type=>"corporate"})
+
+
     t.genre(:path=>"genre", :index_as=>[:searchable, :displayable, :facetable, :sortable])
     t.origin_info(:path=>"originInfo") {
       t.date_created(:path=>"dateCreated", :index_as=>[:searchable, :displayable, :facetable, :sortable])
     }
-    t.language_info(:path=>"language") {
-      t.language_code(:path=>"languageTerm", :index_as=>[:searchable, :displayable, :facetable, :sortable])
-    }
-# trying it - didn't work
-    t.lang_code(:xpath=>"//language/languageTerm", :namespace_prefix => "mods", :index_as=>[:searchable, :displayable, :facetable, :sortable])
-# FIXME:  want "extent" more than "physical_desc" ... yes?
     t.physical_desc(:path=>"physicalDescription") {
       t.extent(:path=>"extent", :index_as=>[:searchable])
+    }
+    
+#FIXME:    t.lang_code(:xpath=>"//language/languageTerm", :namespace_prefix => "mods", :index_as=>[:searchable, :displayable, :facetable, :sortable])  # FIXME
+    t.language_info(:path=>"language") {
+      t.language_code(:path=>"languageTerm", :index_as=>[:searchable, :displayable, :facetable, :sortable])
     }
 
 # tried displaylabel = nil ... didn't work    
@@ -40,35 +54,16 @@ class HypatiaSetDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.use_and_repro_rights(:path=>"accessCondition", :attributes=>{:displayLabel=>"Publication Rights", :type=>"useAndReproduction"}, :index_as=>[:displayable])
     t.access(:path=>"accessCondition", :attributes=>{:displayLabel=>"Access", :type=>"restrictionOnAccess"}, :index_as=>[:displayable])
     
-    t.identifier(:path=>"identifier", :index_as=>[:searchable, :displayable, :sortable])
-
-
-    # This is a mods:name.  The underscore is purely to avoid namespace conflicts.
-    t.name_ {
-      t.name_part
-#      t.role(:ref=>[:role])
-      t.family_name(:path=>"namePart", :attributes=>{:type=>"family"})
-      t.given_name(:path=>"namePart", :attributes=>{:type=>"given"}, :label=>"first name")
-      t.terms_of_address(:path=>"namePart", :attributes=>{:type=>"termsOfAddress"})
-    }
-
-=begin not useful?
-    # mods:role, which is used within mods:namePart elements
-    t.role {
-      t.text(:path=>"roleTerm", :attributes=>{:type=>"text"})
-      t.authority(:path=>"roleTerm", :attributes=>{:type=>"marcrelator"})
-    }
-=end
-    
-    # Re-use the structure of a :name Term with a different @type attribute
-    t.person(:ref=>:name, :attributes=>{:type=>"personal"})
-    t.organization(:ref=>:name, :attributes=>{:type=>"corporate"})
+    t.local_id(:path=>"identifier", :attributes=>{:type=>"local"}, :index_as=>[:searchable, :displayable, :sortable])
 
 
     # proxy declarations
-    t.title(:proxy=>[:title_info, :main_title])
+    t.title(:proxy=>[:title_info, :title])
     t.create_date(:proxy=>[:origin_info, :date_created])
+    t.extent(:proxy=>[:physical_desc, :extent])
     t.language(:proxy=>[:language_info, :language_code])
+    t.local_role(:proxy=>[:role, :text])
+    t.topic(:proxy=>[:subject, :topic])
 
   end # set_terminology
 
