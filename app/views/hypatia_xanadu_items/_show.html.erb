@@ -5,13 +5,6 @@
 
 <div class="document_viewer" id="cover_container">
 
-	<h1>
-		<% unless get_values_from_datastream(@document_fedora, "descMetadata", [:title]).first.empty? -%>
-	      <%= get_values_from_datastream(@document_fedora, "descMetadata", [:title]).first %>
-		<% else -%>
-			<%= params[:id] %>
-		 <% end -%>
-	</h1>
 	<div class="pid"><dl><dt>PID</dt><dd><%=params[:id]%></dd></dl></div>  
   	
   <%= render :partial => 'hypatia_xanadu_items/show_description' -%>

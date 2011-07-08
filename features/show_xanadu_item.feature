@@ -1,4 +1,4 @@
-Feature: Xanadu Item Object Show View Fixtures
+Feature: Xanadu Item Object Show View 
   I want to ensure Xanadu item objects display correctly in the show view
 
   Scenario: Xanadu item object descMetadata
@@ -63,9 +63,4 @@ Feature: Xanadu Item Object Show View Fixtures
     #  probably this scenario should be in a more generic place
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
     Then outcome
-  
-  
-  
-  
-  
   
