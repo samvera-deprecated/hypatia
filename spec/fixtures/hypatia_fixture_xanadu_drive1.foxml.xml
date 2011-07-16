@@ -118,6 +118,14 @@
               <group>public</group>
             </machine>
           </access> 
+          <access type="edit">
+            <human></human>
+            <machine>
+              <person>archivist1</person>
+              <person>researcher1</person>
+              <group>archivist</group>
+            </machine>        
+          </access>
         </rightsMetadata>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
