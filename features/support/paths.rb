@@ -20,6 +20,9 @@ module NavigationHelpers
     when /^the document page for id "(.+)"$/ 
       catalog_path($1)
 
+    when /^the show page for (.+)$/ 
+      catalog_path($1)
+
     else
       begin
         page_name =~ /the (.*) page/

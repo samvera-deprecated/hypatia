@@ -52,4 +52,7 @@ Feature: Xanadu Collection Object Show View
 
   Scenario: Xanadu collection object contained items
     When I am on the document page for id "hypatia:fixture_xanadu_collection" 
-    Then outcome
+#    Then I should see a "div" element with a "class" attribute of "members"
+    Then I should see a link to "the show page for hypatia:fixture_xanadu_drive1" with label "CM01"
+    And I should see a link to "the show page for hypatia:fixture_xanadu_drive2" with label "CM02"
+    And I should see a link to "the show page for hypatia:fixture_xanadu_drive3" with label "CM03"
