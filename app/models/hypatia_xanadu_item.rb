@@ -4,4 +4,6 @@ class HypatiaXanaduItem < ActiveFedora::Base
   has_metadata :name => "contentMetadata", :type=> HypatiaItemContentMetadataDS
   has_metadata :name => "identityMetadata", :type=> DorIdentityMetadataDS
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata
+  
+  has_relationship "collections", :is_member_of, :type => HypatiaSet
 end
