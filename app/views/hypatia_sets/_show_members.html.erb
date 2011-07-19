@@ -5,6 +5,7 @@
     <ul>
       <% member_objects.each do |result| -%>
         <li><%= link_to result[solr_name("title", :text)], catalog_path(:id=>result) %></li>
-			<% end -%>		
+			<% end -%>
+		</ul>			
 	<% end -%>
 </div>
