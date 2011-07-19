@@ -1,10 +1,10 @@
 <div class="members">
-  <% member_objects = @document_fedora.members(:response_format=>:id_array) -%>
-  <% unless member_objects.empty? -%>
+  <% member_objects = @document_fedora.members(:response_format=>:solr) -%>
+  <% unless member_objects.hits.empty? -%>
     <h2><u>Set Members</u></h2>
     <ul>
       <% member_objects.each do |result| -%>
-        <li><%= link_to result[solr_name("title", :text)], catalog_path(:id=>result) %></li>
+        <li><%= link_to result[solr_name("title", :text)], catalog_path(:id=>result["id"]) %></li>
 			<% end -%>
 		</ul>			
 	<% end -%>
