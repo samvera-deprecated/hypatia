@@ -36,7 +36,7 @@ coverage
 rdoc
 pkg
 /.bundle
-db/*.sqlite3
+db/*.sqlite3*
 log/*.log
 tmp/
 
