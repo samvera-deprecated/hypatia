@@ -111,6 +111,7 @@ module Rails
 end
 
 # make it possible to run under passenger
+=begin  # debugging rsolr::ext problem
 class Rails::Boot
   def run
     load_initializer
@@ -124,6 +125,7 @@ class Rails::Boot
     Rails::Initializer.run(:set_load_path)
   end
 end
+=end
 
 # All that for this:
 Rails.boot!
