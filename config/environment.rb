@@ -9,7 +9,8 @@ require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
 
 Rails::Initializer.run do |config|
 #  config.plugin_paths += ["#{RAILS_ROOT}/vendor/plugins/blacklight/vendor/plugins"]
-  config.gem 'authlogic', :version => '2.1.2'
+#  commenting next line out due to bundler needing all this info in the Gemfile
+#  config.gem 'authlogic', :version => '2.1.2'
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
