@@ -33,11 +33,7 @@ h4. (3) Migrate the Databases
   rake db:migrate
 </pre>
 
-Note that if you will be running tests (and you should!!!!), you will also need to migrate the test databases:
-
-<pre>
-  rake db:migrate RAILS_ENV=test  
-</pre>
+Note that this is for the development environment, not production or test.
 
 See "README_TESTING":https://github.com/projecthydra/hypatia/blob/master/README_TESTING.textile for more information on testing.
 

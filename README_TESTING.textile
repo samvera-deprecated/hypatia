@@ -17,13 +17,44 @@ blah blah  copy of jetty for testing configured to correct ports
 
 blah blah spin up jetty  (rake task?)
 
+<pre>
+rake hydra:jetty:load environment=test
+</pre>
+
 h2. Running All Tests
+
+This is the job run by our continuous integration server.  It spins up jetty, blah blah.
+
+<pre>
+  rake hypatia:ci
+</pre>
+
+To run all the tests without that, do 
+
+<pre>
+  rake hypatia:spec
+</pre>
 
 
 h2. Running Specs Only
 
+<pre>
+  rake hypatia:spec
+</pre>
+
 h2. Running Features Only
 
+From 
+
+<pre>
+rake -T hypatia
+
+has
+
+rake hypatia:cucumber                      # Easieset way to run cucumber features.
+rake hypatia:cucumber:fixtures_then_run    # (Re)loads fixtures, then runs cucumber features.
+rake hypatia:cucumber:run                  # Run cucumber features for hypatia.
+</pre>
 
 h2. Writing tests
 

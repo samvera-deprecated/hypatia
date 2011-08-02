@@ -23,32 +23,30 @@ There are rake tasks to help with these chores.  To see all rake tasks:
   rake -T
 </pre>
 
-To see pertinent rake tasks:
+To see pertinent rake tasks for existing hypatia stuff:
 
 <pre>
   rake -T hypatia
 </pre>
 
-!!! Does this empty out solr?  !!!
-
 h4.  To load fixtures into test
 
 <pre>
-  rake hypatia:fixtures:xanadu:load environment=test
+  rake hypatia:fixtures:load environment=test
 </pre>
 
 h4.  To load fixtures into development
 
 <pre>
-  rake hypatia:fixtures:xanadu:load environment=development
+  rake hypatia:fixtures:load environment=development
 </pre>
 
 h4.  To delete fixtures
 
 <pre>
-  rake hypatia:fixtures:xanadu:delete environment=test
+  rake hypatia:fixtures:delete environment=test
     OR
-  rake hypatia:fixtures:xanadu:delete environment=development 
+  rake hypatia:fixtures:delete environment=development 
 </pre>
 
 h4. Refresh fixtures
@@ -56,13 +54,15 @@ h4. Refresh fixtures
 Refresh deletes all the fixtures, then adds them again.
 
 <pre>
-  rake hypatia:fixtures:xanadu:refresh environment=test
+  rake hypatia:fixtures:refresh environment=test
     OR
-  rake hypatia:fixtures:xanadu:refresh environment=development 
+  rake hypatia:fixtures:refresh environment=development 
 </pre>
 
 
 h3. To make jetty squeaky clean
+
+(to ensure Solr is emptied out, in addition to Fedora)
 
 <pre>
   cd jetty
