@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ead xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns="urn:isbn:1-931666-22-9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <eadheader findaidstatus="In process" repositoryencoding="iso15511" countryencoding="iso3166-1" dateencoding="iso8601" langencoding="iso639-2b">
+        <eadid countrycode="US" mainagencycode="US-CSt">m1292.xml</eadid>
+        <filedesc>
+            <titlestmt>
+                <titleproper>Guide to the Keith Henson's Papers relating to Project Xanadu, XOC, and Eric Drexler, 
+                    <date calendar="gregorian" era="ce">1977-1997</date>
+                    <num>M1292</num>
+                </titleproper>
+                <author>Finding aid prepared by Processed by Special Collections staff.</author>
+            </titlestmt>
+            <publicationstmt>
+                <publisher>Stanford University. Department of Special Collections and University Archives</publisher>
+                <address>
+                    <addressline>Stanford University Libraries</addressline>
+                    <addressline>557 Escondido Mall</addressline>
+                    <addressline>Stanford, California, 94305-6064</addressline>
+                    <addressline>Repository email: speccollref@stanford.edu</addressline>
+                </address>
+                <date>© 2002</date>
+            </publicationstmt>
+        </filedesc>
+        <profiledesc>
+            <creation>This finding aid was produced using the Archivists' Toolkit
+                <date>2011-05-20T14:40-0700</date>
+            </creation>
+            <langusage>Finding aid is written in 
+                <language>English.</language></langusage>
+        </profiledesc>
+    </eadheader>
+    <archdesc level="collection">
+        <did>
+            <unittitle>Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler</unittitle>
+            <unitid>M1292</unitid>
+            <repository>
+                <corpname>Stanford University. Department of Special Collections and University Archives</corpname>
+            </repository>
+            <langmaterial>
+                <language langcode="eng"/>
+            </langmaterial>
+            <physdesc>
+                <extent>6.0 Linear feet</extent>
+            </physdesc>
+            <unitdate normal="1977/1997" type="inclusive">1977-1997</unitdate>
+            <abstract id="ref1" label="Abstract">The collection includes files from XOC, VHS tapes, and Drexler drafts and galley proofs.</abstract>
+            <origination label="creator">
+                <persname rules="aacr">Henson, Keith</persname>
+            </origination>
+        </did>
+        <scopecontent id="ref13">
+            <head>Collection Scope and Content Summary</head>
+            <p>The collection includes files from XOC, VHS tapes, and Drexler drafts and galley proofs.</p>
+        </scopecontent>
+        <bioghist id="ref11">
+            <head>Biography</head>
+            <p>Keith Henson and his wife Arel Lucas founded XOC (Xanadu Operating Company).</p>
+        </bioghist>
+        <acqinfo id="ref9">
+            <head>Acquisition Information</head>
+            <p>Gift of Arel Lucas, 2001 and 2002.</p>
+        </acqinfo>
+        <prefercite id="ref7">
+            <head>Preferred Citation</head>
+            <p>Keith Henson's Papers relating to Project Xanadu, XOC, and Eric Drexler. M1292. Dept. of Special Collections, Stanford University Libraries, Stanford, Calif.</p>
+        </prefercite>
+        <userestrict id="ref5">
+            <head>Publication Rights</head>
+            <p>Property rights reside with the repository. Literary rights reside with the creators of the documents or their heirs. To obtain permission to publish or reproduce, please contact the Public Services Librarian of the Dept. of Special Collections.</p>
+        </userestrict>
+        <accessrestrict id="ref3">
+            <head>Access</head>
+            <p>The Media materials require at least two weeks advance notice to use in order to allow staff time to have use copies made from the original items.</p>
+        </accessrestrict>
+        <controlaccess>
+            <persname rules="aacr" source="ingest">Drexler, K. Eric.</persname>
+            <persname rules="aacr">Lucas, Arel</persname>
+            <persname rules="aacr" source="ingest">Nelson, Theodor H.</persname>
+            <corpname rules="dacs" source="ingest">Xanadu Operating Company (XOC)</corpname>
+            <subject source="lcsh">Electronic publishing.</subject>
+            <subject source="lcsh">Hypertext systems.</subject>
+            <subject source="lcsh">Microcomputers--Programming.</subject>
+            <subject source="lcsh">Nanotechnology.</subject>
+            <subject source="lcsh">Self-publishing--Dataprocessing.</subject>
+            <subject source="lcsh">Technological innovations.</subject>
+            <genreform source="aat">Videorecordings.</genreform>
+            <subject source="lcsh">Word processing.</subject>
+        </controlaccess>
+        <dsc>
+            <c id="ref14" level="file">
+                <did>
+                    <unittitle>Hibbert Related, X tech log, Files listing, ENT, TN-XOC-Memos, Works &amp; Editions, Compare/Merge Algorithm, (blank), SCI, Powerbook, Task lists, Memex Doe, Drexler on Enfilade 10/88, Mark M's NanoTalk, 88.2 backend Semantics, Docs &amp; links Presentation, Old documentation, Doc Plan, X-HBug DB, Bugs, Garbage Collection Docs and System Architecture Drawings</unittitle>
+                    <container id="cid323358" type="Box" label="Mixed materials">1</container>
+                </did>
+            </c>
+            <c id="ref17" level="otherlevel">
+                <did>
+                    <unittitle>Cornerstone, Key KO's, Xanadu Materials, Perfomance Testing, ACM Press Software Engineering Notes, Design Notes, Conextions &amp; Cummins-Allison, Printer, UU Net, UUCP Map, Menex Demo Spec and Parc Place Systems.</unittitle>
+                    <container id="cid323357" type="Box" label="Mixed materials">2</container>
+                </did>
+            </c>
+            <c id="ref20" level="file">
+                <did>
+                    <unittitle>Bootstrap, Sun, Sun Software, Sun Catalyst, CPSR, Tapestry, Parc Place Systems, RX Project, Folio,Demo, Admin/Doc, SW/Microsoft/Windows NT, ADMIN, Management, Xanadu, Mike Butler, Rohart Bell, QA and Server HW</unittitle>
+                    <container id="cid323356" type="Box" label="Mixed materials">3</container>
+                </did>
+            </c>
+            <c id="ref23" level="file">
+                <did>
+                    <unittitle>XOC, Comerica Statements, Chris Hibbert Xanadu, Presentation Slides, Scematics, Febe Protocol 88.lx Documentation and Wired June 1995 (2 copies-one CDP)</unittitle>
+                    <container id="cid323355" type="Box" label="Mixed materials">4</container>
+                </did>
+            </c>
+            <c id="ref26" level="file">
+                <did>
+                    <unittitle>Xanadu, Performance Claims, Xanadu Handouts, Time &amp; Exp, Tony Smith - "Why the Web?" and Misc. notes and papers.</unittitle>
+                    <container id="cid323354" type="Box" label="Mixed materials">5</container>
+                </did>
+            </c>
+            <c id="ref29" level="file">
+                <did>
+                    <unittitle>Dream Machines/Computer Lib Ted Nelson 1974 (first edition), "Hacker" The Computer Crime Card Game, XOC Business Cards, XOC Stamp (2), Fe, Memex, (blank) Xanadu FCS and Hypertext '89 Proceedings.</unittitle>
+                    <container id="cid323353" type="Box" label="Mixed materials">6</container>
+                </did>
+            </c>
+            <c id="ref32" level="file">
+                <did>
+                    <unittitle>VHS tapes: 4/27/93 Canopy schemes #1 MM,DT,CH,RP master, 4/27/93 Canopy schemes #2 MM,DT,CH,RP master, 4/30/93 Extend Storage Format Ravi, Dean, Mark, ENT BUNS - Mark M, Chris H, Calvin Ward, Dick Gruen, Mike B. Part 1 5/3/93, 5/4/93 High-level-BeBe Ravi, Mark, Dean, 5/6/93 Worm issues Mark, Dean, Ravi, Error Handling Strategies Part 1 Mark M. vs. Dean + Mike B &amp; Carl 5/20/93 (LP), Architecture for Mike B, + Error Handling Strategies Mark M, Dean, Mike B, Carl 5/20/93 (LP), Mark M + Chris 5/25/93 1 of figuring out complexity measures for placeholder indexes, Propogation of endorsement + Recorders through volume, Mark M + Chris 5/25/93 2 of 2 complexity measures for Ent usage Rob J on FE, Rob J on Front End 5/25/93 and Mark Miller Demo 3 Promis System</unittitle>
+                    <container id="cid323352" type="Box" label="Mixed materials">7</container>
+                </did>
+                <accessrestrict id="ref34">
+                    <head>Conditions Governing Access note</head>
+                    <p>The Media materials require at least two weeks advance notice to use in order to allow staff time to have use copies made from the original items.</p>
+                </accessrestrict>
+            </c>
+            <c id="ref37" level="file">
+                <did>
+                    <unittitle>Miscellaneous files, binders, stationary, etc.: Cancelled checks, Odesta Corp Double Helix Users Guide, Odesta Corp Double Helix Reference Guide, Xanadu Back End and Spire Interface Doe, Literary Machines 93.1 Theodor Holm Nelson, XOC Inc., Literary Machines 1981 Theodor Hoim Nelson, XOC Inc., Future Presentations logo, Group Photo, Index box - ref. Cards, Home Computer Revolution Ted Nelson 1977 (autographed) and 1 box Xanadu stationary.</unittitle>
+                    <container id="cid323351" type="Carton" label="Mixed materials">8</container>
+                </did>
+            </c>
+            <c id="ref40" level="file">
+                <did>
+                    <unittitle>Drexler materials (related): Engines of Creation K. Eric Drexler 1986 Anchor Press (autographed), Cryonics Volume 9(8), August 1988, draft "The Future by Design" Drexler, draft "Molecular Nanotechnology: Molecular Machinery and Manufacturing" Drexler 1991, draft "Nanosystems Molecular Machinery, Manufacturing, and Computation" Drexier 1991 and galley proofs "Engines of Creation" Drexler.</unittitle>
+                    <container id="cid323350" type="Box" label="Mixed materials">9</container>
+                    <unitdate>1988-1991</unitdate>
+                </did>
+            </c>
+            <c id="ref43" level="file">
+                <did>
+                    <unittitle>Accession MSS.2002-281: Memex Business Plan December 1997; Memex folders and notebook; Xanadu programing binder;Cassette Tapes Drexler 2-7,9 unlabled;1 group photo; Drexler file, newspaper clipping "Remembering Home Brew Computer Club"</unittitle>
+                    <container id="cid323349" type="Box" label="Mixed materials">10</container>
+                </did>
+                <accessrestrict id="ref45">
+                    <head>Conditions Governing Access note</head>
+                    <p>The Media materials require at least two weeks advance notice to use in order to allow staff time to have use copies made from the original items.</p>
+                </accessrestrict>
+            </c>
+            <c id="ref48" level="file">
+                <did>
+                    <unittitle>Born-Digital Materials</unittitle>
+                    <physdesc>
+                        <extent>3.554 gigabytes</extent>
+                    </physdesc>
+                </did>
+                <scopecontent id="ref59">
+                    <head>Scope and Contents</head>
+                    <p>Six hard drives were received with this collection. Forensic disk images were created in-house for hard drives CM01 and CM02. Hard drives CM03, CM04, CM05 and CM06 could not be imaged in-house due to electronic and mechanical problems. They were sent to Data Recovery Services Inc. for data extraction. The original hard drives are not available, however, the contents of the hard drives can be access at http:\\XXXXXX.</p>
+                </scopecontent>
+                <c id="ref50" level="item">
+                    <did>
+                        <unittitle>CM01</unittitle>
+                        <unitid>CM01</unitid>
+                        <container id="cid59523001" type="Carton" label="Computer disks / tapes">11</container>
+                        
+                        <physdesc>
+                            <extent>1.0 computer media</extent>
+                            <extent>hard drive</extent>
+                        </physdesc>
+                    </did>
+                    <processinfo id="ref55">
+                        <head>Processing Information note</head>
+                        <p>The capacity of CM01 is 2049 MB and CM01.dd is the image file created by AccessData's FTK software. CM01.txt is the log for the imaging process; CM01.csv is the directory listing of the files in the image; CM01_1.jpg and CM01_2.jpg are the photograph images of the drive.</p>
+                    </processinfo>
+                </c>
+                <c id="ref51" level="item">
+                    <did>
+                        <unittitle>CM02</unittitle>
+                        <unitid>CM02</unitid>
+                        <container id="cid59523002" type="Carton" label="Computer disks / tapes">11</container>
+                        <physdesc>
+                            <extent>1.0 computer media</extent>
+                            <extent>Hard drive</extent>
+                        </physdesc>
+                    </did>
+                    <processinfo id="ref56">
+                        <head>Processing Information note</head>
+                        <p>The capacity of CM02 is 965 MB and CM02.dd is the image file created by AccessData's FTK software; CM021.csv is the directory listing of the files in the image; CM02.txt is the log for the imaging process. CM02_1.jpg and CM02_2.jpg are the photograph images of the drive.</p>
+                    </processinfo>
+                </c>
+                <c id="ref52" level="item">
+                    <did>
+                        <unittitle>CM03</unittitle>
+                        <unitid>CM03</unitid>
+                        <container id="cid59523003" type="Carton" label="Computer disks / tapes">11</container>
+                    </did>
+                    <processinfo id="ref57">
+                        <head>Processing Information note</head>
+                        <p>The capacity of CM03 is 540MB and CM03.dd is the image of the drive. CM03_1.jpg and CM03_2.jpg are the photograph images of the drive. Imaging log and file listing are not deliverables from Data Recovery Services Inc.</p>
+                    </processinfo>
+                </c>
+            </c>
+        </dsc>
+    </archdesc>
+</ead>
