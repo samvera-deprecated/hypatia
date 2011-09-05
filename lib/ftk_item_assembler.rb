@@ -252,9 +252,12 @@ class FtkItemAssembler
     
     # create_hypatia_file(hypatia_item,ff)
     
-    hypatia_item.datastreams["rightsMetadata"].permissions({:group=>"public"}, "read")
-    hypatia_item.datastreams["rightsMetadata"].permissions({:group=>"public"}, "discover")
-    hypatia_item.datastreams["rightsMetadata"].save
+    rightsMetadata = buildRightsMetadata(ff)
+    r = hypatia_item.datastreams["rightsMetadata"]
+    r.content = rightsMetadata
+    r.ng_xml = Nokogiri::XML::Document.parse(rightsMetadata)
+    r.dirty = true
+    r.save
     hypatia_item.save
     return hypatia_item
   end

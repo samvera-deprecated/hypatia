@@ -4,7 +4,7 @@ require "active_fedora"
 describe HypatiaFtkFile do
   
   before(:all) do
-    Fedora::Repository.stubs(:instance).returns(stub('stub').as_null_object)
+    Fedora::Repository.stubs(:instance).returns(stub('ftk_file_stub').as_null_object)
     @hypatia_ftk_item = HypatiaFtkFile.new
   end
   

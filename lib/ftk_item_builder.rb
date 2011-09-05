@@ -39,8 +39,8 @@ class FtkItemBuilder
     id.dirty = true
     id.save
     
-    @f.datastreams["rightsMetadata"].permissions({:group=>"public"}, "read")
-    @f.datastreams["rightsMetadata"].permissions({:group=>"public"}, "discover")
+    @f.datastreams["rightsMetadata"].content = rightsMetadata
+    @f.datastreams["rightsMetadata"].ng_xml = Nokogiri::XML::Document.parse(rightsMetadata)
     @f.datastreams["rightsMetadata"].dirty = true
     @f.datastreams["rightsMetadata"].save
     @f.save

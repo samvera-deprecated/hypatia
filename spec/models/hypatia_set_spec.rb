@@ -4,7 +4,7 @@ require "active_fedora"
 describe HypatiaSet do
   
   before(:each) do
-    Fedora::Repository.stubs(:instance).returns(stub('stub').as_null_object)
+    Fedora::Repository.stubs(:instance).returns(stub('set_stub').as_null_object)
     @hypatia_set = HypatiaSet.new
   end
   
