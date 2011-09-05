@@ -23,5 +23,13 @@ describe FtkFile do
       ff.export_path = "/really/long/path/to/filename.txt"
       ff.destination_file.should eql("filename.txt")
     end
+    
+    it "calculates a title when there isn't one" do
+      f = FtkFile.new
+      f.filename="NATHIN40.WPD"
+      # f.type="Natural History Magazine Column"
+      f.title.should eql(f.filename)
+    end
+    
   end
 end

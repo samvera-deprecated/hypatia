@@ -43,4 +43,13 @@ class FtkFile
     end
   end
   
+  # We want to have something meaningful for the item title. If there isn't a title, use the file name or the file type. 
+  # @return [String]
+  def title
+    return @title if @title
+    return @filename if @filename
+    return @type if @type
+    return "Unknown file name"
+  end
+  
 end
