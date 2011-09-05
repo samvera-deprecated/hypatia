@@ -226,8 +226,7 @@ class FtkItemAssembler
     hypatia_item = HypatiaFtkItem.new
     hypatia_item.save
     raise "Couldn't save new hypatia item" unless !hypatia_item.pid.nil?
-    # contentMetadata = ActiveFedora::Datastream.new(:dsID => "contentMetadata", :dsLabel => 'Content Metadata', :controlGroup => 'M', :blob => buildContentMetadata(ff))
-    # 
+    
     # Assign content to descMetadata
     descMetadata = buildDescMetadata(ff)
     d = hypatia_item.datastreams['descMetadata']
@@ -235,17 +234,40 @@ class FtkItemAssembler
     d.ng_xml = Nokogiri::XML::Document.parse(descMetadata)
     d.dirty = true
     d.save
-    # 
-    # rightsMetadata = ActiveFedora::Datastream.new(:dsID => "rightsMetadata", :dsLabel => 'Rights Metadata', :controlGroup => 'M', :blob => buildRightsMetadata(ff))
-    # 
-    # hypatia_item.add_datastream(contentMetadata)
-    # hypatia_item.add_datastream(descMetadata)
-    # hypatia_item.add_datastream(rightsMetadata)
-    # 
+    
+    # Assign content to contentMetadata
+    contentMetadata = buildContentMetadata(ff)
+    d = hypatia_item.datastreams['contentMetadata']
+    d.content = contentMetadata
+    d.ng_xml = Nokogiri::XML::Document.parse(contentMetadata)
+    d.dirty = true
+    d.save
+
+    identityMetadata = buildIdentityMetadata(hypatia_item.pid,ff)
+    d = hypatia_item.datastreams['identityMetadata']
+    d.content = identityMetadata
+    d.ng_xml = Nokogiri::XML::Document.parse(identityMetadata)
+    d.dirty = true
+    d.save
+    
     # create_hypatia_file(hypatia_item,ff)
-    # 
+    
+    hypatia_item.datastreams["rightsMetadata"].permissions({:group=>"public"}, "read")
+    hypatia_item.datastreams["rightsMetadata"].permissions({:group=>"public"}, "discover")
+    hypatia_item.datastreams["rightsMetadata"].save
     hypatia_item.save
     return hypatia_item
+  end
+  
+  def buildIdentityMetadata(pid,ff)
+    "<identityMetadata>
+      <objectId>#{pid}</objectId>
+      <objectType>item</objectType>
+      <objectLabel>#{ff.filename}</objectLabel>
+      <objectCreator>FTK</objectCreator>
+      <agreementId>druid:ww057vk7675</agreementId>
+      <tag>Project : Stephen J. Gould Archives</tag>
+    </identityMetadata>"
   end
   
   # Create a hypatia file level fedora object for an FTK file

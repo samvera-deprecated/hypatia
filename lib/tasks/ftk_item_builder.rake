@@ -17,6 +17,11 @@ namespace :hypatia do
     file_dir = File.join(File.dirname(__FILE__), "/../../spec/fixtures/ftk/files")
     f.process(gould_report,file_dir)
   end
+  
+  desc "Build fake item"
+  task :build_fake do
+    f = FtkItemBuilder.new
+  end
 end
 
 # copy down the data from sul-brick & point this task at it

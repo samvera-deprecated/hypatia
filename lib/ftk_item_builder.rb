@@ -41,6 +41,8 @@ class FtkItemBuilder
     
     @f.datastreams["rightsMetadata"].permissions({:group=>"public"}, "read")
     @f.datastreams["rightsMetadata"].permissions({:group=>"public"}, "discover")
+    @f.datastreams["rightsMetadata"].dirty = true
+    @f.datastreams["rightsMetadata"].save
     @f.save
     puts "obj saved as #{@f.pid}"
     
