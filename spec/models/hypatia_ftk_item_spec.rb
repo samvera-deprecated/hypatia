@@ -8,6 +8,10 @@ describe HypatiaFtkItem do
     @hypatia_ftk_item = HypatiaFtkItem.new
   end
   
+  after(:all) do
+    ActiveFedora.init()
+  end
+  
   it "should be a kind of ActiveFedora::Base" do
     @hypatia_ftk_item.should be_kind_of(ActiveFedora::Base)
   end

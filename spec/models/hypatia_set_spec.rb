@@ -8,6 +8,10 @@ describe HypatiaSet do
     @hypatia_set = HypatiaSet.new
   end
   
+  after(:all) do
+    ActiveFedora.init()
+  end
+  
   it "should be a kind of ActiveFedora::Base" do
     @hypatia_set.should be_kind_of(ActiveFedora::Base)
   end

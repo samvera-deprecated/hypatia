@@ -1,6 +1,6 @@
 require 'spec/rake/spectask'
 require "cucumber/rake/task"
-require File.join(File.dirname(__FILE__), "/../ftk_item_builder")
+require File.join(File.dirname(__FILE__), "/../ftk_item_assembler")
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/.."))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/../../vendor/plugins/hydra-head/lib/"))
 
@@ -12,7 +12,11 @@ namespace :hypatia do
 
   desc "Build ftk objects"
   task :build_items do   
-    f = FtkItemBuilder.new
-
+    f = FtkItemAssembler.new
+    gould_report = File.join(File.dirname(__FILE__), "/../../spec/fixtures/ftk/Gould_FTK_Report.xml")
+    file_dir = File.join(File.dirname(__FILE__), "/../../spec/fixtures/ftk/files")
+    f.process(gould_report,file_dir)
   end
 end
+
+# copy down the data from sul-brick & point this task at it

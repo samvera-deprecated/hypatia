@@ -8,6 +8,10 @@ describe HypatiaXanaduItem do
     @hypatia_xanadu_item = HypatiaXanaduItem.new
   end
   
+  after(:all) do
+    ActiveFedora.init()
+  end
+  
   it "should be a kind of ActiveFedora::Base" do
     @hypatia_xanadu_item.should be_kind_of(ActiveFedora::Base)
   end

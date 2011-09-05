@@ -1,6 +1,6 @@
 require 'active-fedora'
 require File.join(File.dirname(__FILE__), "/../config/environment.rb")
-require File.join(File.dirname(__FILE__), "/../app/models/hypatia_xanadu_item")
+require File.join(File.dirname(__FILE__), "/../app/models/hypatia_ftk_item")
 require File.join(File.dirname(__FILE__), "/../app/models/hypatia_item_desc_metadata_ds")
 
 class FtkItemBuilder
@@ -8,7 +8,7 @@ class FtkItemBuilder
     ActiveFedora.init
     puts Fedora::Repository.instance.fedora_version
     
-    @f = HypatiaXanaduItem.new
+    @f = HypatiaFtkItem.new
     @f.save
     puts "saved as #{@f.pid}"
     desc = @f.datastreams['descMetadata']
