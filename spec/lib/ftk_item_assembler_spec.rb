@@ -80,10 +80,10 @@ describe FtkItemAssembler do
       @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk") 
       # hypatia_item = HypatiaFtkItem.new
       # hypatia_item.save
-      # @hi = @fia.create_hypatia_item(@ff)  
-      puts Fedora::Repository.instance.fedora_version      
-      @hi = HypatiaFtkItem.new
-      puts @hi.pid
+      @hi = @fia.create_hypatia_item(@ff)  
+      # puts Fedora::Repository.instance.fedora_version      
+      # @hi = HypatiaFtkItem.new
+      # puts @hi.pid
       @hi.save
     end
     

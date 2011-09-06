@@ -3,13 +3,13 @@ require "active_fedora"
 
 describe HypatiaSet do
   
-  before(:each) do
-    Fedora::Repository.stubs(:instance).returns(stub('set_stub').as_null_object)
+  before(:all) do
+    ActiveFedora.init()
+    # Fedora::Repository.stubs(:instance).returns(stub('set_stub').as_null_object)
     @hypatia_set = HypatiaSet.new
   end
   
   after(:all) do
-    ActiveFedora.init()
   end
   
   it "should be a kind of ActiveFedora::Base" do

@@ -9,18 +9,19 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/../../vendor/plugins/hydr
 GIT_RESET_WAIT = 7
 
 namespace :hypatia do
-
-  desc "Build ftk objects"
-  task :build_items do   
-    f = FtkItemAssembler.new
-    gould_report = File.join(File.dirname(__FILE__), "/../../spec/fixtures/ftk/Gould_FTK_Report.xml")
-    file_dir = File.join(File.dirname(__FILE__), "/../../spec/fixtures/ftk/files")
-    f.process(gould_report,file_dir)
-  end
+  namespace :gould do
+      desc "Build ftk objects"
+      task :build_ftk_items do   
+        f = FtkItemAssembler.new
+        gould_report = File.join(File.dirname(__FILE__), "/../../spec/fixtures/ftk/Gould_FTK_Report.xml")
+        file_dir = File.join(File.dirname(__FILE__), "/../../spec/fixtures/ftk/files")
+        f.process(gould_report,file_dir)
+      end
   
-  desc "Build fake item"
-  task :build_fake do
-    f = FtkItemBuilder.new
+      desc "Build fake item"
+      task :build_fake do
+        f = FtkItemBuilder.new
+      end
   end
 end
 

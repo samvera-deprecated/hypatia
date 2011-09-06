@@ -4,7 +4,7 @@ require "active_fedora"
 describe HypatiaXanaduItem do
   
   before(:each) do
-    Fedora::Repository.stubs(:instance).returns(stub('xanadu_stub').as_null_object)
+    # Fedora::Repository.stubs(:instance).returns(stub('xanadu_stub').as_null_object)
     @hypatia_xanadu_item = HypatiaXanaduItem.new
   end
   
