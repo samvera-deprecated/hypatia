@@ -250,7 +250,7 @@ class FtkItemAssembler
     d.dirty = true
     d.save
     
-    # create_hypatia_file(hypatia_item,ff)
+    create_hypatia_file(hypatia_item,ff)
     
     rightsMetadata = buildRightsMetadata(ff)
     r = hypatia_item.datastreams["rightsMetadata"]

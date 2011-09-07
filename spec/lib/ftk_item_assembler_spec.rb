@@ -98,7 +98,6 @@ describe FtkItemAssembler do
     end
     
     it "has a file object with an isMemberOf relationship" do
-      pending
       @hi.inbound_relationships[:is_member_of].length.should eql(1)
       # {:is_member_of=>["info:fedora/changeme:54"]}
     end

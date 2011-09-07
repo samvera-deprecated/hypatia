@@ -9,30 +9,42 @@ describe HypatiaFtkFile do
   end
   
   after(:all) do
-    ActiveFedora.init()
+    # ActiveFedora.init()
   end
   
   it "should be a kind of ActiveFedora::Base" do
     @hypatia_ftk_item.should be_kind_of(ActiveFedora::Base)
   end
-
-  it "should have a contentMetadata datastream of type HypatiaItemContentMetadataDS" do
-    @hypatia_ftk_item.datastreams.should have_key("contentMetadata")
-    @hypatia_ftk_item.datastreams["contentMetadata"].should be_instance_of(HypatiaItemContentMetadataDS)
+  
+  it "should have a member_of relationship with FtkItem" do
+    @hypatia_ftk_item.should respond_to(:member_of)
   end
+  
+  it "should be a member of an ftk item" do
+    i = HypatiaFtkItem.new
+    i.save
+    f = HypatiaFtkFile.new
+    f.save
+    f.add_relationship(:is_member_of,i)
+    f.save
+    i.members.first.pid.should eql(f.pid)
+    i.delete
+    f.delete
+  end
+
+  # it "should have a contentMetadata datastream of type HypatiaItemContentMetadataDS" do
+  #   @hypatia_ftk_item.datastreams.should have_key("contentMetadata")
+  #   @hypatia_ftk_item.datastreams["contentMetadata"].should be_instance_of(HypatiaItemContentMetadataDS)
+  # end
 
   # it "should have a identityMetadata datastream of type DorIdentityMetadataDS" do
   #   @hypatia_ftk_item.datastreams.should have_key("identityMetadata")
   #   @hypatia_ftk_item.datastreams["identityMetadata"].should be_instance_of(DorIdentityMetadataDS)
   # end
 
-  it "should have a rightsMetadata datastream of type Hydra::RightsMetadata" do
-    @hypatia_ftk_item.datastreams.should have_key("rightsMetadata")
-    @hypatia_ftk_item.datastreams["rightsMetadata"].should be_instance_of(Hydra::RightsMetadata)
-  end
+  # it "should have a rightsMetadata datastream of type Hydra::RightsMetadata" do
+  #   @hypatia_ftk_item.datastreams.should have_key("rightsMetadata")
+  #   @hypatia_ftk_item.datastreams["rightsMetadata"].should be_instance_of(Hydra::RightsMetadata)
+  # end
     
-  it "should have a member_of relationship with FtkItem" do
-    @hypatia_ftk_item.should respond_to(:member_of)
-  end
-  
 end
