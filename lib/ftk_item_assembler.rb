@@ -278,8 +278,15 @@ class FtkItemAssembler
   # @return
   # @example
   def create_hypatia_file(hypatia_item,ff)
+    puts "#{ff.export_path}"
     hypatia_file = HypatiaFtkFile.new
     hypatia_file.add_relationship(:is_member_of,hypatia_item)
+    filepath = "#{@file_dir}/#{ff.export_path}"
+    puts filepath
+    file = File.new(filepath)
+    puts file.class
+    file_ds = ActiveFedora::Datastream.new(:dsID => "content", :dsLabel => ff.filename, :controlGroup => 'M', :blob => file)
+    hypatia_file.add_datastream(file_ds)
     hypatia_file.save
   end
 end

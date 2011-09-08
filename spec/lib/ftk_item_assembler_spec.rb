@@ -74,10 +74,12 @@ describe FtkItemAssembler do
   context "creating fedora objects" do
     before(:all) do
       @ff = FactoryGirl.build(:ftk_file)
+      @ff.export_path = 'files/stephenjaygould.jpeg'
       @fia = FtkItemAssembler.new()   
       ActiveFedora.init()
       @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
       @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk") 
+      @fia.file_dir = @file_dir
       # hypatia_item = HypatiaFtkItem.new
       # hypatia_item.save
       @hi = @fia.create_hypatia_item(@ff)  
@@ -100,6 +102,12 @@ describe FtkItemAssembler do
     it "has a file object with an isMemberOf relationship" do
       @hi.inbound_relationships[:is_member_of].length.should eql(1)
       # {:is_member_of=>["info:fedora/changeme:54"]}
+    end
+    
+    it "has a member object with a file payload" do
+      puts @hi.members.first.datastreams['content'].inspect
+      
+      # .blob.should be_kind_of(File)
     end
     
   end

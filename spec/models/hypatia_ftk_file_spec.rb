@@ -9,7 +9,7 @@ describe HypatiaFtkFile do
   end
   
   after(:all) do
-    # ActiveFedora.init()
+    @hypatia_ftk_item.delete
   end
   
   it "should be a kind of ActiveFedora::Base" do
@@ -30,6 +30,25 @@ describe HypatiaFtkFile do
     i.members.first.pid.should eql(f.pid)
     i.delete
     f.delete
+  end
+  
+  it "should have a blob" do
+    filepath = '/../fixtures/ftk/files/foofile.txt'
+    file = File.new(File.dirname(__FILE__) + filepath)
+    file_ds = ActiveFedora::Datastream.new(:dsID => "content", :dsLabel => 'File Payload', :controlGroup => 'M', :blob => file)
+    @hypatia_ftk_item.add_datastream(file_ds)
+    @hypatia_ftk_item.save
+    @hypatia_ftk_item.datastreams['content'].blob.should be_kind_of(File)
+        
+
+    # file = File.new('spec/fixtures/minivan.jpg')
+    # => #<File:spec/fixtures/minivan.jpg>
+    # file_ds = ActiveFedora::Datastream.new(:dsID => "minivan", :dsLabel => 'hello', :controlGroup => 'M', :blob => file)
+    # => ...
+    # oh.add_datastream(file_ds)
+    # => "minivan" 
+    # oh.save
+    # => true
   end
 
   # it "should have a contentMetadata datastream of type HypatiaItemContentMetadataDS" do
