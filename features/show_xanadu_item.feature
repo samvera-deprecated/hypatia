@@ -40,30 +40,30 @@ Feature: Xanadu Item Object Show View
     And I should see "CM01.txt"
     And I should see "CM01.csv"
     
-  Scenario: Xanadu item object contained files are downloadable
-    # the download link works ... probably this should be coded in more generic place
-    When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
-    # and I follow download link ...
-    Then outcome
+  # Scenario: Xanadu item object contained files are downloadable
+  #   # the download link works ... probably this should be coded in more generic place
+  #   When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
+  #   # and I follow download link ...
+  #   Then outcome
 
   Scenario: images of the media should not be included in downloadable files
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
     Then I should not see "CM01_01.JPG"
     And I should not see "CM01_02.JPG"
-
-  Scenario: images of the media should display as thumbnails
-    When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
-    Then outcome
+  
+  # Scenario: images of the media should display as thumbnails
+  #   When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
+  #   Then outcome
     
   Scenario: Sets this item belongs to should display as links
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
 #    Then I should see a "div" element with a "class" attribute of "sets"
     Then I should see a link to "the show page for hypatia:fixture_xanadu_collection" with label "Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler"
 
-  Scenario: Nested collections chain at left
-    # follow link to immediate parent, and link to root of collection
-    #   and possibly any links in between
-    #  probably this scenario should be in a more generic place
-    When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
-    Then outcome
+  # Scenario: Nested collections chain at left
+  #   # follow link to immediate parent, and link to root of collection
+  #   #   and possibly any links in between
+  #   #  probably this scenario should be in a more generic place
+  #   When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
+  #   Then outcome
   
