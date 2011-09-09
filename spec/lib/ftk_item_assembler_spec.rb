@@ -103,11 +103,11 @@ describe FtkItemAssembler do
       @hi.inbound_relationships[:is_member_of].length.should eql(1)
       # {:is_member_of=>["info:fedora/changeme:54"]}
     end
-    
+
+    # This is the binary file for an FTK object
+    # It needs a better test at some point
     it "has a member object with a file payload" do
-      puts @hi.members.first.datastreams['content'].inspect
-      
-      # .blob.should be_kind_of(File)
+      @hi.members.first.datastreams['content'].content.should_not eql(nil)
     end
     
   end
@@ -133,9 +133,9 @@ describe FtkItemAssembler do
     end
     
     it "creates a bagit package for an ftk_file" do
-      # Dir.mktmpdir {|dir|
-        dir = Dir.mktmpdir
-        puts "\n\n<br><br>dir = #{dir}<br><br>\n\n"
+      Dir.mktmpdir {|dir|
+        # dir = Dir.mktmpdir
+        # puts "\n\n<br><br>dir = #{dir}<br><br>\n\n"
         hfo = FtkItemAssembler.new(:bag_destination => dir)
         hfo.file_dir = @file_dir
         bag = hfo.create_bag(@ff)
@@ -146,7 +146,7 @@ describe FtkItemAssembler do
         File.file?(File.join(dir,@ff.unique_combo,"/data/rightsMetadata.xml")).should eql(true)
         File.file?(File.join(dir,@ff.unique_combo,"/data/#{@ff.destination_file}")).should eql(true)
         bag.valid?.should eql(true)
-       # }
+       }
     end
   end
 end
