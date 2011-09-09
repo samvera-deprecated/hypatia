@@ -61,7 +61,6 @@ class FtkItemAssembler
   # Create a bagit package for an FTK file
   # @param [FtkFile] The FTK file object 
   # @return [BagIt::Bag]
-  # @example
   def create_bag(ff)
     raise "I can't create a bag without knowing where the files come from" unless @file_dir
     @logger.debug "Creating bag for #{ff.unique_combo}"
@@ -221,7 +220,6 @@ class FtkItemAssembler
   # Create a hypatia item level fedora object for an FTK file
   # @param [FtkFile] The FTK file object 
   # @return [ActiveFedora::Base]
-  # @example
   def create_hypatia_item(ff)
     hypatia_item = HypatiaFtkItem.new
     hypatia_item.save
@@ -274,9 +272,8 @@ class FtkItemAssembler
   end
   
   # Create a hypatia file level fedora object for an FTK file
-  # @param
-  # @return
-  # @example
+  # @param [HypatiaItem] hypatia_item
+  # @param [FtkFile] ff
   def create_hypatia_file(hypatia_item,ff)
     # puts "#{ff.export_path}"
     hypatia_file = HypatiaFtkFile.new
