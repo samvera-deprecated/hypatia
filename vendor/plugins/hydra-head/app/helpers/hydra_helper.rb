@@ -1,5 +1,6 @@
 module HydraHelper
-
+  include Hydra::SubmissionWorkflow
+  
   # collection of stylesheet links to be rendered in the <head>
   def stylesheet_links
     @stylesheet_links ||= []
@@ -38,14 +39,10 @@ module HydraHelper
   def edit_and_browse_links
     result = ""
     if params[:action] == "edit"
-      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse</a>"
-      result << "<span class=\"edit toggle active\">Edit</span>"
+      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Switch to browse view</a>"
     else
-      result << "<span class=\"browse toggle active\">Browse</span>"
-      result << "<a href=\"#{edit_catalog_path(@document[:id])}\" class=\"edit toggle\">Edit</a>"
+      result << "<a href=\"#{edit_catalog_path(@document[:id], :viewing_context=>"edit")}\" class=\"edit toggle\">Switch to edit view</a>"
     end
-    # result << link_to "Browse", "#", :class=>"browse"
-    # result << link_to "Edit", edit_document_path(@document[:id]), :class=>"edit"
     return result
   end
   
@@ -151,6 +148,30 @@ module HydraHelper
        end
     end
   
+  def render_previous_workflow_steps
+    "#{previous_show_partials(params[:wf_step]).map{|partial| render partial}}"
+  end
   
+  def render_submission_workflow_step
+    if params.has_key?(:wf_step)
+      render workflow_partial_for_step(params[:wf_step])
+    else
+      render workflow_partial_for_step(first_step_in_workflow)
+    end
+  end
+  
+  def render_all_workflow_steps
+    "#{all_edit_partials.map{|partial| render partial}}"
+  end
+  
+  def submit_name
+    if session[:scripts]
+      return "Save"
+    elsif params[:new_asset]
+      return "Continue"
+    else
+      return "Save and Continue"
+    end
+  end
   
 end

@@ -6,8 +6,13 @@ class FileAssetsController < ApplicationController
   include MediaShelf::ActiveFedoraHelper
   include Blacklight::SolrHelper
   
+  
   before_filter :require_fedora
   before_filter :require_solr, :only=>[:index, :create, :show, :destroy]
+
+  # need to include this after the :require_solr/fedora before filters because of the before filter that the workflow provides.
+  include Hydra::SubmissionWorkflow
+
   prepend_before_filter :sanitize_update_params
   
   def index
@@ -65,32 +70,41 @@ From file_assets/_new.html.haml
   # * the File Asset will use RELS-EXT to assert that it's a part of the specified container
   # * the method will redirect to the container object's edit view after saving
   def create
+    if params.has_key?(:number_of_files) and params[:number_of_files] != "0"
+      return redirect_to({:controller => "catalog", :action => "edit", :id => params[:id], :wf_step => :files, :number_of_files => params[:number_of_files], :anchor=>"uploader"})
+    elsif params.has_key?(:number_of_files) and params[:number_of_files] == "0"
+      return redirect_to( {:controller => "catalog", :action => "edit", :id => params[:id]}.merge(params_for_next_step_in_wokflow) )
+    end
+    
     if params.has_key?(:Filedata)
-      @file_asset = create_and_save_file_asset_from_params
-      apply_depositor_metadata(@file_asset)
-    
-      flash[:notice] = "The file #{params[:Filename]} has been saved in <a href=\"#{asset_url(@file_asset.pid)}\">#{@file_asset.pid}</a>."
-            
-      if !params[:container_id].nil?
-        associate_file_asset_with_container
+      @file_assets = create_and_save_file_assets_from_params
+      notice = []
+      @file_assets.each do |file_asset|
+        apply_depositor_metadata(file_asset)
+        
+        notice << "The file #{file_asset.label} has been saved in <a href=\"#{asset_url(file_asset.pid)}\">#{file_asset.pid}</a>."
+          
+        if !params[:container_id].nil?
+          associate_file_asset_with_container(file_asset,params[:container_id])
+        end
+  
+        ## Apply any posted file metadata
+        unless params[:asset].nil?
+          logger.debug("applying submitted file metadata: #{@sanitized_params.inspect}")
+          apply_file_metadata
+        end
+        # If redirect_params has not been set, use {:action=>:index}
+        logger.debug "Created #{file_asset.pid}."
       end
-    
-      ## Apply any posted file metadata
-      unless params[:asset].nil?
-        logger.debug("applying submitted file metadata: #{@sanitized_params.inspect}")
-        apply_file_metadata
-      end
-      # If redirect_params has not been set, use {:action=>:index}
-      logger.debug "Created #{@file_asset.pid}."
+      flash[:notice] = notice.join("<br/>") unless notice.blank?
     else
       flash[:notice] = "You must specify a file to upload."
     end
     
     if !params[:container_id].nil?
-      redirect_params = {:controller=>"catalog", :id=>params[:container_id], :action=>:edit}
+      redirect_params = {:controller => "catalog", :action => "edit", :id => params[:container_id]}.merge(params_for_next_step_in_wokflow)
     end
-    
-    redirect_params ||= {:action=>:index}
+    redirect_params ||= {:controller => "catalog", :action => "edit", :id => params[:id]}.merge(params_for_next_step_in_wokflow)
     
     redirect_to redirect_params
   end
@@ -106,7 +120,15 @@ From file_assets/_new.html.haml
     
     # The dirty implementation (leaves relationship in container object, deletes regardless of whether the file object has other containers)
     ActiveFedora::Base.load_instance(params[:id]).delete 
-    render :text => "Deleted #{params[:id]} from #{params[:container_id]}."
+    flash[:notice] = "Deleted #{params[:id]} from #{params[:container_id]}."
+    
+    if !params[:container_id].nil?
+      redirect_params = {:controller => "catalog", :action => "edit", :id => params[:container_id], :anchor => "file_assets"}
+    end
+    redirect_params ||= {:action => 'index', :q => nil , :f => nil}
+    
+    redirect_to redirect_params
+    
   end
   
   
