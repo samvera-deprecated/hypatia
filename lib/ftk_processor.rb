@@ -61,7 +61,6 @@ class FtkProcessor
   def get_file_descriptions
     file_array = @doc.xpath("//fo:table-body[fo:table-row/fo:table-cell/fo:block[text()='File Comments']]")
     @file_count = file_array.length
-    puts @file_count
     file_array.each do |node|
       process_node(node)
     end
