@@ -14,6 +14,7 @@ class FtkItemAssembler
   attr_accessor :ftk_report         # The FTK report to process
   attr_accessor :ftk_processor      # The FtkProcessor object used to parse the FTK report
   attr_accessor :file_dir           # Where should I copy the files from? 
+  attr_accessor :display_derivative_dir           # Where should I copy the display derivative HTML from? 
   attr_accessor :bag_destination    # When I create BagIt packages, where should they go? 
   attr_accessor :fedora_config      # The fedora config we're connecting to, if it has been set explicitly 
   
@@ -46,12 +47,19 @@ class FtkItemAssembler
   # Process an FTK report and turn each of the files into fedora objects
   # @param [String] ftk_report the path to the FTK report
   # @param [String] file_dir the directory holding the files
-  def process(ftk_report, file_dir)
+  def process(ftk_report, file_dir, display_derivative_dir)
     @logger.debug "ftk report = #{ftk_report}"
     @logger.debug "file_dir = #{file_dir}"
     @ftk_report = ftk_report
+    
+    # Set the value of the FTK file dir
     raise "Directory #{file_dir} not found" unless File.directory? file_dir
     @file_dir = file_dir
+    
+    # Set the value of the FTK display derivatives dir
+    raise "Directory #{display_derivative_dir} not found" unless File.directory? display_derivative_dir
+    @display_derivative_dir = display_derivative_dir
+    
     @ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
     @ftk_processor.files.each do |ftk_file|
       create_hypatia_item(ftk_file[1])
@@ -282,6 +290,14 @@ class FtkItemAssembler
     file = File.new(filepath)
     file_ds = ActiveFedora::Datastream.new(:dsID => "content", :dsLabel => ff.filename, :controlGroup => 'M', :blob => file)
     hypatia_file.add_datastream(file_ds)
+    
+    html_filepath = "#{@display_derivative_dir}/#{ff.filename}.htm"
+    puts html_filepath
+    html_file = File.new(html_filepath)
+    derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => "Display derivative for #{ff.filename}", :controlGroup => 'M', :blob => html_file)
+    hypatia_file.add_datastream(derivative_ds)
+    
     hypatia_file.save
+    puts hypatia_file.pid
   end
 end

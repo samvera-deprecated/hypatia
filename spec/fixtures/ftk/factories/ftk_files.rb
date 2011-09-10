@@ -3,7 +3,7 @@ require 'factory_girl'
 # This will guess the FtkFile class
 FactoryGirl.define do
   factory :ftk_file do
-    filename 'foofile.txt'
+    filename 'BURCH1'
     id '9999'
     filesize '504 B'
     filetype "WordPerfect 5.1"
@@ -19,7 +19,7 @@ FactoryGirl.define do
     restricted "False"
     md5 "4E1AA0E78D99191F4698EEC437569D23"
     sha1 "B6373D02F3FD10E7E1AA0E3B3AE3205D6FB2541C"
-    export_path "files/foofile.txt"
+    export_path "files/BURCH1"
     unique_combo "foofile.txt_9999"
     type "Journal Article"
   end
