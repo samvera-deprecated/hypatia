@@ -112,8 +112,6 @@ describe FtkItemAssembler do
     it "has a member object with an html payload" do
       @hi.members.first.datastreams['derivative_html'].content.should_not eql(nil)
     end
-    
-    
   end
   
   context "creating bags" do

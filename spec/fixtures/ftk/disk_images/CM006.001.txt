@@ -1,0 +1,35 @@
+﻿Created By AccessData® FTK® Imager 3.0.1.1467 110406
+
+Case Information: 
+Acquired using: ADI3.0.1.1467
+Case Number: M1437
+Evidence Number: CM006
+Unique Description: 
+Examiner: Peter Chan
+Notes: 5.25 inch Floppy Disk 
+
+--------------------------------------------------------------
+
+Information for C:\Users\pchan3\Desktop\Disk Image\CM006:
+
+Physical Evidentiary Item (Source) Information:
+[Drive Geometry]
+ Bytes per Sector: 512
+ Sector Count: 720
+ Source data size: 0 MB
+ Sector count:    720
+[Computed Hashes]
+ MD5 checksum:    7d7abca99f383487e02ce7bf7c017267
+ SHA1 checksum:   628ede981ad24c1655f7e37057355ca689dcb3a9
+
+Image Information:
+ Acquisition started:   Mon Jul 25 11:33:41 2011
+ Acquisition finished:  Mon Jul 25 11:34:11 2011
+ Segment list:
+  C:\Users\pchan3\Desktop\Disk Image\CM006.001
+
+Image Verification Results:
+ Verification started:  Mon Jul 25 11:34:11 2011
+ Verification finished: Mon Jul 25 11:34:11 2011
+ MD5 checksum:    7d7abca99f383487e02ce7bf7c017267 : verified
+ SHA1 checksum:   628ede981ad24c1655f7e37057355ca689dcb3a9 : verified
