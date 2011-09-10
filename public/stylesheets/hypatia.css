@@ -78,6 +78,7 @@ body {
   -webkit-text-shadow: 0 -1px 0 #4e7268;
   -moz-text-shadow: 0 -1px 0 #4e7268;
   text-shadow: 0 -1px 0 #4e7268; }
+.site-heading a, .site-heading a:hover { color: #F6F8F7; text-decoration:none; }
 #hd #select-item-box {
   border: 1px solid #4e7268;
   float: right;

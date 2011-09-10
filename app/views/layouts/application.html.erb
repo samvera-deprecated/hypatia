@@ -26,7 +26,7 @@
   <div id="doc4" class="yui-t2">
 
   	<div id="hd">
-  		<h1 class="site-heading"><%= application_name %> <%= "<span id='results_text'>Search Results</span>" if (params[:controller] == "catalog" and !params[:id]) %></h1>
+  		<h1 class="site-heading"><%= link_to application_name, root_path %> <%= "<span id='results_text'>Search Results</span>" if (params[:controller] == "catalog" and !params[:id]) %></h1>
   		<%= render :partial => '/user_util_links.html' %>
   	</div>
   
