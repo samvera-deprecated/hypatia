@@ -124,7 +124,8 @@ body {
   color: #2E4F81;
   text-decoration: none; }
 #bd #showHead a:hover {  color: #029; }
-#bd #showHead .results-position {  padding: 0 12px 0 140px; }
+#bd #showHead .results-position {  padding: 0 12px; }
+#bd #showHead .results-pagination { padding-left:140px; }
 #bd #showUtils {
   float: left;
   padding: 0.33em 0; }
