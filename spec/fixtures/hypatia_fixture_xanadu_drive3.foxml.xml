@@ -110,20 +110,4 @@
     </foxml:datastreamVersion>
   </foxml:datastream>
   
-  <foxml:datastream ID="identityMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
-    <foxml:datastreamVersion ID="identityMetadata.0" LABEL="" CREATED="2011-06-08T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
-      <foxml:xmlContent>
-        <identityMetadata>
-          <objectId>druid:mc116fw4648 </objectId>
-          <objectType>item</objectType>
-          <objectLabel>Xanadu Hard Drive CM03</objectLabel>
-          <objectCreator>DOR</objectCreator>
-          <sourceId source="hypatia">M1292_CM03</sourceId>
-          <otherId name="uuid">28f1913a-40e2-f6b3-5af6-8f038ec49cbf</otherId>
-          <agreementId>druid:ww057vk7675</agreementId>
-          <tag>Project : Xanadu</tag>
-        </identityMetadata> 
-      </foxml:xmlContent>
-    </foxml:datastreamVersion>
-  </foxml:datastream>
 </foxml:digitalObject>

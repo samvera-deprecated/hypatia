@@ -26,11 +26,6 @@ describe HypatiaXanaduItem do
     @hypatia_xanadu_item.datastreams["contentMetadata"].should be_instance_of(HypatiaItemContentMetadataDS)
   end
 
-  it "should have a identityMetadata datastream of type DorIdentityMetadataDS" do
-    @hypatia_xanadu_item.datastreams.should have_key("identityMetadata")
-    @hypatia_xanadu_item.datastreams["identityMetadata"].should be_instance_of(DorIdentityMetadataDS)
-  end
-
   it "should have a rightsMetadata datastream of type Hydra::RightsMetadata" do
     @hypatia_xanadu_item.datastreams.should have_key("rightsMetadata")
     @hypatia_xanadu_item.datastreams["rightsMetadata"].should be_instance_of(Hydra::RightsMetadata)
