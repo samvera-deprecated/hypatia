@@ -14,18 +14,6 @@ Feature: Xanadu Item Object Show View
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
     # repository object ID
     Then I should see "hypatia:fixture_xanadu_drive1"
-    # identityMetadata
-    And I should see "DOR"
-    And I should see "item"
-    And I should see "druid:tk694zs2244"
-    And I should see "Label"
-    And I should see "Xanadu Hard Drive CM01"
-    And I should see "Hypatia ID"
-    And I should see "M1292_CM01"
-    And I should see "UUID"
-    And I should see "c097de5b-bd21-b95e-944a-769bd46f1928"
-    And I should see "druid:ww057vk7675"
-    And I should see "Project : Xanadu"
 
   Scenario: Xanadu item object technical information should include the contentMetadata Object id
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 

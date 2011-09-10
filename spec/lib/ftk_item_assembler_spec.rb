@@ -17,6 +17,7 @@ describe FtkItemAssembler do
     @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
     @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
     @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/files")
+    @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives")
   end
   context "basic behavior" do
     it "can instantiate" do
@@ -30,9 +31,10 @@ describe FtkItemAssembler do
     it "processes an FTK report" do
       hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
       hfo.expects(:create_hypatia_item).at_least(56).returns(nil)
-      hfo.process(@ftk_report,@file_dir)
+      hfo.process(@ftk_report,@file_dir,@display_derivative_dir)
       hfo.ftk_report.should eql(@ftk_report)
       hfo.file_dir.should eql(@file_dir)
+      hfo.display_derivative_dir.should eql(@display_derivative_dir)
     end
   end
   
@@ -74,18 +76,15 @@ describe FtkItemAssembler do
   context "creating fedora objects" do
     before(:all) do
       @ff = FactoryGirl.build(:ftk_file)
-      @ff.export_path = 'files/stephenjaygould.jpeg'
+      # @ff.export_path = 'files/stephenjaygould.jpeg'
       @fia = FtkItemAssembler.new()   
       ActiveFedora.init()
       @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
       @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk") 
+      @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives") 
       @fia.file_dir = @file_dir
-      # hypatia_item = HypatiaFtkItem.new
-      # hypatia_item.save
+      @fia.display_derivative_dir = @display_derivative_dir
       @hi = @fia.create_hypatia_item(@ff)  
-      # puts Fedora::Repository.instance.fedora_version      
-      # @hi = HypatiaFtkItem.new
-      # puts @hi.pid
       @hi.save
     end
     
@@ -109,6 +108,11 @@ describe FtkItemAssembler do
     it "has a member object with a file payload" do
       @hi.members.first.datastreams['content'].content.should_not eql(nil)
     end
+    
+    it "has a member object with an html payload" do
+      @hi.members.first.datastreams['derivative_html'].content.should_not eql(nil)
+    end
+    
     
   end
   

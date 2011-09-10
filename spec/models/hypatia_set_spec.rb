@@ -21,11 +21,6 @@ describe HypatiaSet do
     @hypatia_set.datastreams["descMetadata"].should be_instance_of(HypatiaSetDescMetadataDS)
   end
 
-  it "should have a identityMetadata datastream of type DorIdentityMetadataDS" do
-    @hypatia_set.datastreams.should have_key("identityMetadata")
-    @hypatia_set.datastreams["identityMetadata"].should be_instance_of(DorIdentityMetadataDS)
-  end
-
   it "should have a rightsMetadata datastream of type Hydra::RightsMetadata" do
     @hypatia_set.datastreams.should have_key("rightsMetadata")
     @hypatia_set.datastreams["rightsMetadata"].should be_instance_of(Hydra::RightsMetadata)

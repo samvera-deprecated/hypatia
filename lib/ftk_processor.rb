@@ -55,7 +55,7 @@ class FtkProcessor
   end
   
   def get_series
-    @series = @doc.xpath("//fo:page-sequence[1][fo:flow/fo:block[text()='Case Information']]/fo:flow/fo:block[7]/text()").to_s
+    @series = @doc.xpath("//fo:page-sequence[1][fo:flow/fo:block[text()='Case Information']]/fo:flow/fo:block[7]/text()").to_s.gsub(/\s/, ' ').squeeze(" ").strip
   end
   
   def get_file_descriptions
@@ -136,7 +136,7 @@ class FtkProcessor
     labels.split(',[').each do |pair|
       key = pair.split(']')[0].gsub('[','')
       value = pair.split(']')[1].strip
-      ff.send("#{key}=".to_sym, value)
+      ff.send("#{key}=".to_sym, value.gsub(/\s/, ' ').squeeze(" ").strip)
     end
   end
   
