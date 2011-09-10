@@ -292,12 +292,12 @@ class FtkItemAssembler
     hypatia_file.add_datastream(file_ds)
     
     html_filepath = "#{@display_derivative_dir}/#{ff.filename}.htm"
-    puts html_filepath
+    # puts html_filepath
     html_file = File.new(html_filepath)
     derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => "Display derivative for #{ff.filename}", :controlGroup => 'M', :blob => html_file)
     hypatia_file.add_datastream(derivative_ds)
     
     hypatia_file.save
-    puts hypatia_file.pid
+    # puts hypatia_file.pid
   end
 end
