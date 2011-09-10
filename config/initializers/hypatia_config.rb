@@ -27,13 +27,15 @@ Blacklight.configure(:shared) do |config|
      "subject_topic_facet",
      "genre_facet",
      "format_facet",
-     "mimetype_facet"
+     "mimetype_facet",
+     "has_model_s"
      ]),
    :labels => {
      "subject_topic_facet"=>"Topic",
      "genre_facet"=>"Genre",
      "format_facet"=>"Format",
-     "mimetype_facet"=>"MIME Type"
+     "mimetype_facet"=>"MIME Type",
+     "has_model_s"=>"Object Type"
    },
 
    :limits=> {nil=>10}
