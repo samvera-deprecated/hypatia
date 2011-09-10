@@ -2,17 +2,14 @@
   doc_title = (document_show_html_title.nil? || document_show_html_title.empty?) ? @document[:id] : document_show_html_title.first
   @page_title = "#{doc_title} - #{application_name}" 
 -%>
-
+<%- sidebar_items << render("hypatia_sets/show_sets") -%>
+<%- sidebar_items << render("hypatia_sets/show_members") -%>
 <div class="document_viewer" id="cover_container">
 
 	<div class="pid"><dl><dt>PID</dt><dd><%=params[:id]%></dd></dl></div>  
   	
   <%= render :partial => 'hypatia_sets/show_description' -%>
 
-  <%= render :partial => 'hypatia_sets/show_members' -%>
-
   <%= render :partial => 'hypatia_sets/show_technical' -%>
-
-  <%= render :partial => 'hypatia_sets/show_sets' -%>
 
 </div>

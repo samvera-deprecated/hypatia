@@ -1,11 +1,11 @@
-<div class="sets">
-  <% set_objects = @document_fedora.sets(:response_format=>:solr) -%>
-  <% unless set_objects.hits.empty? -%>
-    <h2><u>Member of</u></h2>
+<% set_objects = @document_fedora.sets(:response_format=>:solr) -%>
+<% unless set_objects.hits.empty? -%>
+  <div class="sets">
+    <h2 class="sidebar-title">Member of:</h2>
     <ul>
       <% set_objects.each do |result| -%>
         <li><%= link_to result[solr_name("title", :text)], catalog_path(:id=>result["id"]) %></li>
 			<% end -%>
 		</ul>			
-	<% end -%>
-</div>
+	</div>
+<% end -%>
