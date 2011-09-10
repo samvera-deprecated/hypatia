@@ -193,9 +193,9 @@ a.hypatia-home-link:hover {color: #698F92;}
   background-color: #EAECEF;
   background-image: -moz-linear-gradient(center bottom , #D6D9DC 0%, #EAECEF 100%); }
 #bd #search #q {  
-  height: 24px;
-  padding: 4px; 
-  width: 534px;}
+  height: 24px !important;
+  padding: 4px !important; 
+  width: 534px !important;}
 #bd #search #submit {
   background: #f3f3f3;
   border: 1px solid #AAA;
