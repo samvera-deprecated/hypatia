@@ -84,18 +84,4 @@
     </foxml:datastreamVersion>
   </foxml:datastream>
   
-  <foxml:datastream ID="identityMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
-    <foxml:datastreamVersion ID="identityMetadata.0" LABEL="" CREATED="2011-07-18T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
-      <foxml:xmlContent>
-        <identityMetadata>
-          <objectId>druid:tk694zs2244</objectId>
-          <objectType>item</objectType>
-          <objectLabel>Test Item 1</objectLabel>
-          <objectCreator>DOR</objectCreator>
-          <agreementId>druid:ww057vk7675</agreementId>
-          <tag>Project : Fake</tag>
-        </identityMetadata> 
-      </foxml:xmlContent>
-    </foxml:datastreamVersion>
-  </foxml:datastream>
 </foxml:digitalObject>

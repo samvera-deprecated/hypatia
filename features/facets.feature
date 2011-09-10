@@ -7,6 +7,6 @@ Feature: Facets on Home Page and Search Results
   
   Scenario: search results facets
     When I am on the home page
-    And I fill in "q" with "dor"
+    And I fill in "q" with "hypatia"
     And I press "Search"
     Then I should see "Format"
