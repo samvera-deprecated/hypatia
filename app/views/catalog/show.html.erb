@@ -1,0 +1,50 @@
+<%-
+  doc_title = (document_show_html_title.nil? || document_show_html_title.empty?) ? @document[:id] : document_show_html_title.first
+  @page_title = "#{doc_title} - #{application_name}" 
+-%>
+<div id="showHead">
+  <div id="showUtils">
+    <span class="back_to_cat"><%= link_back_to_catalog :label=>'&larr; Return to search results' %></span>
+    <%- if @previous_document || @next_document -%>
+      <span class="results-pagination">
+  	    <span class="previous">
+  	      <%- if @previous_document -%>
+    	      <%= link_to_previous_document(@previous_document) %>
+    	    <%- else -%>
+    	      &laquo; Previous
+    	    <%- end -%>
+  	    </span>
+        <%- if session[:search][:counter].to_i > 0 -%>
+          <span class="results-position">
+            Result <%= session[:search][:counter].to_i %> of <%= format_num(session[:search][:total]) %>
+          </span>
+        <%- end -%>
+  	    <span class="next">
+  	      <%- if @next_document -%>
+    	      <%= link_to_next_document(@next_document)%>
+    	    <%- else -%>
+    	      Next &raquo;
+    	    <%- end -%>
+  	    </span>	
+      </span>
+    <%- end -%>
+  </div>
+  <%- if editor? && controller.action_name != "delete" -%>
+  	<span class="edit-browse">
+  		<%= edit_and_browse_links %>
+  	</span>
+  <%- end -%>
+</div>
+<div id="document" class="<%= controller.action_name == "edit" ? "document_edit" : "document_show" %> <%= "combined_document_view" if session[:scripts] %>">
+  <div id="<%= format_pid(@document[:id]) %>">
+    <%= "<h1>Add Your Work</h1>" if controller.action_name == "edit" %>
+    <div class="document">
+      <%= render_document_partial @document, params["action"] %>
+    </div>
+  </div>
+</div>
+
+<%= render :partial=>'solr_request' %>
+<% if @document.marc %>
+  <%= @document.marc.to_zotero(document_partial_name(@document)) %>
+<% end %>
