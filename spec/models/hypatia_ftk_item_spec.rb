@@ -26,11 +26,6 @@ describe HypatiaFtkItem do
     @hypatia_ftk_item.datastreams["contentMetadata"].should be_instance_of(HypatiaItemContentMetadataDS)
   end
 
-  it "should have a identityMetadata datastream of type DorIdentityMetadataDS" do
-    @hypatia_ftk_item.datastreams.should have_key("identityMetadata")
-    @hypatia_ftk_item.datastreams["identityMetadata"].should be_instance_of(DorIdentityMetadataDS)
-  end
-
   it "should have a rightsMetadata datastream of type Hydra::RightsMetadata" do
     @hypatia_ftk_item.datastreams.should have_key("rightsMetadata")
     @hypatia_ftk_item.datastreams["rightsMetadata"].should be_instance_of(Hydra::RightsMetadata)

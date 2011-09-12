@@ -250,13 +250,13 @@ class FtkItemAssembler
     d.ng_xml = Nokogiri::XML::Document.parse(contentMetadata)
     d.dirty = true
     d.save
-
-    identityMetadata = buildIdentityMetadata(hypatia_item.pid,ff)
-    d = hypatia_item.datastreams['identityMetadata']
-    d.content = identityMetadata
-    d.ng_xml = Nokogiri::XML::Document.parse(identityMetadata)
-    d.dirty = true
-    d.save
+    # 
+    # identityMetadata = buildIdentityMetadata(hypatia_item.pid,ff)
+    # d = hypatia_item.datastreams['identityMetadata']
+    # d.content = identityMetadata
+    # d.ng_xml = Nokogiri::XML::Document.parse(identityMetadata)
+    # d.dirty = true
+    # d.save
     
     create_hypatia_file(hypatia_item,ff)
     
