@@ -1,0 +1,32 @@
+<div class="files">
+  <h2><u>Files</u></h2>
+  
+  <div id="fileDownloads" class="downloads">	
+  <table id="file_assets" class="files">
+    <tr>
+      <th>File</th>
+      <th>Size</th>
+      <th>Access</th>
+    </tr>
+  
+  <%# @document_fedora.file_objects(:response_format=>:solr).each do |result| %>
+  <%# @document_fedora.file_objects(:response_format=>:solr).each_with_index do |result, index| %>
+	<% get_values_from_datastream(@document_fedora, "contentMetadata", [:resource_type]).each_with_index do |result, index| -%>
+	  <% if result != "photo" -%>
+  	<tr class="file_asset" >
+  	  <td>
+        <%= get_values_from_datastream(@document_fedora, "contentMetadata", :file_id)[index] %>
+      </td>
+  	  <td>
+        <%= get_values_from_datastream(@document_fedora, "contentMetadata", :size)[index] %>
+  	  </td>
+  	  <td>
+        <%= link_to "download", get_values_from_datastream(@document_fedora, "contentMetadata", :url)[index] %>
+  	  </td>
+  	</tr>
+  	<% end -%>
+	<% end -%>
+	
+  </table>
+  </div>
+</div>
