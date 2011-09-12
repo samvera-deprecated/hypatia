@@ -31,5 +31,12 @@ describe FtkFile do
       f.title.should eql(f.filename)
     end
     
+    # If the filename is NATHIN50.WPD the display derivative name is NATHIN50.htm
+    it "calculates the display derivative filename" do
+      f = FtkFile.new
+      f.filename="NATHIN40.WPD"
+      f.display_derivative.should eql("NATHIN40.htm")
+    end
+    
   end
 end

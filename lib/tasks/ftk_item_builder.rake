@@ -1,7 +1,9 @@
 require 'spec/rake/spectask'
 require "cucumber/rake/task"
+require File.join(File.dirname(__FILE__), "/../../config/environment.rb")
 require File.join(File.dirname(__FILE__), "/../ftk_item_assembler")
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/.."))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/../../app/models"))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/../../vendor/plugins/hydra-head/lib/"))
 
 
@@ -13,15 +15,16 @@ namespace :hypatia do
       desc "Build ftk objects"
       task :build_ftk_items do   
         f = FtkItemAssembler.new
-        gould_report = File.join(File.dirname(__FILE__), "/../../spec/fixtures/ftk/Gould_FTK_Report.xml")
-        file_dir = File.join(File.dirname(__FILE__), "/../../spec/fixtures/ftk/files")
-        f.process(gould_report,file_dir)
+        gould_report = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/FTK\ xml/Report.xml"
+        file_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/FTK\ xml/"
+        display_derivative_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Display\ Derivatives"
+        f.process(gould_report,file_dir,display_derivative_dir)
       end
   
-      desc "Build fake item"
-      task :build_fake do
-        f = FtkItemBuilder.new
-      end
+      # desc "Build fake item"
+      # task :build_fake do
+      #   f = FtkItemBuilder.new
+      # end
   end
 end
 

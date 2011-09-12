@@ -1,5 +1,7 @@
-Dir[File.dirname(__FILE__) + '/*.rb'].each {|file| require file }
+# Dir[File.dirname(__FILE__) + '/*.rb'].each {|file| require file }
+# Dir[File.dirname(__FILE__) + '/../app/models/*.rb'].each {|file| require file }
 require 'bagit'
+require 'ftk_processor'
 
 # Assemble FTK output into objects for Hypatia. 
 # @example Process an FTK report and a directory of files
@@ -291,12 +293,15 @@ class FtkItemAssembler
     file_ds = ActiveFedora::Datastream.new(:dsID => "content", :dsLabel => ff.filename, :controlGroup => 'M', :blob => file)
     hypatia_file.add_datastream(file_ds)
     
-    html_filepath = "#{@display_derivative_dir}/#{ff.filename}.htm"
-    # puts html_filepath
-    html_file = File.new(html_filepath)
-    derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => "Display derivative for #{ff.filename}", :controlGroup => 'M', :blob => html_file)
-    hypatia_file.add_datastream(derivative_ds)
-    
+    html_filepath = "#{@display_derivative_dir}/#{ff.display_derivative}"
+    if File.file? html_filepath
+      # puts html_filepath
+      html_file = File.new(html_filepath)
+      derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => "Display derivative for #{ff.filename}", :controlGroup => 'M', :blob => html_file)
+      hypatia_file.add_datastream(derivative_ds)
+    else
+      @logger.warn "Couldn't find expected display derivative file #{html_filepath}"
+    end
     hypatia_file.save
     # puts hypatia_file.pid
   end

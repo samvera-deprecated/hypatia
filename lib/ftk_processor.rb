@@ -1,5 +1,7 @@
 require 'nokogiri'
 require 'active-fedora'
+require 'ftk_file'
+require 'hypatia_ftk_item'
 
 class FtkProcessor
   

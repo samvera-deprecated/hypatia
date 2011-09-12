@@ -27,6 +27,7 @@ class FtkFile
   attr_reader   :export_path          # The location where FTK put this file after processing (e.g., "files/gould_407_linages_10_characters.txt")
   attr_reader   :destination_file     # The filename part of :export_path. Occasionally this is different from plain old :filename
   
+  
   def initialize(args = {})
     
   end
@@ -50,6 +51,21 @@ class FtkFile
     return @filename if @filename
     return @type if @type
     return "Unknown file name"
+  end
+  
+  # Given a filename, what will the display_derivative name be?
+  # @example 
+  #  ftk = FtkFile.new
+  #  ftk.filename="NATHIN40.WPD"
+  #  ftk.display_derivative
+  #  => NATHIN40.htm
+  def display_derivative
+    tokens = @filename.split('.')
+    if tokens.length > 1
+      return "#{tokens[0]}.htm"
+    else
+      return "#{@filename}.htm"
+    end
   end
   
 end
