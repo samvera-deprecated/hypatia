@@ -22,4 +22,15 @@ describe FtkDiskImageItemAssembler do
       foo.filehash[:CM006][:txt].should eql("#{@files_dir}/CM006.001.txt")
     end
   end
+  context "extracting metadata" do
+    before(:all) do
+      @files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+      @txt_file = File.join(@files_dir, "/CM006.001.txt")
+      @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @files_dir)
+    end
+    it "creates descMetadata from the contents of the .txt file" do
+      pending
+      doc = Nokogiri::XML(@foo.buildDescMetadata(@txt_file))
+    end
+  end
 end

@@ -11,6 +11,7 @@ class FtkDiskImageItemAssembler
     @disk_image_files_dir = args[:disk_image_files_dir]
     @filehash = {}
     build_file_hash
+    # build_objects
   end
   
   # Read in all the files in @disk_image_files_dir.
@@ -37,6 +38,14 @@ class FtkDiskImageItemAssembler
         @filehash[disk_number.to_sym][:dd] = file
       end
     }
+  end
+  
+  # Extract descMetadata info from the EAD file
+  # @param
+  # @return
+  # @example
+  def buildDescMetadata(txt_file)
+    
   end
   
   
