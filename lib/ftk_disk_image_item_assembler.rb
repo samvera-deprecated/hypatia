@@ -108,4 +108,43 @@ class FtkDiskImageItemAssembler
     builder.to_xml
   end
   
+  # Build fedora objects for a disk image
+  # @param [FtkDiskImage] fdi
+  # @return [HypatiaDiskImageItem]
+  def build_object(fdi)
+    hypatia_disk_image_item = HypatiaDiskImageItem.new
+    hypatia_disk_image_item.save
+    dd_file = create_dd_file_asset(hypatia_disk_image_item,fdi)
+    build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", buildDescMetadata(fdi))
+    build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", buildContentMetadata(fdi,hypatia_disk_image_item.pid,dd_file.pid))
+    build_ng_xml_datastream(hypatia_disk_image_item, "rightsMetadata", buildRightsMetadata)
+    puts hypatia_disk_image_item.pid
+    return hypatia_disk_image_item
+  end
+  
+  # Create a FileAsset to hold the dd file
+  # @param [HypatiaDiskImageItem] hypatia_disk_image_item
+  # @param [FtkDiskImage] fdi
+  # @return [FileAsset]
+  def create_dd_file_asset(hypatia_disk_image_item,fdi)
+    dd_file = FileAsset.new
+    dd_file.add_relationship(:is_part_of,hypatia_disk_image_item)
+    file = File.new(@filehash[fdi.disk_number.to_sym][:dd])
+    dd_file.add_file_datastream(file)
+    dd_file.save
+    return dd_file
+  end
+  
+  # Create a Nokogiri XML Datastream on the HypatiaDiskImageItem object
+  # @param [HypatiaDiskImageItem] the HypatiaDiskImageItem object getting the datastream
+  # @param [String] the name of the datastream (must correspond to ActiveFedora model name for datastream)
+  # @param [String] string to be parsed as a Nokogiri XML Document
+  def build_ng_xml_datastream(item, dsname, xml)
+    ds = item.datastreams[dsname]
+    ds.content = xml
+    ds.ng_xml = Nokogiri::XML::Document.parse(xml)
+    ds.dirty = true
+    ds.save
+  end
+  
 end

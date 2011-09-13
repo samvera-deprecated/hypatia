@@ -50,4 +50,16 @@ describe FtkDiskImageItemAssembler do
       doc.xpath("/contentMetadata/resource/file/@format").to_s.should eql("BINARY")
     end
   end
+  context "building an object" do
+    before(:all) do
+      @files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+      @txt_file = File.join(@files_dir, "/CM006.001.txt")
+      @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @files_dir)
+      @fdi = FtkDiskImage.new(:txt_file => @txt_file)  
+      @item = @assembler.build_object(@fdi)
+    end
+    it "builds an object" do
+      @item.should be_kind_of(HypatiaDiskImageItem)
+    end
+  end
 end
