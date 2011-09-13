@@ -41,11 +41,25 @@ class FtkDiskImageItemAssembler
   end
   
   # Extract descMetadata info from the EAD file
-  # @param
-  # @return
-  # @example
-  def buildDescMetadata(txt_file)
-    
+  # @param [FtkDiskImage] fdi
+  # @return [Nokogiri::XML]
+  def buildDescMetadata(fdi)
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.mods('xmlns:mods' => "http://www.loc.gov/mods/v3") {
+        xml.parent.namespace = xml.parent.namespace_definitions.first
+        xml['mods'].titleInfo {
+          xml['mods'].title_ fdi.disk_number
+        }
+        xml['mods'].physicalDescription {
+          xml['mods'].extent fdi.disk_type
+          xml['mods'].digitalOrigin "Born Digital"
+        }
+        xml['mods'].identifier("type"=>"local"){
+          xml.text fdi.disk_number
+        }
+      }
+    end
+    builder.to_xml
   end
   
   

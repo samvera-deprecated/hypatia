@@ -26,11 +26,16 @@ describe FtkDiskImageItemAssembler do
     before(:all) do
       @files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
       @txt_file = File.join(@files_dir, "/CM006.001.txt")
-      @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @files_dir)
+      @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @files_dir)
+      @fdi = FtkDiskImage.new(:txt_file => @txt_file)
+      
     end
-    it "creates descMetadata from the contents of the .txt file" do
-      pending
-      doc = Nokogiri::XML(@foo.buildDescMetadata(@txt_file))
+    it "creates an FtkDiskImage from a .txt file" do
+      @fdi.md5.should eql("7d7abca99f383487e02ce7bf7c017267")
+    end
+    it "creates descMetadata for an FtkDiskImage" do
+      doc = Nokogiri::XML(@assembler.buildDescMetadata(@fdi))
+      
     end
   end
 end
