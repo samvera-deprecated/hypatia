@@ -1,18 +1,25 @@
-<div id="results">
-	
-	<%= render :partial=>'search_form' %>
-	
-	<div class="home_text">
-		<h1>Welcome to Hypatia</h1>
-		<br/>
-		<p><a href="https://wiki.duraspace.org/display/HYPAT/Home">Hypatia</a> (a 
-		  <a href="https://wiki.duraspace.org/display/hydra/The+Hydra+Project">Hydra</a> application) supports
-      accessioning, arrangement, description, discovery, delivery, and long term preservation
-      of born digital collections. Hypatia is being developed as part of the 
-      <a href="http://www2.lib.virginia.edu/aims/">AIMS Project</a> 
-      ("Born-Digital Collections: An Inter-Institutional Model for Stewardship"), 
-      funded by the Andrew W. Mellon Foundation.
-		</p>
-	</div>
+<div id="results" class="home-text">
+
+  <%= render :partial=>'search_form' %>
+
+
+  <div class="home-text-container">
+    <p class="home-intro"><a class="hypatia-home-link" href="https://wiki.duraspace.org/display/HYPAT/Home">Hypatia</a>&mdash;a 
+      <a href="https://wiki.duraspace.org/display/hydra/The+Hydra+Project">Hydra</a> application&mdash;supports accessioning, arrangement, description, discovery, delivery, and long term preservation of born digital collections. Hypatia is being developed as part of the <a href="http://www2.lib.virginia.edu/aims/">AIMS Project</a> (&ldquo;Born-Digital Collections: An Inter-Institutional Model for Stewardship&rdquo;), funded by the Andrew W. Mellon Foundation.</p>
+    <div class="home-featured">
+      <h2 class="home-featured-title"><a href="#">Featured Collection One</a></h2>
+      <div class="home-featured-media">
+        <a href="#"><img alt="" src="#" /></a>
+      </div>
+      <p class="home-featured-description">Integer suscipit enim ut metus viverra condimentum. In ut malesuada lectus. Vestibulum suscipit, nulla quis cursus porttitor, velit libero rutrum sapien, at imperdiet dolor massa vel lectus. In tellus est, elementum vitae ultricies vitae, porta et justo.</p>
+    </div>
+    <div class="home-featured">
+      <h2 class="home-featured-title"><a href="#">Featured Collection Two</a></h2>
+      <div class="home-featured-media">
+        <a href="#"><img alt="" src="#" /></a>
+      </div>
+      <p class="home-featured-description">Pellentesque orci justo, tincidunt sit amet condimentum ultricies, euismod ac justo. Etiam hendrerit nulla a leo aliquet rhoncus. Maecenas nec velit quam, a pellentesque dolor. Duis non odio at nisl auctor posuere ut sit amet ligula. Nulla facilisi.  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    </div>
+  </div>
 
 </div>

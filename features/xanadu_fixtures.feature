@@ -4,8 +4,8 @@ Feature: Xanadu Fixtures
 
   Scenario: View collection object
     When I am on the document page for id "hypatia:fixture_xanadu_collection" 
-    Then I should see "hypatia:fixture_xanadu_collection"
-    And I should see "Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler"
+    Then I should see "Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler"
+    And I should see "M1292"
 
   Scenario: Search for dor
     When I am on the home page

@@ -5,11 +5,6 @@ Feature: FTK Item Object Show View
     When I am on the document page for id "hypatia:fixture_ftk_wp6_item"
     Then I should see "Natural History Magazine Column"
 
-  Scenario: FTK item object technical information (from Fedora, not EAD)
-    When I am on the document page for id "hypatia:fixture_ftk_wp6_item" 
-    # repository object ID
-    Then I should see "hypatia:fixture_ftk_wp6_item"
-
   Scenario: FTK item object technical information should include the contentMetadata Object id
     When I am on the document page for id "hypatia:fixture_ftk_wp6_item" 
     Then I should see "Content Object ID"

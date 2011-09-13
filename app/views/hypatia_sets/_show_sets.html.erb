@@ -1,6 +1,6 @@
 <% set_objects = @document_fedora.sets(:response_format=>:solr) -%>
 <% unless set_objects.hits.empty? -%>
-  <div class="sets">
+  <div class="sets member-of first sidebar-section">
     <h2 class="sidebar-title">Member of:</h2>
     <ul>
       <% set_objects.each do |result| -%>

@@ -10,11 +10,6 @@ Feature: Xanadu Item Object Show View
     And I should see "Born-Digital Materials - Carton 11 - Computer disks / tapes"
     And I should see "The capacity of CM01 is"
 
-  Scenario: Xanadu item object technical information (from Fedora, not EAD)
-    When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
-    # repository object ID
-    Then I should see "hypatia:fixture_xanadu_drive1"
-
   Scenario: Xanadu item object technical information should include the contentMetadata Object id
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
     Then I should see "Content Object ID"

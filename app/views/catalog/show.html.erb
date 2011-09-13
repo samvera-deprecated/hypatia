@@ -37,7 +37,7 @@
 </div>
 <div id="document" class="<%= controller.action_name == "edit" ? "document_edit" : "document_show" %> <%= "combined_document_view" if session[:scripts] %>">
   <div id="<%= format_pid(@document[:id]) %>">
-    <%= "<h1>Add Your Work</h1>" if controller.action_name == "edit" %>
+    <%= controller.action_name == "edit" ? '<h1>Add Your Work</h1>' : '<h1 class="document-heading">' + doc_title + '</h1>' %>
     <div class="document">
       <%= render_document_partial @document, params["action"] %>
     </div>

@@ -29,11 +29,6 @@ Feature: Xanadu Collection Object Show View
     And I should see "Biography"
     And I should see "Keith Henson and his wife Arel Lucas founded XOC (Xanadu Operating Company)."
 
-  Scenario: Xanadu collection object technical information (from Fedora, not EAD)
-    When I am on the document page for id "hypatia:fixture_xanadu_collection" 
-    # repository object ID
-    Then I should see "hypatia:fixture_xanadu_collection"
-
   Scenario: Xanadu collection object contained items
     When I am on the document page for id "hypatia:fixture_xanadu_collection" 
 #    Then I should see a "div" element with a "class" attribute of "members"
