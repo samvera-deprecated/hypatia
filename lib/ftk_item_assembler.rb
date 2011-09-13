@@ -235,41 +235,32 @@ class FtkItemAssembler
     hypatia_item.save
     raise "Couldn't save new hypatia item" unless !hypatia_item.pid.nil?
     
-    # Assign content to descMetadata
-    descMetadata = buildDescMetadata(ff)
-    d = hypatia_item.datastreams['descMetadata']
-    d.content = descMetadata
-    d.ng_xml = Nokogiri::XML::Document.parse(descMetadata)
-    d.dirty = true
-    d.save
-    
-    # Assign content to contentMetadata
-    contentMetadata = buildContentMetadata(ff)
-    d = hypatia_item.datastreams['contentMetadata']
-    d.content = contentMetadata
-    d.ng_xml = Nokogiri::XML::Document.parse(contentMetadata)
-    d.dirty = true
-    d.save
-    # 
-    # identityMetadata = buildIdentityMetadata(hypatia_item.pid,ff)
-    # d = hypatia_item.datastreams['identityMetadata']
-    # d.content = identityMetadata
-    # d.ng_xml = Nokogiri::XML::Document.parse(identityMetadata)
-    # d.dirty = true
-    # d.save
+    build_ng_xml_datastream(hypatia_item, "descMetadata", buildDescMetadata(ff))
+    build_ng_xml_datastream(hypatia_item, "contentMetadata", buildContentMetadata(ff))
+    build_ng_xml_datastream(hypatia_item, "rightsMetadata", buildRightsMetadata(ff))
+
+    # no longer using DOR identity metadata
+    # build_ng_xml_datastream(hypatia_item, "identityMetadata", buildIdentityMetadata(ff))
     
     create_hypatia_file(hypatia_item,ff)
     
-    rightsMetadata = buildRightsMetadata(ff)
-    r = hypatia_item.datastreams["rightsMetadata"]
-    r.content = rightsMetadata
-    r.ng_xml = Nokogiri::XML::Document.parse(rightsMetadata)
-    r.dirty = true
-    r.save
     hypatia_item.save
     return hypatia_item
   end
   
+  # Create a Nokogiri XML Datastream on the hypatia_item object
+  # @param [HypatiaFtkItem] the HypatiaFtkItem object getting the datastream
+  # @param [String] the name of the datastream (must correspond to ActiveFedora model name for datastream)
+  # @param [String] string to be parsed as a Nokogiri XML Document
+  def build_ng_xml_datastream(hypatia_item, dsname, xml)
+    ds = hypatia_item.datastreams[dsname]
+    ds.content = xml
+    ds.ng_xml = Nokogiri::XML::Document.parse(xml)
+    ds.dirty = true
+    ds.save
+  end
+
+=begin  # no longer using DORIdentityMetadata 
   def buildIdentityMetadata(pid,ff)
     "<identityMetadata>
       <objectId>#{pid}</objectId>
@@ -280,6 +271,7 @@ class FtkItemAssembler
       <tag>Project : Stephen J. Gould Archives</tag>
     </identityMetadata>"
   end
+=end
   
   # Create a hypatia file level fedora object for an FTK file
   # @param [HypatiaItem] hypatia_item
