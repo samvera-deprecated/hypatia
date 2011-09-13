@@ -2,7 +2,7 @@
   doc_title = (document_show_html_title.nil? || document_show_html_title.empty?) ? @document[:id] : document_show_html_title.first
   @page_title = "#{doc_title} - #{application_name}" 
 -%>
-<%- sidebar_items << render("hypatia_xanadu_items/show_sets") -%>
+<%- sidebar_items << render("shared/show_sets") -%>
 
 <div class="document_viewer" id="cover_container">
 
@@ -10,8 +10,8 @@
   	
   <%= render :partial => 'hypatia_xanadu_items/show_description' -%>
 
-  <%= render :partial => 'hypatia_xanadu_items/show_files' -%>
+  <%= render :partial => 'shared/show_files' -%>
 
-  <%= render :partial => 'hypatia_xanadu_items/show_technical' -%>
+  <%= render :partial => 'shared/show_technical' -%>
 
 </div>
