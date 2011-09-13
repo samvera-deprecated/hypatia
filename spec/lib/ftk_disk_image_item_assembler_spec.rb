@@ -33,9 +33,21 @@ describe FtkDiskImageItemAssembler do
     it "creates an FtkDiskImage from a .txt file" do
       @fdi.md5.should eql("7d7abca99f383487e02ce7bf7c017267")
     end
+    it "calculates the file size for the dd file referenced" do
+      @assembler.calculate_dd_size(@fdi).should eql("368640 B")
+    end
     it "creates descMetadata for an FtkDiskImage" do
       doc = Nokogiri::XML(@assembler.buildDescMetadata(@fdi))
-      
+      doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@fdi.disk_number)
+      doc.xpath("/mods:mods/mods:physicalDescription/mods:extent/text()").to_s.should eql(@fdi.disk_type)
+    end
+    it "creates contentMetdata for an FtkDiskImage" do
+      doc = Nokogiri::XML(@assembler.buildContentMetadata(@fdi,"foo","bar"))
+      doc.xpath("/contentMetadata/@type").to_s.should eql("born-digital")
+      doc.xpath("/contentMetadata/@objectId").to_s.should eql("foo")
+      doc.xpath("/contentMetadata/resource/@type").to_s.should eql("disk-image")
+      doc.xpath("/contentMetadata/resource/file/@id").to_s.should eql(@fdi.disk_number)
+      doc.xpath("/contentMetadata/resource/file/@format").to_s.should eql("BINARY")
     end
   end
 end

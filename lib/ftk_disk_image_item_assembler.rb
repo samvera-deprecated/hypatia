@@ -42,7 +42,7 @@ class FtkDiskImageItemAssembler
   
   # Extract descMetadata info from the EAD file
   # @param [FtkDiskImage] fdi
-  # @return [Nokogiri::XML]
+  # @return [Nokogiri::XML::Document]
   def buildDescMetadata(fdi)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.mods('xmlns:mods' => "http://www.loc.gov/mods/v3") {
@@ -62,5 +62,50 @@ class FtkDiskImageItemAssembler
     builder.to_xml
   end
   
+  # Calculate the file size of the disk image file 
+  # @param [FtkDiskImage] fdi
+  # @return [String]
+  def calculate_dd_size(fdi)
+    bytes = File.size(@filehash[fdi.disk_number.to_sym][:dd])
+    "#{bytes} B"
+  end
+  
+  # Build the contentMetadata 
+  # @param [FtkDiskImage] fdi
+  # @return [Nokogiri::XML::Document]
+  def buildContentMetadata(fdi,pid,file_asset_pid)
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.contentMetadata("type" => "born-digital", "objectId" => pid) {
+        xml.resource("id" => "disk-image", "type" => "disk-image", "data" => "content", "objectId" => file_asset_pid){
+          xml.file("id" => fdi.disk_number, "format" => "BINARY", "size" => calculate_dd_size(fdi) ) {
+            xml.checksum("type" => "md5") {
+              xml.text fdi.md5
+            }
+          }
+        }
+      }
+    end    
+    builder.to_xml
+  end
+  
+  # Build rightsMetadata datastream
+  # @return [Nokogiri::XML::Document]
+  def buildRightsMetadata
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.rightsMetadata("xmlns" => "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1", "version" => "0.1"){
+        xml.access("type" => "discover"){
+          xml.machine {
+            xml.group "public"
+          }
+        }
+        xml.access("type" => "read"){
+          xml.machine {
+            xml.group "public"
+          }
+        }
+      }
+    end
+    builder.to_xml
+  end
   
 end
