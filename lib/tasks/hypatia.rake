@@ -120,13 +120,13 @@ namespace :hypatia do
   namespace :fixtures do
     
     desc "Load all Hypatia fixtures"
-    task :load => ['xanadu:load', 'noname:load'] 
+    task :load => ['xanadu:load', 'ftk:load', 'noname:load'] 
 
     desc "Remove all Hypatia fixtures"
-    task :delete => ['xanadu:delete', 'noname:delete']
+    task :delete => ['xanadu:delete', 'ftk:delete', 'noname:delete']
 
     desc "Remove then load all Hypatia fixtures"
-    task :refresh => ['xanadu:refresh', 'noname:refresh'] 
+    task :refresh => ['xanadu:refresh', 'ftk:refresh', 'noname:refresh'] 
 
     namespace :xanadu do
       XANADU_FIXTURE_PIDS = [
@@ -154,6 +154,29 @@ namespace :hypatia do
       end
     end # hypatia:fixtures:xanadu namespace
 
+    namespace :ftk do
+      FTK_FIXTURE_PIDS = [
+        "hypatia:fixture_ftk_txt_item",
+        "hypatia:fixture_ftk_wp6_item",
+        "hypatia:fixture_ftk_unknown_item"
+      ]
+    
+      desc "Load Hypatia FTK fixtures"
+      task :load do
+        # pids are converted to file names by substituting : for _
+        load_fixtures(FTK_FIXTURE_PIDS)
+      end
+
+      desc "Remove Hypatia FTK fixtures"
+      task :delete do
+        delete_fixtures(FTK_FIXTURE_PIDS)
+      end
+
+      desc "Remove then load Hypatia FTK fixtures"
+      task :refresh do
+        refresh_fixtures(FTK_FIXTURE_PIDS)
+      end
+    end # hypatia:fixtures:ftk namespace
 
     namespace :noname do
       NONAME_FIXTURE_PIDS = [

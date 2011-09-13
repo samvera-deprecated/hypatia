@@ -11,9 +11,12 @@ class HypatiaItemDescMetadataDS < ActiveFedora::NokogiriDatastream
       t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable], :label=>"title")
     }
     
+    t.type_of_resource(:path=>"typeOfResource", :index_as=>[:searchable, :displayable])
+    
     t.physical_desc(:path=>"physicalDescription") {
       t.extent(:path=>"extent", :index_as=>[:searchable])
       t.digital_origin(:path=>"digitalOrigin", :index_as=>[:searchable])
+      t.form(:path=>"form", :index_as=>[:searchable, :displayable, :facetable])
     }
 
     t.located_in(:path=>"note", :attributes=>{:displayLabel=>"Located in"}, :index_as=>[:displayable])
@@ -23,6 +26,7 @@ class HypatiaItemDescMetadataDS < ActiveFedora::NokogiriDatastream
     # proxy declarations
     t.title(:proxy=>[:title_info, :title])
     t.extent(:proxy=>[:physical_desc, :extent])
+    t.form(:proxy=>[:physical_desc, :form])
     t.digital_origin(:proxy=>[:physical_desc, :digital_origin])
 
   end # set_terminology
