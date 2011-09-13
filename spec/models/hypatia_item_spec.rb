@@ -1,15 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require "active_fedora"
 
-describe HypatiaXanaduItem do
+describe HypatiaItem do
   
   before(:each) do
     # Fedora::Repository.stubs(:instance).returns(stub('xanadu_stub').as_null_object)
-    @hypatia_xanadu_item = HypatiaXanaduItem.new
+    @hypatia_xanadu_item = HypatiaItem.new
   end
   
   after(:all) do
-    ActiveFedora.init()
   end
   
   it "should be a kind of ActiveFedora::Base" do
