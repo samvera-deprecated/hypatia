@@ -99,18 +99,22 @@ describe FtkItemAssembler do
     end
     
     it "has a file object with an isMemberOf relationship" do
-      @hi.inbound_relationships[:is_member_of].length.should eql(1)
+      @hi.inbound_relationships[:is_part_of].length.should eql(1)
       # {:is_member_of=>["info:fedora/changeme:54"]}
+    end
+    
+    it "has a FileAsset part" do
+      @hi.parts.first.should be_instance_of(FileAsset)
     end
 
     # This is the binary file for an FTK object
     # It needs a better test at some point
     it "has a member object with a file payload" do
-      @hi.members.first.datastreams['content'].content.should_not eql(nil)
+      @hi.parts.first.datastreams['DS1'].content.should_not eql(nil)
     end
     
     it "has a member object with an html payload" do
-      @hi.members.first.datastreams['derivative_html'].content.should_not eql(nil)
+      @hi.parts.first.datastreams['derivative_html'].content.should_not eql(nil)
     end
   end
   
@@ -134,7 +138,7 @@ describe FtkItemAssembler do
       }
     end
     
-    it "creates a bagit package for an ftk_file" do
+    it "creates a bagit package for an ftk object" do
       Dir.mktmpdir {|dir|
         # dir = Dir.mktmpdir
         # puts "\n\n<br><br>dir = #{dir}<br><br>\n\n"
