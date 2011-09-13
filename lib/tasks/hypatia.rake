@@ -116,6 +116,50 @@ namespace :hypatia do
         
   end # namespace hypatia:jetty
 
+#============= DATA (NON-FIXTURE) TASKS ================
+  namespace :data do
+    namespace :coll do
+      
+      COLL_OBJS = {
+#        "hypatia_cheuse_collection.foxml.xml" => "hypatia:cheuse_collection",
+        "hypatia_creeley_collection.foxml.xml" => "hypatia:creeley_collection",
+#        "hypatia_gallagher_collection.foxml.xml" => "hypatia:gallaher_collection",
+#        "hypatia_gould_collection.foxml.xml" => "hypatia:gould_collection",
+        "hypatia_koch_collection.foxml.xml" => "hypatia:koch_collection",
+#        "hypatia_sha_collection.foxml.xml" => "hypatia:sha_collection",
+#        "hypatia_tobin_collection.foxml.xml" => "hypatia:tobin_collection",
+        "hypatia_tobin_collection.foxml.xml" => "hypatia:tobin_collection"
+#        "hypatia_turner_collection.foxml.xml" => "hypatia:turner_collection",
+#        "hypatia_xanadu_collection.foxml.xml" => "hypatia:xanadu_collection",
+      }
+
+      desc "Load all collection objects"
+      task :load do
+        if !ENV["dir"].nil? 
+          directory = ENV["dir"]
+        else
+          puts "You must specify the directory containing the Hypatia collection objects.  Example: rake hypatia:load:coll_objs dir=/data_raw/coll/foxml"
+        end
+
+        if !directory.nil?
+          COLL_OBJS.each { |fname, pid|
+            filename = File.join("#{directory}", "#{fname}")
+            load_foxml(filename, pid)
+          }
+        end
+      end
+
+      desc "Delete all collection objects"
+      task :delete do
+        delete_all(COLL_OBJS.values)
+      end
+      
+      desc "Refresh all collection objects"
+      task :refresh => [:delete, :load]
+    end # namespace hypatia:data:collection
+    
+  end # namespace hypatia:data
+
 #============= FIXTURE TASKS ================
   namespace :fixtures do
     
@@ -145,7 +189,7 @@ namespace :hypatia do
 
       desc "Remove Hypatia Xanadu fixtures"
       task :delete do
-        delete_fixtures(XANADU_FIXTURE_PIDS)
+        delete_all(XANADU_FIXTURE_PIDS)
       end
 
       desc "Remove then load Hypatia Xanadu fixtures"
@@ -169,7 +213,7 @@ namespace :hypatia do
 
       desc "Remove Hypatia FTK fixtures"
       task :delete do
-        delete_fixtures(FTK_FIXTURE_PIDS)
+        delete_all(FTK_FIXTURE_PIDS)
       end
 
       desc "Remove then load Hypatia FTK fixtures"
@@ -197,7 +241,7 @@ namespace :hypatia do
 
       desc "Remove Hypatia No Name fixtures"
       task :delete do
-        delete_fixtures(NONAME_FIXTURE_PIDS)
+        delete_all(NONAME_FIXTURE_PIDS)
       end
 
       desc "Remove then load Hypatia No Name fixtures"
@@ -261,6 +305,22 @@ end # hypatia namespace
 
 #-------------- SUPPORTING METHODS -------------
 
+# load a Fedora object from foxml, putting it in Fedora and indexing it into
+# Solr
+def load_foxml(file, pid)
+  ENV["fixture"] = file
+  Rake::Task["hydra:import_fixture"].reenable
+  Rake::Task["hydra:import_fixture"].invoke  
+  
+  # we do this because hydra:import_fixture task is written so a provided PID
+  #  implies a fixture in spec/fixtures, and a provided fixture file 
+  #  implies no solr indexing.  Harrumph.
+  if !pid.nil?
+    solrizer = Solrizer::Fedora::Solrizer.new 
+    solrizer.solrize(pid) 
+  end 
+end
+
 # load all the fixtures in the passed array of fixture pids
 #   pid is converted to file name by substituting : for _
 def load_fixtures(fixture_pids)
@@ -278,17 +338,17 @@ def load_fixture(fixture_pid)
   Rake::Task["hydra:import_fixture"].invoke  
 end
 
-# delete all the fixtures in the passed array of pids
-def delete_fixtures(fixture_pids)
-  fixture_pids.each { |pid|  
-    delete_fixture(pid) 
+# delete all the objects in the passed array of pids (from Fedora and Solr)
+def delete_all(pids)
+  pids.each { |pid|  
+    delete(pid) 
   }
 end
 
-# delete a fixture object
-def delete_fixture(fixture_pid)
+# delete an object (from Fedora and Solr)
+def delete(pid)
   ENV["fixture"] = nil
-  ENV["pid"] = fixture_pid
+  ENV["pid"] = pid
   Rake::Task["hydra:delete"].reenable
   Rake::Task["hydra:delete"].invoke  
 end
@@ -296,6 +356,6 @@ end
 # refresh (delete, then load) all the fixtures in the passed array of pids
 #   pid is converted to file name by substituting : for _
 def refresh_fixtures(fixture_pids)
-  delete_fixtures(fixture_pids)
+  delete_all(fixture_pids)
   load_fixtures(fixture_pids)
 end
