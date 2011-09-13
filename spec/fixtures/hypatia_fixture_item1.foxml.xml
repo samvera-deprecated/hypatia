@@ -28,7 +28,7 @@
           <rdf:Description rdf:about="info:fedora/hypatia:fixture_item1">
             <hydra:isGovernedBy rdf:resource="info:fedora/hypatia:fixture_xanadu_apo"/>
             <isMemberOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/hypatia:fixture_intermed2" />
-            <hasModel xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/afmodel:HypatiaXanaduItem" />
+            <hasModel xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/afmodel:HypatiaItem" />
           </rdf:Description>
         </rdf:RDF> 
       </foxml:xmlContent>

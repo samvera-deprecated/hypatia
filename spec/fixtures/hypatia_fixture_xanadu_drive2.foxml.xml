@@ -31,7 +31,7 @@
             <hydra:isGovernedBy rdf:resource="info:fedora/druid:ww057vk7675"></hydra:isGovernedBy>
             <isMemberOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/hypatia:fixture_xanadu_collection"></isMemberOf>
             <isMemberOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/hypatia:fixture_xanadu_borndigital"></isMemberOf>
-            <hasModel xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/afmodel:HypatiaXanaduItem"></hasModel>
+            <hasModel xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/afmodel:HypatiaItem"></hasModel>
           </rdf:Description>
         </rdf:RDF> 
       </foxml:xmlContent>
