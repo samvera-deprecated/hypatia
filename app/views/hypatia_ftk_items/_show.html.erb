@@ -4,14 +4,8 @@
 -%>
 <%- sidebar_items << render("shared/show_sets") -%>
 
-<div class="document_viewer" id="cover_container">
-
-	<div class="pid"><dl><dt>PID</dt><dd><%=params[:id]%></dd></dl></div>  
-  	
+<div class="document_viewer" id="cover_container">  	
   <%= render :partial => 'hypatia_ftk_items/show_description' -%>
-
   <%= render :partial => 'shared/show_files' -%>
-
   <%= render :partial => 'shared/show_technical' -%>
-
 </div>

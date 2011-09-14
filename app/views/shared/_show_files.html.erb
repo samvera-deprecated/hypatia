@@ -1,19 +1,22 @@
-<div class="files">
-  <h2><u>Files</u></h2>
+<div class="files metadata-section">
+  <h2 class="section-title">Files</h2>
+  <span class="show-hide">Hide Section</span>
   
   <div id="fileDownloads" class="downloads">	
   <table id="file_assets" class="files">
-    <tr>
-      <th>File</th>
-      <th>Size</th>
-      <th>Access</th>
-    </tr>
-  
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Size</th>
+        <th>Access</th>
+      </tr>
+    </thead>
   <%# @document_fedora.file_objects(:response_format=>:solr).each do |result| %>
   <%# @document_fedora.file_objects(:response_format=>:solr).each_with_index do |result, index| %>
+    <tbody>
 	<% get_values_from_datastream(@document_fedora, "contentMetadata", [:resource_type]).each_with_index do |result, index| -%>
 	  <% if result != "photo" -%>
-  	<tr class="file_asset" >
+  	<tr class="file_asset<%= cycle(" odd", " even") -%>" >
   	  <td>
         <%= get_values_from_datastream(@document_fedora, "contentMetadata", :file_id)[index] %>
       </td>
@@ -26,6 +29,7 @@
   	</tr>
   	<% end -%>
 	<% end -%>
+  </tbody>
 	
   </table>
   </div>

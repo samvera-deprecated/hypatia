@@ -13,13 +13,11 @@
 	
 	<%= render 'constraints', :localized_params=>params %>
 	
-	<div class="pageEntriesInfo">
-    <%= page_entries_info @response.docs, :entry_name=>'item' %>
-    <%-# Overriding this file just to comment out this link.  Not particularly happy about this, but gotta do what we gotta do  -%>
-    <%#=link_to "Start&nbsp;over&thinsp;", catalog_index_path, :id=>"startOverLink" %>
-  </div>
-	
   <%= render 'results_pagination' %>
+
+  <div class="pageEntriesInfo">
+    <%= page_entries_info @response.docs, :entry_name=>'item' %>
+  </div>
   
 	<%= render 'sort_and_per_page' %>
 	
