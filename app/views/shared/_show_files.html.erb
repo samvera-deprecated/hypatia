@@ -11,26 +11,28 @@
         <th>Access</th>
       </tr>
     </thead>
-  <%# @document_fedora.file_objects(:response_format=>:solr).each do |result| %>
-  <%# @document_fedora.file_objects(:response_format=>:solr).each_with_index do |result, index| %>
     <tbody>
-	<% get_values_from_datastream(@document_fedora, "contentMetadata", [:resource_type]).each_with_index do |result, index| -%>
-	  <% if result != "photo" -%>
-  	<tr class="file_asset<%= cycle(" odd", " even") -%>" >
-  	  <td>
-        <%= get_values_from_datastream(@document_fedora, "contentMetadata", :file_id)[index] %>
-      </td>
-  	  <td>
-        <%= get_values_from_datastream(@document_fedora, "contentMetadata", :size)[index] %>
-  	  </td>
-  	  <td>
-        <%= link_to "download", get_values_from_datastream(@document_fedora, "contentMetadata", :url)[index] %>
-  	  </td>
-  	</tr>
-  	<% end -%>
-	<% end -%>
-  </tbody>
-	
+    <% file_objects = @document_fedora.parts(:response_format=>:solr) -%>
+    <% unless file_objects.hits.empty? -%>
+  	  <% file_objects.each do |file_object| -%>
+	      <%#= file_object["id"] %>
+    	  <tr class="file_asset<%= cycle(" odd", " even") -%>" >
+        	  <td>
+        	    <%# FIXME:  need to get this from label in FileAsset datastream because order of contentMetadata might not match file_objects %>
+              <%= get_values_from_datastream(@document_fedora, "contentMetadata", :file_id) %>
+            </td>
+        	  <td>
+        	    <%# FIXME: extent is an ARRAY?  is that a poor OM declaration, or a MODs thing? %>
+              <%#= FileAsset.bits_to_human_readable(get_values_from_datastream(@document_fedora, "contentMetadata", :size)[index].to_i) %>
+              <%= file_object["extent_t"][0] %>
+        	  </td>
+        	  <td>
+              <%= link_to "download", asset_downloads_path(file_object["id"], :download_id=>"DS1") %>
+        	  </td>
+        	</tr>
+  		<% end -%>
+    <% end -%>
+    </tbody>
   </table>
   </div>
 </div>
