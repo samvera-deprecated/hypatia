@@ -20,8 +20,9 @@ Feature: Xanadu Item Object Show View
     When I am on the document page for id "hypatia:fixture_xanadu_drive1" 
     # Then there should be 3 rows in the table    
     Then I should see "CM01.dd"
-    And I should see "CM01.txt"
-    And I should see "CM01.csv"
+# FIXME:  the fixture data for disk image items needs to be redone - this is non-functional    
+#    And I should see "CM01.txt"
+#    And I should see "CM01.csv"
     
   # Scenario: Xanadu item object contained files are downloadable
   #   # the download link works ... probably this should be coded in more generic place

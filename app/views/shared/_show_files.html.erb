@@ -14,17 +14,17 @@
     <tbody>
     <% file_objects = @document_fedora.parts(:response_format=>:solr) -%>
     <% unless file_objects.hits.empty? -%>
-  	  <% file_objects.each do |file_object| -%>
+  	  <% file_objects.each_with_index do |file_object, index| -%>
 	      <%#= file_object["id"] %>
     	  <tr class="file_asset<%= cycle(" odd", " even") -%>" >
         	  <td>
         	    <%# FIXME:  need to get this from label in FileAsset datastream because order of contentMetadata might not match file_objects %>
-              <%= get_values_from_datastream(@document_fedora, "contentMetadata", :file_id) %>
+              <%= get_values_from_datastream(@document_fedora, "contentMetadata", :file_id)[index] %>
             </td>
         	  <td>
         	    <%# FIXME: extent is an ARRAY?  is that a poor OM declaration, or a MODs thing? %>
               <%#= FileAsset.bits_to_human_readable(get_values_from_datastream(@document_fedora, "contentMetadata", :size)[index].to_i) %>
-              <%= file_object["extent_t"][0] %>
+              <%= file_object["extent_t"] unless file_object["extent_t"].nil? %>
         	  </td>
         	  <td>
               <%= link_to "download", asset_downloads_path(file_object["id"], :download_id=>"DS1") %>
