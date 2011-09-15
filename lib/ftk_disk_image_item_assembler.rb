@@ -25,7 +25,7 @@ class FtkDiskImageItemAssembler
       fdi = FtkDiskImage.new(:txt_file => disk[1][:txt])  
       if File.file? fdi.txt_file
         obj = build_object(fdi)
-        puts obj.pid
+        # puts obj.pid
       else
         @logger.error "Couldn't find txt file #{fdi.txt_file}"
       end
@@ -136,7 +136,7 @@ class FtkDiskImageItemAssembler
     build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", buildDescMetadata(fdi))
     build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", buildContentMetadata(fdi,hypatia_disk_image_item.pid,dd_file.pid))
     build_ng_xml_datastream(hypatia_disk_image_item, "rightsMetadata", buildRightsMetadata)
-    puts hypatia_disk_image_item.pid
+    # puts hypatia_disk_image_item.pid
     return hypatia_disk_image_item
   end
   
