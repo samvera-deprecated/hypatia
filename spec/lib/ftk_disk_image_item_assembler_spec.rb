@@ -74,7 +74,7 @@ describe FtkDiskImageItemAssembler do
     end
     it "has a binary disk image attached to the FileAsset" do
       fa = @item.parts.first
-      fa.datastreams['DS1'].should_not eql(nil)
+      fa.datastreams['content'].should_not eql(nil)
     end
     it "has an image attached to the FileAsset" do
       fa = @item.parts.first
