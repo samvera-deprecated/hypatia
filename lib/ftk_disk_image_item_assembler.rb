@@ -149,7 +149,7 @@ class FtkDiskImageItemAssembler
     dd_file.label="fileAsset for FTK disk image #{fdi.disk_type} #{fdi.disk_number}"
     dd_file.add_relationship(:is_part_of,hypatia_disk_image_item)
     file = File.new(@filehash[fdi.disk_number.to_sym][:dd])
-    dd_file.add_file_datastream(file, {:dsID => "content", :dsLabel => "Disk image file for #{fdi.disk_type} #{fdi.disk_number}"})
+    dd_file.add_file_datastream(file, {:dsid => "content", :label => "Disk image file for #{fdi.disk_type} #{fdi.disk_number}"})
     add_photos_to_dd_file_asset(dd_file,fdi)
     dd_file.save
     return dd_file
