@@ -76,7 +76,7 @@ class FtkItemAssembler
     @logger.debug "Creating bag for #{ff.unique_combo}"
     bag = BagIt::Bag.new File.join(@bag_destination, "/#{ff.unique_combo}")
     descMeta = buildDescMetadata(ff)
-    contentMeta = buildContentMetadata(ff, "n/a")
+    contentMeta = buildContentMetadata(ff,"n/a","n/a")
     bag.add_file("descMetadata.xml") do |io|
       io.puts descMeta
     end
@@ -158,6 +158,7 @@ class FtkItemAssembler
   
   # Build a contentMetadata datastream
   # @param [FtkFile] ff FTK file object
+  # @param [String] pid The PID of the object this datastream describes
   # @param [String] fileAssetID the PID of the fileAsset containing the content described here
   # @return [Nokogiri::XML::Document]
   # @example document returned
@@ -177,9 +178,9 @@ class FtkItemAssembler
   #  cm = @hfo.buildContentMetadata(@ff)
   #  doc = Nokogiri::XML(cm)
   #  doc.xpath("/contentMetadata/@type").to_s.should eql("born-digital")
-  def buildContentMetadata(ff,fileAssetID)
+  def buildContentMetadata(ff,pid,fileAssetID)
     builder = Nokogiri::XML::Builder.new do |xml|
-      xml.contentMetadata("type" => "born-digital", "objectId" => ff.unique_combo) {
+      xml.contentMetadata("type" => "born-digital", "objectId" => pid) {
         xml.resource("id" => "analysis-text", "type" => "analysis", "data" => "metadata", "objectId" => fileAssetID){
           xml.file("id" => ff.filename, "format" => ff.filetype, "size" => ff.filesize) {
             xml.location("type" => "filesystem") {
@@ -252,13 +253,14 @@ class FtkItemAssembler
   # @return [ActiveFedora::Base]
   def create_hypatia_item(ff)
     hypatia_item = HypatiaFtkItem.new
+    hypatia_item.label=ff.filename
     hypatia_item.save
     raise "Couldn't save new hypatia item" unless !hypatia_item.pid.nil?
     
     fileAsset = create_hypatia_file(hypatia_item,ff)
     
     build_ng_xml_datastream(hypatia_item, "descMetadata", buildDescMetadata(ff))
-    build_ng_xml_datastream(hypatia_item, "contentMetadata", buildContentMetadata(ff,fileAsset.pid))
+    build_ng_xml_datastream(hypatia_item, "contentMetadata", buildContentMetadata(ff,hypatia_item.pid,fileAsset.pid))
     build_ng_xml_datastream(hypatia_item, "rightsMetadata", buildRightsMetadata(ff))
 
     hypatia_item.save
@@ -296,10 +298,11 @@ class FtkItemAssembler
   # @return [FileAsset]
   def create_hypatia_file(hypatia_item,ff)
     hypatia_file = FileAsset.new
+    hypatia_file.label="FileAsset for #{ff.filename}"
     hypatia_file.add_relationship(:is_part_of,hypatia_item)
     filepath = "#{@file_dir}/#{ff.export_path}"
     file = File.new(filepath)
-    hypatia_file.add_file_datastream(file)
+    hypatia_file.add_file_datastream(file, {:dsid => "content", :label => ff.filename})
     html_filepath = "#{@display_derivative_dir}/#{ff.display_derivative}"
     if File.file? html_filepath
       html_file = File.new(html_filepath)

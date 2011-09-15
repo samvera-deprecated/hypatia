@@ -56,9 +56,9 @@ describe FtkItemAssembler do
       doc.xpath("/mods:mods/mods:physicalDescription/mods:form/text()").to_s.should eql(@ff.medium)
     end
     it "creates a contentMetadata file" do
-      doc = Nokogiri::XML(@hfo.buildContentMetadata(@ff,"fake_object_id"))
+      doc = Nokogiri::XML(@hfo.buildContentMetadata(@ff,"fake_pid","fake_object_id"))
       doc.xpath("/contentMetadata/@type").to_s.should eql("born-digital")
-      doc.xpath("/contentMetadata/@objectId").to_s.should eql(@ff.unique_combo)
+      doc.xpath("/contentMetadata/@objectId").to_s.should eql("fake_pid")
       doc.xpath("/contentMetadata/resource/@type").to_s.should eql("analysis")
       doc.xpath("/contentMetadata/resource/file/@id").to_s.should eql(@ff.filename)
       doc.xpath("/contentMetadata/resource/file/@objectId").to_s.should_not eql("fake_object_id")
@@ -116,7 +116,7 @@ describe FtkItemAssembler do
     # This is the binary file for an FTK object
     # It needs a better test at some point
     it "has a member object with a file payload" do
-      @hi.parts.first.datastreams['DS1'].content.should_not eql(nil)
+      @hi.parts.first.datastreams['content'].content.should_not eql(nil)
     end
     
     it "has a member object with an html payload" do
