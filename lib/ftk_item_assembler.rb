@@ -76,7 +76,7 @@ class FtkItemAssembler
     @logger.debug "Creating bag for #{ff.unique_combo}"
     bag = BagIt::Bag.new File.join(@bag_destination, "/#{ff.unique_combo}")
     descMeta = buildDescMetadata(ff)
-    contentMeta = buildContentMetadata(ff)
+    contentMeta = buildContentMetadata(ff, "n/a")
     bag.add_file("descMetadata.xml") do |io|
       io.puts descMeta
     end
@@ -139,6 +139,7 @@ class FtkItemAssembler
   
   # Build a contentMetadata datastream
   # @param [FtkFile] ff FTK file object
+  # @param [String] fileAssetID the PID of the fileAsset containing the content described here
   # @return [Nokogiri::XML::Document]
   # @example document returned
   #  <?xml version="1.0"?>
@@ -157,10 +158,10 @@ class FtkItemAssembler
   #  cm = @hfo.buildContentMetadata(@ff)
   #  doc = Nokogiri::XML(cm)
   #  doc.xpath("/contentMetadata/@type").to_s.should eql("born-digital")
-  def buildContentMetadata(ff)
+  def buildContentMetadata(ff,fileAssetID)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.contentMetadata("type" => "born-digital", "objectId" => ff.unique_combo) {
-        xml.resource("id" => "analysis-text", "type" => "analysis", "data" => "metadata", "objectId" => "????"){
+        xml.resource("id" => "analysis-text", "type" => "analysis", "data" => "metadata", "objectId" => fileAssetID){
           xml.file("id" => ff.filename, "format" => ff.filetype, "size" => ff.filesize) {
             xml.location("type" => "filesystem") {
               xml.text ff.export_path
@@ -235,15 +236,12 @@ class FtkItemAssembler
     hypatia_item.save
     raise "Couldn't save new hypatia item" unless !hypatia_item.pid.nil?
     
+    fileAsset = create_hypatia_file(hypatia_item,ff)
+    
     build_ng_xml_datastream(hypatia_item, "descMetadata", buildDescMetadata(ff))
-    build_ng_xml_datastream(hypatia_item, "contentMetadata", buildContentMetadata(ff))
+    build_ng_xml_datastream(hypatia_item, "contentMetadata", buildContentMetadata(ff,fileAsset.pid))
     build_ng_xml_datastream(hypatia_item, "rightsMetadata", buildRightsMetadata(ff))
 
-    # no longer using DOR identity metadata
-    # build_ng_xml_datastream(hypatia_item, "identityMetadata", buildIdentityMetadata(ff))
-    
-    create_hypatia_file(hypatia_item,ff)
-    
     hypatia_item.save
     return hypatia_item
   end

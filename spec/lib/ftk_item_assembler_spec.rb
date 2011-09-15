@@ -51,11 +51,12 @@ describe FtkItemAssembler do
       doc.xpath("/mods:mods/mods:physicalDescription/mods:form/text()").to_s.should eql(@ff.medium)
     end
     it "creates a contentMetadata file" do
-      doc = Nokogiri::XML(@hfo.buildContentMetadata(@ff))
+      doc = Nokogiri::XML(@hfo.buildContentMetadata(@ff,"fake_object_id"))
       doc.xpath("/contentMetadata/@type").to_s.should eql("born-digital")
       doc.xpath("/contentMetadata/@objectId").to_s.should eql(@ff.unique_combo)
       doc.xpath("/contentMetadata/resource/@type").to_s.should eql("analysis")
       doc.xpath("/contentMetadata/resource/file/@id").to_s.should eql(@ff.filename)
+      doc.xpath("/contentMetadata/resource/file/@objectId").to_s.should_not eql("fake_object_id")
       doc.xpath("/contentMetadata/resource/file/@format").to_s.should eql(@ff.filetype)
       doc.xpath("/contentMetadata/resource/file/location/@type").to_s.should eql("filesystem")
       doc.xpath("/contentMetadata/resource/file/location/text()").to_s.should eql(@ff.export_path)      
