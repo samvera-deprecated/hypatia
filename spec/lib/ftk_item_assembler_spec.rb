@@ -47,6 +47,11 @@ describe FtkItemAssembler do
     it "creates a descMetadata file" do
       doc = Nokogiri::XML(@hfo.buildDescMetadata(@ff))
       doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.title)
+      doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='disk']/text()").to_s.should eql(@ff.disk_image_number)
+      doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='filepath']/text()").to_s.should eql(@ff.filepath)
+      doc.xpath("/mods:mods/mods:originInfo/mods:dateCreated/text()").to_s.should eql(@ff.file_creation_date)
+      doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_accessed']/text()").to_s.should eql(@ff.file_accessed_date)
+      doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_modified']/text()").to_s.should eql(@ff.file_modified_date)
       doc.xpath("/mods:mods/mods:typeOfResource/text()").to_s.should eql(@ff.type)
       doc.xpath("/mods:mods/mods:physicalDescription/mods:form/text()").to_s.should eql(@ff.medium)
     end

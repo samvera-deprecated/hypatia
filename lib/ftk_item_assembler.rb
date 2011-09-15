@@ -128,6 +128,25 @@ class FtkItemAssembler
         xml['mods'].titleInfo {
           xml['mods'].title_ ff.title
         }
+        xml['mods'].location {
+          xml['mods'].physicalLocation("type"=>"disk"){
+            xml.text ff.disk_image_number
+          }
+          xml['mods'].physicalLocation("type"=>"filepath"){
+            xml.text ff.filepath
+          }
+        }
+        xml['mods'].originInfo {
+          xml['mods'].dateCreated {
+            xml.text ff.file_creation_date
+          }
+          xml['mods'].dateOther("type" => "last_accessed"){
+            xml.text ff.file_accessed_date
+          }
+          xml['mods'].dateOther("type" => "last_modified"){
+            xml.text ff.file_modified_date
+          }
+        }
         xml['mods'].typeOfResource_ ff.type
         xml['mods'].physicalDescription {
           xml['mods'].form_ ff.medium
