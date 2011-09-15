@@ -4,29 +4,33 @@ require File.join(File.dirname(__FILE__), "/../../lib/ftk_disk_image_item_assemb
 describe FtkDiskImageItemAssembler do
   context "basic behavior" do
     before(:all) do
-      @files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+      @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+      @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
+      @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
     end
     it "has a source of disk image files" do
-      foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @files_dir)
-      foo.disk_image_files_dir.should eql(@files_dir)
+      @foo.disk_image_files_dir.should eql(@disk_image_files_dir)
     end
-    it "throws an error if you pass it an invalid directory" do
+    it "has a source of computer media photos" do
+      @foo.computer_media_photos_dir.should eql(@computer_media_photos_dir)
+    end
+    it "throws an error if you pass it an invalid disk image files directory" do
       dir = "fakedir"
-      lambda{FtkDiskImageItemAssembler.new(:disk_image_files_dir => dir)}.should raise_exception
+      lambda{FtkDiskImageItemAssembler.new(:disk_image_files_dir => dir, :computer_media_photos_dir => @computer_media_photos_dir)}.should raise_exception
     end
     it "loads the files in the directory into a hash" do
-      foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @files_dir)
-      foo.filehash.class.should eql(Hash)
-      foo.filehash[:CM006][:dd].should eql("#{@files_dir}/CM006.001")
-      foo.filehash[:CM006][:csv].should eql("#{@files_dir}/CM006.001.csv")
-      foo.filehash[:CM006][:txt].should eql("#{@files_dir}/CM006.001.txt")
+      @foo.filehash.class.should eql(Hash)
+      @foo.filehash[:CM006][:dd].should eql("#{@disk_image_files_dir}/CM006.001")
+      @foo.filehash[:CM006][:csv].should eql("#{@disk_image_files_dir}/CM006.001.csv")
+      @foo.filehash[:CM006][:txt].should eql("#{@disk_image_files_dir}/CM006.001.txt")
     end
   end
   context "extracting metadata" do
     before(:all) do
-      @files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
-      @txt_file = File.join(@files_dir, "/CM006.001.txt")
-      @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @files_dir)
+      @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+      @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
+      @txt_file = File.join(@disk_image_files_dir, "/CM006.001.txt")
+      @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
       @fdi = FtkDiskImage.new(:txt_file => @txt_file)
       
     end
@@ -52,14 +56,29 @@ describe FtkDiskImageItemAssembler do
   end
   context "building an object" do
     before(:all) do
-      @files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
-      @txt_file = File.join(@files_dir, "/CM006.001.txt")
-      @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @files_dir)
+      @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+      @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
+      @txt_file = File.join(@disk_image_files_dir, "/CM006.001.txt")
+      @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
       @fdi = FtkDiskImage.new(:txt_file => @txt_file)  
       @item = @assembler.build_object(@fdi)
     end
+    after(:all) do
+      # @item.delete
+    end
     it "builds an object" do
       @item.should be_kind_of(HypatiaDiskImageItem)
+    end
+    it "has a FileAsset" do
+      @item.parts.first.should be_kind_of(FileAsset)
+    end
+    it "has a binary disk image attached to the FileAsset" do
+      fa = @item.parts.first
+      fa.datastreams['DS1'].should_not eql(nil)
+    end
+    it "has an image attached to the FileAsset" do
+      fa = @item.parts.first
+      fa.datastreams['front'].should_not eql(nil)
     end
   end
 end

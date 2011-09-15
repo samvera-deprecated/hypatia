@@ -4,14 +4,19 @@ require "active-fedora"
 class FtkDiskImageItemAssembler 
   
   attr_accessor :disk_image_files_dir   # The directory containing the disk images
+  attr_accessor :computer_media_photos_dir # The directory containing photos of the physical media (e.g., floppy disks)
   attr_reader :filehash # The hash were we store the files we're processing
   
   def initialize(args)
+    @logger = Logger.new('log/ftk_disk_image_item_assembler.log')
+    @logger.debug 'Initializing Hypatia FTK Disk Image Object Assembler'
+    
     raise "Can't find directory #{args[:disk_image_files_dir]}" unless File.directory? args[:disk_image_files_dir]
     @disk_image_files_dir = args[:disk_image_files_dir]
+    raise "Can't find directory #{args[:computer_media_photos_dir]}" unless File.directory? args[:computer_media_photos_dir]
+    @computer_media_photos_dir = args[:computer_media_photos_dir]
     @filehash = {}
     build_file_hash
-    # build_objects
   end
   
   # Read in all the files in @disk_image_files_dir.
@@ -131,8 +136,29 @@ class FtkDiskImageItemAssembler
     dd_file.add_relationship(:is_part_of,hypatia_disk_image_item)
     file = File.new(@filehash[fdi.disk_number.to_sym][:dd])
     dd_file.add_file_datastream(file)
+    add_photos_to_dd_file_asset(dd_file,fdi)
     dd_file.save
     return dd_file
+  end
+  
+  # Add any photos of the physical media as datastreams attached to the disk image FileAsset
+  # @param [FileAsset] dd_file
+  # @param [FtkDiskImage] fdi
+  # @return [FileAsset]
+  def add_photos_to_dd_file_asset(dd_file,fdi)
+    image_path_base = "#{@computer_media_photos_dir}/#{fdi.disk_number}"
+    image_hash = {"#{image_path_base}.JPG" => "front", "#{image_path_base}_1.JPG" => "front", "#{image_path_base}_2.JPG" => "back"}
+    image_hash.each_pair { |image_file, label|
+      if File.file? image_file
+        f = File.new(image_file)
+        image_ds =  ActiveFedora::Datastream.new(:dsID => label, :dsLabel => "#{label.capitalize} image for #{fdi.disk_type} #{fdi.disk_number}", :controlGroup => 'M', :blob => f)
+        dd_file.add_datastream(image_ds)
+      else
+        @logger.warn "Couldn't find expected media photo file #{image_file}"
+      end
+    }
+    dd_file.save
+    dd_file
   end
   
   # Create a Nokogiri XML Datastream on the HypatiaDiskImageItem object
