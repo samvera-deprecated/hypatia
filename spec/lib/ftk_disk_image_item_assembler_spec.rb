@@ -64,7 +64,7 @@ describe FtkDiskImageItemAssembler do
       @item = @assembler.build_object(@fdi)
     end
     after(:all) do
-      # @item.delete
+      @item.delete
     end
     it "builds an object" do
       @item.should be_kind_of(HypatiaDiskImageItem)

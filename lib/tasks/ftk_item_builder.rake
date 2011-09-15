@@ -23,9 +23,10 @@ namespace :hypatia do
   
       desc "Build disk objects"
       task :build_ftk_disk_items do  
-        disk_image_files_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Disk\ Image/" 
-        f = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir)
-        f.process
+        disk_image_files_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Disk\ Image" 
+        computer_media_photos_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Computer\ Media\ Photo" 
+        assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
+        assembler.process
       end
   end
 end

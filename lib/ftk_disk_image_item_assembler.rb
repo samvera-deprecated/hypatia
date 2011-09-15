@@ -19,6 +19,19 @@ class FtkDiskImageItemAssembler
     build_file_hash
   end
   
+  # Create fedora objects out of the ftk disk image files
+  def process
+    @filehash.each { |disk|
+      fdi = FtkDiskImage.new(:txt_file => disk[1][:txt])  
+      if File.file? fdi.txt_file
+        obj = build_object(fdi)
+        puts obj.pid
+      else
+        @logger.error "Couldn't find txt file #{fdi.txt_file}"
+      end
+    }
+  end
+  
   # Read in all the files in @disk_image_files_dir.
   # Determine which of these are dd files (the actual disk image),
   # and which are .csv and .txt metadata about the disk image.
