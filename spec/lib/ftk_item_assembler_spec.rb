@@ -3,7 +3,6 @@ require File.join(File.dirname(__FILE__), "/../../lib/ftk_file")
 require File.join(File.dirname(__FILE__), "/../../lib/ftk_processor")
 require File.join(File.dirname(__FILE__), "/../../lib/ftk_item_assembler")
 require File.join(File.dirname(__FILE__), "/../../app/models/hypatia_ftk_item")
-# require File.join(File.dirname(__FILE__), "/../../lib/hypatia_file")
 
 require 'rubygems'
 require 'ruby-debug'
@@ -81,6 +80,12 @@ describe FtkItemAssembler do
   
   context "creating fedora objects" do
     before(:all) do
+      fdi = FactoryGirl.build(:ftk_disk_image)
+      @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+      @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
+      @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+      @disk_object = @foo.build_object(fdi)
+      
       @ff = FactoryGirl.build(:ftk_file)
       # @ff.export_path = 'files/stephenjaygould.jpeg'
       @fia = FtkItemAssembler.new()   
@@ -94,6 +99,13 @@ describe FtkItemAssembler do
       @hi.save
     end
     
+    after(:all) do
+      @disk_object.parts.first.delete
+      @disk_object.delete
+      @hi.parts.first.delete
+      @hi.delete
+    end
+    
     it "accepts an FtkFile as an argument and returns a HypatiaItem object" do
       @hi.should be_instance_of(HypatiaFtkItem)
     end
@@ -104,9 +116,14 @@ describe FtkItemAssembler do
       end
     end
     
-    it "has a file object with an isMemberOf relationship" do
+    it "has a file object with an isPartOf relationship" do
       @hi.inbound_relationships[:is_part_of].length.should eql(1)
-      # {:is_member_of=>["info:fedora/changeme:54"]}
+    end
+    
+    it "has an isMemberOf relationship with a disk object" do
+      @hi.relationships[:self][:is_member_of].first.gsub("info:fedora/",'').should eql(@disk_object.pid)
+      # Should @disk_object now have an inbound relationship?
+      # puts @disk_object.inbound_relationships.inspect
     end
     
     it "has a FileAsset part" do
