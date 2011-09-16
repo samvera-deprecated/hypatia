@@ -5,15 +5,16 @@ class FtkDiskImage
   
   attr_accessor :txt_file             # The txt file produced by FTK that contains the 
                                       # metadata about this disk image
-  attr_reader :disk_number            # The number used to identify this disk
-  attr_reader :disk_type              # The kind of disk this was (e.g., "5.25 inch Floppy Disk")
-  attr_reader :md5                    # The md5 checksum for the disk image
+  attr_accessor :disk_number            # The number used to identify this disk
+  attr_accessor :disk_type              # The kind of disk this was (e.g., "5.25 inch Floppy Disk")
+  attr_accessor :md5                    # The md5 checksum for the disk image
   
   def initialize(args = {})
-    raise exception "Please pass :txt_file so I have a metadata source" unless args[:txt_file]
-    raise exception "Can't find txt file #{args[:txt_file]}" unless File.file? args[:txt_file]
-    @txt_file = args[:txt_file]
-    process_file
+    if args[:txt_file]
+      raise "Can't find txt file #{args[:txt_file]}" unless File.file? args[:txt_file]
+      @txt_file = args[:txt_file]
+      process_file
+    end
   end
   
   # Go through the .txt file and extract the useful information
