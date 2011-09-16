@@ -7,8 +7,8 @@ FactoryGirl.define do
     id '9999'
     filesize '504 B'
     filetype "WordPerfect 5.1"
-    filepath "CM117.001/NONAME [FAT12]/[root]/NATHIN32"
-    disk_image_number "CM117"
+    filepath "CM5551212.001/NONAME [FAT12]/[root]/NATHIN32"
+    disk_image_number "CM5551212"
     file_creation_date "6/14/1996 4:46:26 AM (1996-06-14 11:46:26 UTC)"
     file_accessed_date "12/8/1998 6:48:48 AM (1998-12-08 14:48:48 UTC)"
     file_modified_date "10/20/1998 10:44:46 AM (1998-10-20 17:44:46 UTC)"
@@ -22,5 +22,11 @@ FactoryGirl.define do
     export_path "files/BURCH1"
     unique_combo "foofile.txt_9999"
     type "Journal Article"
+  end
+  factory :ftk_disk_image do
+    txt_file File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images/CM006.001.txt")
+    disk_number "CM5551212"
+    disk_type "5.25 inch Floppy Disk"
+    md5 "4E1AA0E78D99191F4698EEC437569D23"
   end
 end
