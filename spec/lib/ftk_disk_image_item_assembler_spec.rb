@@ -20,19 +20,18 @@ describe FtkDiskImageItemAssembler do
     end
     it "loads the files in the directory into a hash" do
       @foo.filehash.class.should eql(Hash)
-      @foo.filehash[:CM006][:dd].should eql("#{@disk_image_files_dir}/CM006.001")
-      @foo.filehash[:CM006][:csv].should eql("#{@disk_image_files_dir}/CM006.001.csv")
-      @foo.filehash[:CM006][:txt].should eql("#{@disk_image_files_dir}/CM006.001.txt")
+      @foo.filehash[:CM5551212][:dd].should eql("#{@disk_image_files_dir}/CM5551212.001")
+      @foo.filehash[:CM5551212][:csv].should eql("#{@disk_image_files_dir}/CM5551212.001.csv")
+      @foo.filehash[:CM5551212][:txt].should eql("#{@disk_image_files_dir}/CM5551212.001.txt")
     end
   end
   context "extracting metadata" do
     before(:all) do
       @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
       @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
-      @txt_file = File.join(@disk_image_files_dir, "/CM006.001.txt")
+      @txt_file = File.join(@disk_image_files_dir, "/CM5551212.001.txt")
       @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
       @fdi = FtkDiskImage.new(:txt_file => @txt_file)
-      
     end
     it "creates an FtkDiskImage from a .txt file" do
       @fdi.md5.should eql("7d7abca99f383487e02ce7bf7c017267")
@@ -58,12 +57,13 @@ describe FtkDiskImageItemAssembler do
     before(:all) do
       @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
       @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
-      @txt_file = File.join(@disk_image_files_dir, "/CM006.001.txt")
+      @txt_file = File.join(@disk_image_files_dir, "/CM5551212.001.txt")
       @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
       @fdi = FtkDiskImage.new(:txt_file => @txt_file)  
       @item = @assembler.build_object(@fdi)
     end
     after(:all) do
+      @item.parts.first.delete
       @item.delete
     end
     it "builds an object" do
