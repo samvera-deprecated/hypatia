@@ -137,6 +137,7 @@ class FtkDiskImageItemAssembler
     build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", buildDescMetadata(fdi))
     build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", buildContentMetadata(fdi,hypatia_disk_image_item.pid,dd_file.pid))
     build_ng_xml_datastream(hypatia_disk_image_item, "rightsMetadata", buildRightsMetadata)
+    hypatia_disk_image_item.save
     return hypatia_disk_image_item
   end
   
