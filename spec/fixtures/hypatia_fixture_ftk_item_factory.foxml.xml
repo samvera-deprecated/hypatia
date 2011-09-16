@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject VERSION="1.1" PID="hypatia:fixture_ftk_item_factory" xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+  <foxml:objectProperties>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE=""/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#ownerId" VALUE="fedoraAdmin"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#createdDate" VALUE="2011-09-15T22:00:53.239Z"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/view#lastModifiedDate" VALUE="2011-09-15T22:00:54.914Z"/>
+  </foxml:objectProperties>
+  <foxml:datastream ID="AUDIT" STATE="A" CONTROL_GROUP="X" VERSIONABLE="false">
+    <foxml:datastreamVersion ID="AUDIT.0" LABEL="Audit Trail for this object" CREATED="2011-09-15T22:00:53.239Z" MIMETYPE="text/xml" FORMAT_URI="info:fedora/fedora-system:format/xml.fedora.audit">
+      <foxml:xmlContent>
+        <audit:auditTrail xmlns:audit="info:fedora/fedora-system:def/audit#">
+          <audit:record ID="AUDREC1">
+            <audit:process type="Fedora API-M"/>
+            <audit:action>addDatastream</audit:action>
+            <audit:componentID>descMetadata</audit:componentID>
+            <audit:responsibility>fedoraAdmin</audit:responsibility>
+            <audit:date>2011-09-15T22:00:53.330Z</audit:date>
+            <audit:justification/>
+          </audit:record>
+          <audit:record ID="AUDREC2">
+            <audit:process type="Fedora API-M"/>
+            <audit:action>addDatastream</audit:action>
+            <audit:componentID>RELS-EXT</audit:componentID>
+            <audit:responsibility>fedoraAdmin</audit:responsibility>
+            <audit:date>2011-09-15T22:00:53.373Z</audit:date>
+            <audit:justification/>
+          </audit:record>
+          <audit:record ID="AUDREC3">
+            <audit:process type="Fedora API-M"/>
+            <audit:action>addDatastream</audit:action>
+            <audit:componentID>rightsMetadata</audit:componentID>
+            <audit:responsibility>fedoraAdmin</audit:responsibility>
+            <audit:date>2011-09-15T22:00:53.424Z</audit:date>
+            <audit:justification/>
+          </audit:record>
+          <audit:record ID="AUDREC4">
+            <audit:process type="Fedora API-M"/>
+            <audit:action>addDatastream</audit:action>
+            <audit:componentID>contentMetadata</audit:componentID>
+            <audit:responsibility>fedoraAdmin</audit:responsibility>
+            <audit:date>2011-09-15T22:00:53.488Z</audit:date>
+            <audit:justification/>
+          </audit:record>
+          <audit:record ID="AUDREC5">
+            <audit:process type="Fedora API-M"/>
+            <audit:action>modifyDatastreamByValue</audit:action>
+            <audit:componentID>descMetadata</audit:componentID>
+            <audit:responsibility>fedoraAdmin</audit:responsibility>
+            <audit:date>2011-09-15T22:00:54.318Z</audit:date>
+            <audit:justification/>
+          </audit:record>
+          <audit:record ID="AUDREC6">
+            <audit:process type="Fedora API-M"/>
+            <audit:action>modifyDatastreamByValue</audit:action>
+            <audit:componentID>contentMetadata</audit:componentID>
+            <audit:responsibility>fedoraAdmin</audit:responsibility>
+            <audit:date>2011-09-15T22:00:54.373Z</audit:date>
+            <audit:justification/>
+          </audit:record>
+          <audit:record ID="AUDREC7">
+            <audit:process type="Fedora API-M"/>
+            <audit:action>modifyDatastreamByValue</audit:action>
+            <audit:componentID>rightsMetadata</audit:componentID>
+            <audit:responsibility>fedoraAdmin</audit:responsibility>
+            <audit:date>2011-09-15T22:00:54.454Z</audit:date>
+            <audit:justification/>
+          </audit:record>
+          <audit:record ID="AUDREC8">
+            <audit:process type="Fedora API-M"/>
+            <audit:action>modifyObject</audit:action>
+            <audit:componentID/>
+            <audit:responsibility>fedoraAdmin</audit:responsibility>
+            <audit:date>2011-09-15T22:00:54.549Z</audit:date>
+            <audit:justification/>
+          </audit:record>
+          <audit:record ID="AUDREC9">
+            <audit:process type="Fedora API-M"/>
+            <audit:action>modifyObject</audit:action>
+            <audit:componentID/>
+            <audit:responsibility>fedoraAdmin</audit:responsibility>
+            <audit:date>2011-09-15T22:00:54.914Z</audit:date>
+            <audit:justification/>
+          </audit:record>
+        </audit:auditTrail>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  <foxml:datastream ID="DC" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="DC1.0" LABEL="Dublin Core Record for this object" CREATED="2011-09-15T22:00:53.239Z" MIMETYPE="text/xml" FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/" SIZE="339">
+      <foxml:xmlContent>
+        <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+          <dc:identifier>fixture:hypatia_ftk_item_factory</dc:identifier>
+        </oai_dc:dc>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  <foxml:datastream ID="descMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="descMetadata.0" LABEL="" CREATED="2011-09-15T22:00:53.330Z" MIMETYPE="text/xml" SIZE="13">
+      <foxml:xmlContent>
+        <xml/>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+    <foxml:datastreamVersion ID="descMetadata.1" LABEL="" CREATED="2011-09-15T22:00:54.318Z" MIMETYPE="text/xml" SIZE="890">
+      <foxml:xmlContent>
+        <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+          <mods:titleInfo>
+            <mods:title>A Heartbreaking Work of Staggering Genius</mods:title>
+          </mods:titleInfo>
+          <mods:location>
+            <mods:physicalLocation type="disk">CM117</mods:physicalLocation>
+            <mods:physicalLocation type="filepath">CM117.001/NONAME [FAT12]/[root]/NATHIN32</mods:physicalLocation>
+          </mods:location>
+          <mods:originInfo>
+            <mods:dateCreated>6/14/1996 4:46:26 AM (1996-06-14 11:46:26 UTC)</mods:dateCreated>
+            <mods:dateOther type="last_accessed">12/8/1998 6:48:48 AM (1998-12-08 14:48:48 UTC)</mods:dateOther>
+            <mods:dateOther type="last_modified">10/20/1998 10:44:46 AM (1998-10-20 17:44:46 UTC)</mods:dateOther>
+          </mods:originInfo>
+          <mods:typeOfResource>Journal Article</mods:typeOfResource>
+          <mods:physicalDescription>
+            <mods:form>Punch Cards</mods:form>
+          </mods:physicalDescription>
+        </mods:mods>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  <foxml:datastream ID="RELS-EXT" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="RELS-EXT.0" LABEL="" CREATED="2011-09-15T22:00:53.373Z" MIMETYPE="text/xml" SIZE="275">
+      <foxml:xmlContent>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+          <rdf:Description rdf:about="info:fedora/hypatia:fixture_ftk_item_factory">
+            <hasModel xmlns="info:fedora/fedora-system:def/model#" rdf:resource="info:fedora/afmodel:HypatiaFtkItem"/>
+          </rdf:Description>
+        </rdf:RDF>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  <foxml:datastream ID="rightsMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="rightsMetadata.0" LABEL="" CREATED="2011-09-15T22:00:53.424Z" MIMETYPE="text/xml" SIZE="539">
+      <foxml:xmlContent>
+        <rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
+          <copyright>
+            <human/>
+            <machine>
+              <uvalicense>no</uvalicense>
+            </machine>
+          </copyright>
+          <access type="discover">
+            <human/>
+            <machine/>
+          </access>
+          <access type="read">
+            <human/>
+            <machine/>
+          </access>
+          <access type="edit">
+            <human/>
+            <machine/>
+          </access>
+          <embargo>
+            <human/>
+            <machine/>
+          </embargo>
+        </rightsMetadata>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+    <foxml:datastreamVersion ID="rightsMetadata.1" LABEL="" CREATED="2011-09-15T22:00:54.454Z" MIMETYPE="text/xml" SIZE="305">
+      <foxml:xmlContent>
+        <rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
+          <access type="discover">
+            <machine>
+              <group>public</group>
+            </machine>
+          </access>
+          <access type="read">
+            <machine>
+              <group>public</group>
+            </machine>
+          </access>
+        </rightsMetadata>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  <foxml:datastream ID="contentMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="contentMetadata.0" LABEL="" CREATED="2011-09-15T22:00:53.488Z" MIMETYPE="text/xml" SIZE="13">
+      <foxml:xmlContent>
+        <xml/>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+    <foxml:datastreamVersion ID="contentMetadata.1" LABEL="" CREATED="2011-09-15T22:00:54.373Z" MIMETYPE="text/xml" SIZE="468">
+      <foxml:xmlContent>
+        <contentMetadata objectId="foofile.txt_9999" type="born-digital">
+          <resource data="metadata" id="analysis-text" objectId="hypatia:20" type="analysis">
+            <file format="WordPerfect 5.1" id="BURCH1" size="504 B">
+              <location type="filesystem">files/BURCH1</location>
+              <checksum type="md5">4E1AA0E78D99191F4698EEC437569D23</checksum>
+              <checksum type="sha1">B6373D02F3FD10E7E1AA0E3B3AE3205D6FB2541C</checksum>
+            </file>
+          </resource>
+        </contentMetadata>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+</foxml:digitalObject>

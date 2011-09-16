@@ -203,7 +203,9 @@ namespace :hypatia do
       FTK_FIXTURE_PIDS = [
         "hypatia:fixture_ftk_txt_item",
         "hypatia:fixture_ftk_wp6_item",
-        "hypatia:fixture_ftk_unknown_item"
+        "hypatia:fixture_ftk_unknown_item",
+        "hypatia:fixture_ftk_file_factory",
+        "hypatia:fixture_ftk_item_factory"
       ]
     
       desc "Load Hypatia FTK fixtures"
