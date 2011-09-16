@@ -257,6 +257,8 @@ class FtkItemAssembler
     hypatia_item.save
     raise "Couldn't save new hypatia item" unless !hypatia_item.pid.nil?
     
+    link_to_disk(hypatia_item,ff)
+    
     fileAsset = create_hypatia_file(hypatia_item,ff)
     
     build_ng_xml_datastream(hypatia_item, "descMetadata", buildDescMetadata(ff))
@@ -265,6 +267,34 @@ class FtkItemAssembler
 
     hypatia_item.save
     return hypatia_item
+  end
+  
+  # Find the object for the disk image that this file came from. 
+  # Create a relationship between this object and that one.
+  # @param [HypatiaFtkItem] hypatia_item
+  # @return [Boolean] true for success, false for failure
+  def link_to_disk(hypatia_item,ff)
+    solr_params={}
+    solr_params[:q]="file_id_t:#{ff.disk_image_number}"
+    solr_params[:qt]='standard'
+    solr_params[:fl]='id'
+    solr_response = Blacklight.solr.find(solr_params)
+    
+    # Log a message if we can't find any disk images that this file belongs to
+    if solr_response.docs.count == 0
+      @logger.warn "No disk image objects matching #{ff.disk_image_number}. #{hypatia_item.pid} has not been correctly populated"
+      return false
+    elsif solr_response.docs.count > 1
+      @logger.warn "Too many disk image objects matching #{ff.disk_image_number}. #{hypatia_item.pid} has not been correctly populated"
+      return false
+    else
+      document = solr_response.docs.first
+      foo = HypatiaDiskImageItem.load_instance(document[:id])
+      hypatia_item.add_relationship(:is_member_of,foo)
+      hypatia_item.save
+      @logger.debug "HypatiaFtkItem #{hypatia_item.pid} is now a member of HypatiaDiskImageItem #{foo.pid}"
+    end
+    return true
   end
   
   # Create a Nokogiri XML Datastream on the hypatia_item object
