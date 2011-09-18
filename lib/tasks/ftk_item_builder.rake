@@ -12,7 +12,7 @@ GIT_RESET_WAIT = 7
 
 namespace :hypatia do
   namespace :gould do
-      desc "Build ftk objects"
+      desc "Build ftk objects (do this after you load the disk objects)"
       task :build_ftk_file_items do   
         f = FtkItemAssembler.new
         gould_report = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/FTK\ xml/Report.xml"
@@ -21,7 +21,7 @@ namespace :hypatia do
         f.process(gould_report,file_dir,display_derivative_dir)
       end
   
-      desc "Build disk objects"
+      desc "Build disk objects (do this first)"
       task :build_ftk_disk_items do  
         disk_image_files_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Disk\ Image" 
         computer_media_photos_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Computer\ Media\ Photo" 
