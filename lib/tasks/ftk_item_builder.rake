@@ -52,6 +52,7 @@ namespace :hypatia do
         f = FtkItemAssembler.new
         report = "/usr/local/projects/hypatia_data/Virginia/cheuse/CheuseFTKReport/Report.xml"
         file_dir = "/usr/local/projects/hypatia_data/Virginia/cheuse/CheuseFTKReport"
+        f.collection_pid = "hypatia:cheuse_collection"
         f.process(report,file_dir)
       end
   end
@@ -69,6 +70,7 @@ namespace :hypatia do
         report = "/data_raw/Stanford/M0662\ Creeley/FTK\ xml/Report.xml"
         file_dir = "/data_raw/Stanford/M0662\ Creeley/FTK\ xml/files/"
         display_derivative_dir = "/data_raw/Stanford/M0662\ Creeley/Display\ Derivatives/"
+        f.collection_pid = "hypatia:creeley_collection"
         f.process(report,file_dir,display_derivative_dir)
       end
   end
