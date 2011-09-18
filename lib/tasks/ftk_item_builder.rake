@@ -29,6 +29,32 @@ namespace :hypatia do
         assembler.process
       end
   end
+  namespace :xanadu do
+      desc "Build disk objects"
+      task :build_ftk_disk_items do  
+        disk_image_files_dir = "/usr/local/projects/hypatia_data/Stanford/M1292\ Xanadu/Disk\ Image" 
+        computer_media_photos_dir = "/usr/local/projects/hypatia_data/Stanford/M1292\ Xanadu/Computer\ Media\ Photo" 
+        assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
+        assembler.process
+      end
+  end
+  namespace :creeley do
+      desc "Build disk objects (do this first)"
+      task :build_ftk_disk_items do  
+        disk_image_files_dir = "/data_raw/Stanford/M0662\ Creeley/Disk\ Image/" 
+        computer_media_photos_dir = "/data_raw/Stanford/M0662\ Creeley/Computer\ Media\ Photo" 
+        assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
+        assembler.process
+      end
+      desc "Build ftk objects (do this after you load the disk objects)"
+      task :build_ftk_file_items do   
+        f = FtkItemAssembler.new
+        report = "/data_raw/Stanford/M0662\ Creeley/FTK\ xml/Report.xml"
+        file_dir = "/data_raw/Stanford/M0662\ Creeley/FTK\ xml/files/"
+        display_derivative_dir = "/data_raw/Stanford/M0662\ Creeley/Display\ Derivatives/"
+        f.process(report,file_dir,display_derivative_dir)
+      end
+  end
 end
 
 # copy down the data from sul-brick & point this task at it
