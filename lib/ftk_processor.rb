@@ -135,10 +135,13 @@ class FtkProcessor
   def getLabels(node, ff)
     label_hash = {}
     labels = node.xpath("fo:table-row[fo:table-cell/fo:block[text()='Label']]/fo:table-cell[2]/fo:block/text()").to_s
-    labels.split(',[').each do |pair|
-      key = pair.split(']')[0].gsub('[','')
-      value = pair.split(']')[1].strip
-      ff.send("#{key}=".to_sym, value.gsub(/\s/, ' ').squeeze(" ").strip)
+    
+    if labels and labels =~ /\[/
+      labels.split(',[').each do |pair|
+        key = pair.split(']')[0].gsub('[','')
+        value = pair.split(']')[1].strip
+        ff.send("#{key}=".to_sym, value.gsub(/\s/, ' ').squeeze(" ").strip)
+      end
     end
   end
   
