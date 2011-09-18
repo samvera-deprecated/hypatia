@@ -49,7 +49,7 @@ class FtkItemAssembler
   # Process an FTK report and turn each of the files into fedora objects
   # @param [String] ftk_report the path to the FTK report
   # @param [String] file_dir the directory holding the files
-  def process(ftk_report, file_dir, display_derivative_dir)
+  def process(ftk_report, file_dir, display_derivative_dir=nil)
     @logger.debug "ftk report = #{ftk_report}"
     @logger.debug "file_dir = #{file_dir}"
     @ftk_report = ftk_report
@@ -58,9 +58,11 @@ class FtkItemAssembler
     raise "Directory #{file_dir} not found" unless File.directory? file_dir
     @file_dir = file_dir
     
-    # Set the value of the FTK display derivatives dir
-    raise "Directory #{display_derivative_dir} not found" unless File.directory? display_derivative_dir
-    @display_derivative_dir = display_derivative_dir
+    # Set the value of the FTK display derivatives dir if it exists
+    unless display_derivative_dir.nil?
+      raise "Directory #{display_derivative_dir} not found" unless File.directory? display_derivative_dir
+      @display_derivative_dir = display_derivative_dir
+    end
     
     @ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
     @ftk_processor.files.each do |ftk_file|
@@ -251,7 +253,11 @@ class FtkItemAssembler
   # Create a hypatia item level fedora object for an FTK file
   # @param [FtkFile] The FTK file object 
   # @return [ActiveFedora::Base]
-  def create_hypatia_item(ff)
+  def create_hypatia_item(ff)    
+    # Don't create objects for files that don't really exist
+    filepath = "#{@file_dir}/#{ff.export_path}"
+    return unless File.file? filepath
+    
     hypatia_item = HypatiaFtkItem.new
     hypatia_item.label=ff.filename
     hypatia_item.save
@@ -264,7 +270,7 @@ class FtkItemAssembler
     build_ng_xml_datastream(hypatia_item, "descMetadata", buildDescMetadata(ff))
     build_ng_xml_datastream(hypatia_item, "contentMetadata", buildContentMetadata(ff,hypatia_item.pid,fileAsset.pid))
     build_ng_xml_datastream(hypatia_item, "rightsMetadata", buildRightsMetadata(ff))
-
+    
     hypatia_item.save
     return hypatia_item
   end
@@ -333,13 +339,16 @@ class FtkItemAssembler
     filepath = "#{@file_dir}/#{ff.export_path}"
     file = File.new(filepath)
     hypatia_file.add_file_datastream(file, {:dsid => "content", :label => ff.filename})
-    html_filepath = "#{@display_derivative_dir}/#{ff.display_derivative}"
-    if File.file? html_filepath
-      html_file = File.new(html_filepath)
-      derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => "Display derivative for #{ff.filename}", :controlGroup => 'M', :blob => html_file)
-      hypatia_file.add_datastream(derivative_ds)
-    else
-      @logger.warn "Couldn't find expected display derivative file #{html_filepath}"
+    
+    if @display_derivative_dir 
+      html_filepath = "#{@display_derivative_dir}/#{ff.display_derivative}"
+      if File.file? html_filepath
+        html_file = File.new(html_filepath)
+        derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => "Display derivative for #{ff.filename}", :controlGroup => 'M', :blob => html_file)
+        hypatia_file.add_datastream(derivative_ds)
+      else
+        @logger.warn "Couldn't find expected display derivative file #{html_filepath}"
+      end
     end
     hypatia_file.save
     return hypatia_file
