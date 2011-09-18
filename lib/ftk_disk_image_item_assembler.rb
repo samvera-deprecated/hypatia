@@ -22,14 +22,29 @@ class FtkDiskImageItemAssembler
   # Create fedora objects out of the ftk disk image files
   def process
     @filehash.each { |disk|
-      fdi = FtkDiskImage.new(:txt_file => disk[1][:txt])  
-      if File.file? fdi.txt_file
+      if (disk[1][:txt] and File.file? disk[1][:txt])
+        fdi = FtkDiskImage.new(:txt_file => disk[1][:txt])  
         obj = build_object(fdi)
-        # puts obj.pid
-      else
-        @logger.error "Couldn't find txt file #{fdi.txt_file}"
+      else 
+        # If we don't have a .txt file describing this disk, 
+        # just record the disk number and add the FileAsset
+        fdi = FtkDiskImage.new()
+        fdi.disk_number = disk[0].to_s
+        fdi.disk_type = "unknown"
+        fdi.md5 = "unknown"
+        @logger.error "Couldn't find txt file for #{disk[1][:dd]}"
+        obj = build_object(fdi)
       end
     }
+  end
+  
+  # Sometimes we don't have a .txt file describing a disk, and we have to
+  # extrapolate the disk number from the filepath
+  # @param [String] filepath
+  # @return [String] disk_number
+  # @example 
+  def get_disk_number(filepath)
+    
   end
   
   # Read in all the files in @disk_image_files_dir.
