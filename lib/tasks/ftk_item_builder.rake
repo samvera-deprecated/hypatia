@@ -38,14 +38,30 @@ namespace :hypatia do
         assembler.process
       end
   end
-  namespace :creeley do
-      desc "Build disk objects (do this first)"
-      task :build_ftk_disk_items do  
-        disk_image_files_dir = "/data_raw/Stanford/M0662\ Creeley/Disk\ Image/" 
-        computer_media_photos_dir = "/data_raw/Stanford/M0662\ Creeley/Computer\ Media\ Photo" 
-        assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
-        assembler.process
+  namespace :cheuse do
+      # desc "Build disk objects (do this first)"
+      # task :build_ftk_disk_items do  
+      #   disk_image_files_dir = "/usr/local/projects/hypatia_data/Virginia/cheuse/oldFiles/diskImages" 
+      #   computer_media_photos_dir = "/usr/local/projects/hypatia_data/Virginia/cheuse/oldFiles/photos" 
+      #   assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
+      #   assembler.process
+      # end
+      desc "Build ftk objects (do this after you load the disk objects)"
+      task :build_ftk_file_items do   
+        f = FtkItemAssembler.new
+        report = "/usr/local/projects/hypatia_data/Virginia/cheuse/CheuseFTKReport/Report.xml"
+        file_dir = "/usr/local/projects/hypatia_data/Virginia/cheuse/CheuseFTKReport"
+        f.process(report,file_dir)
       end
+  end
+  namespace :creeley do
+      # desc "Build disk objects (do this first)"
+      # task :build_ftk_disk_items do  
+      #   disk_image_files_dir = "/data_raw/Stanford/M0662\ Creeley/Disk\ Image/" 
+      #   computer_media_photos_dir = "/data_raw/Stanford/M0662\ Creeley/Computer\ Media\ Photo" 
+      #   assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
+      #   assembler.process
+      # end
       desc "Build ftk objects (do this after you load the disk objects)"
       task :build_ftk_file_items do   
         f = FtkItemAssembler.new
