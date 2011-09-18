@@ -18,16 +18,17 @@ namespace :hypatia do
         gould_report = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/FTK\ xml/Report.xml"
         file_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/FTK\ xml/"
         display_derivative_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Display\ Derivatives"
+        f.collection_pid = "hypatia:gould_collection"
         f.process(gould_report,file_dir,display_derivative_dir)
       end
   
-      desc "Build disk objects (do this first)"
-      task :build_ftk_disk_items do  
-        disk_image_files_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Disk\ Image" 
-        computer_media_photos_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Computer\ Media\ Photo" 
-        assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
-        assembler.process
-      end
+      # desc "Build disk objects (do this first)"
+      # task :build_ftk_disk_items do  
+      #   disk_image_files_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Disk\ Image" 
+      #   computer_media_photos_dir = "/usr/local/projects/hypatia_data/Stanford/M1437\ Gould/Computer\ Media\ Photo" 
+      #   assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
+      #   assembler.process
+      # end
   end
   namespace :xanadu do
       desc "Build disk objects"

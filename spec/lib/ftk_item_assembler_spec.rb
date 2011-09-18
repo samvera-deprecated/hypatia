@@ -10,7 +10,6 @@ require 'factory_girl'
 require 'tempfile'
 require File.join(File.dirname(__FILE__), "/../fixtures/ftk/factories/ftk_files.rb")
 
-
 describe FtkItemAssembler do
   before(:all) do
     @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
@@ -26,6 +25,11 @@ describe FtkItemAssembler do
     it "takes a fedora config file as an argument" do
       hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
       hfo.fedora_config.should eql(@fedora_config)
+    end
+    it "sets the pid of the collection object these items belong to" do
+      hfo = FtkItemAssembler.new
+      hfo.collection_pid = "hypatia:fixture_coll"
+      hfo.collection_pid.should eql("hypatia:fixture_coll")
     end
     it "processes an FTK report" do
       hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
@@ -88,7 +92,8 @@ describe FtkItemAssembler do
       
       @ff = FactoryGirl.build(:ftk_file)
       # @ff.export_path = 'files/stephenjaygould.jpeg'
-      @fia = FtkItemAssembler.new()   
+      @fia = FtkItemAssembler.new()  
+      @fia.collection_pid = "hypatia:fixture_coll" 
       ActiveFedora.init()
       @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
       @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk") 
@@ -124,6 +129,10 @@ describe FtkItemAssembler do
       @hi.relationships[:self][:is_member_of].first.gsub("info:fedora/",'').should eql(@disk_object.pid)
       # Should @disk_object now have an inbound relationship?
       # puts @disk_object.inbound_relationships.inspect
+    end
+    
+    it "has an isMemberOfCollection relationship with a collection object" do
+      @hi.relationships[:self][:is_member_of_collection].first.gsub("info:fedora/",'').should eql("hypatia:fixture_coll")
     end
     
     it "has a FileAsset part" do

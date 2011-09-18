@@ -19,6 +19,7 @@ class FtkItemAssembler
   attr_accessor :display_derivative_dir           # Where should I copy the display derivative HTML from? 
   attr_accessor :bag_destination    # When I create BagIt packages, where should they go? 
   attr_accessor :fedora_config      # The fedora config we're connecting to, if it has been set explicitly 
+  attr_accessor :collection_pid     # The collection these files belong to
   
   # @param [Hash] args 
   # @param [Hash[:fedora_config]] 
@@ -264,7 +265,7 @@ class FtkItemAssembler
     raise "Couldn't save new hypatia item" unless !hypatia_item.pid.nil?
     
     link_to_disk(hypatia_item,ff)
-    
+    link_to_collection(hypatia_item)
     fileAsset = create_hypatia_file(hypatia_item,ff)
     
     build_ng_xml_datastream(hypatia_item, "descMetadata", buildDescMetadata(ff))
@@ -273,6 +274,14 @@ class FtkItemAssembler
     
     hypatia_item.save
     return hypatia_item
+  end
+  
+  # Create an "is_member_of_collection" relationship
+  # @param [HypatiaFtkItem]
+  def link_to_collection(hypatia_item)
+    if @collection_pid
+      hypatia_item.add_relationship(:is_member_of_collection,@collection_pid)
+    end
   end
   
   # Find the object for the disk image that this file came from. 
