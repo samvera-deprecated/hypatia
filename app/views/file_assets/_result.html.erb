@@ -1,0 +1,16 @@
+<tr class="file_asset" id ="assets_<%= format_pid(result["id"]) %>" >  
+  <td>
+    <%= link_to result[solr_name("title", :text)], {:controller=>"file_assets",:action=>"show",:id=>result["id"]} %>
+  </td>
+  <td>
+	
+   <% if editor? %>
+    	<% if @container.nil? %>
+    		<% file_asset_url = {:controller=>"file_assets",:action=>"show",:id=>result["id"]} %>
+    	<% else %>
+    		<% file_asset_url = asset_file_asset_path(@container.pid, result["id"]) %>
+    	<% end %>
+    	<%= link_to("Delete", "/file_assets/" + result["id"] + "?container_id=" + @document[:id], :method => :delete, :confirm => "Are you sure you want to delete this file?") %>
+   <% end %>
+  </td>
+</tr>
