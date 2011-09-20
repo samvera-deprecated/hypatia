@@ -44,7 +44,7 @@ namespace :hypatia do
         if !ENV["dir"].nil? 
           parent_dir = ENV["dir"]
         else
-          puts "You must specify the directory containing the FTK disk image dirs, etc.  Example: 'rake hypatia:repo:disk_image_items:build dir=/data_raw/Stanford/M1292\ Xanadu' "
+          puts "You must specify the directory containing the disk image dirs, etc.  Example: 'rake hypatia:repo:disk_image_items:build dir=/data_raw/Stanford/M1292\ Xanadu' "
         end
         if !parent_dir.nil?
           disk_image_files_dir = parent_dir + "Disk\ Image" 
@@ -81,7 +81,10 @@ end # namespace hypatia
 #-------------- SUPPORTING METHODS -------------
 
 
-# NAOMI_MUST_COMMENT_THIS_METHOD
+# build hypatia_ftk_item objects in Fedora (and Solr) indicated by Rails environment
+# @param [String] path to FTK's Report.xml file
+# @param [String] path to directory containing FTK files (usually .../FTK xml)
+# @param [String] path to directory containing FTK created display derivatives
 def build_ftk_file_items(ftk_report, ftk_xml_file_dir, display_derivative_dir)
   # FIXME:  could rewrite the processing so it doesn't need RAILS environment:
   #   load foxml into fedora, then call Solrizer::Fedora::Solrizer.solrize(pid)
@@ -89,7 +92,9 @@ def build_ftk_file_items(ftk_report, ftk_xml_file_dir, display_derivative_dir)
   f.process(ftk_report, ftk_xml_file_dir, display_derivative_dir)
 end
 
-# NAOMI_MUST_COMMENT_THIS_METHOD
+# build hypatia_disk_image objects in Fedora (and Solr) indicated by Rails environment
+# @param [String] path to directory containing disk image files
+# @param [String] path to directory containing photos of the computer media
 def build_ftk_disk_items(disk_image_files_dir, computer_media_photos_dir)
   # FIXME:  could rewrite the processing so it doesn't need RAILS environment:
   #   load foxml into fedora, then call Solrizer::Fedora::Solrizer.solrize(pid)
