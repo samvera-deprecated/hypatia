@@ -19,6 +19,7 @@ namespace :hypatia do
     end
     
     namespace :ftk_file_items do
+# FIXME: needs to get collection_pid as argument
       desc "Create ftk_item objects in Fedora (and Solr) from parent dir of 'FTK xml' and 'Display Derivatives' dirs. Example: 'rake hypatia:repo:ftk_file_items:build dir=/data_raw/Stanford/M1437\ Gould' " 
       task :build do
         if !ENV["dir"].nil? 
@@ -39,6 +40,7 @@ namespace :hypatia do
     end # namespace :ftk_file_items
 
     namespace :disk_image_items do
+# FIXME: needs to get collection_pid as argument
       desc "Create disk_image_item objects in Fedora (and Solr) from parent dir of 'Disk Image' and 'Computer Media Photo' dirs. Example: 'rake hypatia:repo:disk_image_items:build dir=/data_raw/Stanford/M1292\ Xanadu' " 
       task :build do
         if !ENV["dir"].nil? 
@@ -81,6 +83,8 @@ end # namespace hypatia
 #-------------- SUPPORTING METHODS -------------
 
 
+# FIXME: needs to get collection_pid as argument
+
 # build hypatia_ftk_item objects in Fedora (and Solr) indicated by Rails environment
 # @param [String] path to FTK's Report.xml file
 # @param [String] path to directory containing FTK files (usually .../FTK xml)
@@ -89,6 +93,7 @@ def build_ftk_file_items(ftk_report, ftk_xml_file_dir, display_derivative_dir)
   # FIXME:  could rewrite the processing so it doesn't need RAILS environment:
   #   load foxml into fedora, then call Solrizer::Fedora::Solrizer.solrize(pid)
   f = FtkItemAssembler.new
+#  f.collection_pid = coll_pid
   f.process(ftk_report, ftk_xml_file_dir, display_derivative_dir)
 end
 
