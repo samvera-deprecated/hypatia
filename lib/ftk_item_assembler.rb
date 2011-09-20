@@ -20,6 +20,7 @@ class FtkItemAssembler
   attr_accessor :bag_destination    # When I create BagIt packages, where should they go? 
   attr_accessor :fedora_config      # The fedora config we're connecting to, if it has been set explicitly 
   attr_accessor :collection_pid     # The collection these files belong to
+  attr_accessor :collection_name    # The name of the collection. Used in generating field values for this item.
   
   # @param [Hash] args 
   # @param [Hash[:fedora_config]] 
@@ -34,7 +35,37 @@ class FtkItemAssembler
       ActiveFedora.init
     end
     
+    if args[:collection_pid]
+      @collection_pid = args[:collection_pid]
+      get_collection_info
+    end
+    
     setBagDestination(args)
+  end
+  
+  # Fetch the collection object from solr and get data from it
+  def get_collection_info
+    solr_params={}
+    solr_params[:q]="id:#{@collection_pid.gsub(':','*')}"
+    # solr_params[:qt]='document'
+    solr_params[:fl]='title_t,id'
+    solr_response = Blacklight.solr.find(solr_params)
+    
+    # Log a message if we can't find any disk images that this file belongs to
+    if solr_response.docs.count == 0
+      @logger.warn "No collection objects matching #{@collection_pid}."
+    else
+      document = solr_response.docs.first
+      @collection_name = document[:title_t].to_s
+    end
+  end
+  
+  # Create an "is_member_of_collection" relationship
+  # @param [HypatiaFtkItem]
+  def link_to_collection(hypatia_item)
+    if @collection_pid
+      hypatia_item.add_relationship(:is_member_of_collection,@collection_pid)
+    end
   end
   
   # Determine where bags should be written and set the value of @bag_destination
@@ -132,6 +163,7 @@ class FtkItemAssembler
           xml['mods'].title_ ff.title
         }
         xml['mods'].location {
+          xml.text "#{@collection_name} - #{ff.disk_image_number} (#{ff.medium})"
           xml['mods'].physicalLocation("type"=>"disk"){
             xml.text ff.disk_image_number
           }
@@ -274,14 +306,6 @@ class FtkItemAssembler
     
     hypatia_item.save
     return hypatia_item
-  end
-  
-  # Create an "is_member_of_collection" relationship
-  # @param [HypatiaFtkItem]
-  def link_to_collection(hypatia_item)
-    if @collection_pid
-      hypatia_item.add_relationship(:is_member_of_collection,@collection_pid)
-    end
   end
   
   # Find the object for the disk image that this file came from. 

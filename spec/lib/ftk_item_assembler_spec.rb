@@ -12,10 +12,15 @@ require File.join(File.dirname(__FILE__), "/../fixtures/ftk/factories/ftk_files.
 
 describe FtkItemAssembler do
   before(:all) do
+    delete_fixture("hypatia:fixture_xanadu_collection")
+    import_fixture("hypatia:fixture_xanadu_collection")
     @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
     @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
     @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/files")
     @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives")
+  end
+  after(:all) do
+    delete_fixture("hypatia:fixture_xanadu_collection")
   end
   context "basic behavior" do
     it "can instantiate" do
@@ -31,6 +36,10 @@ describe FtkItemAssembler do
       hfo.collection_pid = "hypatia:fixture_coll"
       hfo.collection_pid.should eql("hypatia:fixture_coll")
     end
+    it "gets the name of the collection it belongs to" do
+      hfo = FtkItemAssembler.new(:collection_pid => "hypatia:fixture_xanadu_collection")
+      hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
+    end
     it "processes an FTK report" do
       hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
       hfo.expects(:create_hypatia_item).at_least(56).returns(nil)
@@ -43,13 +52,21 @@ describe FtkItemAssembler do
   
   context "creating datastreams" do
     before(:all) do
+      delete_fixture("hypatia:fixture_xanadu_collection")
+      import_fixture("hypatia:fixture_xanadu_collection")
       @ff = FactoryGirl.build(:ftk_file)
       @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
-      @hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
+      @hfo = FtkItemAssembler.new(:fedora_config => @fedora_config, :collection_pid => "hypatia:fixture_xanadu_collection")
+    end
+    after(:all) do
+      delete_fixture("hypatia:fixture_xanadu_collection")
     end
     it "creates a descMetadata file" do
       doc = Nokogiri::XML(@hfo.buildDescMetadata(@ff))
+      @hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
+      
       doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.title)
+      doc.xpath("/mods:mods/mods:location/text()").to_s.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler - CM5551212 (Punch Cards)")
       doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='disk']/text()").to_s.should eql(@ff.disk_image_number)
       doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='filepath']/text()").to_s.should eql(@ff.filepath)
       doc.xpath("/mods:mods/mods:originInfo/mods:dateCreated/text()").to_s.should eql(@ff.file_creation_date)
@@ -186,5 +203,31 @@ describe FtkItemAssembler do
         bag.valid?.should eql(true)
        }
     end
+  end
+end
+
+
+# import a fixture
+def import_fixture(pid)
+  filename = File.join(File.dirname(__FILE__), "/../fixtures/#{pid.gsub(":","_")}.foxml.xml")    
+  file = File.new(filename, "r")
+  result = Fedora::Repository.instance.ingest(file.read)
+  if result
+    if !pid.nil?
+      solrizer = Solrizer::Fedora::Solrizer.new 
+      solrizer.solrize(pid) 
+    end    
+  else
+    raise "Failed to ingest the fixture."
+  end
+end
+  
+# delete a fixture
+def delete_fixture(pid)
+  begin
+    ActiveFedora::Base.load_instance(pid).delete
+  rescue ActiveFedora::ObjectNotFoundError
+  rescue Errno::ECONNREFUSED => e
+    raise "Can't connect to Fedora! Are you sure jetty is running?"
   end
 end
