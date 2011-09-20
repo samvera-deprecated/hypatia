@@ -120,17 +120,18 @@ namespace :hypatia do
   namespace :data do
     namespace :coll do
       
+      # FIXME:  should perhaps just grab all foxml.xml objects or all hypatia_*_collection.foxml.xml in a directory??
+      #   except also need pids for solrizing ...
       COLL_OBJS = {
-#        "hypatia_cheuse_collection.foxml.xml" => "hypatia:cheuse_collection",
+        "hypatia_cheuse_collection.foxml.xml" => "hypatia:cheuse_collection",
         "hypatia_creeley_collection.foxml.xml" => "hypatia:creeley_collection",
-#        "hypatia_gallagher_collection.foxml.xml" => "hypatia:gallaher_collection",
-#        "hypatia_gould_collection.foxml.xml" => "hypatia:gould_collection",
+        "hypatia_gallagher_collection.foxml.xml" => "hypatia:gallagher_collection",
+        "hypatia_gould_collection.foxml.xml" => "hypatia:gould_collection",
         "hypatia_koch_collection.foxml.xml" => "hypatia:koch_collection",
-#        "hypatia_sha_collection.foxml.xml" => "hypatia:sha_collection",
-#        "hypatia_tobin_collection.foxml.xml" => "hypatia:tobin_collection",
-        "hypatia_tobin_collection.foxml.xml" => "hypatia:tobin_collection"
-#        "hypatia_turner_collection.foxml.xml" => "hypatia:turner_collection",
-#        "hypatia_xanadu_collection.foxml.xml" => "hypatia:xanadu_collection",
+        "hypatia_sha_collection.foxml.xml" => "hypatia:sha_collection",
+        "hypatia_tobin_collection.foxml.xml" => "hypatia:tobin_collection",
+        "hypatia_turner_collection.foxml.xml" => "hypatia:turner_collection",
+        "hypatia_xanadu_collection.foxml.xml" => "hypatia:xanadu_collection",
       }
 
       desc "Load all collection objects"
@@ -202,7 +203,9 @@ namespace :hypatia do
       FTK_FIXTURE_PIDS = [
         "hypatia:fixture_ftk_txt_item",
         "hypatia:fixture_ftk_wp6_item",
-        "hypatia:fixture_ftk_unknown_item"
+        "hypatia:fixture_ftk_unknown_item",
+        "hypatia:fixture_ftk_file_factory",
+        "hypatia:fixture_ftk_item_factory"
       ]
     
       desc "Load Hypatia FTK fixtures"
