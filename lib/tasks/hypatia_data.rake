@@ -35,7 +35,7 @@ namespace :hypatia do
       end
 
 #      desc "delete a range of objects, then create the ftk file items per the directory indicated.  Example: 'rake hypatia:repo:ftk_file_items:refresh[22, 50] dir=/data_raw/Stanford/\"M1437\ Gould\"'"
-#      task :refresh, :start_arg, :stop_arg => ["hypatia:repo:delete", :build]
+#      task :refresh, :first, :last => ["hypatia:repo:delete", :build]
     end # namespace :ftk_file_items
 
     namespace :disk_image_items do
@@ -54,7 +54,7 @@ namespace :hypatia do
       end
 
 #      desc "delete a range of objects, then create the disk image items per the directory indicated. Example: 'rake hypatia:repo:disk_image_items:refresh[22, 50] dir=/data_raw/Stanford/\"M1292\ Xanadu\"'"
-#      task :refresh, :start_arg, :stop_arg => ["hypatia:repo:delete", :build]
+#      task :refresh, :first, :last => ["hypatia:repo:delete", :build]
     end # namespace :disk_items
 
     top_data_dir = "/data_raw/"
