@@ -75,10 +75,9 @@ describe FtkDiskImageItemAssembler do
       @item = @assembler.build_object(@fdi)
     end
     after(:all) do
-      # delete_fixture("hypatia:fixture_xanadu_collection")
-      # @item.parts.first.delete
-      # @item.delete
-      puts @item.pid
+      delete_fixture("hypatia:fixture_xanadu_collection")
+      @item.parts.first.delete
+      @item.delete
     end
     it "builds an object" do
       @item.should be_kind_of(HypatiaDiskImageItem)
