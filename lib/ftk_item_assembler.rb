@@ -160,8 +160,20 @@ class FtkItemAssembler
       xml.mods('xmlns:mods' => "http://www.loc.gov/mods/v3") {
         xml.parent.namespace = xml.parent.namespace_definitions.first
         xml['mods'].titleInfo {
-          xml['mods'].title_ ff.title
+          xml['mods'].title_ ff.filename
         }
+        
+        # If we have a title value, we know this item is part of a larger work
+        if ff.title
+          xml['mods'].relatedItem('displayLabel' => 'Appears in', 'type' => 'host') {
+            xml['mods'].titleInfo {
+              xml['mods'].title {
+                xml.text ff.title
+              }
+            }
+          }
+        end
+        
         xml['mods'].location {
           xml.text "#{@collection_name} - #{ff.disk_image_number} (#{ff.medium})"
           xml['mods'].physicalLocation("type"=>"disk"){
@@ -288,8 +300,8 @@ class FtkItemAssembler
   # @return [ActiveFedora::Base]
   def create_hypatia_item(ff)    
     # Don't create objects for files that don't really exist
-    filepath = "#{@file_dir}/#{ff.export_path}"
-    return unless File.file? filepath
+    # filepath = "#{@file_dir}/#{ff.export_path}"
+    # return unless File.file? filepath
     
     hypatia_item = HypatiaFtkItem.new
     hypatia_item.label=ff.filename
@@ -321,13 +333,11 @@ class FtkItemAssembler
     
     # Log a message if we can't find any disk images that this file belongs to
     if solr_response.docs.count == 0
-      @logger.warn "No disk image objects matching #{ff.disk_image_number}. #{hypatia_item.pid} has not been correctly populated"
-      return false
+      raise "No disk image objects matching #{ff.disk_image_number}. #{hypatia_item.pid} has not been correctly populated"
     elsif solr_response.docs.count > 1
-      @logger.warn "Too many disk image objects matching #{ff.disk_image_number}. #{hypatia_item.pid} has not been correctly populated"
-      return false
+      raise "Too many disk image objects matching #{ff.disk_image_number}. #{hypatia_item.pid} has not been correctly populated"
     else
-      document = solr_response.docs.first
+      document = solr_response.docs.first      
       foo = HypatiaDiskImageItem.load_instance(document[:id])
       hypatia_item.add_relationship(:is_member_of,foo)
       hypatia_item.save

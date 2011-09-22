@@ -11,18 +11,19 @@ require 'tempfile'
 require File.join(File.dirname(__FILE__), "/../fixtures/ftk/factories/ftk_files.rb")
 
 describe FtkItemAssembler do
-  before(:all) do
-    delete_fixture("hypatia:fixture_xanadu_collection")
-    import_fixture("hypatia:fixture_xanadu_collection")
-    @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
-    @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
-    @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/files")
-    @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives")
-  end
-  after(:all) do
-    delete_fixture("hypatia:fixture_xanadu_collection")
-  end
+
   context "basic behavior" do
+    before(:all) do
+      delete_fixture("hypatia:fixture_xanadu_collection")
+      import_fixture("hypatia:fixture_xanadu_collection")
+      @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
+      @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
+      @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/files")
+      @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives")
+    end
+    after(:all) do
+      delete_fixture("hypatia:fixture_xanadu_collection")
+    end
     it "can instantiate" do
       hfo = FtkItemAssembler.new
       hfo.class.should eql(FtkItemAssembler)
@@ -64,8 +65,8 @@ describe FtkItemAssembler do
     it "creates a descMetadata file" do
       doc = Nokogiri::XML(@hfo.buildDescMetadata(@ff))
       @hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
-      
-      doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.title)
+      doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.filename)
+      doc.xpath("/mods:mods/mods:relatedItem[@displayLabel='Appears in']/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.title)
       doc.xpath("/mods:mods/mods:location/text()").to_s.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler - CM5551212 (Punch Cards)")
       doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='disk']/text()").to_s.should eql(@ff.disk_image_number)
       doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='filepath']/text()").to_s.should eql(@ff.filepath)
@@ -101,17 +102,10 @@ describe FtkItemAssembler do
   
   context "creating fedora objects" do
     before(:all) do
-      fdi = FactoryGirl.build(:ftk_disk_image)
-      @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
-      @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
-      @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
-      @disk_object = @foo.build_object(fdi)
+      @disk_object = build_fixture_disk_object
       
       @ff = FactoryGirl.build(:ftk_file)
-      # @ff.export_path = 'files/stephenjaygould.jpeg'
-      @fia = FtkItemAssembler.new()  
-      @fia.collection_pid = "hypatia:fixture_coll" 
-      ActiveFedora.init()
+      @fia = FtkItemAssembler.new(:collection_pid => "hypatia:fixture_coll")  
       @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
       @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk") 
       @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives") 
@@ -144,8 +138,6 @@ describe FtkItemAssembler do
     
     it "has an isMemberOf relationship with a disk object" do
       @hi.relationships[:self][:is_member_of].first.gsub("info:fedora/",'').should eql(@disk_object.pid)
-      # Should @disk_object now have an inbound relationship?
-      # puts @disk_object.inbound_relationships.inspect
     end
     
     it "has an isMemberOfCollection relationship with a collection object" do
@@ -206,6 +198,32 @@ describe FtkItemAssembler do
   end
 end
 
+# Create a HypatiaDiskImageItem from the data in the FtkDiskImage fixture
+# @return [FtkDiskImageItem]
+def build_fixture_disk_object
+  clean_fixture_disk_objects 
+  fdi = FactoryGirl.build(:ftk_disk_image)
+  @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+  @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
+  @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+  @disk_object = @foo.build_object(fdi)
+  return @disk_object
+end
+
+# Tying a file object to a disk object relies on having only one solr document 
+# that matches a given disk number. Ensure we remove all instances of the disk object
+# fixture before running any test that requires disk to file linking. 
+def clean_fixture_disk_objects
+  fdi = FactoryGirl.build(:ftk_disk_image)
+  solr_params={}
+  solr_params[:q]="file_id_t:#{fdi.disk_number}"
+  solr_params[:qt]='standard'
+  solr_params[:fl]='id'
+  solr_response = Blacklight.solr.find(solr_params)
+  solr_response.docs.each do |doc|
+    ActiveFedora::Base.load_instance(doc[:id]).delete    
+  end
+end
 
 # import a fixture
 def import_fixture(pid)
