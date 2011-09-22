@@ -168,8 +168,13 @@ class FtkDiskImageItemAssembler
     dd_file = FileAsset.new
     dd_file.label="fileAsset for FTK disk image #{fdi.disk_type} #{fdi.disk_number}"
     dd_file.add_relationship(:is_part_of,hypatia_disk_image_item)
-    file = File.new(@filehash[fdi.disk_number.to_sym][:dd])
-    dd_file.add_file_datastream(file, {:dsid => "content", :label => "Disk image file for #{fdi.disk_type} #{fdi.disk_number}"})
+    
+    # For now, only add the dd file for the Xanadu collection
+    if @collection_pid =~ /xanadu/
+      file = File.new(@filehash[fdi.disk_number.to_sym][:dd])
+      dd_file.add_file_datastream(file, {:dsid => "content", :label => "Disk image file for #{fdi.disk_type} #{fdi.disk_number}"})
+    end
+    
     add_photos_to_dd_file_asset(dd_file,fdi)
     dd_file.save
     return dd_file
