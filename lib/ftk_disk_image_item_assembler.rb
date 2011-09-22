@@ -44,10 +44,9 @@ class FtkDiskImageItemAssembler
   # Sometimes we don't have a .txt file describing a disk, and we have to
   # extrapolate the disk number from the filepath
   # @param [String] filepath
-  # @return [String] disk_number
-  # @example 
+  # @return [String] disk_number 
   def get_disk_number(filepath)
-    
+    # not written yet
   end
   
   # Read in all the files in @disk_image_files_dir.
