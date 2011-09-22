@@ -5,4 +5,5 @@ class HypatiaDiskImageItem < ActiveFedora::Base
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata
   has_bidirectional_relationship "part_of", :is_part_of, :has_part
   has_bidirectional_relationship "sets", :is_member_of, :has_member
+  has_relationship "collections", :is_member_of_collection, :type => HypatiaCollection
 end
