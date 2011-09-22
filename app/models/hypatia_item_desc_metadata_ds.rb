@@ -7,8 +7,19 @@ class HypatiaItemDescMetadataDS < ActiveFedora::NokogiriDatastream
         
     t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-3.xsd")
 
+    t.specific(:path=>"mods"){
+      t.title_info(:ref=>[:title_info], :index_as=>[:sortable])
+    }
+
     t.title_info(:path=>"titleInfo") {
-      t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable], :label=>"title")
+      t.title(:path=>"title", :index_as=>[:searchable, :displayable], :label=>"title")
+      # t.title(:path=>"title", :index_as=>[:searchable, :displayable], :label=>"title")
+    }
+    
+    t.related_item(:path=>"relatedItem") {
+      t.related_title_info(:path=>"titleInfo") {
+        t.related_title(:path=>"title", :index_as=>[:searchable, :displayable], :label=>"related title")
+      }
     }
     
     t.type_of_resource(:path=>"typeOfResource", :index_as=>[:searchable, :displayable])
@@ -24,7 +35,7 @@ class HypatiaItemDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.local_id(:path=>"identifier", :attributes=>{:type=>"local"}, :index_as=>[:searchable, :displayable, :sortable])
 
     # proxy declarations
-    t.title(:proxy=>[:title_info, :title])
+    t.title(:proxy=>[:specific, :title_info, :title])
     t.extent(:proxy=>[:physical_desc, :extent])
     t.form(:proxy=>[:physical_desc, :form])
     t.digital_origin(:proxy=>[:physical_desc, :digital_origin])
