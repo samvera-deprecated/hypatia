@@ -350,7 +350,7 @@
   </module>
   <module role="org.fcrepo.server.resourceIndex.ResourceIndex" class="org.fcrepo.server.resourceIndex.ResourceIndexModule">
     <comment>Supports the ResourceIndex.</comment>
-    <param name="level" value="0">
+    <param name="level" value="1">
       <comment>(required) 
             Index level. Currently, only 0, and 1 are supported levels. 
             0 = off and 1 = on.
