@@ -6,6 +6,7 @@ class FtkDiskImageItemAssembler
   attr_accessor :disk_image_files_dir   # The directory containing the disk images
   attr_accessor :computer_media_photos_dir # The directory containing photos of the physical media (e.g., floppy disks)
   attr_reader :filehash # The hash were we store the files we're processing
+  attr_accessor :collection_pid         # What collection are these files part of?
   
   def initialize(args)
     @logger = Logger.new('log/ftk_disk_image_item_assembler.log')
@@ -15,6 +16,8 @@ class FtkDiskImageItemAssembler
     @disk_image_files_dir = args[:disk_image_files_dir]
     raise "Can't find directory #{args[:computer_media_photos_dir]}" unless File.directory? args[:computer_media_photos_dir]
     @computer_media_photos_dir = args[:computer_media_photos_dir]
+    @collection_pid = args[:collection_pid]
+    
     @filehash = {}
     build_file_hash
   end
@@ -147,6 +150,7 @@ class FtkDiskImageItemAssembler
   def build_object(fdi)
     hypatia_disk_image_item = HypatiaDiskImageItem.new
     hypatia_disk_image_item.label="#{fdi.disk_type} #{fdi.disk_number}"
+    hypatia_disk_image_item.add_relationship(:is_member_of_collection,@collection_pid)
     hypatia_disk_image_item.save
     dd_file = create_dd_file_asset(hypatia_disk_image_item,fdi)
     build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", buildDescMetadata(fdi))

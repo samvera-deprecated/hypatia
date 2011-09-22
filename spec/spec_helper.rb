@@ -87,4 +87,29 @@ Spec::Runner.configure do |config|
     File.new(File.join(File.dirname(__FILE__), 'fixtures', file))
   end
   
+  # import a fixture
+  def import_fixture(pid)
+    filename = File.join(File.dirname(__FILE__), "/fixtures/#{pid.gsub(":","_")}.foxml.xml")    
+    file = File.new(filename, "r")
+    result = Fedora::Repository.instance.ingest(file.read)
+    if result
+      if !pid.nil?
+        solrizer = Solrizer::Fedora::Solrizer.new 
+        solrizer.solrize(pid) 
+      end    
+    else
+      raise "Failed to ingest the fixture."
+    end
+  end
+
+  # delete a fixture
+  def delete_fixture(pid)
+    begin
+      ActiveFedora::Base.load_instance(pid).delete
+    rescue ActiveFedora::ObjectNotFoundError
+    rescue Errno::ECONNREFUSED => e
+      raise "Can't connect to Fedora! Are you sure jetty is running?"
+    end
+  end
+  
 end

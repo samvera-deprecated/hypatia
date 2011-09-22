@@ -4,12 +4,21 @@ require File.join(File.dirname(__FILE__), "/../../lib/ftk_disk_image_item_assemb
 describe FtkDiskImageItemAssembler do
   context "basic behavior" do
     before(:all) do
+      delete_fixture("hypatia:fixture_xanadu_collection")
+      import_fixture("hypatia:fixture_xanadu_collection")
+      @collection_pid = "hypatia:fixture_xanadu_collection"
       @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
       @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
-      @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+      @foo = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid,:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+    end
+    after(:all) do
+      delete_fixture("hypatia:fixture_xanadu_collection")
     end
     it "has a source of disk image files" do
       @foo.disk_image_files_dir.should eql(@disk_image_files_dir)
+    end
+    it "knows what collection the objects belong to" do
+      @foo.collection_pid.should eql(@collection_pid)
     end
     it "has a source of computer media photos" do
       @foo.computer_media_photos_dir.should eql(@computer_media_photos_dir)
@@ -55,21 +64,29 @@ describe FtkDiskImageItemAssembler do
   end
   context "building an object" do
     before(:all) do
+      delete_fixture("hypatia:fixture_xanadu_collection")
+      import_fixture("hypatia:fixture_xanadu_collection")
+      @collection_pid = "hypatia:fixture_xanadu_collection"
       @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
       @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
       @txt_file = File.join(@disk_image_files_dir, "/CM5551212.001.txt")
-      @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+      @assembler = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
       @fdi = FtkDiskImage.new(:txt_file => @txt_file)  
       @item = @assembler.build_object(@fdi)
     end
     after(:all) do
-      @item.parts.first.delete
-      @item.delete
+      # delete_fixture("hypatia:fixture_xanadu_collection")
+      # @item.parts.first.delete
+      # @item.delete
+      puts @item.pid
     end
     it "builds an object" do
       @item.should be_kind_of(HypatiaDiskImageItem)
     end
-    it "has a FileAsset" do
+    it "the object has an isMemberOfCollection relationship with the collection object" do
+      @item.relationships[:self][:is_member_of_collection].first.gsub("info:fedora/",'').should eql(@assembler.collection_pid)
+    end
+    it "the object has a FileAsset" do
       @item.parts.first.should be_kind_of(FileAsset)
     end
     it "has a binary disk image attached to the FileAsset" do
