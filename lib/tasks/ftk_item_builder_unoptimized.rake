@@ -1,5 +1,3 @@
-require 'spec/rake/spectask'
-require "cucumber/rake/task"
 require File.join(File.dirname(__FILE__), "/../../config/environment.rb")
 require File.join(File.dirname(__FILE__), "/../ftk_item_assembler")
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/.."))
