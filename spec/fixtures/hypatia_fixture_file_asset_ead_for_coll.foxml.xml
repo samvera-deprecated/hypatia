@@ -29,7 +29,7 @@
       <foxml:xmlContent>
         <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
           <rdf:Description rdf:about="info:fedora/hypatia:fixture_file_asset_ead_for_coll">
-            <isPartOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/hypatia:fixture_ftk_file_item"/>
+            <isPartOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/hypatia:fixture_coll2"/>
             <hasModel xmlns="info:fedora/fedora-system:def/model#" rdf:resource="info:fedora/afmodel:FileAsset"/>
           </rdf:Description>
         </rdf:RDF>
@@ -42,7 +42,7 @@
       <foxml:xmlContent>
         <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
           <dc:identifier>hypatia:fixture_file_asset_ead_for_coll</dc:identifier>
-          <dc:title>this is a FileAsset object that isPartOf HypatiaCollection object</dc:title>
+          <dc:title>this is a FileAsset object that isPartOf the HypatiaCollection object coll2</dc:title>
         </oai_dc:dc>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
@@ -53,8 +53,8 @@
       <foxml:xmlContent>
         <dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <dc:identifier>hypatia:fixture_file_asset_ead_for_coll</dc:identifier>
-          <dc:title>this is a FileAsset object that isPartOf HypatiaCollection object</dc:title>
-          <dc:description>We have an EAD file named my_coll_ead.xml. This FileAsset object contains the my_coll_ead.xml file as a datastream (DS1). This FileAsset object has relationship isPartOf to an object with active-fedora model HypatiaCollection.</dc:description>
+          <dc:title>this is a FileAsset object that isPartOf the HypatiaCollection object coll2</dc:title>
+          <dc:description>This FileAsset object contains an EAD file coll_ead.xml as a datastream (DS1). This FileAsset object has relationship isPartOf to the hypatia:fixture_coll2 object with active-fedora model HypatiaCollection.</dc:description>
           <dcterms:extent>46 KB</dcterms:extent>
         </dc>
       </foxml:xmlContent>
@@ -62,14 +62,14 @@
   </foxml:datastream>
 
   <foxml:datastream ID="DS1" STATE="A" CONTROL_GROUP="X" VERSIONABLE="false">
-    <foxml:datastreamVersion ID="DS1.0" LABEL="EAD" CREATED="2011-09-23T19:14:15.261Z" MIMETYPE="text/xml" SIZE="13333">
+    <foxml:datastreamVersion ID="DS1.0" LABEL="coll_ead.xml" CREATED="2011-09-23T19:14:15.261Z" MIMETYPE="text/xml" SIZE="13333">
       <foxml:xmlContent>
         <ead xmlns="urn:isbn:1-931666-22-9" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
           <eadheader countryencoding="iso3166-1" dateencoding="iso8601" findaidstatus="In process" langencoding="iso639-2b" repositoryencoding="iso15511">
             <eadid countrycode="US" mainagencycode="US-CSt">m1292.xml</eadid>
             <filedesc>
               <titlestmt>
-                <titleproper>This is for a collection. 
+                <titleproper>This is the EAD for fixture collection 2.  
                   <date calendar="gregorian" era="ce">1977-1997</date>
                   <num>M666</num>
                 </titleproper>

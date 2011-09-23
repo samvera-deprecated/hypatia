@@ -13,7 +13,7 @@
       <foxml:xmlContent>
         <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
           <rdf:Description rdf:about="info:fedora/hypatia:fixture_file_asset_image1_for_media_item">
-            <hasModel xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/afmodel:FileAsset"></hasModel>
+            <hasModel xmlns="info:fedora/fedora-system:def/model#" rdf:resource="info:fedora/afmodel:FileAsset"></hasModel>
             <isPartOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/hypatia:fixture_media_item"></isPartOf>
           </rdf:Description>
         </rdf:RDF>
@@ -27,7 +27,7 @@
         <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
           <dc:title>fixture_media_item_front.jpg</dc:title>
           <dc:identifier>hypatia:fixture_file_asset_image1_for_media_item</dc:identifier>
-          <dc:title>this is a FileAsset object that isPartOf HypatiaMediaItem object</dc:title>
+          <dc:title>this is a FileAsset object that isPartOf HypatiaDiskImageItem object hypatia:fixture_media_item</dc:title>
         </oai_dc:dc>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
@@ -39,8 +39,8 @@
         <dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <dc:title>fixture_media_item_front.jpg</dc:title>
           <dc:identifier>hypatia:fixture_file_asset_image1_for_media_item</dc:identifier>
-          <dc:title>this is a FileAsset object that isPartOf HypatiaMediaItem object</dc:title>
-          <dc:description>We have a photo (jpeg) of the "front" of a physical media item (e.g. floppy disk). This FileAsset object contains the jpeg file as a datastream (DS1). This FileAsset object has relationship isPartOf to an object with active-fedora model HypatiaMediaItem.</dc:description>
+          <dc:title>this is a FileAsset object that isPartOf HypatiaDiskImageItem object hypatia:fixture_media_item</dc:title>
+          <dc:description>We have a photo (jpeg) of the "front" of a physical media item (e.g. floppy disk) named fixture_media_item_front.jpg. This FileAsset object contains the jpeg file as a datastream (DS1). This FileAsset object has relationship isPartOf to an object with active-fedora model HypatiaDiskImageItem.</dc:description>
           <dcterms:extent>295 KB</dcterms:extent>
         </dc>
       </foxml:xmlContent>

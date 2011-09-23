@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- foxml for example collection object -->
-<foxml:digitalObject VERSION="1.1" PID="hypatia:fixture_coll" xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+<foxml:digitalObject VERSION="1.1" PID="hypatia:fixture_coll2" xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
   <foxml:objectProperties>
     <foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
     <foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE=""/>
@@ -15,8 +15,8 @@
         <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
           <dc:title>Collection</dc:title>
-          <dc:description>This is a hypatia set object for a fake collection.</dc:description>
-          <dc:identifier>hypatia:fixture_coll</dc:identifier> 
+          <dc:description>This is a hypatia collection object, coll2</dc:description>
+          <dc:identifier>hypatia:fixture_coll2</dc:identifier> 
         </oai_dc:dc>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
@@ -26,8 +26,8 @@
     <foxml:datastreamVersion ID="RELS-EXT.0" LABEL="" CREATED="2011-07-18T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
       <foxml:xmlContent>
         <rdf:RDF xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rel="info:fedora/fedora-system:def/relations-external#" xmlns:hydra="http://projecthydra.org/ns/relations#">
-          <rdf:Description rdf:about="info:fedora/hypatia:fixture_coll">
-            <hasModel xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/afmodel:HypatiaSet" />
+          <rdf:Description rdf:about="info:fedora/hypatia:fixture_coll2">
+            <hasModel xmlns="info:fedora/fedora-system:def/model#" rdf:resource="info:fedora/afmodel:HypatiaCollection"/>
           </rdf:Description>
         </rdf:RDF>
       </foxml:xmlContent>
