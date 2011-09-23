@@ -60,6 +60,9 @@ class FtkDiskImageItemAssembler
     Dir["#{@disk_image_files_dir}/*"].each { |file|
       disk_number = file.split('/').last.split('.').first
       
+      # if disk_number contains a space, take the part after the space
+      disk_number = disk_number.split(' ').last
+      
       # If filehash doesn't have a space for this disk number yet, make one
       if @filehash[disk_number.to_sym] == nil
         @filehash[disk_number.to_sym] = {}
