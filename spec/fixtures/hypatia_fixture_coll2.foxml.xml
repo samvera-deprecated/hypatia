@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- foxml for example collection object -->
+<foxml:digitalObject VERSION="1.1" PID="hypatia:fixture_coll" xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+  <foxml:objectProperties>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE=""/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#ownerId" VALUE="fedoraAdmin"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#createdDate" VALUE="2011-07-18T12:34:56.789Z"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/view#lastModifiedDate" VALUE="2011-07-18T12:34:56.789Z"/>
+  </foxml:objectProperties>
+
+  <foxml:datastream ID="DC" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="DC1.0" LABEL="Dublin Core Record for this object" CREATED="2011-07-18T12:34:56.789Z" MIMETYPE="text/xml" FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/" SIZE="406">
+      <foxml:xmlContent>
+        <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+          <dc:title>Collection</dc:title>
+          <dc:description>This is a hypatia set object for a fake collection.</dc:description>
+          <dc:identifier>hypatia:fixture_coll</dc:identifier> 
+        </oai_dc:dc>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="RELS-EXT" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="RELS-EXT.0" LABEL="" CREATED="2011-07-18T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
+      <foxml:xmlContent>
+        <rdf:RDF xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rel="info:fedora/fedora-system:def/relations-external#" xmlns:hydra="http://projecthydra.org/ns/relations#">
+          <rdf:Description rdf:about="info:fedora/hypatia:fixture_coll">
+            <hasModel xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/afmodel:HypatiaSet" />
+          </rdf:Description>
+        </rdf:RDF>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="descMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="descMetadata.0" LABEL="" CREATED="2011-07-18T12:34:56.789Z" MIMETYPE="text/xml" SIZE="276">
+      <foxml:xmlContent>
+        <mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+          <mods:titleInfo>
+            <mods:title>Fake Collection</mods:title>
+          </mods:titleInfo>
+          
+          <mods:name type="personal">
+            <mods:namePart>Creator, Name of</mods:namePart>
+            <mods:role>
+              <mods:roleTerm authority="marcrelator" type="text">creator</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:name type="corporate">
+            <mods:namePart>Corporate Name</mods:namePart>
+            <mods:role>
+              <mods:roleTerm authority="local" type="text">repository</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+
+          <mods:identifier type="local">M666</mods:identifier>
+          <mods:typeOfResource collection="yes"/>
+          <mods:originInfo>
+            <mods:dateCreated>1977-1997</mods:dateCreated>
+          </mods:originInfo>
+          <mods:location>
+            <physicalLocation displayLabel="Located in">My collection - Born-Digital Materials - Computer disks / tapes - Carton 11</physicalLocation>
+          </mods:location>           
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">eng</mods:languageTerm>
+          </mods:language>
+          <mods:physicalDescription>
+            <mods:extent>564.5 Linear feet</mods:extent>
+            <mods:extent>(34 cartons, 3 flat boxes, 2 map folders, 7 boxes)</mods:extent>
+          </mods:physicalDescription>
+          <mods:genre authority="aat">Videorecordings</mods:genre>
+          
+          <mods:abstract>this is text inside a plain abstract element</mods:abstract>
+          <mods:abstract displayLabel="Biography">this is text in an abstract element with a "Biography" displayLabel.</mods:abstract>
+          <mods:abstract displayLabel="Acquisition Information">this is text in an abstract element with an "Acquisition Information" displayLabel.</mods:abstract>
+          <mods:abstract displayLabel="Acquisition Information">this is text with html elements in an abstract element with an "Acquisition Information" displayLabel.
+            <p>inside p <date normal="1987-07-20" type="accession">July 20, 1987</date>. still inside p <num type="Accession Number">10726</num></p>
+          </mods:abstract>
+          <mods:abstract displayLabel="Provenance">this is text in an abstract element with a "Provenance" displayLabel.</mods:abstract>
+          <mods:abstract displayLabel="Cite As">this is text in an abstract element with a "Cite As" displayLabel.</mods:abstract>
+          <mods:abstract displayLabel="Preferred Citation">this is text in an abstract element with a "Preferred Citation" displayLabel.</mods:abstract>
+          <mods:abstract displayLabel="Preferred Citation note">this is text in an abstract element with a "Preferred Citation note" displayLabel.</mods:abstract>
+          <mods:abstract displayLabel="Description of the Papers">this is text in an abstract element with a "Description of the Papers" displayLabel.</mods:abstract>
+          <mods:abstract displayLabel="Scope and Contents">this is text in an abstract element with a "Scope and Contents" displayLabel.</mods:abstract> 
+          <mods:abstract displayLabel="Collection Scope and Content Summary">this is text in an abstract element with a "Collection Scope and Content Summary" displayLabel.</mods:abstract>
+          <mods:abstract displayLabel="Scope and Content of Collection">this is text with html elements in an abstract element with a "Scope and Content of Collection" displayLabel.
+            <p>Inside a p tag.</p>
+            <list numeration="upperroman" type="ordered">
+              <head>heading:</head>
+              <item>item1</item>
+              <item>item2</item>
+            </list>
+          </mods:abstract>
+
+          <mods:subject authority="lcsh">
+            <mods:topic>Evolution (Biology)</mods:topic>
+          </mods:subject>
+          <mods:subject authority="lcsh">
+            <mods:topic>Natural history</mods:topic>
+          </mods:subject>
+          <mods:subject authority="ingest">
+            <mods:topic>Fine press</mods:topic>
+          </mods:subject>
+          <mods:subject authority="ingest">
+            <mods:topic>Fine printing--20th century</mods:topic>
+          </mods:subject>
+          <mods:subject>
+            <mods:topic>Authors and publishers</mods:topic>
+            <mods:topic>Autobiography</mods:topic>
+          </mods:subject>
+          
+         <mods:accessCondition displayLabel="Publication Rights" type="useAndReproduction">
+            <p>All requests to reproduce, publish, quote from, or otherwise use collection materials must be submitted in writing to the Head of Special Collections and University Archives, Stanford University Libraries, Stanford, California 94304-6064. Consent is given on behalf of Special
+              Collections as the owner of the physical items and is not intended to include or imply permission from the copyright owner. Such permission must be obtained from the copyright owner, heir(s) or assigns. See: http://library.stanford.edu/depts/spc/pubserv/permissions.html.</p>
+            <p>Restrictions also apply to digital representations of the original materials. Use of digital files is restricted to research and educational purposes. </p>
+          </mods:accessCondition>
+          <mods:accessCondition displayLabel="Access to Collection" type="restrictionOnAccess">Open for research. Audio-visual materials are not available in original format, and must be reformatted to a digital use copy. </mods:accessCondition>
+          <mods:accessCondition displayLabel="Ownership &amp; Copyright" type="useAndReproduction">Copyright has been transferred to Yale University.</mods:accessCondition>
+        
+        </mods:mods>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="contentMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="contentMetadata.1" LABEL="" CREATED="2011-09-16T17:58:21.672Z" MIMETYPE="text/xml" SIZE="318">
+      <foxml:xmlContent>
+        <contentMetadata objectId="hypatia:fixture_coll2" type="set">
+          <resource type="ead" id="coll.ead" objectId="hypatia:fixture_file_asset_ead_for_coll">
+            <file id="coll_ead.xml" format="XML" mimetype="text/xml" size="47570" preserve="yes" publish="yes" shelve="yes">
+              <checksum type="md5">856d7eae922f80e68c954d2e3521f74a</checksum>
+              <checksum type="sha1">1a79a23e7827ee62370850def76afdeccf3fbadb</checksum>
+            </file>
+          </resource>
+          <resource type="image" id="image" objectId="hypatia:fixture_file_asset_image_for_coll">
+            <file id="fixture_coll_image.jpg" format="JPG" mimetype="image/jpeg" size="302080" preserve="yes" publish="yes" shelve="yes">
+              <checksum type="md5">856d7eae922f80e68c954d2e3521f74ab</checksum>
+              <checksum type="sha1">1a79a23e7827ee62370850def76afdeccf3fbadbc</checksum>
+            </file>
+          </resource>
+        </contentMetadata>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+  <foxml:datastream ID="rightsMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="rightsMetadata.0" LABEL="" CREATED="2011-07-18T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
+      <foxml:xmlContent>
+        <rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
+          <access type="discover">
+            <machine>
+              <group>public</group>
+            </machine>
+          </access>
+          <access type="read">
+            <machine>
+              <group>public</group>
+            </machine>
+          </access>
+        </rightsMetadata>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  
+</foxml:digitalObject>
