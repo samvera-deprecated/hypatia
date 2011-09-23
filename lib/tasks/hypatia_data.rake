@@ -35,8 +35,9 @@ namespace :hypatia do
         end
       end
 
+#      use 'task :t, [args] => [deps]' 
 #      desc "delete a range of objects, then create the ftk file items per the directory indicated.  Example: 'rake hypatia:repo:ftk_file_items:refresh[22, 50] dir=/data_raw/Stanford/\"M1437\ Gould\"'"
-#      task :refresh, :first, :last => ["hypatia:repo:delete", :build]
+#      task :refresh, [:first, :last] => ["hypatia:repo:delete", :build]
     end # namespace :ftk_file_items
 
     namespace :disk_image_items do
@@ -71,8 +72,8 @@ namespace :hypatia do
         Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
       end
       
-#      desc "Delete Gould objects indicated by range, then create Gould FTK Item objects in Fedora (and Solr).  Example: 'rake hypatia:repo:gould:refresh[22, 50]' "
-#      task :refresh, :start_arg, :stop_arg => ["hypatia:repo:delete", :build] 
+      desc "Delete Gould objects indicated by range, then create Gould FTK Item objects in Fedora (and Solr).  Example: 'rake hypatia:repo:gould:refresh[22, 50]' "
+      task :refresh, [:first, :last] => ["hypatia:repo:delete", :build] 
     end # namespace :gould
     
   end # namespace :repo
