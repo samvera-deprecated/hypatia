@@ -108,7 +108,7 @@ namespace :hypatia do
       
       desc "Build disk objects (do this first)"
       task :ftk_disk_items do  
-        disk_image_files_dir = "/data_raw/Stanford/M0662\ Creeley/Disk\ Image/" 
+        disk_image_files_dir = "/data_raw/Stanford/M0662\ Creeley/Disk\ Image" 
         computer_media_photos_dir = "/data_raw/Stanford/M0662\ Creeley/Computer\ Media\ Photo" 
         assembler = FtkDiskImageItemAssembler.new(:collection_pid => creeley_collection_pid, :disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
         assembler.process
