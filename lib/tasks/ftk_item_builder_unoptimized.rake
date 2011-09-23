@@ -79,16 +79,16 @@ namespace :hypatia do
       
       desc "Build disk objects (do this first)"
       task :ftk_disk_items do  
-        disk_image_files_dir = "/data_raw/Virginia/cheuse/oldFiles/diskImages" 
-        computer_media_photos_dir = "/data_raw/Virginia/cheuse/oldFiles/photos" 
+        disk_image_files_dir = "/data_raw/Virginia/oldFiles/diskImages" 
+        computer_media_photos_dir = "/data_raw/Virginia/oldFiles/photos" 
         assembler = FtkDiskImageItemAssembler.new(:collection_pid => cheuse_collection_pid, :disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
         assembler.process
       end
       desc "Build Cheuse ftk file objects"
       task :ftk_file_items do   
         f = FtkItemAssembler.new(:collection_pid => cheuse_collection_pid)
-        report = "/data_raw/Virginia/cheuse/CheuseFTKReport/Report.xml"
-        file_dir = "/data_raw/Virginia/cheuse/CheuseFTKReport"
+        report = "/data_raw/Virginia/CheuseFTKReport/Report.xml"
+        file_dir = "/data_raw/Virginia/CheuseFTKReport"
         f.process(report,file_dir)
       end
     end
