@@ -71,8 +71,16 @@ describe HypatiaCollDescMetadataDS do
   it "should have the correct :provenance term value" do
     @desc_md_ds.term_values(:provenance).should == ['this is text in an abstract element with a "Provenance" displayLabel.']
   end
-
-
+# would like to have a way to populate :citation with more than one displayLabel attribute value  
+  it "should have correct :citation term values" do
+    @desc_md_ds.term_values(:citation).should == ["this is text in an abstract element with a \"Preferred Citation\" displayLabel."]
+  end
+  it "should have correct :description term values" do
+    @desc_md_ds.term_values(:description).should == ["this is text in an abstract element with a \"Description of the Papers\" displayLabel."]
+  end
+  it "should have correct :scope_and_contents term values" do
+    @desc_md_ds.term_values(:scope_and_content).should == ["this is text in an abstract element with a \"Scope and Contents\" displayLabel."]
+  end
 
 
 end

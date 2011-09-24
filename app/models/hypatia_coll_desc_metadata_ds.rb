@@ -53,11 +53,11 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.biography(:path=>"abstract", :attributes=>{:displayLabel=>"Biography"}, :index_as=>[:searchable, :displayable])
     t.acquisition_info(:path=>"abstract", :attributes=>{:displayLabel=>"Acquisition Information"}, :index_as=>[:searchable, :displayable])
     t.provenance(:path=>"abstract", :attributes=>{:displayLabel=>"Provenance"}, :index_as=>[:searchable, :displayable])
-
-
-
-    t.scope_and_summary(:path=>"abstract", :attributes=>{:displayLabel=>"Collection Scope and Content Summary"}, :index_as=>[:searchable, :displayable])
+# FIXME:  would like to be able to match a regular expression to allow for some variation in the displayLabel attribute value /.*Cit.+/
+#  OR  would like to match multiple terms here to a single term
     t.citation(:path=>"abstract", :attributes=>{:displayLabel=>"Preferred Citation"}, :index_as=>[:searchable, :displayable])
+    t.description(:path=>"abstract", :attributes=>{:displayLabel=>"Description of the Papers"}, :index_as=>[:searchable, :displayable])
+    t.scope_and_content(:path=>"abstract", :attributes=>{:displayLabel=>"Scope and Contents"}, :index_as=>[:searchable, :displayable])
     
     t.subject(:path=>"subject") {
       t.topic(:path=>"topic", :index_as=>[:searchable, :displayable, :facetable])
