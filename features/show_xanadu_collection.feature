@@ -17,7 +17,7 @@ Feature: Xanadu Collection Object Show View
     When I am on the document page for id "hypatia:fixture_xanadu_collection"
     Then I should see "Repository"
     And I should see "Stanford University. Department of Special Collections and University Archives"
-    And I should see "Publication Rights"
+#    And I should see "Publication Rights"
     And I should see "Property rights reside with the repository."
     And I should see "Access Notes"
     And I should see "The Media materials require at least two weeks advance notice"

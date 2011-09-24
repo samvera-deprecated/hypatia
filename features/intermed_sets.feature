@@ -5,6 +5,7 @@ Feature: Fake "collection" Intermediate Set Objects
     When I am on the document page for id "hypatia:fixture_coll" 
     Then I should see a link to "the show page for hypatia:fixture_intermed1" with label "Intermediate Set 1"
     And I should see a link to "the show page for hypatia:fixture_intermed3" with label "Intermediate Set 3"
+# distinguish between immediate and lower children?
     And I should not see a link to "the show page for hypatia:fixture_intermed2"
     And I should not see a link to "the show page for hypatia:fixture_item1"
     And I should not see a link to "the show page for hypatia:fixture_item2"

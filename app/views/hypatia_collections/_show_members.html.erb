@@ -1,0 +1,11 @@
+<% member_objects = @document_fedora.members(:response_format=>:solr) -%>
+<% unless member_objects.hits.empty? -%>
+  <div class="sets members sidebar-section first">
+    <h2 class="sidebar-title">In this Collection:</h2>
+    <ul>
+      <%- member_objects.each do |result| -%>
+        <li><%= link_to result[solr_name("title", :text)], catalog_path(:id=>result["id"]) %></li>
+			<%- end -%>
+		</ul>		
+	</div>	
+<% end -%>

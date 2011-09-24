@@ -5,4 +5,6 @@ class HypatiaItem < ActiveFedora::Base
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata
   
   has_relationship "sets", :is_member_of, :type => HypatiaSet
+  # an item is a member of a collection
+  has_relationship "collection", :is_member_of_collection, :type => HypatiaCollection
 end
