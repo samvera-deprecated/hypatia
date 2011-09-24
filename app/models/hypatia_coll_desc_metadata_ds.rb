@@ -20,17 +20,10 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     }
     t.role {
       t.text(:path=>"roleTerm", :attributes=>{:type=>"text"})
-# FIXME:  would like a way to split out "creator" and other roles specifically
-#     t.creator(:xpath=>"//name/namePart[../role/roleTerm.text()='creator']", :namespace_prefix => "mods", :index_as=>[:searchable, :displayable, :facetable, :sortable])
-#     t.repository(:xpath=>"//name[@type=corporate]/namePart[../role/roleTerm.text()='repository']", :namespace_prefix => "mods", :index_as=>[:searchable, :displayable, :facetable, :sortable])
-# FIXME:  how does this turn out?  can we proxy if the value is something special?
-      t.marcrelator_authority(:path=>"roleTerm", :attributes=>{:authority=>"marcrelator"})
-      t.local_authority(:path=>"roleTerm", :attributes=>{:authority=>"local"})
     }
-    t.person(:ref=>:name, :attributes=>{:type=>"personal"})
-    t.personal_name(:proxy=>[:person, :name_part])
+# FIXME:  would like a way to split out "creator" name and other role names specifically
+    t.person(:ref=>:name, :attributes=>{:type=>"personal"}) 
     t.institution(:ref=>:name, :attributes=>{:type=>"corporate"})
-    t.institution_name(:proxy=>[:institution, :name_part])
 
     t.local_id(:path=>"identifier", :attributes=>{:type=>"local"}, :index_as=>[:searchable, :displayable, :sortable])
 
@@ -44,11 +37,11 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     }
     t.located_in(:proxy=>[:location, :located_in])
 
-#FIXME:    t.lang_code(:xpath=>"//language/languageTerm", :namespace_prefix => "mods", :index_as=>[:searchable, :displayable, :facetable, :sortable])  # FIXME
     t.language_info(:path=>"language") {
       t.language_code(:path=>"languageTerm", :index_as=>[:searchable, :displayable, :facetable, :sortable])
     }
     t.lang_code(:proxy=>[:language_info, :language_code])
+
 
 
     t.genre(:path=>"genre", :index_as=>[:searchable, :displayable, :facetable, :sortable])
