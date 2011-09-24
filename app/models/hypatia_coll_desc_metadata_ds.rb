@@ -76,9 +76,8 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.topic_lcsh(:proxy=>[:subject_lcsh, :topic])
     t.topic_ingest(:proxy=>[:subject_ingest, :topic])
 
-    t.use_and_repro_rights(:path=>"accessCondition", :attributes=>{:displayLabel=>"Publication Rights", :type=>"useAndReproduction"}, :index_as=>[:displayable])
-    t.access(:path=>"accessCondition", :attributes=>{:displayLabel=>"Access", :type=>"restrictionOnAccess"}, :index_as=>[:displayable])
-    
+#    t.use_and_repro_rights(:path=>"accessCondition", :attributes=>{:type=>"useAndReproduction"}, :index_as=>[:displayable])
+    t.access(:path=>"accessCondition", :index_as=>[:displayable])
 
   end # set_terminology
 

@@ -99,6 +99,14 @@ describe HypatiaCollDescMetadataDS do
     @desc_md_ds.term_values(:topic).should == ["topic lcsh authority1", "topic lcsh authority2", "topic ingest authority", "plain topic1", "plain topic2"]
   end
   
+#  it "should have correct :use_and_repro_rights values" do
+#    @desc_md_ds.term_values(:use_and_repro_rights).length.should == 2
+#    @desc_md_ds.term_values(:use_and_repro_rights).should == ["pub rights text", "ownership and copyright text"]
+#  end
+  it "should have correct :access values" do
+    @desc_md_ds.term_values(:access).length.should == 3
+    @desc_md_ds.term_values(:access).should == ["pub rights text", "ownership and copyright text", "access to collection text"]
+  end
   
 
 
