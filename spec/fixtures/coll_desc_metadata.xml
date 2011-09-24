@@ -35,7 +35,6 @@
   
   <mods:abstract>this is text inside a plain abstract element</mods:abstract>
   <mods:abstract displayLabel="Biography">this is text in an abstract element with a "Biography" displayLabel.</mods:abstract>
-  <mods:abstract displayLabel="Acquisition Information">this is text in an abstract element with an "Acquisition Information" displayLabel.</mods:abstract>
   <mods:abstract displayLabel="Acquisition Information">this is text with html elements in an abstract element with an "Acquisition Information" displayLabel.
     &lt;p&gt; inside p &lt;date normal="1987-07-20" type="accession"&gt;July 20, 1987&lt;/date&gt;. still inside p &lt;num type="Accession Number"&gt;10726&lt;/num&gt;&lt;/p&gt;
   </mods:abstract>

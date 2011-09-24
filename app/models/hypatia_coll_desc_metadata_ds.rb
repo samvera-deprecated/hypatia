@@ -42,19 +42,21 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     }
     t.lang_code(:proxy=>[:language_info, :language_code])
 
-
-
-    t.genre(:path=>"genre", :index_as=>[:searchable, :displayable, :facetable, :sortable])
     t.physical_desc(:path=>"physicalDescription") {
       t.extent(:path=>"extent", :index_as=>[:searchable])
     }
-    
+    t.extent(:proxy=>[:physical_desc, :extent])
 
-# tried displaylabel = nil ... didn't work    
-    t.abstract(:path=>"abstract",  :attributes=>{:displayLabel=>nil}, :index_as=>[:searchable, :displayable])
-    t.scope_and_summary(:path=>"abstract", :attributes=>{:displayLabel=>"Collection Scope and Content Summary"}, :index_as=>[:searchable, :displayable])
+    t.genre(:path=>"genre", :index_as=>[:searchable, :displayable, :facetable, :sortable])
+
+    t.abstract(:path=>"abstract",  :attributes=>{:displayLabel=>:none}, :index_as=>[:searchable, :displayable])
     t.biography(:path=>"abstract", :attributes=>{:displayLabel=>"Biography"}, :index_as=>[:searchable, :displayable])
     t.acquisition_info(:path=>"abstract", :attributes=>{:displayLabel=>"Acquisition Information"}, :index_as=>[:searchable, :displayable])
+    t.provenance(:path=>"abstract", :attributes=>{:displayLabel=>"Provenance"}, :index_as=>[:searchable, :displayable])
+
+
+
+    t.scope_and_summary(:path=>"abstract", :attributes=>{:displayLabel=>"Collection Scope and Content Summary"}, :index_as=>[:searchable, :displayable])
     t.citation(:path=>"abstract", :attributes=>{:displayLabel=>"Preferred Citation"}, :index_as=>[:searchable, :displayable])
     
     t.subject(:path=>"subject") {
@@ -67,7 +69,6 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
 
     # proxy declarations
     
-    t.extent(:proxy=>[:physical_desc, :extent])
     t.language(:proxy=>[:language_info, :language_code])
     t.local_role(:proxy=>[:role, :text])
     t.topic(:proxy=>[:subject, :topic])

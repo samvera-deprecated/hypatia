@@ -49,4 +49,30 @@ describe HypatiaCollDescMetadataDS do
     @desc_md_ds.term_values(:lang_code).should == ["eng"]
   end
 
+  it "should have the correct extent values" do
+    @desc_md_ds.term_values(:extent).length.should == 2
+    @desc_md_ds.term_values(:extent).should == ["564.5 Linear feet", "(34 cartons, 3 flat boxes, 2 map folders, 7 boxes)"]
+  end
+
+  it "should have the correct :genre term value" do
+    @desc_md_ds.term_values(:genre).should == ["Videorecordings"]
+  end
+  
+  it "should have the correct plain :abstract term value" do
+    @desc_md_ds.term_values(:abstract).should == ["this is text inside a plain abstract element"]
+  end
+  it "should have the correct :biography term value" do
+    @desc_md_ds.term_values(:biography).should == ['this is text in an abstract element with a "Biography" displayLabel.']
+  end
+  it "should have the correct :acquisition_info term value" do
+    value = @desc_md_ds.term_values(:acquisition_info).first.gsub(/\s+/," ").strip
+    value.start_with?('this is text with html elements in an abstract element with an "Acquisition Information" displayLabel').should be_true
+  end
+  it "should have the correct :provenance term value" do
+    @desc_md_ds.term_values(:provenance).should == ['this is text in an abstract element with a "Provenance" displayLabel.']
+  end
+
+
+
+
 end
