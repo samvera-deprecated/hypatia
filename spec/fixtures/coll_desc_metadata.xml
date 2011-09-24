@@ -1,0 +1,83 @@
+<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+  <mods:titleInfo>
+    <mods:title>Fake Collection</mods:title>
+  </mods:titleInfo>
+  
+  <mods:name type="personal">
+    <mods:namePart>Creator, Name of</mods:namePart>
+    <mods:role>
+      <mods:roleTerm authority="marcrelator" type="text">creator</mods:roleTerm>
+    </mods:role>
+  </mods:name>
+  <mods:name type="corporate">
+    <mods:namePart>Corporate Name</mods:namePart>
+    <mods:role>
+      <mods:roleTerm authority="local" type="text">repository</mods:roleTerm>
+    </mods:role>
+  </mods:name>
+  
+  <mods:identifier type="local">M666</mods:identifier>
+  <mods:typeOfResource collection="yes"/>
+  <mods:originInfo>
+    <mods:dateCreated>1977-1997</mods:dateCreated>
+  </mods:originInfo>
+  <mods:location>
+    <mods:physicalLocation displayLabel="Located in">My collection - Born-Digital Materials - Computer disks / tapes - Carton 11</mods:physicalLocation>
+  </mods:location>           
+  <mods:language>
+    <mods:languageTerm authority="iso639-2b" type="code">eng</mods:languageTerm>
+  </mods:language>
+  <mods:physicalDescription>
+    <mods:extent>564.5 Linear feet</mods:extent>
+    <mods:extent>(34 cartons, 3 flat boxes, 2 map folders, 7 boxes)</mods:extent>
+  </mods:physicalDescription>
+  <mods:genre authority="aat">Videorecordings</mods:genre>
+  
+  <mods:abstract>this is text inside a plain abstract element</mods:abstract>
+  <mods:abstract displayLabel="Biography">this is text in an abstract element with a "Biography" displayLabel.</mods:abstract>
+  <mods:abstract displayLabel="Acquisition Information">this is text in an abstract element with an "Acquisition Information" displayLabel.</mods:abstract>
+  <mods:abstract displayLabel="Acquisition Information">this is text with html elements in an abstract element with an "Acquisition Information" displayLabel.
+    &lt;p&gt; inside p &lt;date normal="1987-07-20" type="accession"&gt;July 20, 1987&lt;/date&gt;. still inside p &lt;num type="Accession Number"&gt;10726&lt;/num&gt;&lt;/p&gt;
+  </mods:abstract>
+  <mods:abstract displayLabel="Provenance">this is text in an abstract element with a "Provenance" displayLabel.</mods:abstract>
+  <mods:abstract displayLabel="Cite As">this is text in an abstract element with a "Cite As" displayLabel.</mods:abstract>
+  <mods:abstract displayLabel="Preferred Citation">this is text in an abstract element with a "Preferred Citation" displayLabel.</mods:abstract>
+  <mods:abstract displayLabel="Preferred Citation note">this is text in an abstract element with a "Preferred Citation note" displayLabel.</mods:abstract>
+  <mods:abstract displayLabel="Description of the Papers">this is text in an abstract element with a "Description of the Papers" displayLabel.</mods:abstract>
+  <mods:abstract displayLabel="Scope and Contents">this is text in an abstract element with a "Scope and Contents" displayLabel.</mods:abstract> 
+  <mods:abstract displayLabel="Collection Scope and Content Summary">this is text in an abstract element with a "Collection Scope and Content Summary" displayLabel.</mods:abstract>
+  <mods:abstract displayLabel="Scope and Content of Collection">this is text with html elements in an abstract element with a "Scope and Content of Collection" displayLabel.
+    &lt;p&gt;Inside a p tag.&lt;/p&gt;
+    &lt;list numeration="upperroman" type="ordered"&gt;
+    &lt;head&gt;heading:&lt;/head&gt;
+    &lt;item&gt;item1&lt;/item&gt;
+    &lt;item&gt;item2&lt;/item&gt;
+    &lt;/list&gt;
+  </mods:abstract>
+  
+  <mods:subject authority="lcsh">
+    <mods:topic>Evolution (Biology)</mods:topic>
+  </mods:subject>
+  <mods:subject authority="lcsh">
+    <mods:topic>Natural history</mods:topic>
+  </mods:subject>
+  <mods:subject authority="ingest">
+    <mods:topic>Fine press</mods:topic>
+  </mods:subject>
+  <mods:subject authority="ingest">
+    <mods:topic>Fine printing--20th century</mods:topic>
+  </mods:subject>
+  <mods:subject>
+    <mods:topic>Authors and publishers</mods:topic>
+    <mods:topic>Autobiography</mods:topic>
+  </mods:subject>
+  
+  <mods:accessCondition displayLabel="Publication Rights" type="useAndReproduction">
+    <p>All requests to reproduce, publish, quote from, or otherwise use collection materials must be submitted in writing to the Head of Special Collections and University Archives, Stanford University Libraries, Stanford, California 94304-6064. Consent is given on behalf of Special
+      Collections as the owner of the physical items and is not intended to include or imply permission from the copyright owner. Such permission must be obtained from the copyright owner, heir(s) or assigns. See: http://library.stanford.edu/depts/spc/pubserv/permissions.html.</p>
+    <p>Restrictions also apply to digital representations of the original materials. Use of digital files is restricted to research and educational purposes. </p>
+  </mods:accessCondition>
+  <mods:accessCondition displayLabel="Access to Collection" type="restrictionOnAccess">Open for research. Audio-visual materials are not available in original format, and must be reformatted to a digital use copy. </mods:accessCondition>
+  <mods:accessCondition displayLabel="Ownership &amp; Copyright" type="useAndReproduction">Copyright has been transferred to Yale University.</mods:accessCondition>
+  
+</mods:mods>
