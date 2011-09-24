@@ -75,12 +75,31 @@ describe HypatiaCollDescMetadataDS do
   it "should have correct :citation term values" do
     @desc_md_ds.term_values(:citation).should == ["this is text in an abstract element with a \"Preferred Citation\" displayLabel."]
   end
-  it "should have correct :description term values" do
+  it "should have the correct :description term value" do
     @desc_md_ds.term_values(:description).should == ["this is text in an abstract element with a \"Description of the Papers\" displayLabel."]
   end
+# would like to have a way to populate :scope_and_content with more than one displayLabel attribute value  
   it "should have correct :scope_and_contents term values" do
     @desc_md_ds.term_values(:scope_and_content).should == ["this is text in an abstract element with a \"Scope and Contents\" displayLabel."]
   end
+  
+  it "should have correct :topic_plain values" do
+    @desc_md_ds.term_values(:topic_plain).length.should == 2
+    @desc_md_ds.term_values(:topic_plain).should == ["plain topic1", "plain topic2"]
+  end
+  it "should have correct :topic_lcsh values" do
+    @desc_md_ds.term_values(:topic_lcsh).length.should == 2
+    @desc_md_ds.term_values(:topic_lcsh).should == ["topic lcsh authority1", "topic lcsh authority2"]
+  end
+  it "should have the correct :topic_ingest value" do
+    @desc_md_ds.term_values(:topic_ingest).should == ["topic ingest authority"]
+  end
+  it "should have the correct :topic values" do
+    @desc_md_ds.term_values(:topic).length.should == 5
+    @desc_md_ds.term_values(:topic).should == ["topic lcsh authority1", "topic lcsh authority2", "topic ingest authority", "plain topic1", "plain topic2"]
+  end
+  
+  
 
 
 end

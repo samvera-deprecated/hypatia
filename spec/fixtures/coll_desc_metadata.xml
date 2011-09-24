@@ -55,20 +55,17 @@
   </mods:abstract>
   
   <mods:subject authority="lcsh">
-    <mods:topic>Evolution (Biology)</mods:topic>
+    <mods:topic>topic lcsh authority1</mods:topic>
   </mods:subject>
   <mods:subject authority="lcsh">
-    <mods:topic>Natural history</mods:topic>
+    <mods:topic>topic lcsh authority2</mods:topic>
   </mods:subject>
   <mods:subject authority="ingest">
-    <mods:topic>Fine press</mods:topic>
-  </mods:subject>
-  <mods:subject authority="ingest">
-    <mods:topic>Fine printing--20th century</mods:topic>
+    <mods:topic>topic ingest authority</mods:topic>
   </mods:subject>
   <mods:subject>
-    <mods:topic>Authors and publishers</mods:topic>
-    <mods:topic>Autobiography</mods:topic>
+    <mods:topic>plain topic1</mods:topic>
+    <mods:topic>plain topic2</mods:topic>
   </mods:subject>
   
   <mods:accessCondition displayLabel="Publication Rights" type="useAndReproduction">

@@ -49,7 +49,7 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
 
     t.genre(:path=>"genre", :index_as=>[:searchable, :displayable, :facetable, :sortable])
 
-    t.abstract(:path=>"abstract",  :attributes=>{:displayLabel=>:none}, :index_as=>[:searchable, :displayable])
+    t.abstract(:path=>"abstract", :attributes=>{:displayLabel=>:none}, :index_as=>[:searchable, :displayable])
     t.biography(:path=>"abstract", :attributes=>{:displayLabel=>"Biography"}, :index_as=>[:searchable, :displayable])
     t.acquisition_info(:path=>"abstract", :attributes=>{:displayLabel=>"Acquisition Information"}, :index_as=>[:searchable, :displayable])
     t.provenance(:path=>"abstract", :attributes=>{:displayLabel=>"Provenance"}, :index_as=>[:searchable, :displayable])
@@ -59,19 +59,25 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.description(:path=>"abstract", :attributes=>{:displayLabel=>"Description of the Papers"}, :index_as=>[:searchable, :displayable])
     t.scope_and_content(:path=>"abstract", :attributes=>{:displayLabel=>"Scope and Contents"}, :index_as=>[:searchable, :displayable])
     
-    t.subject(:path=>"subject") {
+    t.subject_all(:path=>"subject") {
       t.topic(:path=>"topic", :index_as=>[:searchable, :displayable, :facetable])
     }
+    t.subject_plain(:path=>"subject", :attributes=>{:authority=>:none}) {
+      t.topic(:path=>"topic", :index_as=>[:searchable, :displayable, :facetable])
+    }
+    t.subject_lcsh(:path=>"subject", :attributes=>{:authority=>"lcsh"}) {
+      t.topic(:path=>"topic", :index_as=>[:searchable, :displayable, :facetable])
+    }
+    t.subject_ingest(:path=>"subject", :attributes=>{:authority=>"ingest"}) {
+      t.topic(:path=>"topic", :index_as=>[:searchable, :displayable, :facetable])
+    }
+    t.topic(:proxy=>[:subject_all, :topic])
+    t.topic_plain(:proxy=>[:subject_plain, :topic])
+    t.topic_lcsh(:proxy=>[:subject_lcsh, :topic])
+    t.topic_ingest(:proxy=>[:subject_ingest, :topic])
 
     t.use_and_repro_rights(:path=>"accessCondition", :attributes=>{:displayLabel=>"Publication Rights", :type=>"useAndReproduction"}, :index_as=>[:displayable])
     t.access(:path=>"accessCondition", :attributes=>{:displayLabel=>"Access", :type=>"restrictionOnAccess"}, :index_as=>[:displayable])
-    
-
-    # proxy declarations
-    
-    t.language(:proxy=>[:language_info, :language_code])
-    t.local_role(:proxy=>[:role, :text])
-    t.topic(:proxy=>[:subject, :topic])
     
 
   end # set_terminology
