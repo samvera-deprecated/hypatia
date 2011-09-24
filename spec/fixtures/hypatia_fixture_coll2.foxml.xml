@@ -74,7 +74,6 @@
           
           <mods:abstract>this is text inside a plain abstract element</mods:abstract>
           <mods:abstract displayLabel="Biography">this is text in an abstract element with a "Biography" displayLabel.</mods:abstract>
-          <mods:abstract displayLabel="Acquisition Information">this is text in an abstract element with an "Acquisition Information" displayLabel.</mods:abstract>
           <mods:abstract displayLabel="Acquisition Information">this is text with html elements in an abstract element with an "Acquisition Information" displayLabel.
             &lt;p&gt; inside p &lt;date normal="1987-07-20" type="accession"&gt;July 20, 1987&lt;/date&gt;. still inside p &lt;num type="Accession Number"&gt;10726&lt;/num&gt;&lt;/p&gt;
           </mods:abstract>
@@ -95,30 +94,22 @@
           </mods:abstract>
           
           <mods:subject authority="lcsh">
-            <mods:topic>Evolution (Biology)</mods:topic>
+            <mods:topic>topic lcsh authority1</mods:topic>
           </mods:subject>
           <mods:subject authority="lcsh">
-            <mods:topic>Natural history</mods:topic>
+            <mods:topic>topic lcsh authority2</mods:topic>
           </mods:subject>
           <mods:subject authority="ingest">
-            <mods:topic>Fine press</mods:topic>
-          </mods:subject>
-          <mods:subject authority="ingest">
-            <mods:topic>Fine printing--20th century</mods:topic>
+            <mods:topic>topic ingest authority</mods:topic>
           </mods:subject>
           <mods:subject>
-            <mods:topic>Authors and publishers</mods:topic>
-            <mods:topic>Autobiography</mods:topic>
+            <mods:topic>plain topic1</mods:topic>
+            <mods:topic>plain topic2</mods:topic>
           </mods:subject>
           
-          <mods:accessCondition displayLabel="Publication Rights" type="useAndReproduction">
-            <p>All requests to reproduce, publish, quote from, or otherwise use collection materials must be submitted in writing to the Head of Special Collections and University Archives, Stanford University Libraries, Stanford, California 94304-6064. Consent is given on behalf of Special
-              Collections as the owner of the physical items and is not intended to include or imply permission from the copyright owner. Such permission must be obtained from the copyright owner, heir(s) or assigns. See: http://library.stanford.edu/depts/spc/pubserv/permissions.html.</p>
-            <p>Restrictions also apply to digital representations of the original materials. Use of digital files is restricted to research and educational purposes. </p>
-          </mods:accessCondition>
-          <mods:accessCondition displayLabel="Access to Collection" type="restrictionOnAccess">Open for research. Audio-visual materials are not available in original format, and must be reformatted to a digital use copy. </mods:accessCondition>
-          <mods:accessCondition displayLabel="Ownership &amp; Copyright" type="useAndReproduction">Copyright has been transferred to Yale University.</mods:accessCondition>
-          
+          <mods:accessCondition displayLabel="Publication Rights" type="useAndReproduction">pub rights text</mods:accessCondition>
+          <mods:accessCondition displayLabel="Ownership &amp; Copyright" type="useAndReproduction">ownership and copyright text</mods:accessCondition>
+          <mods:accessCondition displayLabel="Access to Collection" type="restrictionOnAccess">access to collection text</mods:accessCondition>
         </mods:mods>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
