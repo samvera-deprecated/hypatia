@@ -233,7 +233,19 @@ namespace :hypatia do
         "hypatia:fixture_intermed3",
         "hypatia:fixture_item1",
         "hypatia:fixture_item2",
-        "hypatia:fixture_item3"
+        "hypatia:fixture_item3",
+        
+        "hypatia:fixture_coll2",
+        "hypatia:fixture_file_asset_ead_for_coll",
+        "hypatia:fixture_file_asset_image_for_coll",
+
+        "hypatia:fixture_media_item",
+        "hypatia:fixture_file_asset_dd_for_media_item",
+        "hypatia:fixture_file_asset_image1_for_media_item",
+        "hypatia:fixture_file_asset_image2_for_media_item",
+        
+        "hypatia:fixture_ftk_file_item",
+        "hypatia:fixture_file_asset_for_ftk_file_item",
       ]
 
       desc "Load Hypatia No Name fixtures"
