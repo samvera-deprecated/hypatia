@@ -54,14 +54,14 @@
               <mods:roleTerm authority="local" type="text">repository</mods:roleTerm>
             </mods:role>
           </mods:name>
-
+          
           <mods:identifier type="local">M666</mods:identifier>
           <mods:typeOfResource collection="yes"/>
           <mods:originInfo>
             <mods:dateCreated>1977-1997</mods:dateCreated>
           </mods:originInfo>
           <mods:location>
-            <physicalLocation displayLabel="Located in">My collection - Born-Digital Materials - Computer disks / tapes - Carton 11</physicalLocation>
+            <mods:physicalLocation displayLabel="Located in">My collection - Born-Digital Materials - Computer disks / tapes - Carton 11</mods:physicalLocation>
           </mods:location>           
           <mods:language>
             <mods:languageTerm authority="iso639-2b" type="code">eng</mods:languageTerm>
@@ -76,7 +76,7 @@
           <mods:abstract displayLabel="Biography">this is text in an abstract element with a "Biography" displayLabel.</mods:abstract>
           <mods:abstract displayLabel="Acquisition Information">this is text in an abstract element with an "Acquisition Information" displayLabel.</mods:abstract>
           <mods:abstract displayLabel="Acquisition Information">this is text with html elements in an abstract element with an "Acquisition Information" displayLabel.
-            <p>inside p <date normal="1987-07-20" type="accession">July 20, 1987</date>. still inside p <num type="Accession Number">10726</num></p>
+            &lt;p&gt; inside p &lt;date normal="1987-07-20" type="accession"&gt;July 20, 1987&lt;/date&gt;. still inside p &lt;num type="Accession Number"&gt;10726&lt;/num&gt;&lt;/p&gt;
           </mods:abstract>
           <mods:abstract displayLabel="Provenance">this is text in an abstract element with a "Provenance" displayLabel.</mods:abstract>
           <mods:abstract displayLabel="Cite As">this is text in an abstract element with a "Cite As" displayLabel.</mods:abstract>
@@ -86,14 +86,14 @@
           <mods:abstract displayLabel="Scope and Contents">this is text in an abstract element with a "Scope and Contents" displayLabel.</mods:abstract> 
           <mods:abstract displayLabel="Collection Scope and Content Summary">this is text in an abstract element with a "Collection Scope and Content Summary" displayLabel.</mods:abstract>
           <mods:abstract displayLabel="Scope and Content of Collection">this is text with html elements in an abstract element with a "Scope and Content of Collection" displayLabel.
-            <p>Inside a p tag.</p>
-            <list numeration="upperroman" type="ordered">
-              <head>heading:</head>
-              <item>item1</item>
-              <item>item2</item>
-            </list>
+            &lt;p&gt;Inside a p tag.&lt;/p&gt;
+            &lt;list numeration="upperroman" type="ordered"&gt;
+            &lt;head&gt;heading:&lt;/head&gt;
+            &lt;item&gt;item1&lt;/item&gt;
+            &lt;item&gt;item2&lt;/item&gt;
+            &lt;/list&gt;
           </mods:abstract>
-
+          
           <mods:subject authority="lcsh">
             <mods:topic>Evolution (Biology)</mods:topic>
           </mods:subject>
@@ -111,14 +111,14 @@
             <mods:topic>Autobiography</mods:topic>
           </mods:subject>
           
-         <mods:accessCondition displayLabel="Publication Rights" type="useAndReproduction">
+          <mods:accessCondition displayLabel="Publication Rights" type="useAndReproduction">
             <p>All requests to reproduce, publish, quote from, or otherwise use collection materials must be submitted in writing to the Head of Special Collections and University Archives, Stanford University Libraries, Stanford, California 94304-6064. Consent is given on behalf of Special
               Collections as the owner of the physical items and is not intended to include or imply permission from the copyright owner. Such permission must be obtained from the copyright owner, heir(s) or assigns. See: http://library.stanford.edu/depts/spc/pubserv/permissions.html.</p>
             <p>Restrictions also apply to digital representations of the original materials. Use of digital files is restricted to research and educational purposes. </p>
           </mods:accessCondition>
           <mods:accessCondition displayLabel="Access to Collection" type="restrictionOnAccess">Open for research. Audio-visual materials are not available in original format, and must be reformatted to a digital use copy. </mods:accessCondition>
           <mods:accessCondition displayLabel="Ownership &amp; Copyright" type="useAndReproduction">Copyright has been transferred to Yale University.</mods:accessCondition>
-        
+          
         </mods:mods>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
