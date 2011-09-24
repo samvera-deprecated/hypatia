@@ -2,7 +2,11 @@
 class HypatiaSet < ActiveFedora::Base
   has_metadata :name => "descMetadata", :type=> HypatiaSetDescMetadataDS
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata
-  
+
+  # a set is a member of a collection
+  has_relationship "collection", :is_member_of_collection, :type => HypatiaSet
+  # a set has members
   has_relationship "members", :is_member_of, :inbound=>true
+  # a set can belong to other sets
   has_relationship "sets", :is_member_of, :type => HypatiaSet
 end

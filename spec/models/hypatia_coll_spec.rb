@@ -26,15 +26,15 @@ describe HypatiaCollection do
     @hypatia_coll.datastreams["rightsMetadata"].should be_instance_of(Hydra::RightsMetadata)
   end
     
-  it "should have a members relationship" do
+  it "should have a members relationship (a collection has members)" do
     @hypatia_coll.should respond_to(:members)
   end
   
-  it "should have not have a sets relationship" do
+  it "should not have a sets relationship (a collection belongs to no set)" do
     @hypatia_coll.should_not respond_to(:sets)
   end
   
-  it "should have a parts relationship (for EAD, image, etc.)" do
+  it "should have a parts relationship (for FileAssets such as EAD, image, etc.)" do
     @hypatia_coll.should respond_to(:parts)
   end
   
