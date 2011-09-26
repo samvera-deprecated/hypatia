@@ -35,7 +35,7 @@
         <%= render :partial=>'/flash_msg' %>
         <%= yield %>
       </div>
-      <%- unless sidebar_items.blank? -%>
+      <%- unless sidebar_items.delete_if{|i| i.blank? }.compact.blank? -%>
         <div class="yui-b sidebar"><%= sidebar_items.join('') %></div>	
       <%- end -%>
     </div>
