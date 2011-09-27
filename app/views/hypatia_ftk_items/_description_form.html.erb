@@ -1,0 +1,18 @@
+<%- form_tag(url_for(:controller=>"assets", :action=>"update", :id=>params[:id]), :class => "step") do -%>
+  <p id="resource_type_field" class="fedora-text-field">
+    <%= fedora_field_label("descMetadata", [:type_of_resource], "Type of Resource") %>
+    <%= fedora_text_field(@document_fedora,"descMetadata", [:type_of_resource], :multiple=>false, :required=>false ) %>
+  </p>
+
+  <p id="form_field" class="fedora-text-field">
+    <%= fedora_field_label("descMetadata", [:form], "Medium") %>
+    <%= fedora_text_field(@document_fedora,"descMetadata", [:form], :multiple=>false, :required=>false ) %>
+  </p>  
+  
+  <%= hidden_field_tag("_method","put", :id=>"description_method") %>
+  <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "description_wf_step") %>
+  <%= hidden_field_tag(:new_asset, true, :id => "description_new_asset") if params[:new_asset] %>
+  <%= hidden_field_tag(:content_type,"hypatia_ftk_item", :id => "description_content_type") %>
+  <%= submit_tag(submit_name, :name=>"continue", :class=>"save-submit") %>
+  <%= submit_tag("Save and Finish", :name=>"finish", :class=>"save-submit") unless params[:new_asset] %>
+<%- end -%>
