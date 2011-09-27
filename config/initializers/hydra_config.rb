@@ -23,11 +23,16 @@ if Hydra.respond_to?(:configure)
       }
     }
     config[:submission_workflow] = {
-        :hypatia_items =>    [{:name => "description",    :edit_partial => "hypatia_items/description_form", :show_partial => "hypatia_items/show_description"},
-                              {:name => "files",          :edit_partial => "file_assets/file_assets_form", :show_partial => "shared/show_files"},
-                              {:name => "technical_info", :edit_partial => "hypatia_items/tech_info_form", :show_partial => "shared/show_technical"},
-                              {:name => "permissions",    :edit_partial => "permissions/permissions_form", :show_partial => "hypatia_items/show_permissions"}
-                             ]
+        :hypatia_items =>     [{:name => "description",    :edit_partial => "hypatia_items/description_form", :show_partial => "hypatia_items/show_description"},
+                               {:name => "files",          :edit_partial => "file_assets/file_assets_form",   :show_partial => "shared/show_files"},
+                               {:name => "technical_info", :edit_partial => "hypatia_items/tech_info_form",   :show_partial => "shared/show_technical"},
+                               {:name => "permissions",    :edit_partial => "permissions/permissions_form",   :show_partial => "hypatia_items/show_permissions"}
+                              ],
+        :hypatia_ftk_items => [{:name => "description",     :edit_partial => "hypatia_ftk_items/description_form",  :show_partial => "hypatia_ftk_items/show_description"},
+                               {:name => "files",           :edit_partial => "file_assets/file_assets_form",        :show_partial => "shared/show_files"},
+                               {:name => "technical_info",  :edit_partial => "hypatia_ftk_items/tech_info_form",    :show_partial => "shared/show_technical"},
+                               {:name => "permissions",     :edit_partial => "permissions/permissions_form",        :show_partial => "hypatia_ftk_items/show_permissions"}
+                              ]
       }
   end
 end
