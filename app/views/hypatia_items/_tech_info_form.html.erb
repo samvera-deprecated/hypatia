@@ -1,9 +1,8 @@
 <%- form_tag(url_for(:controller=>"assets", :action=>"update", :id=>params[:id]), :class => "step") do -%>
-  
-  <p id="content_oid_field" class="fedora-text-field">
-    <%= fedora_field_label("contentMetadata", [:content_oid], "Content Object ID") %>
-    <%= fedora_text_field(@document_fedora,"contentMetadata", [:content_oid], :multiple=>false, :required=>false ) %>
-  </p>
+  <%# not editable %>
+  <dl>
+    <%= display_ds_values_as_dl_element("contentMetadata", :content_oid, "Content Object ID") %>
+  </dl>
   
   <%= hidden_field_tag("_method","put", :id=>"tech_info_method") %>
   <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "tech_info_wf_step") %>
