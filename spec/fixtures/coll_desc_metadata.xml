@@ -1,3 +1,4 @@
+<!-- MODS metadata for a collection object's descMetadata datastream.  This file should have all the possible fields that could appear. -->
 <mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
   <mods:titleInfo>
     <mods:title>Fake Collection</mods:title>

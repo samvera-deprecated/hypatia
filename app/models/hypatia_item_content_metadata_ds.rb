@@ -1,5 +1,5 @@
-# defines the expected OM terminology for a Hypatia item object's contentMetadata 
-#  datastream, which will have Mods XML.
+# defines the expected OM terminology for a Hypatia item object's 
+#  contentMetadata datastream
 class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream 
    
   # OM (Opinionated Metadata) terminology mapping for the mods xml

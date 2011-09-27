@@ -107,7 +107,5 @@ describe HypatiaCollDescMetadataDS do
     @desc_md_ds.term_values(:access).length.should == 3
     @desc_md_ds.term_values(:access).should == ["pub rights text", "ownership and copyright text", "access to collection text"]
   end
-  
-
 
 end
