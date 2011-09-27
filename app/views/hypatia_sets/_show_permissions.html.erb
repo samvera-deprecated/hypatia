@@ -1,10 +1,13 @@
-<%- document ||= @document -%>
-<%-# Not sure if we need this or not but there isn't a general purpose show permissions partail in hydra-head (only model specific).  This is a straight copy of the mods assets partial.  -%>
-<div class="metadata-section">
-  <h2 class="section-title">Permissions</h2>
-  <span class="show-hide" style="display:none;">Hide Section</span>
-  <dl class="defList toggle-section">
-    <% if editor? %>
+<%- # Not sure if we need this or not but there isn't a general purpose show permissions partail in hydra-head (only model specific).  
+    # This is a straight copy of the mods assets partial.  
+    # We do add some of our own HTML around the form such ass the hide section link.
+-%>
+<% if editor? %>
+  <%- document ||= @document -%>
+  <div class="metadata-section">
+    <h2 class="section-title">Permissions</h2>
+    <span class="show-hide">Hide Section</span>
+    <dl class="defList toggle-section">  
       <h3>Group</h3>
       <%= get_data_with_label(document, "Discover Access:", 'discover_access_group_t', :default=>"private") %>
       <%= get_data_with_label(document, "Read & Download Access:", 'read_access_group_t', :default=>"private") %>
@@ -13,6 +16,6 @@
       <%= get_data_with_label(document, "Discover Access:", 'discover_access_t', :default=>"private") %>
       <%= get_data_with_label(document, "Read & Download Access:", 'read_access_t', :default=>"private") %>
       <%= get_data_with_label(document, "Edit & Upload Access:", 'edit_access_t', :default=>"private") %>
-    <% end %>
-  </dl>
-</div>
+    </dl>
+  </div>
+<% end %>
