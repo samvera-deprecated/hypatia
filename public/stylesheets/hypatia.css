@@ -128,7 +128,7 @@ body {
   text-decoration: none; }
 #bd #showHead a:hover {  color: #029; }
 #bd #showHead .results-position {  padding: 0 12px; }
-#bd #showHead .results-pagination { line-height: 16px; padding-left:140px; }
+#bd #showHead .results-pagination { line-height: 16px; padding-left:100px; }
 #bd #showUtils {
   float: left;
   padding: 0.33em 0; }
