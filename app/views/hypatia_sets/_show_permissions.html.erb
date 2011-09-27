@@ -6,7 +6,7 @@
   <%- document ||= @document -%>
   <div class="metadata-section">
     <h2 class="section-title">Permissions</h2>
-    <span class="show-hide">Hide Section</span>
+    <span class="show-hide" style="display:none;">Hide Section</span>
     <dl class="defList toggle-section">  
       <h3>Group</h3>
       <%= get_data_with_label(document, "Discover Access:", 'discover_access_group_t', :default=>"private") %>
