@@ -44,4 +44,7 @@ Feature: Collection View
     When I am on the document page for id "hypatia:fixture_coll2" 
     Then pending
 
+  Scenario: searching for coll record -- put this in a separate searching feature
+    Given pending
+  
   
