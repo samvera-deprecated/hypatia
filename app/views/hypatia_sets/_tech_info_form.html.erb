@@ -1,0 +1,13 @@
+<%- form_tag(url_for(:controller=>"assets", :action=>"update", :id=>params[:id]), :class => "step") do -%>
+  <%# not editable %>
+  <dl>
+    <%= display_ds_values_as_dl_element("contentMetadata", :content_oid, "Content Object ID") %>
+  </dl>
+  
+  <%= hidden_field_tag("_method","put", :id=>"tech_info_method") %>
+  <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "tech_info_wf_step") %>
+  <%= hidden_field_tag(:new_asset, true, :id => "tech_info_new_asset") if params[:new_asset] %>
+  <%= hidden_field_tag(:content_type,"hypatia_set", :id => "tech_info_content_type") %>
+  <%= submit_tag(submit_name, :name=>"continue", :class=>"save-submit") %>
+  <%= submit_tag("Save and Finish", :name=>"finish", :class=>"save-submit") unless params[:new_asset] %>
+<%- end -%>

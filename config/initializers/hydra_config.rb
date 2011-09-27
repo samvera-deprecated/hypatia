@@ -32,7 +32,13 @@ if Hydra.respond_to?(:configure)
                                {:name => "files",           :edit_partial => "file_assets/file_assets_form",        :show_partial => "shared/show_files"},
                                {:name => "technical_info",  :edit_partial => "hypatia_ftk_items/tech_info_form",    :show_partial => "shared/show_technical"},
                                {:name => "permissions",     :edit_partial => "permissions/permissions_form",        :show_partial => "hypatia_ftk_items/show_permissions"}
+                              ],
+        :hypatia_sets =>      [{:name => "description",     :edit_partial => "hypatia_sets/description_form",       :show_partial => "hypatia_sets/show_description"},
+                               #{:name => "technical_info",  :edit_partial => "hypatia_sets/tech_info_form",         :show_partial => "shared/show_technical"},
+                               {:name => "permissions",     :edit_partial => "permissions/permissions_form",        :show_partial => "hypatia_sets/show_permissions"}
                               ]
+        # :disk_image_item =>   [{:name => "description",     :edit_partial => "hypatia_ftk_items/description_form",  :show_partial => "hypatia_ftk_items/show_description"}
+        #                       ]
       }
   end
 end
