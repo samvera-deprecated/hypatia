@@ -1,39 +1,41 @@
 <div class="descMetadata metadata-section">
   <h2 class="section-title">Description</h2>
-  <span class="show-hide">Hide Section</span>
-  <div class="descMetadata metadata-subsection">
-    <h3 class="subsection-title">Collection</h3>
-    <dl class="collection-metadata-list">
-      <%= display_ds_values_as_dl_element("descMetadata", :scope_and_content, "Summary") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :genre, "Genre") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :create_date, "Created") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :extent, "Extent") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :abstract, "Description") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :scope_and_content, "Summary") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :citation, "Preferred Citation") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :topic, "Subject") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :lang_code, "Language Code") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :abstract, "Abstract") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :citation, "Preferred Citation") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :description, "Description") %>
-    </dl>
-  </div>
-  <div class="descMetadata metadata-subsection">
-    <h3 class="subsection-title">Creator</h3>
-    <dl class="collection-metadata-list">
-      <%= display_ds_values_as_dl_element("descMetadata", :person, "Creator") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :biography, "Biography") %>
-    </dl>
-  </div>
-  <div class="descMetadata metadata-subsection">
-    <h3 class="subsection-title">Repository</h3>
-    <dl class="collection-metadata-list">
-      <%= display_ds_values_as_dl_element("descMetadata", :institution, "Repository") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :local_id, "Local Identifier") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :located_in, "Physical Location") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :acquisition_info, "Acquisition Information") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :access, "Access Notes") %>
-      <%= display_ds_values_as_dl_element("descMetadata", :provenance, "Provenance") %>
-    </dl>
+  <span class="show-hide" style="display:none;">Hide Section</span>
+  <div class="toggle-section">
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Collection</h3>
+      <dl class="collection-metadata-list">
+        <%= display_ds_values_as_dl_element("descMetadata", :scope_and_content, "Summary") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :genre, "Genre") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :create_date, "Created") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :extent, "Extent") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :abstract, "Description") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :scope_and_content, "Summary") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :citation, "Preferred Citation") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :topic, "Subject") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :lang_code, "Language Code") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :abstract, "Abstract") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :citation, "Preferred Citation") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :description, "Description") %>
+      </dl>
+    </div>
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Creator</h3>
+      <dl class="collection-metadata-list">
+        <%= display_ds_values_as_dl_element("descMetadata", :person, "Creator") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :biography, "Biography") %>
+      </dl>
+    </div>
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Repository</h3>
+      <dl class="collection-metadata-list">
+        <%= display_ds_values_as_dl_element("descMetadata", :institution, "Repository") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :local_id, "Local Identifier") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :located_in, "Physical Location") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :acquisition_info, "Acquisition Information") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :access, "Access Notes") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :provenance, "Provenance") %>
+      </dl>
+    </div>
   </div>
 </div>
