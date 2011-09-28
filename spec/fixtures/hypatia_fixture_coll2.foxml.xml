@@ -121,12 +121,14 @@
         <contentMetadata objectId="hypatia:fixture_coll2" type="set">
           <resource type="ead" id="coll.ead" objectId="hypatia:fixture_file_asset_ead_for_coll">
             <file id="coll_ead.xml" format="XML" mimetype="text/xml" size="47570" preserve="yes" publish="yes" shelve="yes">
+              <location type="datastreamID">DS1</location>
               <checksum type="md5">856d7eae922f80e68c954d2e3521f74a</checksum>
               <checksum type="sha1">1a79a23e7827ee62370850def76afdeccf3fbadb</checksum>
             </file>
           </resource>
           <resource type="image" id="image" objectId="hypatia:fixture_file_asset_image_for_coll">
             <file id="fixture_coll_image.jpg" format="JPG" mimetype="image/jpeg" size="302080" preserve="yes" publish="yes" shelve="yes">
+              <location type="datastreamID">DS1</location>
               <checksum type="md5">856d7eae922f80e68c954d2e3521f74ab</checksum>
               <checksum type="sha1">1a79a23e7827ee62370850def76afdeccf3fbadbc</checksum>
             </file>

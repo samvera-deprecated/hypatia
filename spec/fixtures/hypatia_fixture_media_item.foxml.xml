@@ -156,18 +156,21 @@
         <contentMetadata objectId="hypatia:fixture_media_item" type="file">
           <resource type="media-file" id="CM058.dd" objectId="hypatia:fixture_file_asset_dd_for_media_item">
             <file id="CM058.dd" format="BINARY" mimetype="application/octet-stream" size="47570" preserve="yes" publish="yes" shelve="yes">
+              <location type="datastreamID">DS1</location>
               <checksum type="md5">856d7eae922f80e68c954d2e3521f74a</checksum>
               <checksum type="sha1">1a79a23e7827ee62370850def76afdeccf3fbadb</checksum>
             </file>
           </resource>
           <resource type="image-front" id="fixture_media_item_front" objectId="hypatia:fixture_file_asset_image1_for_media_item">
             <file id="fixture_media_item_front.jpg" format="JPG" mimetype="image/jpeg" size="302081" preserve="yes" publish="yes" shelve="yes">
+              <location type="datastreamID">DS1</location>
               <checksum type="md5">856d7eae922f80e68c954d2e3521f74ab</checksum>
               <checksum type="sha1">1a79a23e7827ee62370850def76afdeccf3fbadbc</checksum>
             </file>
           </resource>
           <resource type="image-back" id="fixture_media_item_back" objectId="hypatia:fixture_file_asset_image2_for_media_item">
             <file id="fixture_media_item_back.jpg" format="JPG" mimetype="image/jpeg" size="302084" preserve="yes" publish="yes" shelve="yes">
+              <location type="datastreamID">DS1</location>
               <checksum type="md5">856d7eae922f80e68c954d2e3521f74abc</checksum>
               <checksum type="sha1">1a79a23e7827ee62370850def76afdeccf3fbadbcd</checksum>
             </file>

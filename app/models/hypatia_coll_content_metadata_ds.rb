@@ -8,15 +8,17 @@ class HypatiaCollContentMetadataDS < ActiveFedora::NokogiriDatastream
   set_terminology do |t|
     t.root(:path=>"contentMetadata", :xmlns => '', :namespace_prefix => nil) 
 
-    t.my_fedora_id(:path=>"contentMetadata/@objectId", :namespace_prefix => nil) # 3 values
+    t.my_fedora_id(:path=>"contentMetadata/@objectId", :namespace_prefix => nil)
 
     t.resource(:namespace_prefix => nil) {
       t.fedora_pid(:path=>{:attribute=>"objectId"}, :namespace_prefix => nil)
-      t.file(:ref=>[:file], :namespace_prefix => nil, :namespace_prefix => nil)
+      t.file(:ref=>[:file], :namespace_prefix => nil)
     }
     t.file(:namespace_prefix => nil) {
-      t.ds_label(:path=>{:attribute=>"id"}, :namespace_prefix => nil)
+      t.ds_id(:path=>"location", :attributes=>{:type=>"datastreamID"}, :namespace_prefix => nil)
+      t.filename(:path=>{:attribute=>"id"}, :namespace_prefix => nil)
       t.size(:path=>{:attribute=>"size"}, :namespace_prefix => nil)
+      t.mimetype(:path=>{:attribute=>"mimetype"}, :namespace_prefix => nil)
       t.md5(:path=>"checksum", :attributes=>{:type=>"md5"}, :namespace_prefix => nil)
       t.sha1(:path=>"checksum", :attributes=>{:type=>"sha1"}, :namespace_prefix => nil)
     }
@@ -25,14 +27,18 @@ class HypatiaCollContentMetadataDS < ActiveFedora::NokogiriDatastream
     t.image(:ref=>:resource, :attributes=>{:type=>"image"})
 
     t.ead_fedora_pid(:proxy=>[:ead, :fedora_pid])
-    t.ead_ds_label(:proxy=>[:ead, :file, :ds_label])
+    t.ead_ds_id(:proxy=>[:ead, :file, :ds_id])
+    t.ead_filename(:proxy=>[:ead, :file, :filename])
     t.ead_size(:proxy=>[:ead, :file, :size])
+    t.ead_mimetype(:proxy=>[:ead, :file, :mimetype])
     t.ead_md5(:proxy=>[:ead, :file, :md5])
     t.ead_sha1(:proxy=>[:ead, :file, :sha1])
     
     t.image_fedora_pid(:proxy=>[:image, :fedora_pid])
-    t.image_ds_label(:proxy=>[:image, :file, :ds_label])
+    t.image_ds_id(:proxy=>[:image, :file, :ds_id])
+    t.image_filename(:proxy=>[:image, :file, :filename])
     t.image_size(:proxy=>[:image, :file, :size])
+    t.image_mimetype(:proxy=>[:image, :file, :mimetype])
     t.image_md5(:proxy=>[:image, :file, :md5])
     t.image_sha1(:proxy=>[:image, :file, :sha1])
 
