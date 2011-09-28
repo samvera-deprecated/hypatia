@@ -68,7 +68,8 @@ body {
 /* =MAIN HEADER
 -------------------------------------------------------------- */
 
-#doc4 #hd > a {  color: #F6F8F7; }
+#hd .user-util-links {line-height: 20px;}
+#hd .user-util-links a {  color: #F6F8F7; }
 .site-heading {
   color: #F6F8F7;
   float: left;
@@ -84,10 +85,11 @@ body {
 #hd #select-item-box {
   border: 1px solid #4e7268;
   float: right;
-  margin-top: -6px;
+  margin-top: 0;
   background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgba(44,44,44, 0.4)), color-stop(1, rgba(44,44,44,0)) );
   background-image: -moz-linear-gradient(center bottom, rgba(44, 44, 44, 0.4) 0%, rgba(44,44,44, 0) 100% ); }
-#hd #select-item-box a.add-new-asset {
+.user-util-links #select-item-box a {color: #444;  text-decoration: none;}
+.user-util-links #select-item-box a.add-new-asset {
   color: #333;
   background: url("/images/search-button.png") no-repeat scroll 99% 3px transparent;
   display: block;
@@ -238,7 +240,7 @@ a.hypatia-home-link:hover {color: #698F92;}
   float: right;
   font-size: 14px;
   font-weight: bold;
-  height: 44px;
+  height: 43px;
   line-height: 46px;
   margin-top: 0;
   padding-left: 32px;
@@ -339,10 +341,10 @@ a.hypatia-home-link:hover {color: #698F92;}
   text-decoration: underline; }
 .metadata-section p {  margin: 0; }
 .metadata-section p.collection-info { margin: 0 0 1.33em 0; }
-#document fieldset {  clear: both; }
-#document fieldset legend,
-#document .contributor_role,
-#document dt {
+#bd #document fieldset {  clear: both; }
+#bd #document fieldset legend,
+#bd #document .contributor_role,
+#bd #document dt {
   border-bottom: none;
   clear: left;
   color: #456;
@@ -456,6 +458,11 @@ a.hypatia-home-link:hover {color: #698F92;}
   padding: 0 1em;
   text-align: right;
   text-decoration: underline; }
+.sidebar .delete_asset_link {  
+  background: url('/images/delete.png') no-repeat scroll 12px 50% transparent;
+  display: block;
+  padding: 1em 1em 1em 36px;
+  text-decoration: none; }
 
 
 /* =FEATURED MEDIA SIDEBAR
@@ -482,7 +489,8 @@ a.hypatia-home-link:hover {color: #698F92;}
 /* =EDITING FORM
 -------------------------------------------------------------- */
 
-#document.document_edit h1 {
+#login, #new_user {margin: 3em 0;}
+#bd #document.document_edit h1 {
   color: #225566;
   font-family: "Open Sans","Helvetica Neue",Arial,sans-serif;
   font-size: 27px;
@@ -490,13 +498,14 @@ a.hypatia-home-link:hover {color: #698F92;}
   margin: 0 0 0.8em;
   padding: 0;
   text-shadow: 0 1px 1px #DDDDDD; }
-.document_edit form {  padding: 0 3px 3em; }
-.document_edit fieldset,
-.document_edit p {  padding: 0 0 1em; }
-.document_edit fieldset p {  padding: 0 0 0.2em; }
-.document_edit .fedora-text-field input[type="text"] {  width: 50%; }
-.document_edit textarea {width: 64%;}
-#document.document_edit label {
+#bd .document_edit form {  padding: 0 3px 3em; }
+#bd .document_edit fieldset,
+#bd .document_edit p {  padding: 0 0.1em 1em; }
+#bd .document_edit fieldset p {  padding: 0 0.1em 0.2em; }
+#bd .document_edit fieldset p.legend-caption {  padding: 0 0.1em 0.67em;}
+#bd .document_edit .fedora-text-field input[type="text"] {  width: 50%; }
+#bd .document_edit textarea {width: 64%;}
+#bd #document.document_edit label {
   border-bottom: none;
   clear: left;
   color: #456;
@@ -512,7 +521,7 @@ a.hypatia-home-link:hover {color: #698F92;}
   padding-top: 0;
   text-transform: uppercase; 
   width: 100%;}
-#document.document_edit fieldset label {
+#bd #document.document_edit fieldset label {
   border-bottom: medium none;
   font-family: "Helvetica Neue", Arial, sans-serif;
   font-size: 13px;
@@ -522,15 +531,15 @@ a.hypatia-home-link:hover {color: #698F92;}
   padding: 0.2em 0 0.5em;
   text-transform: none; 
   width: 100%; }
-#document.document_edit fieldset legend {  
+#bd #document.document_edit fieldset legend {  
   margin-bottom: 0.33em; width: 100%; }
 .document_edit .field-caption, .document_edit .legend-caption {  margin: 0; }
-#document.document_edit .required-note {  
+#bd #document.document_edit .required-note {  
   font-family: "Helvetica Neue", Arial, sans-serif; 
   font-weight: normal;
   left: 44%; }
 #peer_reviewed {  vertical-align: baseline; }
-#document #peer_reviewed_fieldset label {
+#bd #document #peer_reviewed_fieldset label {
   float: none; 
   width: 50%; }
 

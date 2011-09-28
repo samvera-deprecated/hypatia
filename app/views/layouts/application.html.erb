@@ -27,7 +27,9 @@
 
   	<div id="hd">
   		<h1 class="site-heading"><%= link_to application_name, root_path %> <%= "<span id='results_text'>Search Results</span>" if (params[:controller] == "catalog" and !params[:id]) %></h1>
-  		<%= render :partial => '/user_util_links.html' %>
+  		<div class="user-util-links">
+  		  <%= render :partial => '/user_util_links.html' %>
+  		</div>
   	</div>
   
     <div id="bd">
