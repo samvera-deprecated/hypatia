@@ -23,6 +23,12 @@ module NavigationHelpers
     when /^the show page for (.+)$/ 
       catalog_path($1)
 
+    when /the edit document page for (.*)$/i
+      edit_catalog_path($1)
+
+    when /the edit (.*) page for (.*)$/i
+      edit_catalog_path($2,:wf_step=>$1)
+
     else
       begin
         page_name =~ /the (.*) page/
