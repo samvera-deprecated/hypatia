@@ -21,6 +21,11 @@ describe HypatiaCollection do
     @hypatia_coll.datastreams["descMetadata"].should be_instance_of(HypatiaCollDescMetadataDS)
   end
 
+  it "should have a contentMetadata datastream of type HypatiaCollContentMetadataDS" do
+    @hypatia_coll.datastreams.should have_key("contentMetadata")
+    @hypatia_coll.datastreams["contentMetadata"].should be_instance_of(HypatiaCollContentMetadataDS)
+  end
+
   it "should have a rightsMetadata datastream of type Hydra::RightsMetadata" do
     @hypatia_coll.datastreams.should have_key("rightsMetadata")
     @hypatia_coll.datastreams["rightsMetadata"].should be_instance_of(Hydra::RightsMetadata)
