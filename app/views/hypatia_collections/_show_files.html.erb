@@ -1,0 +1,31 @@
+<div class="files metadata-section">
+  <h2 class="section-title">Files</h2>
+  <span class="show-hide" style="display:none;">Hide Section</span>
+  <div class="toggle-section">
+    <table id="file_assets" class="files">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Mimetype</th>
+        </tr>
+      </thead>
+      <tbody>
+    	  <tr class="file_asset<%= cycle(" odd", " even") -%>" >
+        	  <td>
+        	    <% ead_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :ead_filename) -%>
+        	    <% ead_pid = get_values_from_datastream(@document_fedora, "contentMetadata", :ead_fedora_pid) -%>
+        	    <% ead_ds_id = get_values_from_datastream(@document_fedora, "contentMetadata", :ead_ds_id).first -%>
+              <%= link_to ead_filename, asset_downloads_path(ead_pid, :download_id=>ead_ds_id) %>
+            </td>
+        	  <td>
+              <%= get_values_from_datastream(@document_fedora, "contentMetadata", :ead_size) %> bytes
+        	  </td>
+        	  <td>
+              <%= get_values_from_datastream(@document_fedora, "contentMetadata", :ead_mimetype) %>
+        	  </td>
+        	</tr>
+      </tbody>
+    </table>
+  </div>
+</div>

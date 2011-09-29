@@ -1,0 +1,23 @@
+<div class="techInfo metadata-section">
+  <h2 class="section-title">Technical Information</h2>
+  <span class="show-hide" style="display:none;">Hide Section</span>
+  <div class="toggle-section">
+    <dl class="collection-metadata-list">
+      <%= display_ds_values_as_dl_element("contentMetadata", :ead_filename, "EAD Filename") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :ead_fedora_pid, "EAD File Object Id") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :ead_ds_id, "EAD Datastream ID") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :ead_md5, "EAD md5 Checksum") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :ead_sha1, "EAD sha1 Checksum") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :ead_size, "EAD size") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :ead_mimetype, "EAD mimetype") %>
+      
+      <%= display_ds_values_as_dl_element("contentMetadata", :image_filename, "Image Filename") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :image_fedora_pid, "Image File Object Id") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :image_ds_id, "Image Datastream ID") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :image_md5, "Image md5 Checksum") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :image_sha1, "Image sha1 Checksum") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :image_size, "Image size") %>
+      <%= display_ds_values_as_dl_element("contentMetadata", :image_mimetype, "Image mimetype") %>
+    </dl>
+  </div>
+</div>

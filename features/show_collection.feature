@@ -61,21 +61,40 @@ Feature: Collection View
     And I should see "access to collection text" # accessCondition  with "Access to Collection" displayLabel
     And I should see "this is text in an abstract element with a \"Provenance\" displayLabel." # provenance
 
-  
   Scenario: all desired technical metadata displays
-    When I am on the document page for id "hypatia:fixture_coll2" 
-    Then pending
-  
+    When I am on the document page for id "hypatia:fixture_coll2"
+    Then I should see "coll_ead.xml" # ead_filename
+    And I should see "hypatia:fixture_file_asset_ead_for_coll" # ead_fedora_pid 
+    And I should see "DS1" # ead_ds_id
+    And I should see "47570" # ead_size
+    And I should see "text/xml" # ead_mimetype
+    And I should see "856d7eae922f80e68c954d2e3521f74a" # ead_md5
+    And I should see "1a79a23e7827ee62370850def76afdeccf3fbadb" # ead_sha1
+    And I should see "fixture_coll_image.jpg" # image_filename
+    And I should see "hypatia:fixture_file_asset_image_for_coll" # image_fedora_pid 
+    And I should see "DS1" # image_ds_id
+    And I should see "302080" # image_size
+    And I should see "image/jpeg" # image_mimetype
+    And I should see "856d7eae922f80e68c954d2e3521f74ab" # image_md5
+    And I should see "1a79a23e7827ee62370850def76afdeccf3fbadbc" # image_sha1
+
   Scenario: link to download the collection's EAD file
+    When I am on the document page for id "hypatia:fixture_coll2"
+    Then I should see "coll_ead.xml" # ead_filename
+    And I should see "47570" # ead_size
+    And I should see "text/xml" # ead_mimetype
+
+  Scenario: download link should work
     When I am on the document page for id "hypatia:fixture_coll2" 
     Then pending
-    And I should see a link to the show page for "hypatia:fixture_file_asset_ead_for_coll"
+
     
   Scenario: collection image should display
     When I am on the document page for id "hypatia:fixture_coll2" 
     Then pending
 
-  Scenario: searching for coll record -- put this in a separate searching feature
-    Given pending
   
-  # FIXME:  there should be a general show feature that ensures the fedora id and anything else true for all objects is used in the UI appropriately
+
+#  Scenario: searching for coll record -- put this in a separate searching feature?
+#    Given pending
+  
