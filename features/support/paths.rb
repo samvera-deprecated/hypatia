@@ -11,12 +11,6 @@ module NavigationHelpers
     when /the home\s?page/
       '/'
 
-    # Add more mappings here.
-    # Here is an example that pulls values out of the Regexp:
-    #
-    #   when /^(.*)'s profile page$/i
-    #     user_profile_path(User.find_by_login($1))
-
     when /^the document page for id "(.+)"$/ 
       catalog_path($1)
 
@@ -28,7 +22,10 @@ module NavigationHelpers
 
     when /the edit (.*) page for (.*)$/i
       edit_catalog_path($2,:wf_step=>$1)
-
+      
+    when /the download of (.*) from asset (.*)$/i
+      asset_downloads_path($2, :download_id=>$1)
+      
     else
       begin
         page_name =~ /the (.*) page/

@@ -1,6 +1,6 @@
-Feature: Collection View
-  As a viewing user
-  I want to ensure collection fixture objects display properly
+Feature: Collection Show page
+  As a user
+  I want to see collection object data displaying properly
   
   Scenario: links to members of the collection
     When I am on the document page for id "hypatia:fixture_coll2" 
@@ -83,17 +83,11 @@ Feature: Collection View
     Then I should see "coll_ead.xml" # ead_filename
     And I should see "47570" # ead_size
     And I should see "text/xml" # ead_mimetype
+    And I should see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_ead_for_coll"
 
-  Scenario: download link should work
-    When I am on the document page for id "hypatia:fixture_coll2" 
-    Then pending
-
-    
   Scenario: collection image should display
     When I am on the document page for id "hypatia:fixture_coll2" 
     Then pending
-
-  
 
 #  Scenario: searching for coll record -- put this in a separate searching feature?
 #    Given pending

@@ -9,4 +9,5 @@ Feature: File downloading via links in views
   #   When I am on the document page for id "hypatia:fixture_ftk_item_factory"
   #   Then I should see a link to "fixture_ftk_file_factory/downloads?download_id=DS1"
 
+  #And I should see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_ead_for_coll"
   
