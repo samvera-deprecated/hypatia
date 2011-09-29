@@ -1,8 +1,7 @@
-# defines the expected OM terminology for a Hypatia item object's descMetadata 
+# defines the OM terminology for a Hypatia ITEM object's descMetadata 
 #  datastream, which will have Mods XML.
 class HypatiaItemDescMetadataDS < ActiveFedora::NokogiriDatastream 
    
-  # OM (Opinionated Metadata) terminology mapping for the mods xml
   set_terminology do |t|
         
     t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-3.xsd")

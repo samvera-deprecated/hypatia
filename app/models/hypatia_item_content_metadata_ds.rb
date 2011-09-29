@@ -1,8 +1,7 @@
-# defines the expected OM terminology for a Hypatia item object's 
-#  contentMetadata datastream
+# defines the OM (Opinionated Metadata) terminology for a Hypatia ITEM 
+#  object's contentMetadata datastream
 class HypatiaItemContentMetadataDS < ActiveFedora::NokogiriDatastream 
    
-  # OM (Opinionated Metadata) terminology mapping for the mods xml
   set_terminology do |t|
     t.root(:path=>"contentMetadata", :xmlns => '', :namespace_prefix => nil)
 # FIXME: want this sortable, but sort field can't be multi-valued ... but without resource element matches, it really isn't multi-valued

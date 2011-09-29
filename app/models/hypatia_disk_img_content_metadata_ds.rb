@@ -1,11 +1,9 @@
-# defines the expected OM terminology for a Hypatia disk image item object's 
-#  contentMetadata datastream
-# 
+# defines the OM (Opinionated Metadata) terminology for a Hypatia 
+#  DISK IMAGE ITEM object's contentMetadata datastream
 class HypatiaDiskImgContentMetadataDS < ActiveFedora::NokogiriDatastream 
 
-# TODO:  searchable, facetable, displayable, sortable!!!!   
+# TODO: what should really be searchable, facetable, displayable, sortable?
    
-  # OM (Opinionated Metadata) terminology mapping for the contentMetadata datastream
   set_terminology do |t|
     t.root(:path=>"contentMetadata", :xmlns => '', :namespace_prefix => nil) 
 
