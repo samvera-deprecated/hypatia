@@ -20,3 +20,8 @@ Then /^I should see a link to datastream "([^"]*)" in FileAsset object "([^"]*)"
   path = "the download of #{ds_id} from asset #{pid}"
   page.should have_xpath(".//a[@href=\"#{path_to(path)}\"]")
 end
+
+Then /^I should not see a link to datastream "([^"]*)" in FileAsset object "([^"]*)"$/ do |ds_id, pid|
+  path = "the download of #{ds_id} from asset #{pid}"
+  page.should_not have_xpath(".//a[@href=\"#{path_to(path)}\"]")
+end
