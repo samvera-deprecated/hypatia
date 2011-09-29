@@ -1,8 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe HypatiaDiskImgContentMDDS do
+describe HypatiaDiskImgContentMetadataDS do
   before(:all) do
-    @content_md_ds = HypatiaDiskImgContentMDDS.from_xml(active_fedora_fixture("disk_image_content_metadata.xml"))
+    @content_md_ds = HypatiaDiskImgContentMetadataDS.from_xml(active_fedora_fixture("disk_image_content_metadata.xml"))
   end
     
   it "should have :my_fedora_id value from the objectId attribute on the <contentMetadata> element" do

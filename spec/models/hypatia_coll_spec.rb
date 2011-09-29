@@ -4,12 +4,7 @@ require "active_fedora"
 describe HypatiaCollection do
   
   before(:all) do
-    ActiveFedora.init()
-    # Fedora::Repository.stubs(:instance).returns(stub('set_stub').as_null_object)
     @hypatia_coll = HypatiaCollection.new
-  end
-  
-  after(:all) do
   end
   
   it "should be a kind of ActiveFedora::Base" do

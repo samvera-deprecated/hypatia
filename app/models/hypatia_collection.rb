@@ -1,4 +1,4 @@
-# a Fedora object for the Hypatia SET hydra content type
+# an ActiveFedora model for a Hypatia COLLECTION object
 class HypatiaCollection < ActiveFedora::Base
   has_metadata :name => "descMetadata", :type=> HypatiaCollDescMetadataDS
   has_metadata :name => "contentMetadata", :type=> HypatiaCollContentMetadataDS

@@ -1,6 +1,7 @@
 # defines the expected OM terminology for a Hypatia disk image item object's 
 #  contentMetadata datastream
-class HypatiaDiskImgContentMDDS < ActiveFedora::NokogiriDatastream 
+# 
+class HypatiaDiskImgContentMetadataDS < ActiveFedora::NokogiriDatastream 
 
 # TODO:  searchable, facetable, displayable, sortable!!!!   
    
