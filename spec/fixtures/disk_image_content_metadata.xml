@@ -1,0 +1,23 @@
+<contentMetadata objectId="hypatia:fixture_disk_image_item" type="file">
+  <resource type="media-file" id="CM058.dd" objectId="hypatia:fixture_file_asset_dd_for_media_item">
+    <file id="CM058.dd" format="BINARY" mimetype="application/octet-stream" size="47570" preserve="yes" publish="yes" shelve="yes">
+      <location type="datastreamID">DS1</location>
+      <checksum type="md5">12</checksum>
+      <checksum type="sha1">34</checksum>
+    </file>
+  </resource>
+  <resource type="image-front" id="fixture_media_item_front" objectId="hypatia:fixture_file_asset_image1_for_media_item">
+    <file id="fixture_media_item_front.jpg" format="JPG" mimetype="image/jpeg" size="302081" preserve="yes" publish="yes" shelve="yes">
+      <location type="datastreamID">DS1</location>
+      <checksum type="md5">56</checksum>
+      <checksum type="sha1">78</checksum>
+    </file>
+  </resource>
+  <resource type="image-back" id="fixture_media_item_back" objectId="hypatia:fixture_file_asset_image2_for_media_item">
+    <file id="fixture_media_item_back.jpg" format="JPG" mimetype="image/jpeg" size="302084" preserve="yes" publish="yes" shelve="yes">
+      <location type="datastreamID">DS1</location>
+      <checksum type="md5">90</checksum>
+      <checksum type="sha1">666</checksum>
+    </file>
+  </resource>
+</contentMetadata>
