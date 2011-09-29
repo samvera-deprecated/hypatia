@@ -100,8 +100,6 @@ describe FtkItemAssembler do
     end
   end
 
-# 2011-09-29  Naomi commenting out because this now fails with new data models.
-=begin  
   context "creating fedora objects" do
     before(:all) do
       @disk_object = build_fixture_disk_object
@@ -160,7 +158,6 @@ describe FtkItemAssembler do
       @hi.parts.first.datastreams['derivative_html'].content.should_not eql(nil)
     end
   end
-=end
   
   context "creating bags" do
     before(:all) do
