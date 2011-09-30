@@ -1,0 +1,43 @@
+<div class="techInfo metadata-section">
+  <h2 class="section-title">Technical Information</h2>
+  <span class="show-hide" style="display:none;">Hide Section</span>
+  <div class="toggle-section">
+    <div class="contentMetadata metadata-subsection">
+      <h3 class="subsection-title">Disk Image File</h3>
+        <dl class="disk-image-metadata-list">
+          <%= display_ds_values_as_dl_element("contentMetadata", :dd_filename, "DD Filename") %>
+          <%= display_ds_values_as_dl_element("contentMetadata", :dd_fedora_pid, "DD File Object Id") %>
+          <%= display_ds_values_as_dl_element("contentMetadata", :dd_ds_id, "DD Datastream ID") %>
+          <%= display_ds_values_as_dl_element("contentMetadata", :dd_md5, "DD md5 Checksum") %>
+          <%= display_ds_values_as_dl_element("contentMetadata", :dd_sha1, "DD sha1 Checksum") %>
+          <%= display_ds_values_as_dl_element("contentMetadata", :dd_size, "DD size") %>
+          <%= display_ds_values_as_dl_element("contentMetadata", :dd_mimetype, "DD mimetype") %>
+        </dl>
+      </div>
+      <div class="contentMetadata metadata-subsection">
+        <h3 class="subsection-title">Image of Front of Disk</h3>
+          <dl class="disk-image-metadata-list">
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_front_filename, "Front Image Filename") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_front_fedora_pid, "Front Image File Object Id") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_front_ds_id, "Front Image Datastream ID") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_front_md5, "Front Image md5 Checksum") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_front_sha1, "Front Image sha1 Checksum") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_front_size, "Front Image size") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_front_mimetype, "Front Image mimetype") %>
+        </dl>
+      </div>
+      <div class="contentMetadata metadata-subsection">
+        <h3 class="subsection-title">Image of Back of Disk</h3>
+          <dl class="disk-image-metadata-list">
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_back_filename, "Back Image Filename") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_back_fedora_pid, "Back Image File Object Id") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_back_ds_id, "Back Image Datastream ID") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_back_md5, "Back Image md5 Checksum") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_back_sha1, "Back Image sha1 Checksum") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_back_size, "Back Image size") %>
+            <%= display_ds_values_as_dl_element("contentMetadata", :image_back_mimetype, "Back Image mimetype") %>
+        </dl>
+      </div>
+    </dl>
+  </div>
+</div>
