@@ -1,0 +1,19 @@
+<div class="descMetadata metadata-section">
+  <h2 class="section-title">Description</h2>
+  <span class="show-hide" style="display:none;">Hide Section</span>
+  <div class="toggle-section">
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Collection</h3>
+      <dl class="collection-metadata-list">
+        <%= display_ds_values_as_dl_element("descMetadata", :extent, "Extent") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :digital_origin, "Digital Origin") %>
+      </dl>
+    </div>
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Repository</h3>
+      <dl class="collection-metadata-list">
+        <%= display_ds_values_as_dl_element("descMetadata", :local_id, "Local Identifier") %>
+      </dl>
+    </div>
+  </div>
+</div>
