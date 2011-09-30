@@ -27,7 +27,7 @@ Feature: Collection Show page
     And I should not see a link to the show page for "hypatia:fixture_item2"
     And I should not see a link to the show page for "hypatia:fixture_item3"
 
-  Scenario: all desired descriptive metadata displays
+  Scenario: all desired Descriptiion metadata displays
     When I am on the document page for id "hypatia:fixture_coll2" 
     Then I should see "Fake Collection"  # title
     And I should see "1977-1997" # create date
@@ -63,13 +63,15 @@ Feature: Collection Show page
 
   Scenario: all desired technical metadata displays
     When I am on the document page for id "hypatia:fixture_coll2"
-    Then I should see "coll_ead.xml" # ead_filename
+    Then I should see "EAD File" # title of subsection
+    And I should see "coll_ead.xml" # ead_filename
     And I should see "hypatia:fixture_file_asset_ead_for_coll" # ead_fedora_pid 
     And I should see "DS1" # ead_ds_id
     And I should see "47570" # ead_size
     And I should see "text/xml" # ead_mimetype
     And I should see "856d7eae922f80e68c954d2e3521f74a" # ead_md5
     And I should see "1a79a23e7827ee62370850def76afdeccf3fbadb" # ead_sha1
+    And I should see "Image for Collection" # title of subsection
     And I should see "fixture_coll_image.jpg" # image_filename
     And I should see "hypatia:fixture_file_asset_image_for_coll" # image_fedora_pid 
     And I should see "DS1" # image_ds_id
