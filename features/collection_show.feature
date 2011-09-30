@@ -61,7 +61,7 @@ Feature: Collection Show page
     And I should see "access to collection text" # accessCondition  with "Access to Collection" displayLabel
     And I should see "this is text in an abstract element with a \"Provenance\" displayLabel." # provenance
 
-  Scenario: all desired technical metadata displays
+  Scenario: all desired Technical metadata displays
     When I am on the document page for id "hypatia:fixture_coll2"
     Then I should see "EAD File" # title of subsection
     And I should see "coll_ead.xml" # ead_filename
@@ -80,19 +80,18 @@ Feature: Collection Show page
     And I should see "856d7eae922f80e68c954d2e3521f74ab" # image_md5
     And I should see "1a79a23e7827ee62370850def76afdeccf3fbadbc" # image_sha1
 
-  Scenario: link to download the collection's EAD file
+  Scenario: link to Download the collection's EAD file
     When I am on the document page for id "hypatia:fixture_coll2"
     Then I should see "coll_ead.xml" # ead_filename
     And I should see "47570" # ead_size
     And I should see "text/xml" # ead_mimetype
     And I should see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_ead_for_coll"
 
-# TODO
+# TODO this needs more work, I think
   Scenario: collection image should display
     When I am on the document page for id "hypatia:fixture_coll2" 
     Then I should see "fixture_coll_image.jpg"  # alt text?
     Then I should not see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_image_for_coll"
-#    Then pending
 
 #  Scenario: searching for coll record -- put this in a separate searching feature?
 #    Given pending
