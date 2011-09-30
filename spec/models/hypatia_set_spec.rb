@@ -27,7 +27,7 @@ describe HypatiaSet do
   end
     
   it "should have a collection relationship (a set belongs to a collection)" do
-    @hypatia_set.should respond_to(:collection)
+    @hypatia_set.should respond_to(:collections)
   end
 
   it "should have a members relationship (a set has members)" do

@@ -1,15 +1,14 @@
 <% set_objects = @document_fedora.sets(:response_format=>:solr) -%>
-<% coll_objects = @document_fedora.collection(:response_format=>:solr) %>
-<% coll_object = coll_objects.first unless coll_objects.nil? %>
-<% unless set_objects.hits.empty? && coll_object.nil? -%>
+<% coll_objects = @document_fedora.collections(:response_format=>:solr) -%>
+<% unless set_objects.hits.empty? && coll_objects.nil? -%>
   <div class="sets member-of first sidebar-section">
     <h2 class="sidebar-title">Member of:</h2>
     <ul>
       <% set_objects.each do |result| -%>
         <li><%= link_to result[solr_name("title", :text)], catalog_path(:id=>result["id"]) %></li>
   		<% end -%>
-  		<% unless coll_object.nil? -%>
-        <li><%= link_to coll_object[solr_name("title", :text)], catalog_path(:id=>coll_object["id"]) %></li>
+      <% coll_objects.each do |result| -%>
+        <li><%= link_to result[solr_name("title", :text)], catalog_path(:id=>result["id"]) %></li>
       <% end -%>
   	</ul>		
   </div>

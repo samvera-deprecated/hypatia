@@ -1,0 +1,13 @@
+<%-
+  doc_title = (document_show_html_title.nil? || document_show_html_title.empty?) ? @document[:id] : document_show_html_title.first
+  @page_title = "#{doc_title} - #{application_name}" 
+-%>
+<%- sidebar_items << render("shared/show_sets") -%>
+<%- sidebar_items << render("shared/show_members") -%>
+<div class="document_viewer" id="cover_container">
+  <%#= render :partial => 'hypatia_collections/show_image' -%>
+  <%#= render :partial => 'hypatia_collections/show_description' -%>
+  <%#= render :partial => 'hypatia_collections/show_files' -%>
+  <%#= render :partial => 'hypatia_collections/show_technical' -%>
+  <%#= render :partial => 'shared/show_permissions' -%>
+</div>

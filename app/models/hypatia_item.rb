@@ -6,5 +6,5 @@ class HypatiaItem < ActiveFedora::Base
   
   has_relationship "sets", :is_member_of, :type => HypatiaSet
   # an item is a member of a collection
-  has_relationship "collection", :is_member_of_collection, :type => HypatiaCollection
+  has_relationship "collections", :is_member_of_collection, :type => HypatiaCollection
 end
