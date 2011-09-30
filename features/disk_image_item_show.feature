@@ -59,9 +59,11 @@ Feature: Disk Image Item Show page
     And I should see "application/octet-stream" # dd_mimetype
     And I should see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_dd_for_media_item"
     
-# TODO this needs more work, I think
+# TODO this needs more work
   Scenario: Images of Disk should display
     When I am on the document page for id "hypatia:fixture_media_item" 
     Then I should see "fixture_media_item_front.jpg"  # alt text?
-    Then I should not see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_image_for_coll"
+    Then I should see "fixture_media_item_back.jpg"  # alt text?
+    Then I should not see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_image1_for_media_item"
+    Then I should not see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_image2_for_media_item"
     

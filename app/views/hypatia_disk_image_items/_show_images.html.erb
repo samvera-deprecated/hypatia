@@ -1,0 +1,11 @@
+<h4>Front of Disk</h4>
+<% img_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :image_front_filename) -%>
+<% img_pid = get_values_from_datastream(@document_fedora, "contentMetadata", :image_front_fedora_pid) -%>
+<% img_ds_id = get_values_from_datastream(@document_fedora, "contentMetadata", :image_front_ds_id).first -%>
+<%= image_tag (asset_downloads_path(img_pid, :download_id=>img_ds_id), :alt=>img_filename, :height=>"100", :class => "disk_image_front") %>
+
+<h4>Back of Disk</h4>
+<% img_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :image_back_filename) -%>
+<% img_pid = get_values_from_datastream(@document_fedora, "contentMetadata", :image_back_fedora_pid) -%>
+<% img_ds_id = get_values_from_datastream(@document_fedora, "contentMetadata", :image_back_ds_id).first -%>
+<%= image_tag (asset_downloads_path(img_pid, :download_id=>img_ds_id), :alt=>img_filename, :height=>"100", :class => "disk_image_back") %>

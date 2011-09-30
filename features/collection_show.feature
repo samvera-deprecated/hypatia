@@ -87,7 +87,7 @@ Feature: Collection Show page
     And I should see "text/xml" # ead_mimetype
     And I should see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_ead_for_coll"
 
-# TODO this needs more work, I think
+# TODO this needs more work
   Scenario: collection image should display
     When I am on the document page for id "hypatia:fixture_coll2" 
     Then I should see "fixture_coll_image.jpg"  # alt text?
