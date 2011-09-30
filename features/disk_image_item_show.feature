@@ -52,9 +52,9 @@ Feature: Disk Image Item Show page
     And I should see "856d7eae922f80e68c954d2e3521f74abc" # image_back_md5
     And I should see "1a79a23e7827ee62370850def76afdeccf3fbadbcd" # image_back_sha1
 
-#  Scenario: link to download the disk image's DD file
-#    When I am on the document page for id "hypatia:fixture_media_item"
-#    Then I should see "CM058.dd" # dd_filename
-#    And I should see "47570" # dd_size
-#    And I should see "application/octet-stream" # dd_mimetype
-#    And I should see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_dd_for_media_item"
+  Scenario: link to download the disk image's DD file
+    When I am on the document page for id "hypatia:fixture_media_item"
+    Then I should see "CM058.dd" # dd_filename
+    And I should see "47570" # dd_size
+    And I should see "application/octet-stream" # dd_mimetype
+    And I should see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_dd_for_media_item"
