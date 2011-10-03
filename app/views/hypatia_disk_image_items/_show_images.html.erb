@@ -1,10 +1,10 @@
 <%# FIXME:  what if there is no image? -%>
 <h4>Front of Disk</h4>
 <% img_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :image_front_filename) -%>
-<% url = get_datastream_url_from_content_metadata(@document_fedora, img_filename, :image_front_fedora_pid, :image_front_ds_id) -%>
+<% url = get_datastream_url_from_content_md(@document_fedora, img_filename, :image_front_fedora_pid, :image_front_ds_id) -%>
 <%= image_tag(url, :alt=>img_filename, :height=>"100", :class => "coll_image") %>
 
 <h4>Back of Disk</h4>
 <% img_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :image_back_filename) -%>
-<% url = get_datastream_url_from_content_metadata(@document_fedora, img_filename, :image_back_fedora_pid, :image_back_ds_id) -%>
+<% url = get_datastream_url_from_content_md(@document_fedora, img_filename, :image_back_fedora_pid, :image_back_ds_id) -%>
 <%= image_tag(url, :alt=>img_filename, :height=>"100", :class => "coll_image") %>

@@ -26,7 +26,10 @@ module ApplicationHelper
     result 
   end
   
-  def get_datastream_url_from_content_metadata(fedora_obj, filename, file_asset_pid_fld, file_ds_id_fld)
+  def get_datastream_url_from_content_md(fedora_obj, filename, file_asset_pid_fld, file_ds_id_fld)
+    if filename.is_a?(Symbol)
+      filename = get_values_from_datastream(fedora_obj, "contentMetadata", filename)
+    end
     file_asset_pid = get_values_from_datastream(fedora_obj, "contentMetadata", file_asset_pid_fld)
     file_ds_id = get_values_from_datastream(fedora_obj, "contentMetadata", file_ds_id_fld).first
     asset_downloads_path(file_asset_pid, :download_id=>file_ds_id)

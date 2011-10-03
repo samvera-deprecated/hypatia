@@ -13,10 +13,8 @@
       <tbody>
     	  <tr class="file_asset<%= cycle(" odd", " even") -%>" >
         	  <td>
-        	    <% dd_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :dd_filename) -%>
-        	    <% dd_pid = get_values_from_datastream(@document_fedora, "contentMetadata", :dd_fedora_pid) -%>
-        	    <% dd_ds_id = get_values_from_datastream(@document_fedora, "contentMetadata", :dd_ds_id).first -%>
-              <%= link_to dd_filename, asset_downloads_path(dd_pid, :download_id=>dd_ds_id) %>
+        	    <%= dd_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :dd_filename) -%>
+              <%= link_to dd_filename, get_datastream_url_from_content_md(@document_fedora, :dd_filename, :dd_fedora_pid, :dd_ds_id) %>
             </td>
         	  <td>
               <%= get_values_from_datastream(@document_fedora, "contentMetadata", :dd_size) %> bytes
