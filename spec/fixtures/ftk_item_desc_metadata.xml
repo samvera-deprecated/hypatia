@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- example ftk file item object -->
+  <!-- 
+    Sample of info from FTK for a file:  
+    
+    <ftk_report>
+    <series>Series 6: Born Digital Materials</series>
+    <collection_title>Stephen Jay Gould papers</collection_title>
+    <callnumber>M1437</callnumber>
+    <file>
+    <filename>BU3A5</filename>
+    <item_number>1004</item_number>
+    <filepath>CM006.001/NONAME [FAT12]/[root]/BU3A5</filepath>
+    <disk_image_no>CM006</disk_image_no>
+    <filesize>35654</filesize>
+    <filesize_unit>B</filesize_unit>
+    <file_creation_date>n/a</file_creation_date>
+    <file_accessed_date>n/a</file_accessed_date>
+    <file_modified_date>12/8/1988 6:48:48 AM (1988-12-08 14:48:48 UTC)</file_modified_date>
+    <md5_hash>5E3A2508EA8A8D7E62657D99DAE503ED</md5_hash>
+    <type>Books</type>
+    <restricted>False</restricted>
+    <access_rights>Public</access_rights>
+    <title>The Burgess Shale and the Nature of History </title>
+    <filetype>WordPerfect 4.2</filetype>
+    <duplicate_File> </duplicate_File>
+    <export_path>files\BU3A5</export_path>
+    </file>
+-->
+<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+  <mods:identifier type="filename">BU3A5</mods:identifier>
+  <mods:identifier type="ftk_id">1004</mods:identifier>
+  <mods:location>
+    <mods:physicalLocation type="filepath">CM006.001/NONAME [FAT12]/[root]/BU3A5</mods:physicalLocation>
+  </mods:location>
+  <mods:physicalDescription>
+    <mods:extent>35654</mods:extent>
+  </mods:physicalDescription>
+  <mods:originInfo>
+    <!-- might be preferable to leave out elements with no value? -->
+    <mods:dateCreated>12/6/1988</mods:dateCreated>
+    <mods:dateOther type="last_accessed">12/10/1988</mods:dateOther>
+    <mods:dateOther type="last_modified">12/8/1988 6:48:48 AM (1988-12-08 14:48:48 UTC)</mods:dateOther>
+  </mods:originInfo>
+  <mods:relatedItem displayLabel="Appears in" type="host">
+    <mods:titleInfo>
+      <mods:title>The Burgess Shale and the Nature of History</mods:title>
+    </mods:titleInfo>
+  </mods:relatedItem>
+  <mods:note displayLabel="filetype">WordPerfect 4.2</mods:note>
+</mods:mods>
