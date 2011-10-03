@@ -1,4 +1,2 @@
 <%# FIXME:  what if there is no image? -%>
-<% img_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :image_filename) -%>
-<% url = get_datastream_url_from_content_md(@document_fedora, img_filename, :image_fedora_pid, :image_ds_id) -%>
-<%= image_tag (url, :alt=>img_filename, :height=>"100", :class => "coll_image") %>
+<%= get_image_tag_from_content_md(@document_fedora, :image, {:height=>"100", :class=>"coll_image"}) %>
