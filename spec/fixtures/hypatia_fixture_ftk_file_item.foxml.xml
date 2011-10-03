@@ -96,7 +96,6 @@ Sample of info from FTK for a file:
             <mods:dateOther type="last_accessed" />
             <mods:dateOther type="last_modified">12/8/1988 6:48:48 AM (1988-12-08 14:48:48 UTC)</mods:dateOther>
           </mods:originInfo>
-          <mods:typeOfResource>text</mods:typeOfResource> 
           <mods:relatedItem displayLabel="Appears in" type="host">
             <mods:titleInfo>
               <mods:title>The Burgess Shale and the Nature of History</mods:title>
