@@ -26,6 +26,12 @@ module ApplicationHelper
     result 
   end
   
+  # get the URL to retrieve the content of a DataStream as indicated in contentMetadata
+  # @param [ActiveFedora::ContentModel] the fedora object
+  # @param [Symbol or String] the filename (or filename field) in the contentMetadata -- id attribute of a <file> element
+  # @param [Symbol] the OM term for the pid of the FileAsset Fedora object containing the datastream -- objectId attribute of <resource> element in contentMetadata
+  # @param [Symbol] the OM term for the datastream id in the FileAsset Fedora object -- the contents of the <location> element with type attribute=datastreamId
+  # @return a URL that will retrieve the content of the datastream in the FileAsset object.
   def get_datastream_url_from_content_md(fedora_obj, filename, file_asset_pid_fld, file_ds_id_fld)
     if filename.is_a?(Symbol)
       filename = get_values_from_datastream(fedora_obj, "contentMetadata", filename)
@@ -34,5 +40,6 @@ module ApplicationHelper
     file_ds_id = get_values_from_datastream(fedora_obj, "contentMetadata", file_ds_id_fld).first
     asset_downloads_path(file_asset_pid, :download_id=>file_ds_id)
   end
+  
   
 end
