@@ -30,7 +30,7 @@ describe HypatiaDiskImageItem do
     @disk_img_item.should respond_to(:collections)
   end
 
-  it "should have a sets relationship (a disk image can belong to no set)" do
+  it "should have a sets relationship (a disk image can belong to sets)" do
     @disk_img_item.should respond_to(:sets)
   end
   

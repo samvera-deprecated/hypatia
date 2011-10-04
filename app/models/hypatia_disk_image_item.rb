@@ -11,6 +11,6 @@ class HypatiaDiskImageItem < ActiveFedora::Base
   has_bidirectional_relationship "sets", :is_member_of, :has_member
   # a disk image item can have members (e.g.  file items)
   has_relationship "members", :is_member_of, :inbound=>true
-  # there are files such as dd and image to be attached  -- FIXME:  does this need to be bidirectional?
-  has_bidirectional_relationship "part_of", :is_part_of, :has_part
+  # there are files such as dd and image to be attached 
+  has_relationship "parts", :is_part_of, :inbound => true, :type => FileAsset
 end

@@ -7,5 +7,5 @@ class HypatiaCollection < ActiveFedora::Base
   # a collection has members
   has_relationship "members", :is_member_of_collection, :inbound=>true
   # there are files such as EAD and image to be attached
-  has_relationship "parts", :is_part_of, :inbound => true  
+  has_relationship "parts", :is_part_of, :inbound => true, :type => FileAsset
 end

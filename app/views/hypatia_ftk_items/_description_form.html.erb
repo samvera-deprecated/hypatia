@@ -1,7 +1,7 @@
 <%- form_tag(url_for(:controller=>"assets", :action=>"update", :id=>params[:id]), :class => "step") do -%>
   <p id="resource_type_field" class="fedora-text-field">
-    <%= fedora_field_label("descMetadata", [:type_of_resource], "Type of Resource") %>
-    <%= fedora_text_field(@document_fedora,"descMetadata", [:type_of_resource], :multiple=>false, :required=>false ) %>
+    <%#= fedora_field_label("descMetadata", [:type_of_resource], "Type of Resource") %>
+    <%#= fedora_text_field(@document_fedora,"descMetadata", [:type_of_resource], :multiple=>false, :required=>false ) %>
   </p>
 
   <p id="form_field" class="fedora-text-field">
