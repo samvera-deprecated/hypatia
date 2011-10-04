@@ -21,7 +21,6 @@ class HypatiaDiskImgContentMetadataDS < ActiveFedora::NokogiriDatastream
       t.md5(:path=>"checksum", :attributes=>{:type=>"md5"}, :namespace_prefix => nil)
       t.sha1(:path=>"checksum", :attributes=>{:type=>"sha1"}, :namespace_prefix => nil)
     }
-    #  really want ead where the type is ead and the file format is XML and the file mimetype is text/xml (and the file id is (?coll_ead.xml ... can be whatever the label of the DS is in the FileAsset object)) 
     t.dd(:ref=>:resource, :attributes=>{:type=>"media-file"}) 
     t.image_front(:ref=>:resource, :attributes=>{:type=>"image-front"})
     t.image_back(:ref=>:resource, :attributes=>{:type=>"image-back"})
