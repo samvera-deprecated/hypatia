@@ -11,6 +11,7 @@ class HypatiaDiskImgDescMetadataDS < ActiveFedora::NokogiriDatastream
       t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable], :label=>"title")
     }
     t.title(:proxy=>[:title_info, :title])
+    t.display_name(:proxy=>[:title_info, :title])
     
     t.local_id(:path=>"identifier", :attributes=>{:type=>"local"}, :index_as=>[:searchable, :displayable, :sortable])
 
