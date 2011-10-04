@@ -29,7 +29,7 @@ Feature: Collection Show page
 
   Scenario: all desired Descriptiion metadata displays
     When I am on the document page for id "hypatia:fixture_coll2" 
-    Then I should see "Fake Collection"  # title
+    Then I should see "Fake Collection"  # title, display_name
     And I should see "1977-1997" # create date
     And I should see "My collection - Born-Digital Materials - Computer disks / tapes - Carton 11" # located in
     And I should see "eng" # language

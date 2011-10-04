@@ -11,20 +11,26 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
       t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable], :label=>"title")
     }
     t.title(:proxy=>[:title_info, :title])
+    t.display_name(:proxy=>[:title_info, :title])
     
     t.name_ {
-      t.name_part
-      t.role(:ref=>[:role])
+      t.name_part(:path=>"namePart")
       t.family_name(:path=>"namePart", :attributes=>{:type=>"family"})
       t.given_name(:path=>"namePart", :attributes=>{:type=>"given"}, :label=>"first name")
       t.terms_of_address(:path=>"namePart", :attributes=>{:type=>"termsOfAddress"})
+      t.role(:ref=>[:role])
     }
     t.role {
-      t.text(:path=>"roleTerm", :attributes=>{:type=>"text"})
+      t.role_term_text(:path=>"roleTerm", :attributes=>{:type=>"text"})
     }
-# FIXME:  would like a way to split out "creator" name and other role names specifically
-    t.person(:ref=>:name, :attributes=>{:type=>"personal"}) 
-    t.institution(:ref=>:name, :attributes=>{:type=>"corporate"})
+
+    t.person_full(:ref=>:name, :attributes=>{:type=>"personal"}) 
+    t.person(:proxy=>[:person_full, :name_part])
+    t.creator(:ref=>:person, :path=>'name[mods:role/mods:roleTerm="creator"]', :xmlns=>"http://www.loc.gov/mods/v3", :namespace_prefix => "mods")
+
+    t.corporate_full(:ref=>:name, :attributes=>{:type=>"corporate"})
+    t.corporate(:proxy=>[:corporate_full, :name_part])
+    t.repository(:ref=>:corporate, :path=>'name[mods:role/mods:roleTerm="repository"]', :xmlns=>"http://www.loc.gov/mods/v3", :namespace_prefix => "mods")
 
     t.local_id(:path=>"identifier", :attributes=>{:type=>"local"}, :index_as=>[:searchable, :displayable, :sortable])
 

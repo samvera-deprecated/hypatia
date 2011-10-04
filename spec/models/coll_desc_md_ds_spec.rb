@@ -14,23 +14,30 @@ describe HypatiaCollDescMetadataDS do
     @desc_md_ds.term_values(:extent).should == ["564.5 Linear feet", "(34 cartons, 3 flat boxes, 2 map folders, 7 boxes)"]
   end
   
-    
+  
+  it "should have the correct :display_name term value" do
+    @desc_md_ds.term_values(:display_name).should == ["Fake Collection"]
+  end
+  
   it "should have the correct :title term value" do
     @desc_md_ds.term_values(:title).should == ["Fake Collection"]
     @desc_md_ds.term_values(:title_info, :title).should == ["Fake Collection"]
   end
+
+  it "should have the correct :creator term value" do
+    @desc_md_ds.term_values(:creator).should == ["Creator, Name of"]
+  end
   
-# FIXME:  want a :creator term and a :repository term
-  it "should have the (FIXME: approximately) correct :personal_name term value" do
-    value = @desc_md_ds.term_values(:person).first.gsub(/\s+/," ").strip
-    value.start_with?("Creator, Name of").should be_true
-#    @desc_md_ds.term_values(:person).should == ["Creator, Name of"]
+  it "should have the correct :person term value" do
+    @desc_md_ds.term_values(:person).should == ["Creator, Name of"]
   end
 
-  it "should have the (FIXME: approximately) correct :corporate_name term value" do
-    value = @desc_md_ds.term_values(:institution).first.gsub(/\s+/," ").strip
-    value.start_with?("Corporate Name").should be_true
-#    @desc_md_ds.term_values(:institution).should == ["Corporate Name"]
+  it "should have the correct :repository term value" do
+    @desc_md_ds.term_values(:repository).should == ["Corporate Name"]
+  end
+  
+  it "should have the correct :corporate term value" do
+    @desc_md_ds.term_values(:corporate).should == ["Corporate Name"]
   end
   
   it "should have the correct :local_id term value" do
