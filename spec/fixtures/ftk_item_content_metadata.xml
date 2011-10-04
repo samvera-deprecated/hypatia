@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contentMetadata objectId="hypatia:fixture_ftk_file_item" type="file">
+  <resource type="file" id="BU3A5" objectId="hypatia:fixture_file_asset_for_ftk_file_item">
+    <file id="BURCH1" format="BINARY" mimetype="application/octet-stream" size="35654" public="yes" preserve="yes" shelve="yes">
+      <location type="datastreamID">content</location>
+      <checksum type="md5">5E3A2508EA8A8D7E62657D99DAE503ED</checksum>
+      <checksum type="sha1">E876FA363FAFDC6784C5EE75E8F9EA9FF11EC9FF</checksum>
+    </file>
+    <file id="BURCH1.html" format="HTML" mimetype="text/html" size="12346" public="yes" preserve="yes" shelve="yes">
+      <location type="datastreamID">derivative_html</location>
+      <checksum type="md5">5E3A2508EA8A8D7E62657D99DAE503EDMORE</checksum>
+      <checksum type="sha1">E876FA363FAFDC6784C5EE75E8F9EA9FF11EC9FFDIFF</checksum>
+    </file>
+  </resource>
+</contentMetadata>
