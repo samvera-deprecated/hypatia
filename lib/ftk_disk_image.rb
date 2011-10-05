@@ -3,11 +3,16 @@ require "active-fedora"
 
 class FtkDiskImage
   
-  attr_accessor :txt_file             # The txt file produced by FTK that contains the 
-                                      # metadata about this disk image
-  attr_accessor :disk_number            # The number used to identify this disk
-  attr_accessor :disk_type              # The kind of disk this was (e.g., "5.25 inch Floppy Disk")
-  attr_accessor :md5                    # The md5 checksum for the disk image
+  # The txt file produced by FTK that contains the metadata about this disk image
+  attr_accessor :txt_file
+  # The number used to identify this disk
+  attr_accessor :disk_number
+  # The kind of disk this was (e.g., "5.25 inch Floppy Disk")
+  attr_accessor :disk_type
+  # The md5 checksum for the disk image
+  attr_accessor :md5
+  # The sha1 checksum for the disk image
+  attr_accessor :sha1
   
   def initialize(args = {})
     if args[:txt_file]
@@ -23,33 +28,21 @@ class FtkDiskImage
     lines_array.each_with_index{|line, index| 
       case line
       when /Evidence Number/
-        @disk_number = get_disk_number(line)
+        @disk_number = get_value_after_colon(line)
       when /Notes/
-        @disk_type = get_disk_type(line)
+        @disk_type = get_value_after_colon(line)
       when /MD5/
-        @md5 ||= get_md5(line)
+        @md5 ||= get_value_after_colon(line)
+      when /SHA15/
+        @sha1 ||= get_value_after_colon(line)
       end
     }
   end
-  
-  # Take a String that looks like "Evidence Number: CM006" and extract the
+
+  # Take a String that looks like "Evidence Number: CM006" and extract the value after the colon
   # @param [String] line
-  # @return [String]
-  def get_disk_number(line)
-    line.split(': ').last.strip
-  end
-  
-  # Extract the kind of disk this was (e.g., "5.25 inch Floppy Disk")
-  # @param [String] line
-  # @return [String]
-  def get_disk_type(line)
-    line.split(': ').last.strip
-  end
-  
-  # Extract the md5 value
-  # @param [String] line
-  # @return [String]
-  def get_md5(line)
+  # @return [String] value after the colon (e.g. "CM006")
+  def get_value_after_colon(line)
     line.split(': ').last.strip
   end
   
