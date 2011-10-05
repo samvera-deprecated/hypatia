@@ -121,6 +121,11 @@ Sample of info from FTK for a file:
               <group>public</group>
             </machine>
           </access>
+          <access type="edit">
+            <machine>
+              <group>archivist</group>
+            </machine>
+          </access>
         </rightsMetadata>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
