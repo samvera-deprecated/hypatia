@@ -87,7 +87,7 @@ class FtkDiskImageItemAssembler
     hypatia_disk_image_item.label="#{fdi.disk_type} #{fdi.disk_number}"
     hypatia_disk_image_item.add_relationship(:is_member_of_collection, @collection_pid)
     hypatia_disk_image_item.save
-    dd_file = create_dd_file_asset(hypatia_disk_image_item,fdi)
+    dd_file = create_dd_file_asset(hypatia_disk_image_item, fdi)
     build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", build_desc_metadata(fdi))
     build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", build_content_metadata(fdi,hypatia_disk_image_item.pid,dd_file.pid))
     build_ng_xml_datastream(hypatia_disk_image_item, "rightsMetadata", build_rights_metadata)
@@ -95,9 +95,10 @@ class FtkDiskImageItemAssembler
     return hypatia_disk_image_item
   end
 
-  # Extract descMetadata info from the EAD file
+  # Extract descMetadata info for HypatiaDiskImageItem from the EAD file.  It should adhere to the 
+  #   mods xml expected by model HypatiaDiskImgDescMetadataDS
   # @param [FtkDiskImage] fdi
-  # @return [Nokogiri::XML::Document]
+  # @return [Nokogiri::XML::Document] - the xmlContent for the descMetadata datastream
   def build_desc_metadata(fdi)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.mods('xmlns:mods' => "http://www.loc.gov/mods/v3") {
@@ -117,17 +118,10 @@ class FtkDiskImageItemAssembler
     builder.to_xml
   end
   
-  # Calculate the file size of the disk image file 
+  # Build the contentMetadata for HypatiaDiskImageItem as an xml object.  it should adhere to the 
+  #  xml expected by model HypatiaDiskImgContentMetadataDS
   # @param [FtkDiskImage] fdi
-  # @return [String]
-  def calculate_dd_size(fdi)
-    bytes = File.size(@filehash[fdi.disk_number.to_sym][:dd])
-    "#{bytes} B"
-  end
-  
-  # Build the contentMetadata 
-  # @param [FtkDiskImage] fdi
-  # @return [Nokogiri::XML::Document]
+  # @return [Nokogiri::XML::Document] - the xmlContent for the contentMetadata datastream
   def build_content_metadata(fdi,pid,file_asset_pid)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.contentMetadata("type" => "born-digital", "objectId" => pid) {
@@ -143,8 +137,8 @@ class FtkDiskImageItemAssembler
     builder.to_xml
   end
   
-  # Build rightsMetadata datastream
-  # @return [Nokogiri::XML::Document]
+  # Build rightsMetadata datastream  for HypatiaDiskImageItem;  discover and read permissions allowed for all.
+  # @return [Nokogiri::XML::Document] - the xmlContent for the rightsMetadata datastream
   def build_rights_metadata
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.rightsMetadata("xmlns" => "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1", "version" => "0.1"){
@@ -164,23 +158,32 @@ class FtkDiskImageItemAssembler
   end
   
   # Create a FileAsset to hold the dd file
-  # @param [HypatiaDiskImageItem] hypatia_disk_image_item
-  # @param [FtkDiskImage] fdi
-  # @return [FileAsset]
-  def create_dd_file_asset(hypatia_disk_image_item,fdi)
+  # @param [HypatiaDiskImageItem] hypatia_disk_image_item - 
+  # @param [FtkDiskImage] fdi - populated per the FTK produced .txt file, if we have one
+  # @return [FileAsset] object for the disk image object
+  def create_dd_file_asset(hypatia_disk_image_item, fdi)
     dd_file = FileAsset.new
-    dd_file.label="fileAsset for FTK disk image #{fdi.disk_type} #{fdi.disk_number}"
-    dd_file.add_relationship(:is_part_of,hypatia_disk_image_item)
+    # the label value ends up in DC dc:title and descMetadata  title ??
+    dd_file.label="FileAsset for FTK disk image #{fdi.disk_type} #{fdi.disk_number}"
+    dd_file.add_relationship(:is_part_of, hypatia_disk_image_item)
     
-    # For now, only add the dd file for the Xanadu collection
-    if @collection_pid =~ /xanadu/
+    # For now, only add the dd file for the Xanadu collection, since other dd files are not for public viewing
+    if @collection_pid =~ /(xanadu|fixture)/
       file = File.new(@filehash[fdi.disk_number.to_sym][:dd])
-      dd_file.add_file_datastream(file, {:dsid => "content", :label => "Disk image file for #{fdi.disk_type} #{fdi.disk_number}"})
+      dd_file.add_file_datastream(file, {:mimeType => "application/octet-stream", :label => fdi.disk_number})
     end
     
-    add_photos_to_dd_file_asset(dd_file,fdi)
+#    add_photos_to_dd_file_asset(dd_file,fdi)
     dd_file.save
     return dd_file
+  end
+  
+  # Calculate the file size of the disk image file 
+  # @param [FtkDiskImage] fdi
+  # @return [String]
+  def calculate_dd_size(fdi)
+    bytes = File.size(@filehash[fdi.disk_number.to_sym][:dd])
+    "#{bytes} B"
   end
   
   # Add any photos of the physical media as datastreams attached to the disk image FileAsset

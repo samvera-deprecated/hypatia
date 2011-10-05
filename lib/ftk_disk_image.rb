@@ -1,6 +1,8 @@
 require "rubygems"
 require "active-fedora"
 
+# An object to contain all the useful information we can slurp out of a 
+#  FTK produced .txt file that corresponds to and FTK produced disk image file 
 class FtkDiskImage
   
   # The txt file produced by FTK that contains the metadata about this disk image
@@ -33,13 +35,13 @@ class FtkDiskImage
         @disk_type = get_value_after_colon(line)
       when /MD5/
         @md5 ||= get_value_after_colon(line)
-      when /SHA15/
+      when /SHA1/
         @sha1 ||= get_value_after_colon(line)
       end
     }
   end
 
-  # Take a String that looks like "Evidence Number: CM006" and extract the value after the colon
+  # Take a String that looks like "Evidence Number: CM006" and return the value after the colon (without leading space)
   # @param [String] line
   # @return [String] value after the colon (e.g. "CM006")
   def get_value_after_colon(line)

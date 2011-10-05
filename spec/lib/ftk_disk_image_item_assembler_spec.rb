@@ -43,8 +43,13 @@ describe FtkDiskImageItemAssembler do
       @assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
       @fdi = FtkDiskImage.new(:txt_file => @txt_file)
     end
-    it "creates an FtkDiskImage from a .txt file" do
+    it "creates and populates an FtkDiskImage object from a .txt file" do
+      # see ftk_disk_image_spec for more 
+      @fdi.txt_file.should match(/.*\/fixtures\/ftk\/disk_images\/CM5551212\.001\.txt$/)
+      @fdi.disk_number.should eql("CM5551212")
+      @fdi.disk_type.should eql("5.25 inch Floppy Disk")
       @fdi.md5.should eql("7d7abca99f383487e02ce7bf7c017267")
+      @fdi.sha1.should eql("628ede981ad24c1655f7e37057355ca689dcb3a9")
     end
     it "calculates the file size for the dd file referenced" do
       @assembler.calculate_dd_size(@fdi).should eql("368640 B")
@@ -62,6 +67,79 @@ describe FtkDiskImageItemAssembler do
       doc.xpath("/contentMetadata/resource/file/@id").to_s.should eql(@fdi.disk_number)
       doc.xpath("/contentMetadata/resource/file/@format").to_s.should eql("BINARY")
     end
+  end
+  
+  context "creating FileAssets and contentMetadata" do
+    before(:all) do
+      delete_fixture("hypatia:fixture_coll2")
+      import_fixture("hypatia:fixture_coll2")
+      @collection_pid = "hypatia:fixture_coll2"
+      @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+      @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
+      @txt_file = File.join(@disk_image_files_dir, "/CM5551212.001.txt")
+      @assembler = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+      @disk_image_item = HypatiaDiskImageItem.new
+      @disk_image_full_pid = @disk_image_item.internal_uri
+      @fdi = FtkDiskImage.new(:txt_file => @txt_file)
+    end
+    context "for disk image file with FTK .txt file" do
+      it "should create the correct FileAsset object for disk image itself" do
+        file_asset = @assembler.create_dd_file_asset(@disk_image_item, @fdi)
+        file_asset.should be_instance_of(FileAsset) # model
+        file_asset.relationships[:self][:is_part_of].should == ["#{@disk_image_full_pid}"]
+
+        # DC, RELS-EXT, descMetadata, (the datastream the file is stored in)
+        file_asset.datastreams.size.should == 4
+
+        # file datastream:
+        file_ds_name = file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
+        file_ds = file_asset.datastreams[file_ds_name]
+        file_ds[:dsLabel].should == "CM5551212" # from Evidence Number : line of FTK .txt file -- the file name
+        file_ds[:mimeType].should == "application/octet-stream"
+        
+        # descMetadata:
+        desc_md_ds_fields_hash = file_asset.datastreams["descMetadata"].fields
+        prefix = "FileAsset for FTK disk image " # constant
+        phys_desc = "5.25 inch Floppy Disk "  # from Notes:  line of FTK .txt file
+        disk_num = "CM5551212"  # from Evidence Number:  line of FTK .txt file
+        desc_md_ds_fields_hash[:title][:values].should == ["#{prefix}#{phys_desc}#{disk_num}"]
+        # extent value (file size) is computed by FileAsset.add_file_datastream
+        desc_md_ds_fields_hash[:extent][:values].first.should match(/(bytes|KB|MB|GB|TB)$/)
+      end
+
+    
+    
+    
+    
+    
+#      it "should generate the correct <resource> xml for the disk image file" do
+# to check:   (should be correct and should match FileAsset object)
+#   value of LABEL attribute on the datastreamVersion
+#   value of MIMETYPE attribute on the datastreamVersion
+#   ?value of SIZE attribute on the datstreamVersion
+#   datastream ID attribute matches the contentMetadata
+=begin        
+        val = get_values_from_datastream(file_asset, "DS1", [:label])
+        file_asset.
+        
+        
+        def display_ds_values_as_dl_element(dsid, solr_fld_sym, display_label)
+          values = get_values_from_datastream(@document_fedora, dsid, [solr_fld_sym])
+          unless values.first.empty?
+            result = "<dt>#{display_label}</dt><dd>#{values.join(', ')}</dd>"
+          end
+          result 
+        end
+=end        
+        
+#puts "DEBUG file_asset parts are #{file_asset.inspect}"
+#        pending
+#    end
+    
+    context "photos of disk images" do
+      
+    end
+    
   end
   
   context "building an object" do
@@ -92,11 +170,12 @@ describe FtkDiskImageItemAssembler do
     end
     it "has a binary disk image attached to the FileAsset" do
       fa = @item.parts.first
-      fa.datastreams['content'].should_not eql(nil)
+      fa.datastreams['DS1'].should_not eql(nil)
     end
-    it "has an image attached to the FileAsset" do
-      fa = @item.parts.first
-      fa.datastreams['front'].should_not eql(nil)
+# FIXME:  no, it will have its own file asset object    
+#    it "has an image attached to the FileAsset" do
+#      fa = @item.parts.first
+#      fa.datastreams['front'].should_not eql(nil)
     end
   end
 end
