@@ -75,19 +75,14 @@ describe HypatiaCollDescMetadataDS do
     value = @desc_md_ds.term_values(:acquisition_info).first.gsub(/\s+/," ").strip
     value.start_with?('this is text with html elements in an abstract element with an "Acquisition Information" displayLabel').should be_true
   end
-  it "should have the correct :provenance term value" do
-    @desc_md_ds.term_values(:provenance).should == ['this is text in an abstract element with a "Provenance" displayLabel.']
-  end
-# would like to have a way to populate :citation with more than one displayLabel attribute value  
   it "should have correct :citation term values" do
     @desc_md_ds.term_values(:citation).should == ["this is text in an abstract element with a \"Preferred Citation\" displayLabel."]
   end
   it "should have the correct :description term value" do
     @desc_md_ds.term_values(:description).should == ["this is text in an abstract element with a \"Description of the Papers\" displayLabel."]
   end
-# would like to have a way to populate :scope_and_content with more than one displayLabel attribute value  
   it "should have correct :scope_and_contents term values" do
-    @desc_md_ds.term_values(:scope_and_content).should == ["this is text in an abstract element with a \"Scope and Contents\" displayLabel."]
+    @desc_md_ds.term_values(:scope_and_content).should == ["this is text in an abstract element with a \"Collection Scope and Content Summary\" displayLabel."]
   end
   
   it "should have correct :topic_plain values" do
@@ -106,13 +101,12 @@ describe HypatiaCollDescMetadataDS do
     @desc_md_ds.term_values(:topic).should == ["topic lcsh authority1", "topic lcsh authority2", "topic ingest authority", "plain topic1", "plain topic2"]
   end
   
-#  it "should have correct :use_and_repro_rights values" do
-#    @desc_md_ds.term_values(:use_and_repro_rights).length.should == 2
-#    @desc_md_ds.term_values(:use_and_repro_rights).should == ["pub rights text", "ownership and copyright text"]
-#  end
+  it "should have correct :pub_rights value" do
+    @desc_md_ds.term_values(:pub_rights).should == ["pub rights text"]
+  end
+
   it "should have correct :access values" do
-    @desc_md_ds.term_values(:access).length.should == 3
-    @desc_md_ds.term_values(:access).should == ["pub rights text", "ownership and copyright text", "access to collection text"]
+    @desc_md_ds.term_values(:access).should == ["access to collection text"]
   end
 
 end

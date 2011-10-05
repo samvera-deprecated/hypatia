@@ -77,21 +77,9 @@
           <mods:abstract displayLabel="Acquisition Information">this is text with html elements in an abstract element with an "Acquisition Information" displayLabel.
             &lt;p&gt; inside p &lt;date normal="1987-07-20" type="accession"&gt;July 20, 1987&lt;/date&gt;. still inside p &lt;num type="Accession Number"&gt;10726&lt;/num&gt;&lt;/p&gt;
           </mods:abstract>
-          <mods:abstract displayLabel="Provenance">this is text in an abstract element with a "Provenance" displayLabel.</mods:abstract>
-          <mods:abstract displayLabel="Cite As">this is text in an abstract element with a "Cite As" displayLabel.</mods:abstract>
           <mods:abstract displayLabel="Preferred Citation">this is text in an abstract element with a "Preferred Citation" displayLabel.</mods:abstract>
-          <mods:abstract displayLabel="Preferred Citation note">this is text in an abstract element with a "Preferred Citation note" displayLabel.</mods:abstract>
           <mods:abstract displayLabel="Description of the Papers">this is text in an abstract element with a "Description of the Papers" displayLabel.</mods:abstract>
-          <mods:abstract displayLabel="Scope and Contents">this is text in an abstract element with a "Scope and Contents" displayLabel.</mods:abstract> 
           <mods:abstract displayLabel="Collection Scope and Content Summary">this is text in an abstract element with a "Collection Scope and Content Summary" displayLabel.</mods:abstract>
-          <mods:abstract displayLabel="Scope and Content of Collection">this is text with html elements in an abstract element with a "Scope and Content of Collection" displayLabel.
-            &lt;p&gt;Inside a p tag.&lt;/p&gt;
-            &lt;list numeration="upperroman" type="ordered"&gt;
-            &lt;head&gt;heading:&lt;/head&gt;
-            &lt;item&gt;item1&lt;/item&gt;
-            &lt;item&gt;item2&lt;/item&gt;
-            &lt;/list&gt;
-          </mods:abstract>
           
           <mods:subject authority="lcsh">
             <mods:topic>topic lcsh authority1</mods:topic>
@@ -108,8 +96,7 @@
           </mods:subject>
           
           <mods:accessCondition displayLabel="Publication Rights" type="useAndReproduction">pub rights text</mods:accessCondition>
-          <mods:accessCondition displayLabel="Ownership &amp; Copyright" type="useAndReproduction">ownership and copyright text</mods:accessCondition>
-          <mods:accessCondition displayLabel="Access to Collection" type="restrictionOnAccess">access to collection text</mods:accessCondition>
+          <mods:accessCondition displayLabel="Access" type="restrictionOnAccess">access to collection text</mods:accessCondition>
         </mods:mods>
       </foxml:xmlContent>
     </foxml:datastreamVersion>

@@ -39,7 +39,7 @@ Feature: Collection Show page
     And I should see "this is text inside a plain abstract element" # abstract
     And I should see "this is text in an abstract element with a \"Preferred Citation\" displayLabel." # citation
     And I should see "this is text in an abstract element with a \"Description of the Papers\" displayLabel."  # description
-    And I should see "this is text in an abstract element with a \"Scope and Contents\" displayLabel."  # scope and contents
+    And I should see "this is text in an abstract element with a \"Collection Scope and Content Summary\" displayLabel."  # scope and contents
     And I should see "plain topic1"
     And I should see "plain topic2"
     And I should see "topic lcsh authority1"
@@ -57,9 +57,7 @@ Feature: Collection Show page
     And I should see "M666" # local_id
     And I should see "this is text with html elements in an abstract element with an \"Acquisition Information\" displayLabel" # acquisition info
     And I should see "pub rights text"  # accessCondition with "PublicationRights" displayLabel
-    And I should see "ownership and copyright text" # accessCondition with "Ownership & Copyright" displayLabel
     And I should see "access to collection text" # accessCondition  with "Access to Collection" displayLabel
-    And I should see "this is text in an abstract element with a \"Provenance\" displayLabel." # provenance
 
   Scenario: all desired Technical metadata displays
     When I am on the document page for id "hypatia:fixture_coll2"
