@@ -11,18 +11,18 @@
         </tr>
       </thead>
       <tbody>
-    	  <tr class="file_asset<%= cycle(" odd", " even") -%>" >
-        	  <td>
-              <% ead_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :image_filename) -%>
-              <%= link_to ead_filename, get_datastream_url_from_content_md(@document_fedora, ead_filename, :ead_fedora_pid, :ead_ds_id) %>
-            </td>
-        	  <td>
-              <%= get_values_from_datastream(@document_fedora, "contentMetadata", :ead_size) %> bytes
-        	  </td>
-        	  <td>
-              <%= get_values_from_datastream(@document_fedora, "contentMetadata", :ead_mimetype) %>
-        	  </td>
-        	</tr>
+        <tr class="file_asset<%= cycle(" odd", " even") -%>" >
+          <td>
+            <% ead_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :image_filename) -%>
+            <%= link_to ead_filename, get_datastream_url_from_content_md(@document_fedora, ead_filename, :ead_fedora_pid, :ead_ds_id) %>
+          </td>
+          <td>
+            <%= get_values_from_datastream(@document_fedora, "contentMetadata", :ead_size) %> bytes
+          </td>
+          <td>
+            <%= get_values_from_datastream(@document_fedora, "contentMetadata", :ead_mimetype) %>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
