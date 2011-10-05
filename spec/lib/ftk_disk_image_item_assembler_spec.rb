@@ -9,7 +9,7 @@ describe FtkDiskImageItemAssembler do
       @collection_pid = "hypatia:fixture_xanadu_collection"
       @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
       @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
-      @foo = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid,:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+      @foo = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
     end
     after(:all) do
       delete_fixture("hypatia:fixture_xanadu_collection")
@@ -34,6 +34,7 @@ describe FtkDiskImageItemAssembler do
       @foo.filehash[:CM5551212][:txt].should eql("#{@disk_image_files_dir}/CM5551212.001.txt")
     end
   end
+  
   context "extracting metadata" do
     before(:all) do
       @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
@@ -49,12 +50,12 @@ describe FtkDiskImageItemAssembler do
       @assembler.calculate_dd_size(@fdi).should eql("368640 B")
     end
     it "creates descMetadata for an FtkDiskImage" do
-      doc = Nokogiri::XML(@assembler.buildDescMetadata(@fdi))
+      doc = Nokogiri::XML(@assembler.build_desc_metadata(@fdi))
       doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@fdi.disk_number)
       doc.xpath("/mods:mods/mods:physicalDescription/mods:extent/text()").to_s.should eql(@fdi.disk_type)
     end
     it "creates contentMetdata for an FtkDiskImage" do
-      doc = Nokogiri::XML(@assembler.buildContentMetadata(@fdi,"foo","bar"))
+      doc = Nokogiri::XML(@assembler.build_content_metadata(@fdi,"foo","bar"))
       doc.xpath("/contentMetadata/@type").to_s.should eql("born-digital")
       doc.xpath("/contentMetadata/@objectId").to_s.should eql("foo")
       doc.xpath("/contentMetadata/resource/@type").to_s.should eql("disk-image")
@@ -62,6 +63,7 @@ describe FtkDiskImageItemAssembler do
       doc.xpath("/contentMetadata/resource/file/@format").to_s.should eql("BINARY")
     end
   end
+  
   context "building an object" do
     before(:all) do
       delete_fixture("hypatia:fixture_xanadu_collection")

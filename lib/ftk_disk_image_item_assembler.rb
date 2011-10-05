@@ -1,16 +1,21 @@
 require "rubygems"
 require "active-fedora"
 
+# Creates disk image item objects in Fedora, based on disk images files in a directory, the parent collection object's fedora pid, and a directory (possibly empty???) containing photos of the disks.
 class FtkDiskImageItemAssembler 
   
-  attr_accessor :disk_image_files_dir   # The directory containing the disk images
-  attr_accessor :computer_media_photos_dir # The directory containing photos of the physical media (e.g., floppy disks)
-  attr_reader :filehash # The hash were we store the files we're processing
-  attr_accessor :collection_pid         # What collection are these files part of?
+  # The directory containing the disk images
+  attr_accessor :disk_image_files_dir
+  # The directory containing photos of the physical media (e.g., floppy disks)
+  attr_accessor :computer_media_photos_dir
+  # What collection are these files part of?
+  attr_accessor :collection_pid
+  # A hash where we store the files we're processing
+  attr_reader :filehash
   
   def initialize(args)
     @logger = Logger.new('log/ftk_disk_image_item_assembler.log')
-    @logger.debug 'Initializing Hypatia FTK Disk Image Object Assembler'
+    @logger.debug 'Initializing Hypatia FTK Disk Image Item Object Assembler'
     
     raise "Can't find directory #{args[:disk_image_files_dir]}" unless File.directory? args[:disk_image_files_dir]
     @disk_image_files_dir = args[:disk_image_files_dir]
@@ -32,22 +37,17 @@ class FtkDiskImageItemAssembler
         # If we don't have a .txt file describing this disk, 
         # just record the disk number and add the FileAsset
         fdi = FtkDiskImage.new()
+        # TODO:  When we don't have a .txt file describing a disk, will we need to extrapolate the disk number from the filepath?
         fdi.disk_number = disk[0].to_s
         fdi.disk_type = "unknown"
         fdi.md5 = "unknown"
+        fdi.sha1 = "unknown"
         @logger.error "Couldn't find txt file for #{disk[1][:dd]}"
         obj = build_object(fdi)
       end
     }
   end
   
-  # Sometimes we don't have a .txt file describing a disk, and we have to
-  # extrapolate the disk number from the filepath
-  # @param [String] filepath
-  # @return [String] disk_number 
-  def get_disk_number(filepath)
-    # not written yet
-  end
   
   # Read in all the files in @disk_image_files_dir.
   # Determine which of these are dd files (the actual disk image),
@@ -62,26 +62,43 @@ class FtkDiskImageItemAssembler
       
       # if disk_number contains a space, take the part after the space
       disk_number = disk_number.split(' ').last
+      disk_number_sym = disk_number.to_sym
       
       # If filehash doesn't have a space for this disk number yet, make one
-      if @filehash[disk_number.to_sym] == nil
-        @filehash[disk_number.to_sym] = {}
+      if @filehash[disk_number_sym] == nil
+        @filehash[disk_number_sym] = {}
       end
       file_extension = file.split('/').last.split('.').last
       if file_extension == 'csv' 
-        @filehash[disk_number.to_sym][:csv] = file
+        @filehash[disk_number_sym][:csv] = file
       elsif file_extension == 'txt' 
-        @filehash[disk_number.to_sym][:txt] = file
+        @filehash[disk_number_sym][:txt] = file
       else
-        @filehash[disk_number.to_sym][:dd] = file
+        @filehash[disk_number_sym][:dd] = file
       end
     }
   end
   
+  # Build fedora objects for a disk image
+  # @param [FtkDiskImage] fdi
+  # @return [HypatiaDiskImageItem]
+  def build_object(fdi)
+    hypatia_disk_image_item = HypatiaDiskImageItem.new
+    hypatia_disk_image_item.label="#{fdi.disk_type} #{fdi.disk_number}"
+    hypatia_disk_image_item.add_relationship(:is_member_of_collection, @collection_pid)
+    hypatia_disk_image_item.save
+    dd_file = create_dd_file_asset(hypatia_disk_image_item,fdi)
+    build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", build_desc_metadata(fdi))
+    build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", build_content_metadata(fdi,hypatia_disk_image_item.pid,dd_file.pid))
+    build_ng_xml_datastream(hypatia_disk_image_item, "rightsMetadata", build_rights_metadata)
+    hypatia_disk_image_item.save
+    return hypatia_disk_image_item
+  end
+
   # Extract descMetadata info from the EAD file
   # @param [FtkDiskImage] fdi
   # @return [Nokogiri::XML::Document]
-  def buildDescMetadata(fdi)
+  def build_desc_metadata(fdi)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.mods('xmlns:mods' => "http://www.loc.gov/mods/v3") {
         xml.parent.namespace = xml.parent.namespace_definitions.first
@@ -111,7 +128,7 @@ class FtkDiskImageItemAssembler
   # Build the contentMetadata 
   # @param [FtkDiskImage] fdi
   # @return [Nokogiri::XML::Document]
-  def buildContentMetadata(fdi,pid,file_asset_pid)
+  def build_content_metadata(fdi,pid,file_asset_pid)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.contentMetadata("type" => "born-digital", "objectId" => pid) {
         xml.resource("id" => "disk-image", "type" => "disk-image", "data" => "content", "objectId" => file_asset_pid){
@@ -128,7 +145,7 @@ class FtkDiskImageItemAssembler
   
   # Build rightsMetadata datastream
   # @return [Nokogiri::XML::Document]
-  def buildRightsMetadata
+  def build_rights_metadata
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.rightsMetadata("xmlns" => "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1", "version" => "0.1"){
         xml.access("type" => "discover"){
@@ -144,22 +161,6 @@ class FtkDiskImageItemAssembler
       }
     end
     builder.to_xml
-  end
-  
-  # Build fedora objects for a disk image
-  # @param [FtkDiskImage] fdi
-  # @return [HypatiaDiskImageItem]
-  def build_object(fdi)
-    hypatia_disk_image_item = HypatiaDiskImageItem.new
-    hypatia_disk_image_item.label="#{fdi.disk_type} #{fdi.disk_number}"
-    hypatia_disk_image_item.add_relationship(:is_member_of_collection,@collection_pid)
-    hypatia_disk_image_item.save
-    dd_file = create_dd_file_asset(hypatia_disk_image_item,fdi)
-    build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", buildDescMetadata(fdi))
-    build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", buildContentMetadata(fdi,hypatia_disk_image_item.pid,dd_file.pid))
-    build_ng_xml_datastream(hypatia_disk_image_item, "rightsMetadata", buildRightsMetadata)
-    hypatia_disk_image_item.save
-    return hypatia_disk_image_item
   end
   
   # Create a FileAsset to hold the dd file
