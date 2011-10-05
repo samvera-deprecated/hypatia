@@ -21,12 +21,11 @@ Then /^I should see "(.*?)"(?: +\#.*)$/ do |text|
   assert page.has_content?(text)
 end
 
-Then /^I should see a link to datastream "([^"]*)" in FileAsset object "([^"]*)"$/ do |ds_id, pid|
+Then /^I (should|should not) see a link to datastream "([^"]*)" in FileAsset object "([^"]*)"$/ do |bool, ds_id, pid|
   path = "the download of #{ds_id} from asset #{pid}"
-  page.should have_xpath(".//a[@href=\"#{path_to(path)}\"]")
-end
-
-Then /^I should not see a link to datastream "([^"]*)" in FileAsset object "([^"]*)"$/ do |ds_id, pid|
-  path = "the download of #{ds_id} from asset #{pid}"
-  page.should_not have_xpath(".//a[@href=\"#{path_to(path)}\"]")
+  if bool == "should"
+    page.should have_xpath(".//a[@href=\"#{path_to(path)}\"]")
+  else
+    page.should_not have_xpath(".//a[@href=\"#{path_to(path)}\"]")
+  end
 end
