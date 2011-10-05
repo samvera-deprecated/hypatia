@@ -92,8 +92,8 @@ Sample of info from FTK for a file:
           </mods:physicalDescription>
           <mods:originInfo>
             <!-- might be preferable to leave out elements with no value? -->
-            <mods:dateCreated />
-            <mods:dateOther type="last_accessed" />
+            <mods:dateCreated>12/6/1988</mods:dateCreated>
+            <mods:dateOther type="last_accessed">12/10/1988</mods:dateOther>
             <mods:dateOther type="last_modified">12/8/1988 6:48:48 AM (1988-12-08 14:48:48 UTC)</mods:dateOther>
           </mods:originInfo>
           <mods:relatedItem displayLabel="Appears in" type="host">
