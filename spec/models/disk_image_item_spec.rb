@@ -11,9 +11,9 @@ describe HypatiaDiskImageItem do
     @disk_img_item.should be_kind_of(ActiveFedora::Base)
   end
   
-  it "should have a descMetadata datastream of type HypatiaItemDescMetadataDS" do
+  it "should have a descMetadata datastream of type HypatiaDiskImgDescMetadataDS" do
     @disk_img_item.datastreams.should have_key("descMetadata")
-    @disk_img_item.datastreams["descMetadata"].should be_instance_of(HypatiaItemDescMetadataDS)
+    @disk_img_item.datastreams["descMetadata"].should be_instance_of(HypatiaDiskImgDescMetadataDS)
   end
 
   it "should have a contentMetadata datastream of type HypatiaDiskImgContentMDDS" do

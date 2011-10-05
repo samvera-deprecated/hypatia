@@ -1,6 +1,6 @@
 # an ActiveFedora model for a Hypatia Disk Image ITEM object
 class HypatiaDiskImageItem < ActiveFedora::Base
-  has_metadata :name => "descMetadata", :type=> HypatiaItemDescMetadataDS
+  has_metadata :name => "descMetadata", :type=> HypatiaDiskImgDescMetadataDS
   has_metadata :name => "contentMetadata", :type=> HypatiaDiskImgContentMetadataDS
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata
 
