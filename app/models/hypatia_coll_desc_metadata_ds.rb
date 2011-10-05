@@ -11,7 +11,7 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
       t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable], :label=>"title")
     }
     t.title(:proxy=>[:title_info, :title])
-    t.display_name(:proxy=>[:title_info, :title])
+    t.display_name(:proxy=>[:title_info, :title], :index_as=>[:searchable, :displayable, :sortable])
     
     t.name_ {
       t.name_part(:path=>"namePart")

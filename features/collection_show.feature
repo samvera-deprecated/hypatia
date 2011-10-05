@@ -5,8 +5,8 @@ Feature: Collection Show page
   Scenario: links to members of the collection
     When I am on the document page for id "hypatia:fixture_coll2" 
     Then I should see "In this Collection"
-    And I should see a link to the show page for "hypatia:fixture_media_item"
-    And I should see a link to the show page for "hypatia:fixture_ftk_file_item"
+    And I should see a link to the show page for "hypatia:fixture_media_item" with label "CM058"
+    And I should see a link to the show page for "hypatia:fixture_ftk_file_item" with label "BU3A5"
     When I am on the document page for id "hypatia:fixture_coll"
     Then I should see "In this Collection"
     And I should see a link to the show page for "hypatia:fixture_intermed1"
