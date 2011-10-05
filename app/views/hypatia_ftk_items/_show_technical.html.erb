@@ -1,0 +1,35 @@
+<div class="techInfo metadata-section">
+  <h2 class="section-title">Technical Information</h2>
+  <span class="show-hide" style="display:none;">Show Section</span>
+  <div class="toggle-section start-shut">
+    <div class="contentMetadata metadata-subsection">
+      <dl class="disk-image-metadata-list">
+        <%= display_ds_values_as_dl_element("contentMetadata", :file_asset_fedora_id, "FileAsset Object Id") %>
+      </dl>
+    </div>
+    <div class="contentMetadata metadata-subsection">
+      <h3 class="subsection-title">Content File</h3>
+      <dl class="disk-image-metadata-list">
+        <%= display_ds_values_as_dl_element("contentMetadata", :content_filename, "File Name") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :content_size, "Size") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :content_format, "Format") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :content_mimetype, "Mimetype") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :content_md5, "md5 Checksum") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :content_sha1, "sha1 Checksum") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :content_ds_id, "Content Datastream ID") %>
+      </dl>
+    </div>
+    <div class="contentMetadata metadata-subsection">
+      <h3 class="subsection-title">Derivative Display File</h3>
+      <dl class="disk-image-metadata-list">
+        <%= display_ds_values_as_dl_element("contentMetadata", :html_filename, "File Name") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :html_size, "Size") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :html_format, "Format") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :html_mimetype, "Mimetype") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :html_md5, "md5 Checksum") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :html_sha1, "sha1 Checksum") %>
+        <%= display_ds_values_as_dl_element("contentMetadata", :html_ds_id, "Content Datastream ID") %>
+      </dl>
+    </div>
+  </div>
+</div>

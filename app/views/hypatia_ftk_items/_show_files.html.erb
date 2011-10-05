@@ -1,0 +1,41 @@
+<div class="files metadata-section">
+  <h2 class="section-title">Files</h2>
+  <span class="show-hide" style="display:none;">Hide Section</span>
+  <div class="toggle-section">
+    <table id="file_assets" class="files">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Mimetype</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="file_asset<%= cycle(" odd", " even") -%>" >
+          <td>
+            <% content_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :content_filename) -%>
+            <%= link_to content_filename, get_datastream_url_from_content_md(@document_fedora, content_filename, :file_asset_fedora_id, :content_ds_id) %>
+          </td>
+          <td>
+            <%= get_values_from_datastream(@document_fedora, "contentMetadata", :content_size) %> bytes
+          </td>
+          <td>
+            <%= get_values_from_datastream(@document_fedora, "contentMetadata", :content_mimetype) %>
+          </td>
+        </tr>
+        <tr class="file_asset<%= cycle(" odd", " even") -%>" >
+          <td>
+            <% html_filename = get_values_from_datastream(@document_fedora, "contentMetadata", :html_filename) -%>
+            <%= link_to html_filename, get_datastream_url_from_content_md(@document_fedora, html_filename, :file_asset_fedora_id, :html_ds_id) %>
+          </td>
+          <td>
+            <%= get_values_from_datastream(@document_fedora, "contentMetadata", :html_size) %> bytes
+          </td>
+          <td>
+            <%= get_values_from_datastream(@document_fedora, "contentMetadata", :html_mimetype) %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
