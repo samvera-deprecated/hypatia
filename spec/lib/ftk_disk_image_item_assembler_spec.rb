@@ -83,7 +83,7 @@ describe FtkDiskImageItemAssembler do
       @fdi = FtkDiskImage.new(:txt_file => @txt_file)
     end
     context "for disk image file with FTK .txt file" do
-      it "should create the correct FileAsset object for disk image itself" do
+      it "creates the correct FileAsset object for disk image itself" do
         file_asset = @assembler.create_dd_file_asset(@disk_image_item, @fdi)
         file_asset.should be_instance_of(FileAsset) # model
         file_asset.relationships[:self][:is_part_of].should == ["#{@disk_image_full_pid}"]
@@ -107,11 +107,33 @@ describe FtkDiskImageItemAssembler do
         desc_md_ds_fields_hash[:extent][:values].first.should match(/(bytes|KB|MB|GB|TB)$/)
       end
 
-    
-    
-    
-    
-    
+      it "creates the correct FileAsset objects for the photos of the disk" do
+        file_asset_array = @assembler.create_photo_file_assets(@disk_image_item, @fdi)
+        file_asset_array.size.should == 3  # we have 3 matching fixture images: plain, _1, and _2
+        
+        file_asset_array.each { | file_asset |  
+          file_asset.should be_instance_of(FileAsset) # model
+          file_asset.relationships[:self][:is_part_of].should == ["#{@disk_image_full_pid}"]
+
+          # DC, RELS-EXT, descMetadata, (the datastream the file is stored in)
+          file_asset.datastreams.size.should == 4
+
+          # datastream containing the photo file
+          file_ds_name = file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
+          file_ds = file_asset.datastreams[file_ds_name]
+          file_ds[:dsLabel].should match(/^CM5551212(_1|_2)?\.JPG$/)  # the file name of the image (xxx.jpeg, whatever)
+          file_ds.mime_type.should == "image/jpeg"
+
+          # descMetadata:
+          desc_md_ds_fields_hash = file_asset.datastreams["descMetadata"].fields
+          prefix = "FileAsset for photo of FTK disk image " # constant
+          disk_num = "CM5551212"  # from Evidence Number:  line of FTK .txt file
+          desc_md_ds_fields_hash[:title][:values].should == ["#{prefix}#{disk_num}"]
+          # extent value (file size) is computed by FileAsset.add_file_datastream
+          desc_md_ds_fields_hash[:extent][:values].first.should match(/(bytes|KB|MB|GB|TB)$/)
+        }
+      end
+
 #      it "should generate the correct <resource> xml for the disk image file" do
 # to check:   (should be correct and should match FileAsset object)
 #   value of LABEL attribute on the datastreamVersion
@@ -121,8 +143,8 @@ describe FtkDiskImageItemAssembler do
 =begin        
         val = get_values_from_datastream(file_asset, "DS1", [:label])
         file_asset.
-        
-        
+
+
         def display_ds_values_as_dl_element(dsid, solr_fld_sym, display_label)
           values = get_values_from_datastream(@document_fedora, dsid, [solr_fld_sym])
           unless values.first.empty?
@@ -131,16 +153,15 @@ describe FtkDiskImageItemAssembler do
           result 
         end
 =end        
-        
+
 #puts "DEBUG file_asset parts are #{file_asset.inspect}"
 #        pending
 #    end
-    
-    context "photos of disk images" do
-      
-    end
-    
-  end
+
+
+  end # context "creating FileAssets and contentMetadata"
+  
+  
   
   context "building an object" do
     before(:all) do

@@ -157,25 +157,24 @@ class FtkDiskImageItemAssembler
     builder.to_xml
   end
   
-  # Create a FileAsset to hold the dd file
-  # @param [HypatiaDiskImageItem] hypatia_disk_image_item - 
+  # Create a FileAsset to hold the dd file, save it, and connect it to the HypatiaDiskImageItem
+  # @param [HypatiaDiskImageItem] hypatia_disk_image_item - the FileAsset objects created will have _is_part_of relationships to the object in this param
   # @param [FtkDiskImage] fdi - populated per the FTK produced .txt file, if we have one
   # @return [FileAsset] object for the disk image object
   def create_dd_file_asset(hypatia_disk_image_item, fdi)
-    dd_file = FileAsset.new
+    dd_file_asset = FileAsset.new
     # the label value ends up in DC dc:title and descMetadata  title ??
-    dd_file.label="FileAsset for FTK disk image #{fdi.disk_type} #{fdi.disk_number}"
-    dd_file.add_relationship(:is_part_of, hypatia_disk_image_item)
+    dd_file_asset.label="FileAsset for FTK disk image #{fdi.disk_type} #{fdi.disk_number}"
+    dd_file_asset.add_relationship(:is_part_of, hypatia_disk_image_item)
     
     # For now, only add the dd file for the Xanadu collection, since other dd files are not for public viewing
     if @collection_pid =~ /(xanadu|fixture)/
       file = File.new(@filehash[fdi.disk_number.to_sym][:dd])
-      dd_file.add_file_datastream(file, {:mimeType => "application/octet-stream", :label => fdi.disk_number})
+      dd_file_asset.add_file_datastream(file, {:mimeType => "application/octet-stream", :label => fdi.disk_number})
     end
     
-#    add_photos_to_dd_file_asset(dd_file,fdi)
-    dd_file.save
-    return dd_file
+    dd_file_asset.save
+    dd_file_asset
   end
   
   # Calculate the file size of the disk image file 
@@ -205,6 +204,33 @@ class FtkDiskImageItemAssembler
     dd_file.save
     dd_file
   end
+  
+  # Create FileAsset objects for photo images of the disk, save them, and connect them to the HypatiaDiskImageItem
+  # @param [HypatiaDiskImageItem] hypatia_disk_image_item - the FileAsset objects created will have _is_part_of relationships to the object in this param
+  # @param [FtkDiskImage] fdi - populated per the FTK produced .txt file, if we have one
+  # @return [Array] of FileAsset objects for the photo images of the disk
+  def create_photo_file_assets(hypatia_disk_image_item, fdi)
+    photo_file_assets = []
+    photo_path_base = "#{@computer_media_photos_dir}/#{fdi.disk_number}"
+    photo_filenames = ["#{photo_path_base}.JPG", "#{photo_path_base}_1.JPG", "#{photo_path_base}_2.JPG"]
+    photo_filenames.each { |photo_fname|
+      if File.file? photo_fname
+        photo_fa = FileAsset.new
+        # the label value ends up in DC dc:title and descMetadata  title ??
+        photo_fa.label="FileAsset for photo of FTK disk image #{fdi.disk_number}"
+        photo_fa.add_relationship(:is_part_of, hypatia_disk_image_item)
+
+        file = File.new(photo_fname)
+        photo_fa.add_file_datastream(file, {:label => File.basename(file.path), :mimeType => "image/jpeg"})
+        photo_fa.save
+        photo_file_assets << photo_fa
+#      else
+#        @logger.warn "Couldn't find expected media photo file #{image_file}"
+      end
+    }
+    photo_file_assets
+  end
+  
   
   # Create a Nokogiri XML Datastream on the HypatiaDiskImageItem object
   # @param [HypatiaDiskImageItem] the HypatiaDiskImageItem object getting the datastream
