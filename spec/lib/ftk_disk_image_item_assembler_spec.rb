@@ -69,7 +69,7 @@ describe FtkDiskImageItemAssembler do
     end
   end
   
-  context "creating FileAssets and contentMetadata" do
+  context "creating FileAssets and their contentMetadata in the DiskImageItem" do
     before(:all) do
       delete_fixture("hypatia:fixture_coll2")
       import_fixture("hypatia:fixture_coll2")
@@ -81,24 +81,25 @@ describe FtkDiskImageItemAssembler do
       @disk_image_item = HypatiaDiskImageItem.new
       @disk_image_full_pid = @disk_image_item.internal_uri
       @fdi = FtkDiskImage.new(:txt_file => @txt_file)
+      @dd_file_asset = @assembler.create_dd_file_asset(@disk_image_item, @fdi)
+      @photo_file_asset_array = @assembler.create_photo_file_assets(@disk_image_item, @fdi)
     end
     context "for disk image file with FTK .txt file" do
       it "creates the correct FileAsset object for disk image itself" do
-        file_asset = @assembler.create_dd_file_asset(@disk_image_item, @fdi)
-        file_asset.should be_instance_of(FileAsset) # model
-        file_asset.relationships[:self][:is_part_of].should == ["#{@disk_image_full_pid}"]
+        @dd_file_asset.should be_instance_of(FileAsset) # model
+        @dd_file_asset.relationships[:self][:is_part_of].should == ["#{@disk_image_full_pid}"]
 
         # DC, RELS-EXT, descMetadata, (the datastream the file is stored in)
-        file_asset.datastreams.size.should == 4
+        @dd_file_asset.datastreams.size.should == 4
 
         # file datastream:
-        file_ds_name = file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
-        file_ds = file_asset.datastreams[file_ds_name]
+        file_ds_name = @dd_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
+        file_ds = @dd_file_asset.datastreams[file_ds_name]
         file_ds[:dsLabel].should == "CM5551212" # from Evidence Number : line of FTK .txt file -- the file name
         file_ds[:mimeType].should == "application/octet-stream"
         
         # descMetadata:
-        desc_md_ds_fields_hash = file_asset.datastreams["descMetadata"].fields
+        desc_md_ds_fields_hash = @dd_file_asset.datastreams["descMetadata"].fields
         prefix = "FileAsset for FTK disk image " # constant
         phys_desc = "5.25 inch Floppy Disk "  # from Notes:  line of FTK .txt file
         disk_num = "CM5551212"  # from Evidence Number:  line of FTK .txt file
@@ -108,10 +109,10 @@ describe FtkDiskImageItemAssembler do
       end
 
       it "creates the correct FileAsset objects for the photos of the disk" do
-        file_asset_array = @assembler.create_photo_file_assets(@disk_image_item, @fdi)
-        file_asset_array.size.should == 3  # we have 3 matching fixture images: plain, _1, and _2
+#        @photo_file_asset_array = @assembler.create_photo_file_assets(@disk_image_item, @fdi)
+        @photo_file_asset_array.size.should == 3  # we have 3 matching fixture images: plain, _1, and _2
         
-        file_asset_array.each { | file_asset |  
+        @photo_file_asset_array.each { | file_asset |  
           file_asset.should be_instance_of(FileAsset) # model
           file_asset.relationships[:self][:is_part_of].should == ["#{@disk_image_full_pid}"]
 
