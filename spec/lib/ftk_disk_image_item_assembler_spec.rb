@@ -109,7 +109,6 @@ describe FtkDiskImageItemAssembler do
       end
 
       it "creates the correct FileAsset objects for the photos of the disk" do
-#        @photo_file_asset_array = @assembler.create_photo_file_assets(@disk_image_item, @fdi)
         @photo_file_asset_array.size.should == 3  # we have 3 matching fixture images: plain, _1, and _2
         
         @photo_file_asset_array.each { | file_asset |  
@@ -133,6 +132,33 @@ describe FtkDiskImageItemAssembler do
           # extent value (file size) is computed by FileAsset.add_file_datastream
           desc_md_ds_fields_hash[:extent][:values].first.should match(/(bytes|KB|MB|GB|TB)$/)
         }
+      end
+      
+      it "creates the correct contentMetdata for an FtkDiskImage" do
+        doc = Nokogiri::XML(@assembler.build_content_metadata(@fdi, "dii_pid", @dd_file_asset, @photo_file_asset_array))
+        doc.xpath("/contentMetadata/@objectId").to_s.should eql("dii_pid")
+        doc.xpath("/contentMetadata/@type").to_s.should eql("file")
+        doc.xpath("/contentMetadata/resource[@type='media-file']/@objectId").to_s.should eql(@dd_file_asset.pid)
+        # id attribute on resource element is just a unique identifier
+        doc.xpath("/contentMetadata/resource[@type='media-file']/@id").to_s.should eql(@dd_file_ds[:dsLabel])
+        doc.xpath("/contentMetadata/resource[@type='media-file']/@id").to_s.should eql("CM5551212")
+        # id attribute on file element must match the label of the datastream in the FileAsset object
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/@id").to_s.should eql(@dd_file_ds[:dsLabel])
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/@id").to_s.should eql("CM5551212")
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/@format").to_s.should eql("BINARY")
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/@mimetype").to_s.should eql("application/octet-stream")
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/@size").to_s.should match(/^\d+$/)
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/@preserve").to_s.should eql("yes")
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/@publish").to_s.should eql("yes")
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/@shelve").to_s.should eql("yes")
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/location/@type").to_s.should eql("datastreamID")
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/location/text()").to_s.should eql(@dd_file_ds.dsid)
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/checksum[@type='md5']/text()").to_s.should eql("7d7abca99f383487e02ce7bf7c017267")
+        doc.xpath("/contentMetadata/resource[@type='media-file']/file/checksum[@type='sha1']/text()").to_s.should eql("628ede981ad24c1655f7e37057355ca689dcb3a9")
+      end
+      
+      it "creates contentMetadata datastream that adheres to HypatiaDiskImageContentMetadataDS model" do
+        pending
       end
 
 #      it "should generate the correct <resource> xml for the disk image file" do

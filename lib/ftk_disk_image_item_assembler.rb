@@ -122,6 +122,7 @@ class FtkDiskImageItemAssembler
   #  xml expected by model HypatiaDiskImgContentMetadataDS
   # @param [FtkDiskImage] fdi
   # @return [Nokogiri::XML::Document] - the xmlContent for the contentMetadata datastream
+  # @deprecated
   def build_content_metadata(fdi,pid,file_asset_pid)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.contentMetadata("type" => "born-digital", "objectId" => pid) {
@@ -129,6 +130,37 @@ class FtkDiskImageItemAssembler
           xml.file("id" => fdi.disk_number, "format" => "BINARY", "size" => calculate_dd_size(fdi) ) {
             xml.checksum("type" => "md5") {
               xml.text fdi.md5
+            }
+          }
+        }
+      }
+    end    
+    builder.to_xml
+  end
+
+#   # Build the contentMetadata for HypatiaDiskImageItem as an xml object.  it should adhere to the 
+  #  xml expected by model HypatiaDiskImgContentMetadataDS
+  # @param [FtkDiskImage] the intermediate object for the FTK Disk Image that is being turned into a Fedora object
+  # @param [String] the Fedora pid of the DiskImageItem object
+  # @param [ActiveFedora::FileAsset] the FileAsset object for the disk image file itself
+  # @param [Array] an array the FileAsset objects for the photos of the disk media
+  # @return [Nokogiri::XML::Document] - the xmlContent for the contentMetadata datastream
+  def build_content_metadata(fdi, dii_pid, dd_file_asset, photo_file_asset_array)
+    builder = Nokogiri::XML::Builder.new do |xml|
+      dd_file_datastream_name = dd_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
+      dd_file_datastream = dd_file_asset.datastreams[dd_file_datastream_name]
+      xml.contentMetadata("type" => "file", "objectId" => dii_pid) {
+        xml.resource("id" => dd_file_datastream.label, "type" => "media-file", "objectId" => dd_file_asset.pid){
+          xml.file("id" => dd_file_datastream.label, "format" => "BINARY", "mimetype" => dd_file_datastream.mime_type, 
+                    "size" => File.size(@filehash[fdi.disk_number.to_sym][:dd]), "preserve" => "yes", "publish" => "yes", "shelve" => "yes" ) {
+            xml.location("type" => "datastreamID") {
+              xml.text dd_file_datastream.dsid
+            }
+            xml.checksum("type" => "md5") {
+              xml.text fdi.md5
+            }
+            xml.checksum("type" => "sha1") {
+              xml.text fdi.sha1
             }
           }
         }
@@ -159,7 +191,7 @@ class FtkDiskImageItemAssembler
   
   # Create a FileAsset to hold the dd file, save it, and connect it to the HypatiaDiskImageItem
   # @param [HypatiaDiskImageItem] hypatia_disk_image_item - the FileAsset objects created will have _is_part_of relationships to the object in this param
-  # @param [FtkDiskImage] fdi - populated per the FTK produced .txt file, if we have one
+  # @param [FtkDiskImage] fdi - has been populated per the FTK produced .txt file, if we have one
   # @return [FileAsset] object for the disk image object
   def create_dd_file_asset(hypatia_disk_image_item, fdi)
     dd_file_asset = FileAsset.new
@@ -180,15 +212,18 @@ class FtkDiskImageItemAssembler
   # Calculate the file size of the disk image file 
   # @param [FtkDiskImage] fdi
   # @return [String]
+  # @deprecated
   def calculate_dd_size(fdi)
     bytes = File.size(@filehash[fdi.disk_number.to_sym][:dd])
     "#{bytes} B"
   end
   
+# TODO:  remove this  
   # Add any photos of the physical media as datastreams attached to the disk image FileAsset
   # @param [FileAsset] dd_file
   # @param [FtkDiskImage] fdi
   # @return [FileAsset]
+  # @deprecated
   def add_photos_to_dd_file_asset(dd_file,fdi)
     image_path_base = "#{@computer_media_photos_dir}/#{fdi.disk_number}"
     image_hash = {"#{image_path_base}.JPG" => "front", "#{image_path_base}_1.JPG" => "front", "#{image_path_base}_2.JPG" => "back"}
@@ -207,7 +242,7 @@ class FtkDiskImageItemAssembler
   
   # Create FileAsset objects for photo images of the disk, save them, and connect them to the HypatiaDiskImageItem
   # @param [HypatiaDiskImageItem] hypatia_disk_image_item - the FileAsset objects created will have _is_part_of relationships to the object in this param
-  # @param [FtkDiskImage] fdi - populated per the FTK produced .txt file, if we have one
+  # @param [FtkDiskImage] fdi - has been populated per the FTK produced .txt file, if we have one
   # @return [Array] of FileAsset objects for the photo images of the disk
   def create_photo_file_assets(hypatia_disk_image_item, fdi)
     photo_file_assets = []
