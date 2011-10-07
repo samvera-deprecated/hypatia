@@ -82,6 +82,8 @@ describe FtkDiskImageItemAssembler do
       @disk_image_full_pid = @disk_image_item.internal_uri
       @fdi = FtkDiskImage.new(:txt_file => @txt_file)
       @dd_file_asset = @assembler.create_dd_file_asset(@disk_image_item, @fdi)
+      dd_file_ds_name = @dd_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
+      @dd_file_ds = @dd_file_asset.datastreams[dd_file_ds_name]
       @photo_file_asset_array = @assembler.create_photo_file_assets(@disk_image_item, @fdi)
     end
     context "for disk image file with FTK .txt file" do
@@ -93,10 +95,8 @@ describe FtkDiskImageItemAssembler do
         @dd_file_asset.datastreams.size.should == 4
 
         # file datastream:
-        file_ds_name = @dd_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
-        file_ds = @dd_file_asset.datastreams[file_ds_name]
-        file_ds[:dsLabel].should == "CM5551212" # from Evidence Number : line of FTK .txt file -- the file name
-        file_ds[:mimeType].should == "application/octet-stream"
+        @dd_file_ds[:dsLabel].should == "CM5551212" # from Evidence Number : line of FTK .txt file -- the file name
+        @dd_file_ds[:mimeType].should == "application/octet-stream"
         
         # descMetadata:
         desc_md_ds_fields_hash = @dd_file_asset.datastreams["descMetadata"].fields
