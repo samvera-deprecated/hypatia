@@ -1,9 +1,93 @@
 <%- form_tag(url_for(:controller=>"assets", :action=>"update", :id=>params[:id]), :class => "step") do -%>
-  <%# not editable %>
-  <dl>
-    <%= display_ds_values_as_dl_element("contentMetadata", :content_oid, "Content Object ID") %>
-  </dl>
-  
+
+  <div class="techInfo metadata-section">
+    <h2 class="section-title">Technical Information</h2>
+    <div class="contentMetadata metadata-subsection">
+        <p id="file_asset_fedora_id_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:file_asset_fedora_id], "FileAsset Object Id") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:file_asset_fedora_id], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+    </div>
+    <div class="contentMetadata metadata-subsection">
+      <h3 class="subsection-title">Content File</h3>
+      <div>
+        <p id="content_filename_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:content_filename], "File Name") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:content_filename], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="content_size_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:content_size], "Size") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:content_size], :multiple=>false, :required=>false, :disabled=>true, :disabled=>true ) %>
+        </p>
+
+        <p id="content_format_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:content_format], "Format") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:content_format], :multiple=>false, :required=>false, :disabled=>true, :disabled=>true ) %>
+        </p>
+
+        <p id="content_mimetype_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:content_mimetype], "Mimetype") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:content_mimetype], :multiple=>false, :required=>false, :disabled=>true, :disabled=>true ) %>
+        </p>
+
+        <p id="content_md5_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:content_md5], "md5 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:content_md5], :multiple=>false, :required=>false, :disabled=>true, :disabled=>true ) %>
+        </p>
+
+        <p id="content_sha1_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:content_sha1], "sha1 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:content_sha1], :multiple=>false, :required=>false, :disabled=>true, :disabled=>true ) %>
+        </p>
+
+        <p id="content_ds_id_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:content_ds_id], "Content Datastream ID") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:content_ds_id], :multiple=>false, :required=>false, :disabled=>true, :disabled=>true ) %>
+        </p>
+      </div>
+    </div>
+    <div class="contentMetadata metadata-subsection">
+      <h3 class="subsection-title">Derivative Display File</h3>
+      <div>
+        <p id="html_filename_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:html_filename], "File Name") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:html_filename], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="html_size_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:html_size], "Size") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:html_size], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="html_format_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:html_format], "Format") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:html_format], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="html_mimetype_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:html_mimetype], "Mimetype") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:html_mimetype], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="html_md5_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:html_md5], "md5 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:html_md5], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="html_sha1_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:html_sha1], "sha1 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:html_sha1], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="html_ds_id_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:html_ds_id], "Content Datastream ID") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:html_ds_id], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+      </div>
+    </div>
+  </div>
+
   <%= hidden_field_tag("_method","put", :id=>"tech_info_method") %>
   <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "tech_info_wf_step") %>
   <%= hidden_field_tag(:new_asset, true, :id => "tech_info_new_asset") if params[:new_asset] %>
