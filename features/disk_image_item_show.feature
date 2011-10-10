@@ -15,13 +15,13 @@ Feature: Disk Image Item Show page
   Scenario: all desired Description metadata displays
     When I am on the document page for id "hypatia:fixture_media_item" 
     Then I should see "CM058"  # title
-    Then I should see "CM058 as id"  # local_id
+    Then I should see "M1437"  # local_id
     And I should see "3.5 inch Floppy Disk" # extent
     And I should see "Born Digital" # digital_origin
 
   Scenario: all desired Repository metadata displays
     When I am on the document page for id "hypatia:fixture_media_item" 
-    Then I should see "CM058 as id"  # local_id
+    Then I should see "M1437"  # local_id
 
   Scenario: all desired Technical metadata displays
     When I am on the document page for id "hypatia:fixture_media_item" 

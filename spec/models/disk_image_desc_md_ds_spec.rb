@@ -15,7 +15,7 @@ describe HypatiaDiskImgDescMetadataDS do
   end
   
   it "should have the correct :local_id term value" do
-    @desc_md_ds.term_values(:local_id).should == ["CM058"]
+    @desc_md_ds.term_values(:local_id).should == ["M1437"]
   end
 
   it "should have the correct :extent term value" do
