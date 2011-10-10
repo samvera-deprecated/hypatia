@@ -147,6 +147,7 @@ describe FtkDiskImageItemAssembler do
         it "creates the correct contentMetdata element" do
           @doc_one_image.xpath("/contentMetadata/@objectId").to_s.should eql("dii_pid")
           @doc_one_image.xpath("/contentMetadata/@type").to_s.should eql("file")
+          @doc_one_images.xpath("/contentMetadata/resource").size.should eql(2)
         end
         it "creates the correct resource element for the disk image FileAsset" do
           @doc_one_image.xpath("/contentMetadata/resource[@type='media-file']/@objectId").to_s.should eql(@dd_file_asset.pid)
@@ -194,6 +195,7 @@ describe FtkDiskImageItemAssembler do
           image_file_asset1 = @photo_file_asset_array[1]
           ds_name1 = image_file_asset1.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
           image_ds1 = image_file_asset1.datastreams[ds_name1]
+          doc_two_images.xpath("/contentMetadata/resource").size.should eql(3)
           doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/@objectId").to_s.should eql(image_file_asset1.pid)
           # id attribute on resource element is just a unique identifier
           doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/@id").to_s.should eql(image_ds1[:dsLabel])
@@ -235,8 +237,32 @@ describe FtkDiskImageItemAssembler do
         it "doesn't create a resource element when there is no photo image FileAsset object" do
           doc_no_images = Nokogiri::XML(@assembler.build_content_metadata(@fdi, "dii_pid", @dd_file_asset, []))
           doc_no_images.xpath("/contentMetadata/resource").size.should eql(1)
-          doc_no_images.xpath("/contentMetadata/resource[@type='image-front']").to_s.should eql("")
-          doc_no_images.xpath("/contentMetadata/resource[@type='image-back']").to_s.should eql("")
+          doc_no_images.xpath("/contentMetadata/resource[@type='image-front']").size.should eql(0)
+          doc_no_images.xpath("/contentMetadata/resource[@type='image-back']").size.should eql(0)
+        end
+        it "creates resource[@type='image-other(n)'] resource elements when there are more than two images" do
+          doc_three_images = Nokogiri::XML(@assembler.build_content_metadata(@fdi, "dii_pid", @dd_file_asset, @photo_file_asset_array))
+          doc_three_images.xpath("/contentMetadata/resource").size.should eql(4)
+          doc_three_images.xpath("/contentMetadata/resource[@type='media-file']").size.should eql(1)
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-front']").size.should eql(1)
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-front']/@id").to_s.should eql("CM5551212.JPG")
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-front']/file/@id").to_s.should eql("CM5551212.JPG")
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-back']").size.should eql(1)
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-back']/@id").to_s.should eql("CM5551212_1.JPG")
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-back']/file/@id").to_s.should eql("CM5551212_1.JPG")
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']").size.should eql(1)
+          addl_image_file_asset = @photo_file_asset_array[2]
+          ds_name = addl_image_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
+          addl_image_ds = addl_image_file_asset.datastreams[ds_name]
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/@objectId").to_s.should eql(addl_image_file_asset.pid)
+          # id attribute on resource element is just a unique identifier
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/@id").to_s.should eql(addl_image_ds[:dsLabel])
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/@id").to_s.should eql("CM5551212_2.JPG")
+          # id attribute on file element must match the label of the datastream in the FileAsset object
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/@id").to_s.should eql(addl_image_ds[:dsLabel])
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/@id").to_s.should eql("CM5551212_2.JPG")
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/location/@type").to_s.should eql("datastreamID")
+          doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/location/text()").to_s.should eql(addl_image_ds.dsid)
         end
       end # context contentMetadata
 

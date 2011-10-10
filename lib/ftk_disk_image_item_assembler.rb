@@ -181,7 +181,7 @@ class FtkDiskImageItemAssembler
             add_photo_file_asset(xml, photo_file_asset_array[0], "image-front")
             add_photo_file_asset(xml, photo_file_asset_array[1], "image-back")
             photo_file_asset_array[2, photo_file_asset_array.size-2].each_with_index { |photo_file_asset, ix|  
-              add_photo_file_asset(xml, photo_file_asset_array[ix], "image-other" + (ix + 1).to_s)
+              add_photo_file_asset(xml, photo_file_asset_array[ix+2], "image-other" + (ix+1).to_s)
             }
         end
       } # xml.contentMetadata
