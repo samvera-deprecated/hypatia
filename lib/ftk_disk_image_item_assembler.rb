@@ -121,6 +121,31 @@ class FtkDiskImageItemAssembler
     builder.to_xml
   end
 
+  # Build rightsMetadata datastream  for HypatiaDiskImageItem;  discover and read permissions allowed for all, edit permissions for archivist group
+  # @return [Nokogiri::XML::Document] - the xmlContent for the rightsMetadata datastream
+  def build_rights_metadata
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.rightsMetadata("xmlns" => "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1", "version" => "0.1"){
+        xml.access("type" => "discover") {
+          xml.machine {
+            xml.group "public"
+          }
+        }
+        xml.access("type" => "read") {
+          xml.machine {
+            xml.group "public"
+          }
+        }
+        xml.access("type" => "edit") {
+          xml.machine {
+            xml.group "archivist"
+          }
+        }
+      }
+    end
+    builder.to_xml
+  end
+  
   # Build the contentMetadata for HypatiaDiskImageItem as an xml object.  it should adhere to the 
   #  xml expected by model HypatiaDiskImgContentMetadataDS
   # @param [FtkDiskImage] the intermediate object for the FTK Disk Image that is being turned into a Fedora object
@@ -193,26 +218,6 @@ class FtkDiskImageItemAssembler
         }
       }
     }
-  end
-  
-  # Build rightsMetadata datastream  for HypatiaDiskImageItem;  discover and read permissions allowed for all.
-  # @return [Nokogiri::XML::Document] - the xmlContent for the rightsMetadata datastream
-  def build_rights_metadata
-    builder = Nokogiri::XML::Builder.new do |xml|
-      xml.rightsMetadata("xmlns" => "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1", "version" => "0.1"){
-        xml.access("type" => "discover"){
-          xml.machine {
-            xml.group "public"
-          }
-        }
-        xml.access("type" => "read"){
-          xml.machine {
-            xml.group "public"
-          }
-        }
-      }
-    end
-    builder.to_xml
   end
   
   # Create a FileAsset to hold the dd file, save it, and connect it to the HypatiaDiskImageItem

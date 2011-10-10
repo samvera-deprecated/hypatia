@@ -56,16 +56,29 @@ describe FtkDiskImageItemAssembler do
       doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@fdi.disk_number)
       doc.xpath("/mods:mods/mods:physicalDescription/mods:extent/text()").to_s.should eql(@fdi.disk_type)
     end
-=begin   superceded
-    it "creates contentMetdata for an FtkDiskImage" do
-      doc = Nokogiri::XML(@assembler.build_content_metadata(@fdi,"foo","bar"))
-      doc.xpath("/contentMetadata/@type").to_s.should eql("born-digital")
-      doc.xpath("/contentMetadata/@objectId").to_s.should eql("foo")
-      doc.xpath("/contentMetadata/resource/@type").to_s.should eql("disk-image")
-      doc.xpath("/contentMetadata/resource/file/@id").to_s.should eql(@fdi.disk_number)
-      doc.xpath("/contentMetadata/resource/file/@format").to_s.should eql("BINARY")
+  end
+=begin  
+  context "descMetadata" do
+    it "creates the correct descMetadata from a FTK .txt file" do
+      pending
     end
+    it "creates the correct descMetadata when there is no FTK .txt file" do
+      pending
+    end
+    
+  end
 =end
+  
+  it "creates the correct rightsMetadata" do
+    assembler = FtkDiskImageItemAssembler.new(:collection_pid => "", :disk_image_files_dir => ".", :computer_media_photos_dir => ".")
+    rights_md_doc = Nokogiri::XML(assembler.build_rights_metadata)
+    rights_md_doc.namespaces.size.should eql(1)
+    ns = "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1"
+    rights_md_doc.namespaces["xmlns"].should eql(ns)
+    rights_md_doc.xpath("/ns:rightsMetadata/ns:access", {"ns" => ns}).size.should eql(3)
+    rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='discover']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("public")
+    rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='read']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("public")
+    rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='edit']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("archivist")
   end
   
   context "FileAssets and their contentMetadata in the DiskImageItem" do
