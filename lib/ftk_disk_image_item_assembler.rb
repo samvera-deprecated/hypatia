@@ -1,5 +1,7 @@
 require "rubygems"
 require "active-fedora"
+require "digest/md5"
+require "digest/sha1"
 
 # Creates disk image item objects in Fedora, based on disk images files in a directory, the parent collection object's fedora pid, and a directory (possibly empty???) containing photos of the disks.
 class FtkDiskImageItemAssembler 
@@ -89,7 +91,8 @@ class FtkDiskImageItemAssembler
     hypatia_disk_image_item.save
     dd_file = create_dd_file_asset(hypatia_disk_image_item, fdi)
     build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", build_desc_metadata(fdi))
-    build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", build_content_metadata(fdi,hypatia_disk_image_item.pid,dd_file.pid))
+# FIXME:  need new code here!    
+#    build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", build_content_metadata(fdi,hypatia_disk_image_item.pid,dd_file.pid))
     build_ng_xml_datastream(hypatia_disk_image_item, "rightsMetadata", build_rights_metadata)
     hypatia_disk_image_item.save
     return hypatia_disk_image_item
@@ -150,6 +153,7 @@ class FtkDiskImageItemAssembler
       dd_file_datastream_name = dd_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
       dd_file_datastream = dd_file_asset.datastreams[dd_file_datastream_name]
       xml.contentMetadata("type" => "file", "objectId" => dii_pid) {
+        # FileAsset for disk image itself
         xml.resource("id" => dd_file_datastream.label, "type" => "media-file", "objectId" => dd_file_asset.pid){
           xml.file("id" => dd_file_datastream.label, "format" => "BINARY", "mimetype" => dd_file_datastream.mime_type, 
                     "size" => File.size(@filehash[fdi.disk_number.to_sym][:dd]), "preserve" => "yes", "publish" => "yes", "shelve" => "yes" ) {
@@ -164,8 +168,27 @@ class FtkDiskImageItemAssembler
             }
           }
         }
-      }
-    end    
+        # FileAssets for photos
+        photo_file_asset_array.each { |photo_file_asset|  
+          ds_name = photo_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
+          ds = photo_file_asset.datastreams[dd_file_datastream_name]
+          xml.resource("id" => ds.label, "type" => "image-front", "objectId" => photo_file_asset.pid){
+            xml.file("id" => ds.label, "format" => "JPG", "mimetype" => ds.mime_type, 
+                      "size" => File.size(ds.blob), "preserve" => "yes", "publish" => "yes", "shelve" => "yes" ) {
+              xml.location("type" => "datastreamID") {
+                xml.text ds.dsid
+              }
+              xml.checksum("type" => "md5") {
+                xml.text Digest::MD5.hexdigest(ds.blob.read)
+              }
+              xml.checksum("type" => "sha1") {
+                xml.text Digest::SHA1.hexdigest(ds.blob.read)
+              }
+            }
+          }
+        } # photo_file_asset_array
+      } # xml.contentMetadata
+    end # builder
     builder.to_xml
   end
   
