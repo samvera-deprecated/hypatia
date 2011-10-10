@@ -120,26 +120,6 @@ class FtkDiskImageItemAssembler
     end
     builder.to_xml
   end
-  
-  # Build the contentMetadata for HypatiaDiskImageItem as an xml object.  it should adhere to the 
-  #  xml expected by model HypatiaDiskImgContentMetadataDS
-  # @param [FtkDiskImage] fdi
-  # @return [Nokogiri::XML::Document] - the xmlContent for the contentMetadata datastream
-  # @deprecated
-  def build_content_metadata(fdi,pid,file_asset_pid)
-    builder = Nokogiri::XML::Builder.new do |xml|
-      xml.contentMetadata("type" => "born-digital", "objectId" => pid) {
-        xml.resource("id" => "disk-image", "type" => "disk-image", "data" => "content", "objectId" => file_asset_pid){
-          xml.file("id" => fdi.disk_number, "format" => "BINARY", "size" => calculate_dd_size(fdi) ) {
-            xml.checksum("type" => "md5") {
-              xml.text fdi.md5
-            }
-          }
-        }
-      }
-    end    
-    builder.to_xml
-  end
 
   # Build the contentMetadata for HypatiaDiskImageItem as an xml object.  it should adhere to the 
   #  xml expected by model HypatiaDiskImgContentMetadataDS
@@ -253,37 +233,6 @@ class FtkDiskImageItemAssembler
     
     dd_file_asset.save
     dd_file_asset
-  end
-  
-  # Calculate the file size of the disk image file 
-  # @param [FtkDiskImage] fdi
-  # @return [String]
-  # @deprecated
-  def calculate_dd_size(fdi)
-    bytes = File.size(@filehash[fdi.disk_number.to_sym][:dd])
-    "#{bytes} B"
-  end
-  
-# TODO:  remove this  
-  # Add any photos of the physical media as datastreams attached to the disk image FileAsset
-  # @param [FileAsset] dd_file
-  # @param [FtkDiskImage] fdi
-  # @return [FileAsset]
-  # @deprecated
-  def add_photos_to_dd_file_asset(dd_file,fdi)
-    image_path_base = "#{@computer_media_photos_dir}/#{fdi.disk_number}"
-    image_hash = {"#{image_path_base}.JPG" => "front", "#{image_path_base}_1.JPG" => "front", "#{image_path_base}_2.JPG" => "back"}
-    image_hash.each_pair { |image_file, label|
-      if File.file? image_file
-        f = File.new(image_file)
-        image_ds =  ActiveFedora::Datastream.new(:dsID => label, :dsLabel => "#{label.capitalize} image for #{fdi.disk_type} #{fdi.disk_number}", :controlGroup => 'M', :blob => f)
-        dd_file.add_datastream(image_ds)
-      else
-        @logger.warn "Couldn't find expected media photo file #{image_file}"
-      end
-    }
-    dd_file.save
-    dd_file
   end
   
   # Create FileAsset objects for photo images of the disk, save them, and connect them to the HypatiaDiskImageItem

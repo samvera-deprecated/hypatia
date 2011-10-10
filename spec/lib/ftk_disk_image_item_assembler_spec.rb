@@ -51,9 +51,6 @@ describe FtkDiskImageItemAssembler do
       @fdi.md5.should eql("7d7abca99f383487e02ce7bf7c017267")
       @fdi.sha1.should eql("628ede981ad24c1655f7e37057355ca689dcb3a9")
     end
-    it "calculates the file size for the dd file referenced" do
-      @assembler.calculate_dd_size(@fdi).should eql("368640 B")
-    end
     it "creates descMetadata for an FtkDiskImage" do
       doc = Nokogiri::XML(@assembler.build_desc_metadata(@fdi))
       doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@fdi.disk_number)
