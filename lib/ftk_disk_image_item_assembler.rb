@@ -141,7 +141,7 @@ class FtkDiskImageItemAssembler
     builder.to_xml
   end
 
-#   # Build the contentMetadata for HypatiaDiskImageItem as an xml object.  it should adhere to the 
+  # Build the contentMetadata for HypatiaDiskImageItem as an xml object.  it should adhere to the 
   #  xml expected by model HypatiaDiskImgContentMetadataDS
   # @param [FtkDiskImage] the intermediate object for the FTK Disk Image that is being turned into a Fedora object
   # @param [String] the Fedora pid of the DiskImageItem object
@@ -169,27 +169,50 @@ class FtkDiskImageItemAssembler
           }
         }
         # FileAssets for photos
-        photo_file_asset_array.each { |photo_file_asset|  
-          ds_name = photo_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
-          ds = photo_file_asset.datastreams[dd_file_datastream_name]
-          xml.resource("id" => ds.label, "type" => "image-front", "objectId" => photo_file_asset.pid){
-            xml.file("id" => ds.label, "format" => "JPG", "mimetype" => ds.mime_type, 
-                      "size" => File.size(ds.blob), "preserve" => "yes", "publish" => "yes", "shelve" => "yes" ) {
-              xml.location("type" => "datastreamID") {
-                xml.text ds.dsid
-              }
-              xml.checksum("type" => "md5") {
-                xml.text Digest::MD5.hexdigest(ds.blob.read)
-              }
-              xml.checksum("type" => "sha1") {
-                xml.text Digest::SHA1.hexdigest(ds.blob.read)
-              }
+        case photo_file_asset_array.size
+          when 0
+            ;
+          when 1
+            add_photo_file_asset(xml, photo_file_asset_array[0], "image-front")
+          when 2
+            add_photo_file_asset(xml, photo_file_asset_array[0], "image-front")
+            add_photo_file_asset(xml, photo_file_asset_array[1], "image-back")
+          else
+            add_photo_file_asset(xml, photo_file_asset_array[0], "image-front")
+            add_photo_file_asset(xml, photo_file_asset_array[1], "image-back")
+            photo_file_asset_array[2, photo_file_asset_array.size-2].each_with_index { |photo_file_asset, ix|  
+              add_photo_file_asset(xml, photo_file_asset_array[ix], "image-other" + (ix + 1).to_s)
             }
-          }
-        } # photo_file_asset_array
+        end
       } # xml.contentMetadata
     end # builder
     builder.to_xml
+  end
+  
+  # Add a <resource> element to the passed Nokogiri::XML::Builder object.
+  #  The <resource> element will contain information about the photo FileAsset
+  #   object passed in, and will have a type attribute per the resource_type
+  #   passed in.
+  # @param [Nokogiri::XML::Builder] the object to receive the xml created by this method
+  # @param [ActiveFedora::FileAsset] the photo's FileAsset object to be referenced in the newly created xml 
+  # @param [String] the string for the type attribute on the <resource> element
+  def add_photo_file_asset(xml, photo_file_asset, resource_type)
+    ds_name = photo_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
+    ds = photo_file_asset.datastreams[ds_name]
+    xml.resource("id" => ds.label, "type" => resource_type, "objectId" => photo_file_asset.pid){
+      xml.file("id" => ds.label, "format" => "JPG", "mimetype" => ds.mime_type, 
+                "size" => File.size(ds.blob), "preserve" => "yes", "publish" => "yes", "shelve" => "yes" ) {
+        xml.location("type" => "datastreamID") {
+          xml.text ds.dsid
+        }
+        xml.checksum("type" => "md5") {
+          xml.text Digest::MD5.hexdigest(ds.blob.read)
+        }
+        xml.checksum("type" => "sha1") {
+          xml.text Digest::SHA1.hexdigest(ds.blob.read)
+        }
+      }
+    }
   end
   
   # Build rightsMetadata datastream  for HypatiaDiskImageItem;  discover and read permissions allowed for all.
