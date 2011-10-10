@@ -140,14 +140,10 @@ describe FtkDiskImageItemAssembler do
         before(:all) do
           @doc_one_image = Nokogiri::XML(@assembler.build_content_metadata(@fdi, "dii_pid", @dd_file_asset, @photo_file_asset_array[0..0]))
         end
-        
-#        it "creates contentMetadata datastream that adheres to HypatiaDiskImageContentMetadataDS model" do
-#          pending
-#        end
         it "creates the correct contentMetdata element" do
           @doc_one_image.xpath("/contentMetadata/@objectId").to_s.should eql("dii_pid")
           @doc_one_image.xpath("/contentMetadata/@type").to_s.should eql("file")
-          @doc_one_images.xpath("/contentMetadata/resource").size.should eql(2)
+          @doc_one_image.xpath("/contentMetadata/resource").size.should eql(2)
         end
         it "creates the correct resource element for the disk image FileAsset" do
           @doc_one_image.xpath("/contentMetadata/resource[@type='media-file']/@objectId").to_s.should eql(@dd_file_asset.pid)
@@ -264,6 +260,26 @@ describe FtkDiskImageItemAssembler do
           doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/location/@type").to_s.should eql("datastreamID")
           doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/location/text()").to_s.should eql(addl_image_ds.dsid)
         end
+# FIXME:  this is an integration spec testing that the xml from the loader can be loaded into the app properly.  Not sure where to put this.
+        it "creates contentMetadata datastream that adheres to HypatiaDiskImageContentMetadataDS model" do
+          content_md_ds = HypatiaDiskImgContentMetadataDS.from_xml(@doc_one_image)
+          content_md_ds.term_values(:dd_fedora_pid).first.should match(/^hypatia:\d+$/) 
+          content_md_ds.term_values(:dd_ds_id).should == [@dd_file_ds.dsid]
+          content_md_ds.term_values(:dd_filename).should == ["CM5551212"]
+          content_md_ds.term_values(:dd_size).first.should match(/^\d+$/)
+          content_md_ds.term_values(:dd_mimetype).should == ["application/octet-stream"]
+          content_md_ds.term_values(:dd_md5).should == ["7d7abca99f383487e02ce7bf7c017267"]
+          content_md_ds.term_values(:dd_sha1).should == ["628ede981ad24c1655f7e37057355ca689dcb3a9"]
+
+          content_md_ds.term_values(:image_front_fedora_pid).first.should match(/^hypatia:\d+$/) 
+          content_md_ds.term_values(:image_front_ds_id).should == ["DS1"] # oops - hardcoded
+          content_md_ds.term_values(:image_front_filename).should == ["CM5551212.JPG"]
+          content_md_ds.term_values(:image_front_size).first.should match(/^\d+$/)
+          content_md_ds.term_values(:image_front_mimetype).should == ["image/jpeg"]
+          content_md_ds.term_values(:image_front_md5).should == ["812b53258f21ee250d17c9308d2099d9"]
+          content_md_ds.term_values(:image_front_sha1).should == ["da39a3ee5e6b4b0d3255bfef95601890afd80709"]
+        end
+
       end # context contentMetadata
 
   end # context "FileAssets and their contentMetadata in the DiskImageItem"
