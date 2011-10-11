@@ -33,7 +33,7 @@ class FtkDiskImageItemAssembler
   def process
     @filehash.each { |disk|
       if (disk[1][:txt] and File.file? disk[1][:txt])
-        fdi = FtkDiskImage.new(:txt_file => disk[1][:txt])  
+        fdi = FtkDiskImage.new(disk[1][:txt])  
         obj = build_object(fdi)
       else 
         # If we don't have a .txt file describing this disk, 
