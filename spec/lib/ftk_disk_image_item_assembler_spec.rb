@@ -16,6 +16,13 @@ describe FtkDiskImageItemAssembler do
       @assember = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
     end
     after(:all) do
+      coll_obj = HypatiaCollection.new({:pid=>@collection_pid})
+      coll_obj.members.each { |dio|  
+        dio.parts.each { |part|  
+          part.delete
+        }
+        dio.delete
+      }
       delete_fixture(@collection_pid)
     end
     it "has a source of disk image files" do
@@ -83,6 +90,13 @@ describe FtkDiskImageItemAssembler do
       dd_file_ds_name = @dd_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
       @dd_file_ds = @dd_file_asset.datastreams[dd_file_ds_name]
       @photo_file_asset_array = @assembler.create_photo_file_assets(disk_image_item, @fdi)
+    end
+    after(:all) do
+      @photo_file_asset_array.each { |pfa|  
+        pfa.delete
+      }
+      @dd_file_asset.delete
+      delete_fixture(@collection_pid)
     end
     context "with FTK .txt file" do
       it "creates the correct FileAsset object for disk image itself" do
@@ -270,7 +284,9 @@ describe FtkDiskImageItemAssembler do
       @disk_image_item = @assembler.build_object(@fdi)
     end
     after(:all) do
-      @disk_image_item.parts.first.delete
+      @disk_image_item.parts.each { |part|  
+        part.delete
+      }
       @disk_image_item.delete
       delete_fixture(@collection_pid)
     end
