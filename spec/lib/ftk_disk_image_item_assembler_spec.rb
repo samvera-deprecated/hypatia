@@ -52,14 +52,11 @@ describe FtkDiskImageItemAssembler do
       desc_md_doc = Nokogiri::XML(assembler.build_desc_metadata(fdi))
       desc_md_doc.namespaces.size.should eql(1)
       desc_md_doc.namespaces["xmlns:mods"].should eql("http://www.loc.gov/mods/v3")
-      desc_md_doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql("CM5551212")
-      desc_md_doc.xpath("/mods:mods/mods:identifier[@type='local']/text()").to_s.should eql("M1437")
-      desc_md_doc.xpath("/mods:mods/mods:physicalDescription/mods:extent/text()").to_s.should eql("5.25 inch Floppy Disk")
-      desc_md_doc.xpath("/mods:mods/mods:physicalDescription/mods:digitalOrigin/text()").to_s.should eql("Born Digital")
+      desc_md_doc.xpath("/mods/mods:titleInfo/mods:title/text()").to_s.should eql("CM5551212")
+      desc_md_doc.xpath("/mods/mods:identifier[@type='local']/text()").to_s.should eql("M1437")
+      desc_md_doc.xpath("/mods/mods:physicalDescription/mods:extent/text()").to_s.should eql("5.25 inch Floppy Disk")
+      desc_md_doc.xpath("/mods/mods:physicalDescription/mods:digitalOrigin/text()").to_s.should eql("Born Digital")
     end
-#    it "creates the correct descMetadata when there is no FTK .txt file" do
-#      pending
-#    end
   end
   
   it "creates the correct rightsMetadata" do
@@ -198,16 +195,7 @@ describe FtkDiskImageItemAssembler do
           # id attribute on file element must match the label of the datastream in the FileAsset object
           doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/@id").to_s.should eql(image_ds1[:dsLabel])
           doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/@id").to_s.should eql("CM5551212_1.JPG")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/@format").to_s.should eql("JPG")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/@mimetype").to_s.should eql("image/jpeg")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/@size").to_s.should match(/^\d+$/)
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/@preserve").to_s.should eql("yes")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/@publish").to_s.should eql("yes")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/@shelve").to_s.should eql("yes")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/location/@type").to_s.should eql("datastreamID")
           doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/location/text()").to_s.should eql(image_ds1.dsid)
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/checksum[@type='md5']/text()").to_s.should eql("812b53258f21ee250d17c9308d2099d9")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-front']/file/checksum[@type='sha1']/text()").to_s.should eql("da39a3ee5e6b4b0d3255bfef95601890afd80709")
           image_file_asset2 = @photo_file_asset_array[2]
           ds_name2 = image_file_asset2.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
           image_ds2 = image_file_asset2.datastreams[ds_name2]
@@ -218,16 +206,7 @@ describe FtkDiskImageItemAssembler do
           # id attribute on file element must match the label of the datastream in the FileAsset object
           doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/@id").to_s.should eql(image_ds2[:dsLabel])
           doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/@id").to_s.should eql("CM5551212_2.JPG")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/@format").to_s.should eql("JPG")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/@mimetype").to_s.should eql("image/jpeg")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/@size").to_s.should match(/^\d+$/)
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/@preserve").to_s.should eql("yes")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/@publish").to_s.should eql("yes")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/@shelve").to_s.should eql("yes")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/location/@type").to_s.should eql("datastreamID")
           doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/location/text()").to_s.should eql(image_ds2.dsid)
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/checksum[@type='md5']/text()").to_s.should eql("812b53258f21ee250d17c9308d2099d9")
-          doc_two_images.xpath("/contentMetadata/resource[@type='image-back']/file/checksum[@type='sha1']/text()").to_s.should eql("da39a3ee5e6b4b0d3255bfef95601890afd80709")
         end
         it "doesn't create a resource element when there is no photo image FileAsset object" do
           doc_no_images = Nokogiri::XML(@assembler.build_content_metadata(@fdi, "dii_pid", @dd_file_asset, []))
@@ -256,7 +235,6 @@ describe FtkDiskImageItemAssembler do
           # id attribute on file element must match the label of the datastream in the FileAsset object
           doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/@id").to_s.should eql(addl_image_ds[:dsLabel])
           doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/@id").to_s.should eql("CM5551212_2.JPG")
-          doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/location/@type").to_s.should eql("datastreamID")
           doc_three_images.xpath("/contentMetadata/resource[@type='image-other1']/file/location/text()").to_s.should eql(addl_image_ds.dsid)
         end
 # FIXME:  this is an integration spec testing that the xml from the loader can be loaded into the app properly.  Not sure where to put this.
@@ -289,31 +267,41 @@ describe FtkDiskImageItemAssembler do
       import_fixture(@collection_pid)
       @assembler = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
       @fdi = FtkDiskImage.new(@txt_file)  
-      @item = @assembler.build_object(@fdi)
+      @disk_image_item = @assembler.build_object(@fdi)
     end
     after(:all) do
-      @item.parts.first.delete
-      @item.delete
+      @disk_image_item.parts.first.delete
+      @disk_image_item.delete
       delete_fixture(@collection_pid)
     end
     it "is a kind of HypatiaDiskImageItem object" do
-      @item.should be_kind_of(HypatiaDiskImageItem)
+      @disk_image_item.should be_kind_of(HypatiaDiskImageItem)
     end
     it "has isMemberOfCollection relationship with the collection object" do
-      @item.relationships[:self][:is_member_of_collection].first.gsub("info:fedora/",'').should eql(@collection_pid)
+      @disk_image_item.relationships[:self][:is_member_of_collection].first.gsub("info:fedora/",'').should eql(@collection_pid)
     end
-    it "has descMetadata" do
-      @item.datastreams["descMetadata"].should_not be_nil
+    it "has correct descMetadata" do
+      desc_md_ds = @disk_image_item.datastreams["descMetadata"]
+      desc_md_ds.term_values(:title).should == ["CM5551212"]
+      desc_md_ds.term_values(:local_id).should == ["M1437"]
     end
-    it "has rightsMetadata" do
-      @item.datastreams["rightsMetadata"].should_not be_nil
+    it "has correct rightsMetadata" do
+      rights_md_ds = @disk_image_item.datastreams["rightsMetadata"]
+      rights_md_ds.term_values(:discover_access).first.should match(/^\s*public\s*$/)
+      rights_md_ds.term_values(:edit_access).first.should match(/^\s*archivist\s*$/)
     end
-    it "has contentMetadata" do
-      @item.datastreams["contentMetadata"].should_not be_nil
+    it "has correct contentMetadata" do
+      content_md_ds = @disk_image_item.datastreams["contentMetadata"]
+      content_md_ds.term_values(:dd_filename).should == ["CM5551212"]
+      content_md_ds.term_values(:dd_size).first.should match(/^\d+$/)
+      content_md_ds.term_values(:dd_mimetype).should == ["application/octet-stream"]
+      content_md_ds.term_values(:image_front_filename).should == ["CM5551212.JPG"]
+      content_md_ds.term_values(:image_front_size).first.should match(/^\d+$/)
+      content_md_ds.term_values(:image_front_mimetype).should == ["image/jpeg"]
     end
-    it "has FileAsset parts for disk image and photos" do
-      @item.parts.size.should > 1
-      @item.parts.each { |part|  
+    it "has parts populated with FileAssets for disk image and photos" do
+      @disk_image_item.parts.size.should > 1
+      @disk_image_item.parts.each { |part|  
         part.should be_kind_of(FileAsset)
         file_ds_name = part.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
         file_ds = part.datastreams[file_ds_name]
@@ -321,5 +309,112 @@ describe FtkDiskImageItemAssembler do
         file_ds[:dsLabel].should match(/^CM555121|(CM5551212(_1|_2)?\.JPG)$/)
       }
     end
+=begin    
+    it "creates photo file assets and their content metadata when they exist" do
+      pending
+    end
+    it "smoothly skips photo file processing if there are none" do
+      pending
+    end
+=end
   end # context "building an object"
+   
+  context "processing a directory" do
+    before(:all) do
+      delete_fixture(@collection_pid)
+      import_fixture(@collection_pid)
+      coll_obj = HypatiaCollection.new({:pid=>@collection_pid})
+      coll_obj.members.each { |dio|  
+        dio.parts.each { |part|  
+          part.delete
+        }
+        dio.delete
+      }
+      @assembler = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+      @assembler.process
+      @disk_image_objects = coll_obj.members
+    end
+    after(:all) do
+      @disk_image_objects.each { |dio|  
+        dio.parts.each { |part|  
+          part.delete
+        }
+        dio.delete
+      }
+      delete_fixture(@collection_pid)
+    end
+    
+    it "correctly determines the disk names" do
+      disk_names = []
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/) 
+          disk_names << dio.datastreams["descMetadata"].term_values(:title).first
+        end
+      }
+      disk_names.size.should be(5)
+      disk_names.member?("CM5551212").should be_true # disk name CM5551212.001
+      disk_names.member?("CMno_txt").should be_true 
+      disk_names.member?("CM070").should be_true # disk name "hasSpace CM070.ad1"
+      disk_names.member?("ddExt").should be_true # disk name "ddExt.dd"
+      disk_names.member?("hasMultPeriods").should be_true # disk name "hasMultPeriods.one.two"
+    end
+    it "builds HypatiaDiskImageItems" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          dio.should be_kind_of(HypatiaDiskImageItem)
+        end
+      }
+    end
+    it "creates full descMetadta when there is a .txt file" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          desc_md_ds = dio.datastreams["descMetadata"]
+          if (desc_md_ds.term_values(:title).first == "CM5551212")
+            desc_md_ds.term_values(:local_id).should == ["M1437"]
+            desc_md_ds.term_values(:extent).should == ["5.25 inch Floppy Disk"]
+          end
+        end
+      }
+    end
+    it "creates sparse descMetadata when there is no .txt file" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          desc_md_ds = dio.datastreams["descMetadata"]
+          if (desc_md_ds.term_values(:title).first == "CMno_txt")
+            desc_md_ds.term_values(:display_name).should == ["CMno_txt"]
+            desc_md_ds.term_values(:digital_origin).should == ["Born Digital"]
+            desc_md_ds.term_values(:local_id).should == [""]
+            desc_md_ds.term_values(:extent).should == [""]
+          end
+        end
+      }
+    end
+    it "creates full contentMetadta for disk image file when there is a .txt file" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          desc_md_ds = dio.datastreams["descMetadata"]
+          if (desc_md_ds.term_values(:title).first == "CM5551212")
+            content_md_ds = dio.datastreams["contentMetadata"]
+            content_md_ds.term_values(:dd_filename).should == ["CM5551212"]
+            content_md_ds.term_values(:dd_md5).should == ["7d7abca99f383487e02ce7bf7c017267"]
+            content_md_ds.term_values(:dd_sha1).should == ["628ede981ad24c1655f7e37057355ca689dcb3a9"]
+          end
+        end
+      }
+    end
+    it "creates sparse contentMetadata for disk image file when there is no .txt file" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          desc_md_ds = dio.datastreams["descMetadata"]
+          if (desc_md_ds.term_values(:title).first == "CMno_txt")
+            content_md_ds = dio.datastreams["contentMetadata"]
+            content_md_ds.term_values(:dd_filename).should == ["CMno_txt"]
+            content_md_ds.term_values(:dd_md5).should == [""]
+            content_md_ds.term_values(:dd_sha1).should == [""]
+          end
+        end
+      }
+    end
+  end
+  
 end

@@ -39,7 +39,7 @@ class FtkDiskImageItemAssembler
     @collection_pid = args[:collection_pid]
     
     @files_hash = {}
-    build_file_hash
+    build_files_hash
   end
 
   
@@ -84,7 +84,7 @@ class FtkDiskImageItemAssembler
   #    :csv=>"../data/gould/M1437 Gould/Disk Image/CM005.001.csv"
   #   }
   # }
-  def build_file_hash
+  def build_files_hash
     Dir["#{@disk_image_files_dir}/*"].each { |filename|
       disk_name = filename.split('/').last.split('.').first
       # if disk_name contains a space, take the part after the space
@@ -108,7 +108,6 @@ class FtkDiskImageItemAssembler
   # @return [HypatiaDiskImageItem]
   def build_object(fdi)
     hypatia_disk_image_item = HypatiaDiskImageItem.new
-#    hypatia_disk_image_item.label="#{fdi.disk_type} #{fdi.disk_name}"
     hypatia_disk_image_item.add_relationship(:is_member_of_collection, @collection_pid)
     hypatia_disk_image_item.save
     build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", build_desc_metadata(fdi))
@@ -128,7 +127,6 @@ class FtkDiskImageItemAssembler
   def build_desc_metadata(fdi)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.mods('xmlns:mods' => "http://www.loc.gov/mods/v3") {
-        xml.parent.namespace = xml.parent.namespace_definitions.first
         xml['mods'].titleInfo {
           xml['mods'].title_ fdi.disk_name
         }
@@ -290,7 +288,9 @@ class FtkDiskImageItemAssembler
   end
   
   
-  # Create a Nokogiri XML Datastream on the HypatiaDiskImageItem object
+  # Create a Nokogiri XML Datastream on the HypatiaDiskImageItem object.  
+  #   Note that the datastream is marked as "dirty" and will not be saved until
+  #   the object is saved elsewhere.
   # @param [HypatiaDiskImageItem] the HypatiaDiskImageItem object getting the datastream
   # @param [String] the name of the datastream (must correspond to ActiveFedora model name for datastream)
   # @param [String] string to be parsed as a Nokogiri XML Document
@@ -299,7 +299,6 @@ class FtkDiskImageItemAssembler
     ds.content = xml
     ds.ng_xml = Nokogiri::XML::Document.parse(xml)
     ds.dirty = true
-    ds.save
   end
   
 end
