@@ -139,7 +139,7 @@ namespace :hypatia do
         if !ENV["dir"].nil? 
           directory = ENV["dir"]
         else
-          puts "You must specify the directory containing the Hypatia collection objects.  Example: rake hypatia:load:coll_objs dir=/data_raw/coll/foxml"
+          puts "You must specify the directory containing the Hypatia collection objects.  Example: rake hypatia:load:coll_objs dir=/data_raw/hypatia_coll_objs/foxml"
         end
 
         if !directory.nil?
