@@ -98,9 +98,9 @@ class FtkDiskImageItemAssembler
     return hypatia_disk_image_item
   end
 
-  # Extract descMetadata info for HypatiaDiskImageItem from the EAD file.  It should adhere to the 
-  #   mods xml expected by model HypatiaDiskImgDescMetadataDS
-  # @param [FtkDiskImage] fdi
+  # Extract descMetadata info for HypatiaDiskImageItem from the passed FTKDiskImage object.  
+  #   The descMetadata must adhere to the mods xml expected by model HypatiaDiskImgDescMetadataDS
+  # @param [FtkDiskImage] object containing the information extracted from the .txt file produced by FTK processing of a disk
   # @return [Nokogiri::XML::Document] - the xmlContent for the descMetadata datastream
   def build_desc_metadata(fdi)
     builder = Nokogiri::XML::Builder.new do |xml|
@@ -114,7 +114,7 @@ class FtkDiskImageItemAssembler
           xml['mods'].digitalOrigin "Born Digital"
         }
         xml['mods'].identifier("type"=>"local"){
-          xml.text fdi.disk_number
+          xml.text fdi.case_number
         }
       }
     end

@@ -5,7 +5,7 @@ describe FtkDiskImage do
   context "basic behavior" do
     before(:all) do
       @txt_file = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images/CM5551212.001.txt")
-      @fdi = FtkDiskImage.new(:txt_file => @txt_file)
+      @fdi = FtkDiskImage.new(@txt_file)
     end
     it "can instantiate" do
       @fdi.class.should eql(FtkDiskImage)
@@ -15,6 +15,9 @@ describe FtkDiskImage do
     end
     it "extracts the disk number" do
       @fdi.disk_number.should eql("CM5551212")
+    end
+    it "extracts the case number" do
+      @fdi.case_number.should eql("M1437")
     end
     it "extracts the media type" do
       @fdi.disk_type.should eql("5.25 inch Floppy Disk")

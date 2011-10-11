@@ -7,8 +7,10 @@ class FtkDiskImage
   
   # The txt file produced by FTK that contains the metadata about this disk image
   attr_accessor :txt_file
-  # The number used to identify this disk
+  # The number used to identify this disk (essentially, the filename for the disk image) (e.g. CM004)
   attr_accessor :disk_number
+  # An assigned "case number", akin to a call number (e.g. M1437)
+  attr_accessor :case_number
   # The kind of disk this was (e.g., "5.25 inch Floppy Disk")
   attr_accessor :disk_type
   # The md5 checksum for the disk image
@@ -16,10 +18,10 @@ class FtkDiskImage
   # The sha1 checksum for the disk image
   attr_accessor :sha1
   
-  def initialize(args = {})
-    if args[:txt_file]
-      raise "Can't find txt file #{args[:txt_file]}" unless File.file? args[:txt_file]
-      @txt_file = args[:txt_file]
+  def initialize(ftk_txt_file)
+    if ftk_txt_file
+      raise "Can't find txt file #{args[:txt_file]}" unless File.file? ftk_txt_file
+      @txt_file = ftk_txt_file
       process_file
     end
   end
@@ -31,6 +33,8 @@ class FtkDiskImage
       case line
       when /Evidence Number/
         @disk_number = get_value_after_colon(line)
+      when /Case Number/
+        @case_number = get_value_after_colon(line)
       when /Notes/
         @disk_type = get_value_after_colon(line)
       when /MD5/
