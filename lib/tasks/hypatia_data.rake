@@ -104,7 +104,7 @@ end
 # @param [String] pid of collection object to "contain" these disk image items
 # @param [String] path to directory containing disk image files
 # @param [String] path to directory containing photos of the computer media
-def build_ftk_disk_items(collection_pid disk_image_files_dir, computer_media_photos_dir)
+def build_ftk_disk_items(collection_pid, disk_image_files_dir, computer_media_photos_dir)
   # FIXME:  could rewrite the processing so it doesn't need RAILS environment:
   #   load foxml into fedora, then call Solrizer::Fedora::Solrizer.solrize(pid)
   assembler = FtkDiskImageItemAssembler.new(:collection_pid => collection_pid, :disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
