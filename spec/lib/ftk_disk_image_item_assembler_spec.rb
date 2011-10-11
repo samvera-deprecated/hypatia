@@ -2,13 +2,17 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require File.join(File.dirname(__FILE__), "/../../lib/ftk_disk_image_item_assembler")
 
 describe FtkDiskImageItemAssembler do
+  before(:all) do 
+    # defining simple constants
+    @collection_pid = "hypatia:fixture_coll2"
+    @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+    @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
+    @txt_file = File.join(@disk_image_files_dir, "/CM5551212.001.txt")
+  end
   context "basic behavior" do
     before(:all) do
-      @collection_pid = "hypatia:fixture_coll2"
       delete_fixture(@collection_pid)
       import_fixture(@collection_pid)
-      @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
-      @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
       @assember = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
     end
     after(:all) do
@@ -34,8 +38,7 @@ describe FtkDiskImageItemAssembler do
       @assember.filehash[:CM5551212][:txt].should eql("#{@disk_image_files_dir}/CM5551212.001.txt")
     end
     it "creates and populates an FtkDiskImage object from a .txt file" do
-      txt_file = File.join(@disk_image_files_dir, "/CM5551212.001.txt")
-      fdi = FtkDiskImage.new(txt_file)
+      fdi = FtkDiskImage.new(@txt_file)
       # not testing the complete info here;  see ftk_disk_image_spec for that
       fdi.txt_file.should match(/.*\/fixtures\/ftk\/disk_images\/CM5551212\.001\.txt$/)
       fdi.disk_number.should eql("CM5551212")
@@ -44,9 +47,7 @@ describe FtkDiskImageItemAssembler do
 
   context "descMetadata" do
     it "creates the correct descMetadata from a FTK .txt file" do
-      disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
-      txt_file = File.join(disk_image_files_dir, "/CM5551212.001.txt")
-      fdi = FtkDiskImage.new(txt_file)
+      fdi = FtkDiskImage.new(@txt_file)
       assembler = FtkDiskImageItemAssembler.new(:collection_pid => "", :disk_image_files_dir => ".", :computer_media_photos_dir => ".")
       desc_md_doc = Nokogiri::XML(assembler.build_desc_metadata(fdi))
       desc_md_doc.namespaces.size.should eql(1)
@@ -62,7 +63,6 @@ describe FtkDiskImageItemAssembler do
     
   end
   
-  
   it "creates the correct rightsMetadata" do
     assembler = FtkDiskImageItemAssembler.new(:collection_pid => "", :disk_image_files_dir => ".", :computer_media_photos_dir => ".")
     rights_md_doc = Nokogiri::XML(assembler.build_rights_metadata)
@@ -77,16 +77,12 @@ describe FtkDiskImageItemAssembler do
   
   context "FileAssets and their contentMetadata in the DiskImageItem" do
     before(:all) do
-      @collection_pid = "hypatia:fixture_coll2" # also used below
       delete_fixture(@collection_pid)
       import_fixture(@collection_pid)
-      disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
-      computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
-      @assembler = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
+      @assembler = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
       disk_image_item = HypatiaDiskImageItem.new
       @disk_image_full_pid = disk_image_item.internal_uri
-      txt_file = File.join(disk_image_files_dir, "/CM5551212.001.txt")
-      @fdi = FtkDiskImage.new(txt_file)
+      @fdi = FtkDiskImage.new(@txt_file)
       @dd_file_asset = @assembler.create_dd_file_asset(disk_image_item, @fdi)
       dd_file_ds_name = @dd_file_asset.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
       @dd_file_ds = @dd_file_asset.datastreams[dd_file_ds_name]
@@ -292,14 +288,10 @@ describe FtkDiskImageItemAssembler do
   
   context "building an object" do
     before(:all) do
-      @collection_pid = "hypatia:fixture_coll2"
       delete_fixture(@collection_pid)
       import_fixture(@collection_pid)
-      @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
-      @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
-      txt_file = File.join(@disk_image_files_dir, "/CM5551212.001.txt")
       @assembler = FtkDiskImageItemAssembler.new(:collection_pid => @collection_pid, :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
-      @fdi = FtkDiskImage.new(txt_file)  
+      @fdi = FtkDiskImage.new(@txt_file)  
       @item = @assembler.build_object(@fdi)
     end
     after(:all) do
