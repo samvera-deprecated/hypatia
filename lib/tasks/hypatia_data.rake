@@ -41,18 +41,20 @@ namespace :hypatia do
     end # namespace :ftk_file_items
 
     namespace :disk_image_items do
-# FIXME: needs to get collection_pid as argument
       desc "Create disk_image_item objects in Fedora (and Solr) from parent dir of 'Disk Image' and 'Computer Media Photo' dirs. Example: 'rake hypatia:repo:disk_image_items:build dir=/data_raw/Stanford/M1292\ Xanadu' " 
       task :build do
         if !ENV["dir"].nil? 
           parent_dir = ENV["dir"]
-        else
-          puts "You must specify the directory containing the disk image dirs, etc.  Example: 'rake hypatia:repo:disk_image_items:build dir=/data_raw/Stanford/M1292\ Xanadu' "
         end
-        if !parent_dir.nil?
+        if !ENV["coll_pid"].nil? 
+          collection_pid = ENV["coll_pid"]
+        end
+        if (collection_pid.nil? || collection_pid.size == 0 || parent_dir.nil? || parent_dir.size == 0)
+          puts "You must specify the collection pid and the directory containing the disk image dirs, etc.  Example: 'rake hypatia:repo:disk_image_items:build coll_pid='hypatia:xanadu_collection' dir=/data_raw/Stanford/M1292\ Xanadu' "
+        else
           disk_image_files_dir = parent_dir + "Disk\ Image" 
           computer_media_photos_dir = parent_dir + "Computer\ Media\ Photo"
-          build_ftk_disk_items(disk_image_files_dir, computer_media_photos_dir)
+          build_ftk_disk_items(collection_pid, disk_image_files_dir, computer_media_photos_dir)
         end
       end
 
@@ -99,11 +101,12 @@ def build_ftk_file_items(ftk_report, ftk_xml_file_dir, display_derivative_dir)
 end
 
 # build hypatia_disk_image objects in Fedora (and Solr) indicated by Rails environment
+# @param [String] pid of collection object to "contain" these disk image items
 # @param [String] path to directory containing disk image files
 # @param [String] path to directory containing photos of the computer media
-def build_ftk_disk_items(disk_image_files_dir, computer_media_photos_dir)
+def build_ftk_disk_items(collection_pid disk_image_files_dir, computer_media_photos_dir)
   # FIXME:  could rewrite the processing so it doesn't need RAILS environment:
   #   load foxml into fedora, then call Solrizer::Fedora::Solrizer.solrize(pid)
-  assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
+  assembler = FtkDiskImageItemAssembler.new(:collection_pid => collection_pid, :disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
   assembler.process
 end
