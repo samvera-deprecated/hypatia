@@ -60,7 +60,6 @@ describe FtkDiskImageItemAssembler do
 #    it "creates the correct descMetadata when there is no FTK .txt file" do
 #      pending
 #    end
-    
   end
   
   it "creates the correct rightsMetadata" do
@@ -279,14 +278,12 @@ describe FtkDiskImageItemAssembler do
           content_md_ds.term_values(:image_front_md5).should == ["812b53258f21ee250d17c9308d2099d9"]
           content_md_ds.term_values(:image_front_sha1).should == ["da39a3ee5e6b4b0d3255bfef95601890afd80709"]
         end
-
       end # context contentMetadata
-
+    end # context "with FTK .txt file"
   end # context "FileAssets and their contentMetadata in the DiskImageItem"
   
   
-  
-  context "building an object" do
+  context "HypatiaDiskImageItem object" do
     before(:all) do
       delete_fixture(@collection_pid)
       import_fixture(@collection_pid)
@@ -299,23 +296,30 @@ describe FtkDiskImageItemAssembler do
       @item.parts.first.delete
       @item.delete
     end
-    it "builds an object" do
+    it "is a kind of HypatiaDiskImageItem object" do
       @item.should be_kind_of(HypatiaDiskImageItem)
     end
-    it "the object has an isMemberOfCollection relationship with the collection object" do
-      @item.relationships[:self][:is_member_of_collection].first.gsub("info:fedora/",'').should eql(@assembler.collection_pid)
+    it "has isMemberOfCollection relationship with the collection object" do
+      @item.relationships[:self][:is_member_of_collection].first.gsub("info:fedora/",'').should eql(@collection_pid)
     end
-    it "the object has a FileAsset" do
-      @item.parts.first.should be_kind_of(FileAsset)
+    it "has descMetadata" do
+      @item.datastreams["descMetadata"].should_not be_nil
     end
-    it "has a binary disk image attached to the FileAsset" do
-      fa = @item.parts.first
-      fa.datastreams['DS1'].should_not eql(nil)
+    it "has rightsMetadata" do
+      @item.datastreams["rightsMetadata"].should_not be_nil
     end
-# FIXME:  no, it will have its own file asset object    
-#    it "has an image attached to the FileAsset" do
-#      fa = @item.parts.first
-#      fa.datastreams['front'].should_not eql(nil)
+    it "has contentMetadata" do
+      @item.datastreams["contentMetadata"].should_not be_nil
     end
-  end
+    it "has FileAsset parts for disk image and photos" do
+      @item.parts.size.should > 1
+      @item.parts.each { |part|  
+        part.should be_kind_of(FileAsset)
+        file_ds_name = part.datastreams.keys.select {|k| k !~ /(DC|RELS\-EXT|descMetadata)/}.first
+        file_ds = part.datastreams[file_ds_name]
+        # the (file) datastream of a FileAsset part object should have a label value = filename
+        file_ds[:dsLabel].should match(/^CM555121|(CM5551212(_1|_2)?\.JPG)$/)
+      }
+    end
+  end # context "building an object"
 end

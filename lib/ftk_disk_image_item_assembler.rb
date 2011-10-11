@@ -86,14 +86,14 @@ class FtkDiskImageItemAssembler
   # @return [HypatiaDiskImageItem]
   def build_object(fdi)
     hypatia_disk_image_item = HypatiaDiskImageItem.new
-    hypatia_disk_image_item.label="#{fdi.disk_type} #{fdi.disk_number}"
+#    hypatia_disk_image_item.label="#{fdi.disk_type} #{fdi.disk_number}"
     hypatia_disk_image_item.add_relationship(:is_member_of_collection, @collection_pid)
     hypatia_disk_image_item.save
-    dd_file = create_dd_file_asset(hypatia_disk_image_item, fdi)
     build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", build_desc_metadata(fdi))
-# FIXME:  need new code here!    
-#    build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", build_content_metadata(fdi,hypatia_disk_image_item.pid,dd_file.pid))
     build_ng_xml_datastream(hypatia_disk_image_item, "rightsMetadata", build_rights_metadata)
+    dd_file_asset = create_dd_file_asset(hypatia_disk_image_item, fdi)
+    photo_file_asset_array = create_photo_file_assets(hypatia_disk_image_item, fdi)
+    build_content_metadata(fdi, @collection_pid, dd_file_asset, photo_file_asset_array)
     hypatia_disk_image_item.save
     return hypatia_disk_image_item
   end
