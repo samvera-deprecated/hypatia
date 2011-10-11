@@ -20,7 +20,7 @@ class FtkDiskImage
   
   def initialize(ftk_txt_file)
     if ftk_txt_file
-      raise "Can't find txt file #{args[:txt_file]}" unless File.file? ftk_txt_file
+      raise "Can't find txt file #{ftk_txt_file}" unless File.file? ftk_txt_file
       @txt_file = ftk_txt_file
       process_file
     end
