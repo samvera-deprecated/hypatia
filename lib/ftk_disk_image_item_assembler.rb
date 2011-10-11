@@ -12,8 +12,21 @@ class FtkDiskImageItemAssembler
   attr_accessor :computer_media_photos_dir
   # What collection are these files part of?
   attr_accessor :collection_pid
-  # A hash where we store the files we're processing
-  attr_reader :filehash
+  # A hash where we store the files we're processing where the key of the hash is a symbol for the name of the disk (e.g. :CM004) 
+  #   and the value of the hash is itself a hash with possible keys of :txt, :csv, :dd and the values are the file paths
+  # e.g.:
+  #{ :CM004=>{
+  #    :txt=>"../data/gould/M1437 Gould/Disk Image/CM004.001.txt", 
+  #    :dd=>"../data/gould/M1437 Gould/Disk Image/CM004.001", 
+  #    :csv=>"../data/gould/M1437 Gould/Disk Image/CM004.001.csv"
+  #    }, 
+  #  :CM005=>{
+  #    :txt=>"../data/gould/M1437 Gould/Disk Image/CM005.001.txt", 
+  #    :dd=>"../data/gould/M1437 Gould/Disk Image/CM005.001", 
+  #    :csv=>"../data/gould/M1437 Gould/Disk Image/CM005.001.csv"
+  #   }
+  # }
+  attr_reader :files_hash
   
   def initialize(args)
     @logger = Logger.new('log/ftk_disk_image_item_assembler.log')
@@ -25,31 +38,31 @@ class FtkDiskImageItemAssembler
     @computer_media_photos_dir = args[:computer_media_photos_dir]
     @collection_pid = args[:collection_pid]
     
-    @filehash = {}
+    @files_hash = {}
     build_file_hash
   end
+
   
   # Create fedora objects out of the ftk disk image files
   def process
-    @filehash.each { |disk|
-      if (disk[1][:txt] and File.file? disk[1][:txt])
-        fdi = FtkDiskImage.new(disk[1][:txt])  
+    @files_hash.each { |disk_sym, disk_file_hash|
+      if (disk_file_hash[:txt] and File.file? disk_file_hash[:txt])
+        fdi = FtkDiskImage.new(disk_file_hash[:txt])  
         obj = build_object(fdi)
       else 
         # If we don't have a .txt file describing this disk, 
         # just record the disk number and add the FileAsset
-        fdi = FtkDiskImage.new()
-        # TODO:  When we don't have a .txt file describing a disk, will we need to extrapolate the disk number from the filepath?
-        fdi.disk_number = disk[0].to_s
-        fdi.disk_type = "unknown"
-        fdi.md5 = "unknown"
-        fdi.sha1 = "unknown"
-        @logger.error "Couldn't find txt file for #{disk[1][:dd]}"
+        fdi = FtkDiskImage.new(nil)
+        fdi.disk_name = disk_sym.to_s
+        fdi.case_number = ""
+        fdi.disk_type = ""
+        fdi.md5 = ""
+        fdi.sha1 = ""
+        @logger.warn "Couldn't find txt file for #{disk_file_hash[:dd]}"
         obj = build_object(fdi)
       end
     }
   end
-  
   
   # Read in all the files in @disk_image_files_dir.
   # Determine which of these are dd files (the actual disk image),
@@ -57,26 +70,35 @@ class FtkDiskImageItemAssembler
   # Load these into a hash for easy access as we're building the fedora objects.
   # We assume that there are only three files for each disk image: 
   # .txt, .csv, and the disk image, which may end in .dd or not
-  # @return [Hash]
+  # @return [Hash] where the key of the hash is a symbol for the name of the disk (e.g. :CM004) 
+  #   and the value of the hash is itself a hash with possible keys of :txt, :csv, :dd and the values are the file paths
+  # e.g.:
+  #{ :CM004=>{
+  #    :txt=>"../data/gould/M1437 Gould/Disk Image/CM004.001.txt", 
+  #    :dd=>"../data/gould/M1437 Gould/Disk Image/CM004.001", 
+  #    :csv=>"../data/gould/M1437 Gould/Disk Image/CM004.001.csv"
+  #    }, 
+  #  :CM005=>{
+  #    :txt=>"../data/gould/M1437 Gould/Disk Image/CM005.001.txt", 
+  #    :dd=>"../data/gould/M1437 Gould/Disk Image/CM005.001", 
+  #    :csv=>"../data/gould/M1437 Gould/Disk Image/CM005.001.csv"
+  #   }
+  # }
   def build_file_hash
-    Dir["#{@disk_image_files_dir}/*"].each { |file|
-      disk_number = file.split('/').last.split('.').first
-      
-      # if disk_number contains a space, take the part after the space
-      disk_number = disk_number.split(' ').last
-      disk_number_sym = disk_number.to_sym
-      
-      # If filehash doesn't have a space for this disk number yet, make one
-      if @filehash[disk_number_sym] == nil
-        @filehash[disk_number_sym] = {}
-      end
-      file_extension = file.split('/').last.split('.').last
-      if file_extension == 'csv' 
-        @filehash[disk_number_sym][:csv] = file
-      elsif file_extension == 'txt' 
-        @filehash[disk_number_sym][:txt] = file
-      else
-        @filehash[disk_number_sym][:dd] = file
+    Dir["#{@disk_image_files_dir}/*"].each { |filename|
+      disk_name = filename.split('/').last.split('.').first
+      # if disk_name contains a space, take the part after the space
+      disk_name = disk_name.split(' ').last
+      disk_name_sym = disk_name.to_sym
+
+      @files_hash[disk_name_sym] ||= {}
+      case File.extname(filename)
+        when '.csv'
+          @files_hash[disk_name_sym][:csv] = filename
+        when '.txt'
+          @files_hash[disk_name_sym][:txt] = filename
+        else 
+          @files_hash[disk_name_sym][:dd] = filename
       end
     }
   end
@@ -86,14 +108,15 @@ class FtkDiskImageItemAssembler
   # @return [HypatiaDiskImageItem]
   def build_object(fdi)
     hypatia_disk_image_item = HypatiaDiskImageItem.new
-#    hypatia_disk_image_item.label="#{fdi.disk_type} #{fdi.disk_number}"
+#    hypatia_disk_image_item.label="#{fdi.disk_type} #{fdi.disk_name}"
     hypatia_disk_image_item.add_relationship(:is_member_of_collection, @collection_pid)
     hypatia_disk_image_item.save
     build_ng_xml_datastream(hypatia_disk_image_item, "descMetadata", build_desc_metadata(fdi))
     build_ng_xml_datastream(hypatia_disk_image_item, "rightsMetadata", build_rights_metadata)
     dd_file_asset = create_dd_file_asset(hypatia_disk_image_item, fdi)
     photo_file_asset_array = create_photo_file_assets(hypatia_disk_image_item, fdi)
-    build_content_metadata(fdi, @collection_pid, dd_file_asset, photo_file_asset_array)
+    content_md_xml = build_content_metadata(fdi, @collection_pid, dd_file_asset, photo_file_asset_array)
+    build_ng_xml_datastream(hypatia_disk_image_item, "contentMetadata", content_md_xml)
     hypatia_disk_image_item.save
     return hypatia_disk_image_item
   end
@@ -107,7 +130,7 @@ class FtkDiskImageItemAssembler
       xml.mods('xmlns:mods' => "http://www.loc.gov/mods/v3") {
         xml.parent.namespace = xml.parent.namespace_definitions.first
         xml['mods'].titleInfo {
-          xml['mods'].title_ fdi.disk_number
+          xml['mods'].title_ fdi.disk_name
         }
         xml['mods'].physicalDescription {
           xml['mods'].extent fdi.disk_type
@@ -161,7 +184,7 @@ class FtkDiskImageItemAssembler
         # FileAsset for disk image itself
         xml.resource("id" => dd_file_datastream.label, "type" => "media-file", "objectId" => dd_file_asset.pid){
           xml.file("id" => dd_file_datastream.label, "format" => "BINARY", "mimetype" => dd_file_datastream.mime_type, 
-                    "size" => File.size(@filehash[fdi.disk_number.to_sym][:dd]), "preserve" => "yes", "publish" => "yes", "shelve" => "yes" ) {
+                    "size" => File.size(@files_hash[fdi.disk_name.to_sym][:dd]), "preserve" => "yes", "publish" => "yes", "shelve" => "yes" ) {
             xml.location("type" => "datastreamID") {
               xml.text dd_file_datastream.dsid
             }
@@ -227,13 +250,13 @@ class FtkDiskImageItemAssembler
   def create_dd_file_asset(hypatia_disk_image_item, fdi)
     dd_file_asset = FileAsset.new
     # the label value ends up in DC dc:title and descMetadata  title ??
-    dd_file_asset.label="FileAsset for FTK disk image #{fdi.disk_type} #{fdi.disk_number}"
+    dd_file_asset.label="FileAsset for FTK disk image #{fdi.disk_type} #{fdi.disk_name}"
     dd_file_asset.add_relationship(:is_part_of, hypatia_disk_image_item)
     
     # For now, only add the dd file for the Xanadu collection, since other dd files are not for public viewing
     if @collection_pid =~ /(xanadu|fixture)/
-      file = File.new(@filehash[fdi.disk_number.to_sym][:dd])
-      dd_file_asset.add_file_datastream(file, {:mimeType => "application/octet-stream", :label => fdi.disk_number})
+      file = File.new(@files_hash[fdi.disk_name.to_sym][:dd])
+      dd_file_asset.add_file_datastream(file, {:mimeType => "application/octet-stream", :label => fdi.disk_name})
     end
     
     dd_file_asset.save
@@ -246,13 +269,13 @@ class FtkDiskImageItemAssembler
   # @return [Array] of FileAsset objects for the photo images of the disk
   def create_photo_file_assets(hypatia_disk_image_item, fdi)
     photo_file_assets = []
-    photo_path_base = "#{@computer_media_photos_dir}/#{fdi.disk_number}"
+    photo_path_base = "#{@computer_media_photos_dir}/#{fdi.disk_name}"
     photo_filenames = ["#{photo_path_base}.JPG", "#{photo_path_base}_1.JPG", "#{photo_path_base}_2.JPG"]
     photo_filenames.each { |photo_fname|
       if File.file? photo_fname
         photo_fa = FileAsset.new
         # the label value ends up in DC dc:title and descMetadata  title ??
-        photo_fa.label="FileAsset for photo of FTK disk image #{fdi.disk_number}"
+        photo_fa.label="FileAsset for photo of FTK disk image #{fdi.disk_name}"
         photo_fa.add_relationship(:is_part_of, hypatia_disk_image_item)
 
         file = File.new(photo_fname)

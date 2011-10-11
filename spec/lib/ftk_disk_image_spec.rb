@@ -13,8 +13,8 @@ describe FtkDiskImage do
     it "sets the value of txt_file" do
       @fdi.txt_file.should eql(@txt_file)
     end
-    it "extracts the disk number" do
-      @fdi.disk_number.should eql("CM5551212")
+    it "extracts the disk name" do
+      @fdi.disk_name.should eql("CM5551212")
     end
     it "extracts the case number" do
       @fdi.case_number.should eql("M1437")

@@ -32,16 +32,16 @@ describe FtkDiskImageItemAssembler do
       lambda{FtkDiskImageItemAssembler.new(:disk_image_files_dir => dir, :computer_media_photos_dir => @computer_media_photos_dir)}.should raise_exception
     end
     it "loads the files in the directory into a hash" do
-      @assember.filehash.class.should eql(Hash)
-      @assember.filehash[:CM5551212][:dd].should eql("#{@disk_image_files_dir}/CM5551212.001")
-      @assember.filehash[:CM5551212][:csv].should eql("#{@disk_image_files_dir}/CM5551212.001.csv")
-      @assember.filehash[:CM5551212][:txt].should eql("#{@disk_image_files_dir}/CM5551212.001.txt")
+      @assember.files_hash.class.should eql(Hash)
+      @assember.files_hash[:CM5551212][:dd].should eql("#{@disk_image_files_dir}/CM5551212.001")
+      @assember.files_hash[:CM5551212][:csv].should eql("#{@disk_image_files_dir}/CM5551212.001.csv")
+      @assember.files_hash[:CM5551212][:txt].should eql("#{@disk_image_files_dir}/CM5551212.001.txt")
     end
     it "creates and populates an FtkDiskImage object from a .txt file" do
       fdi = FtkDiskImage.new(@txt_file)
       # not testing the complete info here;  see ftk_disk_image_spec for that
       fdi.txt_file.should match(/.*\/fixtures\/ftk\/disk_images\/CM5551212\.001\.txt$/)
-      fdi.disk_number.should eql("CM5551212")
+      fdi.disk_name.should eql("CM5551212")
     end
   end
 
@@ -292,9 +292,9 @@ describe FtkDiskImageItemAssembler do
       @item = @assembler.build_object(@fdi)
     end
     after(:all) do
-      delete_fixture(@collection_pid)
       @item.parts.first.delete
       @item.delete
+      delete_fixture(@collection_pid)
     end
     it "is a kind of HypatiaDiskImageItem object" do
       @item.should be_kind_of(HypatiaDiskImageItem)

@@ -8,7 +8,7 @@ class FtkDiskImage
   # The txt file produced by FTK that contains the metadata about this disk image
   attr_accessor :txt_file
   # The number used to identify this disk (essentially, the filename for the disk image) (e.g. CM004)
-  attr_accessor :disk_number
+  attr_accessor :disk_name
   # An assigned "case number", akin to a call number (e.g. M1437)
   attr_accessor :case_number
   # The kind of disk this was (e.g., "5.25 inch Floppy Disk")
@@ -32,7 +32,7 @@ class FtkDiskImage
     lines_array.each_with_index{|line, index| 
       case line
       when /Evidence Number/
-        @disk_number = get_value_after_colon(line)
+        @disk_name = get_value_after_colon(line)
       when /Case Number/
         @case_number = get_value_after_colon(line)
       when /Notes/
