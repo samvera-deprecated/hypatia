@@ -144,8 +144,8 @@ namespace :hypatia do
     end
     
     namespace :tobin do
-      koch_dir = top_data_dir + "Yale/mssa.ms.1746/data/"
-      koch_coll_pid = "hypatia:tobin_collection"
+      tobin_dir = top_data_dir + "Yale/mssa.ms.1746/data/"
+      tobin_coll_pid = "hypatia:tobin_collection"
       
       desc "Create Tobin DiskImageItem objects.  Assumes data is in #{tobin_dir}" 
       task :build_disks do
