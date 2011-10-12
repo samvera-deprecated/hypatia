@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.join(File.dirname(__FILE__), "/../../lib/ftk_file")
 
 describe FtkFile do
   context "basic behavior" do
@@ -26,7 +25,7 @@ describe FtkFile do
     
     it "calculates a title when there isn't one" do
       f = FtkFile.new
-      f.filename="NATHIN40.WPD"
+      f.filename = "NATHIN40.WPD"
       # f.type="Natural History Magazine Column"
       f.title.should eql(f.filename)
     end
@@ -34,8 +33,30 @@ describe FtkFile do
     # If the filename is NATHIN50.WPD the display derivative name is NATHIN50.htm
     it "calculates the display derivative filename" do
       f = FtkFile.new
-      f.filename="NATHIN40.WPD"
+      f.filename = "NATHIN40.WPD"
       f.display_derivative.should eql("NATHIN40.htm")
+    end
+    
+    it "calculates the mime type from the file extension" do
+      f = FtkFile.new
+      f.filename = "foo.wpd"
+      f.mimetype.should eql("application/vnd.wordperfect")
+      f.filename = "foo.WPD"
+      f.mimetype.should eql("application/vnd.wordperfect")
+    end
+
+    it "calculates the mimetype from the file itself when there is no file extension" do
+      f = FtkFile.new
+      f.export_path = "../Rakefile"
+      f.filename = "Rakefile"
+      f.mimetype.should eql("text/plain")
+      f.export_path = "../spec/fixtures/ftk/files/BURCH1"
+      f.filename = "BURCH1"
+      f.mimetype.should eql("application/octet-stream")
+      # unrecognized extension
+      f.export_path = "../README.textile"
+      f.filename = "README.textile"
+      f.mimetype.should eql("text/plain")
     end
     
   end
