@@ -86,22 +86,19 @@ class FtkDiskImageItemAssembler
   # }
   def build_files_hash
     Dir["#{@disk_image_files_dir}/*"].each { |filename|
-      # NOTE:  not sure if limiting it to files directly under the directory is wise
-      if File.file?(filename)
-        disk_name = filename.split('/').last.split('.').first
-        # if disk_name contains a space, take the part after the space
-        disk_name = disk_name.split(' ').last
-        disk_name_sym = disk_name.to_sym
+      disk_name = filename.split('/').last.split('.').first
+      # if disk_name contains a space, take the part after the space
+      disk_name = disk_name.split(' ').last
+      disk_name_sym = disk_name.to_sym
 
-        @files_hash[disk_name_sym] ||= {}
-        case File.extname(filename)
-          when '.csv'
-            @files_hash[disk_name_sym][:csv] = filename
-          when '.txt'
-            @files_hash[disk_name_sym][:txt] = filename
-          else 
-            @files_hash[disk_name_sym][:dd] = filename
-        end
+      @files_hash[disk_name_sym] ||= {}
+      case File.extname(filename)
+        when '.csv'
+          @files_hash[disk_name_sym][:csv] = filename
+        when '.txt'
+          @files_hash[disk_name_sym][:txt] = filename
+        else 
+          @files_hash[disk_name_sym][:dd] = filename
       end
     }
   end
