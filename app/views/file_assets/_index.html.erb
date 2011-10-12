@@ -1,5 +1,5 @@
 <% unless file_assets.hits.empty? %>
-  <%= render "hypatia_ftk_items/show_files" %>
+  <%= render find_workflow_step_by_name(:files)[:show_partial] %>
 <% end %>
 
 <% if !@document.nil? && editor? && params[:number_of_files].to_i > 0 %>
