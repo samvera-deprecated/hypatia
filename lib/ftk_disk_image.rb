@@ -1,6 +1,3 @@
-require "rubygems"
-require "active-fedora"
-
 # An object to contain all the useful information we can slurp out of a 
 #  FTK produced .txt file that corresponds to and FTK produced disk image file 
 class FtkDiskImage
