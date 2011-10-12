@@ -270,6 +270,13 @@ describe FtkDiskImageItemAssembler do
           content_md_ds.term_values(:image_front_md5).should == ["812b53258f21ee250d17c9308d2099d9"]
           content_md_ds.term_values(:image_front_sha1).should == ["da39a3ee5e6b4b0d3255bfef95601890afd80709"]
         end
+        it "does not raise 'undefined method `label' for nil:NilClass' exception when non-Xanadu collection" do
+          disk_image_item = HypatiaDiskImageItem.new
+          fdi = FtkDiskImage.new(File.join(@disk_image_files_dir, "/CM5551212.001.txt"))
+          assembler = FtkDiskImageItemAssembler.new(:collection_pid => "hypatia:gould_collection", :disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+          dd_file_asset = assembler.create_dd_file_asset(disk_image_item, fdi)
+          content_md_doc = Nokogiri::XML(@assembler.build_content_metadata(fdi, "dii_pid", dd_file_asset, []))
+        end
       end # context contentMetadata
     end # context "with FTK .txt file"
   end # context "FileAssets and their contentMetadata in the DiskImageItem"
@@ -431,6 +438,6 @@ describe FtkDiskImageItemAssembler do
         end
       }
     end
-  end
+  end # context "processing a directory" 
   
 end
