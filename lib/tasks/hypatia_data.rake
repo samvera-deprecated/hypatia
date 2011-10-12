@@ -144,15 +144,11 @@ namespace :hypatia do
     end
     
     namespace :tobin do
-      tobin_dir = top_data_dir + "Yale/mssa.ms.1746/data/"
-      tobin_coll_pid = "hypatia:tobin_collection"
-      
       desc "Create Tobin DiskImageItem objects.  Assumes data is in #{tobin_dir}" 
       task :build_disks do
-        ENV["coll_pid"] = tobin_coll_pid
-        ENV["dir"] = tobin_dir
-        Rake::Task["hypatia:repo:disk_image_items:build"].reenable
-        Rake::Task["hypatia:repo:disk_image_items:build"].invoke
+        tobin_coll_pid = "hypatia:tobin_collection"
+        tobin_dir = top_data_dir + "Yale/mssa.ms.1746/data/"
+        build_ftk_disk_items(tobin_coll_pid, tobin_dir, tobin_dir)
       end
     end
     
