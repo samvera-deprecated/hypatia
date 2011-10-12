@@ -70,6 +70,10 @@ namespace :hypatia do
       task :koch => ["hypatia:repo:koch:build_disks"] do
       end
 
+      desc "Create Koch DiskImageItem objects"
+      task :tobin => ["hypatia:repo:tobin:build_disks"] do
+      end
+
       desc "Create Xanadu DiskImageItem objects"
       task :xanadu => ["hypatia:repo:xanadu:build_disks"] do
       end
@@ -134,6 +138,19 @@ namespace :hypatia do
       task :build_disks do
         ENV["coll_pid"] = koch_coll_pid
         ENV["dir"] = koch_dir
+        Rake::Task["hypatia:repo:disk_image_items:build"].reenable
+        Rake::Task["hypatia:repo:disk_image_items:build"].invoke
+      end
+    end
+    
+    namespace :tobin do
+      koch_dir = top_data_dir + "Yale/mssa.ms.1746/data/"
+      koch_coll_pid = "hypatia:tobin_collection"
+      
+      desc "Create Tobin DiskImageItem objects.  Assumes data is in #{tobin_dir}" 
+      task :build_disks do
+        ENV["coll_pid"] = tobin_coll_pid
+        ENV["dir"] = tobin_dir
         Rake::Task["hypatia:repo:disk_image_items:build"].reenable
         Rake::Task["hypatia:repo:disk_image_items:build"].invoke
       end
