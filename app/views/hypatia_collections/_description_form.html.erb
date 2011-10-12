@@ -1,0 +1,96 @@
+<%- form_tag(url_for(:controller=>"assets", :action=>"update", :id=>params[:id]), :class => "step") do -%>
+  <div class="descMetadata metadata-section">
+    <h2 class="section-title">Description</h2>
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Collection</h3>
+      <div>
+        <p id="abstract_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:abstract], "Abstract") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:abstract], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="create_date_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:create_date], "Created") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:create_date], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="genre_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:genre], "Genre") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:genre], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="extent_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:extent], "Extent") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:extent], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="scope_and_content_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:scope_and_content], "Summary") %>
+          <%= fedora_text_area(@document_fedora,"descMetadata", [:scope_and_content], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="description_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:description], "Description") %>
+          <%= fedora_text_area(@document_fedora,"descMetadata", [:description], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="topic_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:topic], "Subject") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:topic], :multiple=>true, :required=>false ) %>
+        </p>
+        <p id="citation_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:citation], "Preferred Citation") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:citation], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="lang_code_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:lang_code], "Language Code") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:lang_code], :multiple=>false, :required=>false ) %>
+        </p>
+      </div>
+    </div>
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Creator</h3>
+      <div>
+        <p id="creator_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:creator], "Creator") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:creator], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="biography_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:biography], "Biography") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:biography], :multiple=>false, :required=>false ) %>
+        </p>
+      </div>
+    </div>
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Repository</h3>
+      <div>
+        <p id="repository_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:repository], "Repository") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:repository], :multiple=>false ) %>
+        </p>
+        <p id="local_id_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:local_id], "Local Identifier") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:local_id], :multiple=>false ) %>
+        </p>
+        <p id="located_in_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:located_in], "Physical Location") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:located_in], :multiple=>false ) %>
+        </p>
+        <p id="acquisition_info_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:acquisition_info], "Acquisition Information") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:acquisition_info], :multiple=>false ) %>
+        </p>
+        <p id="pub_rights_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:pub_rights], "Publication Rights") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:pub_rights], :multiple=>false ) %>
+        </p>
+        <p id="access_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:access], "Access Notes") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:access], :multiple=>false ) %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <%= hidden_field_tag("_method","put", :id=>"description_method") %>
+  <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "description_wf_step") %>
+  <%= hidden_field_tag(:new_asset, true, :id => "description_new_asset") if params[:new_asset] %>
+  <%= hidden_field_tag(:content_type,"hypatia_collection", :id => "description_content_type") %>
+  <%= submit_tag(submit_name, :name=>"continue", :class=>"save-submit") %>
+  <%= submit_tag("Save and Finish", :name=>"finish", :class=>"save-submit") unless params[:new_asset] %>
+<%- end -%>
+
+
