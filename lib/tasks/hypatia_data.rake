@@ -1,10 +1,4 @@
-require File.join(File.dirname(__FILE__), "/../../config/environment.rb")
-require File.join(File.dirname(__FILE__), "/../ftk_item_assembler")
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/.."))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/../../app/models"))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/../../vendor/plugins/hydra-head/lib/"))
-
-# # FIXME: this will need a rewrite when the hydra head rake repo tasks are rewritten
+# FIXME: this will need a rewrite when the hydra head rake repo tasks are rewritten
 
 namespace :hypatia do
   namespace :repo do
@@ -18,6 +12,8 @@ namespace :hypatia do
       Rake::Task["hydra:purge_range"].invoke
     end
     
+    top_data_dir = "/data_raw/"
+
     namespace :ftk_file_items do
 # FIXME: needs to get collection_pid as argument
       desc "Create ftk_item objects in Fedora (and Solr) from parent dir of 'FTK xml' and 'Display Derivatives' dirs. Example: 'rake hypatia:repo:ftk_file_items:build dir=/data_raw/Stanford/M1437\ Gould' " 
@@ -41,7 +37,7 @@ namespace :hypatia do
     end # namespace :ftk_file_items
 
     namespace :disk_image_items do
-      desc "Create disk_image_item objects in Fedora (and Solr) from parent dir of 'Disk Image' and 'Computer Media Photo' dirs. Example: 'rake hypatia:repo:disk_image_items:build dir=/data_raw/Stanford/M1292\ Xanadu' " 
+      desc "Create HypatiaDiskImageItem objects. Example: 'rake hypatia:repo:disk_image_items:build pid='hypatia:xanadu_collection' dir=/data_raw/Stanford/M1292\ Xanadu' " 
       task :build do
         if !ENV["dir"].nil? 
           parent_dir = ENV["dir"]
@@ -52,32 +48,110 @@ namespace :hypatia do
         if (collection_pid.nil? || collection_pid.size == 0 || parent_dir.nil? || parent_dir.size == 0)
           puts "You must specify the collection pid and the directory containing the disk image dirs, etc.  Example: 'rake hypatia:repo:disk_image_items:build coll_pid='hypatia:xanadu_collection' dir=/data_raw/Stanford/M1292\ Xanadu' "
         else
-          disk_image_files_dir = parent_dir + "Disk\ Image" 
-          computer_media_photos_dir = parent_dir + "Computer\ Media\ Photo"
+          disk_image_files_dir = parent_dir + "/Disk\ Image" 
+          computer_media_photos_dir = parent_dir + "/Computer\ Media\ Photo"
           build_ftk_disk_items(collection_pid, disk_image_files_dir, computer_media_photos_dir)
         end
       end
+      
+      desc "Create Cheuse DiskImageItem objects"
+      task :cheuse => ["hypatia:repo:cheuse:build_disks"] do
+      end
+
+      desc "Create Creeley DiskImageItem objects"
+      task :creeley => ["hypatia:repo:creeley:build_disks"] do
+      end
+
+      desc "Create Gould DiskImageItem objects"
+      task :gould => ["hypatia:repo:gould:build_disks"] do
+      end
+
+      desc "Create Koch DiskImageItem objects"
+      task :koch => ["hypatia:repo:koch:build_disks"] do
+      end
+
+      desc "Create Xanadu DiskImageItem objects"
+      task :xanadu => ["hypatia:repo:xanadu:build_disks"] do
+      end
 
 #      desc "delete a range of objects, then create the disk image items per the directory indicated. Example: 'rake hypatia:repo:disk_image_items:refresh[22, 50] dir=/data_raw/Stanford/\"M1292\ Xanadu\"'"
-#      task :refresh, :first, :last => ["hypatia:repo:delete", :build]
+#      task :refresh, [:first, :last] => ["hypatia:repo:delete", :build]
     end # namespace :disk_items
 
-    top_data_dir = "/data_raw/"
+    namespace :cheuse do
+      desc "Create Cheuse DiskImageItem objects.  Assumes data is in /data_raw/Virginia ..." 
+      task :build_disks do
+        cheuse_coll_pid = "hypatia:cheuse_collection"
+        parent_dir = top_data_dir + "Virginia/oldFiles/"
+        cheuse_disk_image_files_dir = parent_dir + "diskImages" 
+        cheuse_photos_dir = parent_dir + "photos"
+        build_ftk_disk_items(cheuse_coll_pid, cheuse_disk_image_files_dir, cheuse_photos_dir)
+      end
+    end
+    
+    namespace :creeley do
+      creeley_dir = top_data_dir + "Stanford/M0662\ Creeley"
+      creeley_coll_pid = "hypatia:creeley_collection"
+      
+      desc "Create Creeley DiskImageItem objects.  Assumes data is in #{creeley_dir}" 
+      task :build_disks do
+        ENV["coll_pid"] = creeley_coll_pid
+        ENV["dir"] = creeley_dir
+        Rake::Task["hypatia:repo:disk_image_items:build"].reenable
+        Rake::Task["hypatia:repo:disk_image_items:build"].invoke
+      end
+    end
 
     namespace :gould do
       gould_dir = top_data_dir + "Stanford/M1437\ Gould"
+      gould_coll_pid = "hypatia:gould_collection"
       
-      desc "Create Gould FTK Item objects in Fedora (and Solr).  Assumes data is in " + gould_dir
-      task :build do
+      desc "Create Gould DiskImageItem objects.  Assumes data is in #{gould_dir}" 
+      task :build_disks do
+        ENV["coll_pid"] = gould_coll_pid
         ENV["dir"] = gould_dir
-        Rake::Task["hypatia:repo:ftk_file_items:build"].reenable
-        Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
+        Rake::Task["hypatia:repo:disk_image_items:build"].reenable
+        Rake::Task["hypatia:repo:disk_image_items:build"].invoke
       end
+
+#      desc "Create Gould File Item objects.  Assumes data is in #{gould_dir}"
+#      task :build_files do
+#        ENV["coll_pid"] = gould_coll_pid
+#        ENV["dir"] = gould_dir
+#        Rake::Task["hypatia:repo:ftk_file_items:build"].reenable
+#        Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
+#      end
       
-      desc "Delete Gould objects indicated by range, then create Gould FTK Item objects in Fedora (and Solr).  Example: 'rake hypatia:repo:gould:refresh[22, 50]' "
-      task :refresh, [:first, :last] => ["hypatia:repo:delete", :build] 
+#      desc "Delete Gould objects indicated by range, then create Gould FTK Item objects in Fedora (and Solr).  Example: 'rake hypatia:repo:gould:refresh[22, 50]' "
+#      task :refresh, [:first, :last] => ["hypatia:repo:delete", :build_disks, :build_files] 
     end # namespace :gould
+     
+    namespace :koch do
+      koch_dir = top_data_dir + "Stanford/M1584\ Koch"
+      koch_coll_pid = "hypatia:koch_collection"
+      
+      desc "Create Koch DiskImageItem objects.  Assumes data is in #{koch_dir}" 
+      task :build_disks do
+        ENV["coll_pid"] = koch_coll_pid
+        ENV["dir"] = koch_dir
+        Rake::Task["hypatia:repo:disk_image_items:build"].reenable
+        Rake::Task["hypatia:repo:disk_image_items:build"].invoke
+      end
+    end
     
+    namespace :xanadu do
+      xanadu_dir = top_data_dir + "Stanford/M1292\ Xanadu"
+      xanadu_coll_pid = "hypatia:xanadu_collection"
+      
+      desc "Create Xanadu DiskImageItem objects.  Assumes data is in #{xanadu_dir}"
+      task :build_disks do
+        ENV["coll_pid"] = xanadu_coll_pid
+        ENV["dir"] = xanadu_dir
+        Rake::Task["hypatia:repo:disk_image_items:build"].reenable
+        Rake::Task["hypatia:repo:disk_image_items:build"].invoke
+      end
+    end # namespace :xanadu
+
   end # namespace :repo
 
 end # namespace hypatia
