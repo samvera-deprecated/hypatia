@@ -1,0 +1,35 @@
+<%- form_tag(url_for(:controller=>"assets", :action=>"update", :id=>params[:id]), :class => "step") do -%>
+  <div class="descMetadata metadata-section">
+    <h2 class="section-title">Description</h2>
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Disk Image</h3>
+      <div>
+        <p id="extent_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:extent], "Extent") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:extent], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="digital_origin_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:digital_origin], "Digital Origin") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:digital_origin], :multiple=>false, :required=>false ) %>
+        </p>
+      </div>
+    </div>
+    <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Repository</h3>
+      <div>
+        <p id="local_id_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:local_id], "Local Identifier") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:local_id], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <%= hidden_field_tag("_method","put", :id=>"description_method") %>
+  <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "description_wf_step") %>
+  <%= hidden_field_tag(:new_asset, true, :id => "description_new_asset") if params[:new_asset] %>
+  <%= hidden_field_tag(:content_type,"hypatia_disk_image_item", :id => "description_content_type") %>
+  <%= submit_tag(submit_name, :name=>"continue", :class=>"save-submit") %>
+  <%= submit_tag("Save and Finish", :name=>"finish", :class=>"save-submit") unless params[:new_asset] %>
+<%- end -%>
+
+

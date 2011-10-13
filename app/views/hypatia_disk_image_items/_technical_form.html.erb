@@ -1,0 +1,130 @@
+<%- form_tag(url_for(:controller=>"assets", :action=>"update", :id=>params[:id]), :class => "step") do -%>
+
+  <div class="techInfo metadata-section">
+    <h2 class="section-title">Technical Information</h2>
+    <div class="contentMetadata metadata-subsection">
+      <h3 class="subsection-title">Disk Image File</h3>
+      <div>
+        <p id="dd_filename_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:dd_filename], "File Name") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:dd_filename], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+        
+        <p id="dd_size_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:dd_size], "Size") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:dd_size], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="dd_mimetype_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:dd_mimetype], "Mimetype") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:dd_mimetype], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="dd_md5_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:dd_md5], "md5 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:dd_md5], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="dd_sha1_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:dd_sha1], "sha1 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:dd_sha1], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+        
+        <p id="dd_fedora_pid_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:dd_fedora_pid], "FileAsset Object Id") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:dd_fedora_pid], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="ead_ds_id_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:dd_ds_id], "Datastream ID") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:dd_ds_id], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>        
+      </div>
+    </div>
+    <div class="contentMetadata metadata-subsection">
+      <h3 class="subsection-title">Image of Disk - Front</h3>
+      <div>
+        <p id="image_front_filename_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_front_filename], "File Name") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_front_filename], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_front_size_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_front_size], "Size") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_front_size], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_front_mimetype_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_front_mimetype], "Mimetype") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_front_mimetype], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_front_md5_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_front_md5], "md5 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_front_md5], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_front_sha1_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_front_sha1], "sha1 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_front_sha1], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_front_fedora_pid_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_front_fedora_pid], "FileAsset Object Id") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_front_fedora_pid], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_front_ds_id_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_front_ds_id], "Datastream ID") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_front_ds_id], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+      </div>
+    </div>
+    <div class="contentMetadata metadata-subsection">
+      <h3 class="subsection-title">Image of Disk - Back</h3>
+      <div>
+        <p id="image_back_filename_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_back_filename], "File Name") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_back_filename], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_back_size_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_back_size], "Size") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_back_size], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_back_mimetype_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_back_mimetype], "Mimetype") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_back_mimetype], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_back_md5_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_back_md5], "md5 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_back_md5], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_back_sha1_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_back_sha1], "sha1 Checksum") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_back_sha1], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_back_fedora_pid_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_back_fedora_pid], "FileAsset Object Id") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_back_fedora_pid], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+
+        <p id="image_back_ds_id_field" class="fedora-text-field">
+          <%= fedora_field_label("contentMetadata", [:image_back_ds_id], "Datastream ID") %>
+          <%= fedora_text_field(@document_fedora,"contentMetadata", [:image_back_ds_id], :multiple=>false, :required=>false, :disabled=>true ) %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <%= hidden_field_tag("_method","put", :id=>"tech_info_method") %>
+  <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "tech_info_wf_step") %>
+  <%= hidden_field_tag(:new_asset, true, :id => "tech_info_new_asset") if params[:new_asset] %>
+  <%= hidden_field_tag(:content_type,"hypatia_disk_image_items", :id => "tech_info_content_type") %>
+  <%= submit_tag(submit_name, :name=>"continue", :class=>"save-submit") %>
+  <%= submit_tag("Save and Finish", :name=>"finish", :class=>"save-submit") unless params[:new_asset] %>
+<%- end -%>
