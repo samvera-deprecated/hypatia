@@ -13,14 +13,23 @@ require 'ftk_processor'
 #  hfo.process(ftk_report, file_dir)
 class FtkItemAssembler
   
-  attr_accessor :ftk_report         # The FTK report to process
-  attr_accessor :ftk_processor      # The FtkProcessor object used to parse the FTK report
-  attr_accessor :file_dir           # Where should I copy the files from? 
-  attr_accessor :display_derivative_dir           # Where should I copy the display derivative HTML from? 
-  attr_accessor :bag_destination    # When I create BagIt packages, where should they go? 
-  attr_accessor :fedora_config      # The fedora config we're connecting to, if it has been set explicitly 
-  attr_accessor :collection_pid     # The collection these files belong to
-  attr_accessor :collection_name    # The name of the collection. Used in generating field values for this item.
+  # The FTK report to process
+  attr_accessor :ftk_report
+  # The FtkProcessor object used to parse the FTK report
+  attr_accessor :ftk_processor
+  # Where should I copy the files from?
+  attr_accessor :file_dir
+  # Where should I copy the display derivative HTML from?
+  attr_accessor :display_derivative_dir
+  # When I create BagIt packages, where should they go?
+  attr_accessor :bag_destination
+  # The fedora config we're connecting to, if it has been set explicitly
+  attr_accessor :fedora_config
+  # The collection these files belong to
+  attr_accessor :collection_pid
+# TODO:  remove collection_name
+   # The name of the collection. Used in generating field values for this item
+#  attr_accessor :collection_name
   
   # @param [Hash] args 
   # @param [Hash[:fedora_config]] 
@@ -37,13 +46,16 @@ class FtkItemAssembler
     
     if args[:collection_pid]
       @collection_pid = args[:collection_pid]
-      get_collection_info
+#      get_collection_info
     end
     
     setBagDestination(args)
   end
-  
+
+# TODO:  do we still want this for descMetadata?  
   # Fetch the collection object from solr and get data from it
+  # @deprecated ?
+=begin 
   def get_collection_info
     solr_params={}
     solr_params[:q]="id:#{@collection_pid.gsub(':','*')}"
@@ -59,6 +71,7 @@ class FtkItemAssembler
       @collection_name = document[:title_t].to_s
     end
   end
+=end
   
   # Create an "is_member_of_collection" relationship
   # @param [HypatiaFtkItem]
@@ -175,7 +188,8 @@ class FtkItemAssembler
         end
         
         xml['mods'].location {
-          xml.text "#{@collection_name} - #{ff.disk_image_number} (#{ff.medium})"
+#          xml.text "#{@collection_name} - #{ff.disk_image_number} (#{ff.medium})"
+          xml.text "#{ff.disk_image_number} (#{ff.medium})"
           xml['mods'].physicalLocation("type"=>"disk"){
             xml.text ff.disk_image_number
           }
@@ -358,23 +372,45 @@ class FtkItemAssembler
     ds.save
   end
 
-=begin  # no longer using DORIdentityMetadata 
-  def buildIdentityMetadata(pid,ff)
-    "<identityMetadata>
-      <objectId>#{pid}</objectId>
-      <objectType>item</objectType>
-      <objectLabel>#{ff.filename}</objectLabel>
-      <objectCreator>FTK</objectCreator>
-      <agreementId>druid:ww057vk7675</agreementId>
-      <tag>Project : Stephen J. Gould Archives</tag>
-    </identityMetadata>"
+  # Create a hypatia file level fedora object for an FTK file
+  # @param [HypatiaFtkItem] the FileAsset objects created will have _is_part_of relationships to the object in this param
+  # @param [FtkFile] object populated from the FTK report
+  # @return [FileAsset] the FileAsset object that is_part_of the ftk item object
+  def create_file_asset(hypatia_ftk_item, ftk_file_object)
+    file_asset = FileAsset.new
+    # the label value ends up in DC dc:title and descMetadata  title ??
+    file_asset.label="FileAsset for FTK file #{ftk_file_object.filename}"
+    file_asset.add_relationship(:is_part_of, hypatia_ftk_item)
+    
+    filepath = "#{@file_dir}/#{ftk_file_object.export_path}"
+    file = File.new(filepath)
+    if (ftk_file_object.mimetype)
+      file_asset.add_file_datastream(file, {:dsid => "content", :label => ftk_file_object.filename, :mimeType => ftk_file_object.mimetype})
+    else
+      file_asset.add_file_datastream(file, {:dsid => "content", :label => ftk_file_object.filename})
+    end
+
+    if @display_derivative_dir 
+      html_filepath = "#{@display_derivative_dir}/#{ftk_file_object.display_deriv_fname}"
+      if File.file?(html_filepath)
+        html_file = File.new(html_filepath)
+        # NOTE:  if mime_type is not set explicitly, Fedora does it ... but it's not testable
+        derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => ftk_file_object.display_deriv_fname, :mime_type => "text/html", :blob => html_file, :controlGroup => 'M')
+        file_asset.add_datastream(derivative_ds)
+#      else
+#        @logger.warn "Couldn't find expected display derivative file #{html_filepath}"
+      end
+    end
+    file_asset.save
+    return file_asset
   end
-=end
-  
+
+# TODO:  remove this when other is working  
   # Create a hypatia file level fedora object for an FTK file
   # @param [HypatiaItem] hypatia_item
   # @param [FtkFile] ff
   # @return [FileAsset]
+  # @deprecated
   def create_hypatia_file(hypatia_item,ff)
     hypatia_file = FileAsset.new
     hypatia_file.label="FileAsset for #{ff.filename}"

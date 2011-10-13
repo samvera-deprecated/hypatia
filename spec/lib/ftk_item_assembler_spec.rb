@@ -1,28 +1,31 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.join(File.dirname(__FILE__), "/../../lib/ftk_file")
-require File.join(File.dirname(__FILE__), "/../../lib/ftk_processor")
-require File.join(File.dirname(__FILE__), "/../../lib/ftk_item_assembler")
-require File.join(File.dirname(__FILE__), "/../../app/models/hypatia_ftk_item")
+#require File.join(File.dirname(__FILE__), "/../../lib/ftk_file")
+#require File.join(File.dirname(__FILE__), "/../../lib/ftk_processor")
+#require File.join(File.dirname(__FILE__), "/../../lib/ftk_item_assembler")
+#require File.join(File.dirname(__FILE__), "/../../app/models/hypatia_ftk_item")
 
-require 'rubygems'
-require 'ruby-debug'
+#require 'rubygems'
+#require 'ruby-debug'
 require 'factory_girl'
-require 'tempfile'
 require File.join(File.dirname(__FILE__), "/../fixtures/ftk/factories/ftk_files.rb")
+#require 'tempfile'
 
 describe FtkItemAssembler do
+  before(:all) do
+    @coll_pid = "hypatia:fixture_coll"
+  end
 
   context "basic behavior" do
     before(:all) do
-      delete_fixture("hypatia:fixture_xanadu_collection")
-      import_fixture("hypatia:fixture_xanadu_collection")
+      delete_fixture(@coll_pid)
+      import_fixture(@coll_pid)
       @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
       @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
       @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/files")
       @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives")
     end
     after(:all) do
-      delete_fixture("hypatia:fixture_xanadu_collection")
+      delete_fixture(@coll_pid)
     end
     it "can instantiate" do
       hfo = FtkItemAssembler.new
@@ -37,10 +40,12 @@ describe FtkItemAssembler do
       hfo.collection_pid = "hypatia:fixture_coll"
       hfo.collection_pid.should eql("hypatia:fixture_coll")
     end
+=begin  no longer duplicated in item object
     it "gets the name of the collection it belongs to" do
       hfo = FtkItemAssembler.new(:collection_pid => "hypatia:fixture_xanadu_collection")
       hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
     end
+=end
     it "processes an FTK report" do
       hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
       hfo.expects(:create_hypatia_item).at_least(56).returns(nil)
@@ -53,8 +58,8 @@ describe FtkItemAssembler do
   
   context "creating datastreams" do
     before(:all) do
-      delete_fixture("hypatia:fixture_xanadu_collection")
-      import_fixture("hypatia:fixture_xanadu_collection")
+      delete_fixture(@coll_pid)
+      import_fixture(@coll_pid)
       @ff = FactoryGirl.build(:ftk_file)
       @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
       @hfo = FtkItemAssembler.new(:fedora_config => @fedora_config, :collection_pid => "hypatia:fixture_xanadu_collection")
@@ -64,10 +69,12 @@ describe FtkItemAssembler do
     end
     it "creates a descMetadata file" do
       doc = Nokogiri::XML(@hfo.buildDescMetadata(@ff))
+=begin  no longer duplicated in item object      
       @hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
+=end
       doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.filename)
       doc.xpath("/mods:mods/mods:relatedItem[@displayLabel='Appears in']/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.title)
-      doc.xpath("/mods:mods/mods:location/text()").to_s.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler - CM5551212 (Punch Cards)")
+      doc.xpath("/mods:mods/mods:location/text()").to_s.should eql("CM5551212 (Punch Cards)")
       doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='disk']/text()").to_s.should eql(@ff.disk_image_number)
       doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='filepath']/text()").to_s.should eql(@ff.filepath)
       doc.xpath("/mods:mods/mods:originInfo/mods:dateCreated/text()").to_s.should eql(@ff.file_creation_date)
@@ -98,6 +105,51 @@ describe FtkItemAssembler do
       doc = Nokogiri::XML(@hfo.buildRelsExt(@ff))
       doc.xpath("/rdf:RDF/rdf:Description/hydra:isGovernedBy/@rdf:resource").to_s.should eql("info:fedora/hypatia:fixture_xanadu_apo")
     end
+  end
+  
+  context "FileAsset creation for FTK file" do
+    before(:all) do
+      delete_fixture(@coll_pid)
+      import_fixture(@coll_pid)
+      @assembler = FtkItemAssembler.new(:collection_pid => "hypatia:fixture_coll2")
+      @ftk_file_object = FactoryGirl.build(:ftk_file)
+      ftk_item_object = HypatiaFtkItem.new
+      @assembler.file_dir = "spec/fixtures/ftk"
+      @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
+      @file_asset = @assembler.create_file_asset(ftk_item_object, @ftk_file_object)
+      @ftk_item_pid = ftk_item_object.internal_uri
+    end
+    
+    after(:all) do
+      @file_asset.delete
+    end
+    
+    it "creates the correct FileAsset object for the FTK file and its display derivative" do
+      @file_asset.should be_instance_of(FileAsset) # model
+      @file_asset.relationships[:self][:is_part_of].should == ["#{@ftk_item_pid}"]
+      # datastreams:  DC, RELS-EXT, descMetadata, content, derivative-html
+      @file_asset.datastreams.size.should == 5
+      # content file datastream:
+      content_ds = @file_asset.datastreams["content"]
+      content_ds[:dsLabel].should ==  @ftk_file_object.filename 
+      content_ds[:dsLabel].should == "BURCH1" 
+      #  can't get mime_type here, even though it is set when the datastream is written to Fedora
+      # display derivative datastream
+      deriv_ds = @file_asset.datastreams["derivative_html"]
+      deriv_ds[:dsLabel].should ==  @ftk_file_object.display_deriv_fname
+      deriv_ds[:dsLabel].should == "BURCH1.htm"
+      deriv_ds[:mime_type].should == "text/html"
+      # descMetadata:
+      desc_md_ds_fields_hash = @file_asset.datastreams["descMetadata"].fields
+      # extent value (file size) is computed by FileAsset.add_file_datastream
+      desc_md_ds_fields_hash[:extent][:values].first.should match(/(bytes|KB|MB|GB|TB)$/)
+      desc_md_ds_fields_hash[:title][:values].should == ["FileAsset for FTK file #{@ftk_file_object.filename}"]
+    end
+    
+    it "creates the correct FileAsset object when there is no display derivative" do
+      pending
+    end
+    
   end
 
 # 2011-09-29  Naomi commenting out because this now fails with new data models.
