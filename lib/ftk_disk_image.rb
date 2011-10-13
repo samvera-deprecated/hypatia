@@ -1,5 +1,5 @@
 # An object to contain all the useful information we can slurp out of a 
-#  FTK produced .txt file that corresponds to and FTK produced disk image file 
+#  FTK produced .txt file that corresponds to an FTK produced disk image file 
 class FtkDiskImage
   
   # The txt file produced by FTK that contains the metadata about this disk image
