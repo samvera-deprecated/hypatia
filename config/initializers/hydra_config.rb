@@ -28,16 +28,23 @@ if Hydra.respond_to?(:configure)
                                {:name => "technical_info", :edit_partial => "hypatia_items/tech_info_form",   :show_partial => "shared/show_technical"},
                                {:name => "permissions",    :edit_partial => "permissions/permissions_form",   :show_partial => "shared/show_permissions"}
                               ],
-        :hypatia_collections => [{:name => "description",     :edit_partial => "hypatia_collections/description_form", :show_partial => "hypatia_collections/show_description"},
-                                 {:name => "files",           :edit_partial => "file_assets/file_assets_form",         :show_partial => "hypatia_collections/show_files"},
-                                 {:name => "technical_info",  :edit_partial => "hypatia_collections/technical_form",   :show_partial => "hypatia_collections/show_technical"},
-                                 {:name => "permissions",     :edit_partial => "permissions/permissions_form",         :show_partial => "shared/show_permissions"}
-                                ],        
-        :hypatia_ftk_items   => [{:name => "description",     :edit_partial => "hypatia_ftk_items/description_form",  :show_partial => "hypatia_ftk_items/show_description"},
-                                 {:name => "files",           :edit_partial => "file_assets/file_assets_form",        :show_partial => "hypatia_ftk_items/show_files"},
-                                 {:name => "technical_info",  :edit_partial => "hypatia_ftk_items/tech_info_form",    :show_partial => "hypatia_ftk_items/show_technical"},
-                                 {:name => "permissions",     :edit_partial => "permissions/permissions_form",        :show_partial => "shared/show_permissions"}
-                                ],
+        # BEGIN real Hypatia models
+        :hypatia_collections        => [{:name => "description",     :edit_partial => "hypatia_collections/description_form", :show_partial => "hypatia_collections/show_description"},
+                                        {:name => "files",           :edit_partial => "file_assets/file_assets_form",         :show_partial => "hypatia_collections/show_files"},
+                                        {:name => "technical_info",  :edit_partial => "hypatia_collections/technical_form",   :show_partial => "hypatia_collections/show_technical"},
+                                        {:name => "permissions",     :edit_partial => "permissions/permissions_form",         :show_partial => "shared/show_permissions"}
+                                       ],        
+        :hypatia_ftk_items          => [{:name => "description",     :edit_partial => "hypatia_ftk_items/description_form",  :show_partial => "hypatia_ftk_items/show_description"},
+                                        {:name => "files",           :edit_partial => "file_assets/file_assets_form",        :show_partial => "hypatia_ftk_items/show_files"},
+                                        {:name => "technical_info",  :edit_partial => "hypatia_ftk_items/tech_info_form",    :show_partial => "hypatia_ftk_items/show_technical"},
+                                        {:name => "permissions",     :edit_partial => "permissions/permissions_form",        :show_partial => "shared/show_permissions"}
+                                      ],
+        :hypatia_disk_image_items   => [{:name => "description",     :edit_partial => "hypatia_disk_image_items/description_form", :show_partial => "hypatia_disk_image_items/show_description"},
+                                        {:name => "files",           :edit_partial => "file_assets/file_assets_form",              :show_partial => "hypatia_disk_image_items/show_files"},
+                                        {:name => "technical_info",  :edit_partial => "hypatia_disk_image_items/technical_form",   :show_partial => "hypatia_disk_image_items/show_technical"},
+                                        {:name => "permissions",     :edit_partial => "permissions/permissions_form",              :show_partial => "shared/show_permissions"}
+                                       ],
+        # END real Hypatia models
         :hypatia_sets =>      [{:name => "description",     :edit_partial => "hypatia_sets/description_form",       :show_partial => "hypatia_sets/show_description"},
                                #{:name => "technical_info",  :edit_partial => "hypatia_sets/tech_info_form",         :show_partial => "shared/show_technical"},
                                {:name => "permissions",     :edit_partial => "permissions/permissions_form",        :show_partial => "shared/show_permissions"}
