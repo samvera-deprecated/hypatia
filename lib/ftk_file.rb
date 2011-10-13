@@ -73,13 +73,13 @@ class FtkFile
     return "Unknown file name"
   end
   
-  # Given a filename, what will the display_derivative name be?
+  # Given a filename, what will the display derivative filename be?
   # @example 
   #  ftk = FtkFile.new
   #  ftk.filename="NATHIN40.WPD"
-  #  ftk.display_derivative
+  #  ftk.display_deriv_filename
   #  => NATHIN40.htm
-  def display_derivative
+  def display_deriv_fname
     tokens = @filename.split('.')
     if tokens.length > 1
       return "#{tokens[0]}.htm"
@@ -91,20 +91,11 @@ class FtkFile
   # Determine the mimetype from the file extension.  If there is no file extension, compute it from the file itself using ruby-filemagic
   # @return [String] the mimetype of the file, as a string
   def mimetype
-    tmp = MIME::Types.type_for(@filename).first
-    if (tmp)
-      mimetype = MIME::Type.simplified(tmp)
-    else
-      full_path = File.join(File.dirname(__FILE__), @export_path)
-      # may need capital I or lowercase i, depending on OS
-      result = `file -ib #{full_path}`.gsub(/"\n/,"").to_s
-      # result will be something like "text/plain; charset=us-ascii"
-      mimetype = result.split(';').first
+    mtype = MIME::Types.of(@filename).first
+    if (mtype)
+      mimetype = MIME::Type.simplified(mtype)
     end
-    if (mimetype.nil? || mimetype.size == 0)
-      mimetype = "application/octet-stream"
-    end
-    return mimetype.gsub(/\s/,"")
+    mimetype
   end
 
   

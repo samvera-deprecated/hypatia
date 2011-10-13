@@ -34,7 +34,7 @@ describe FtkFile do
     it "calculates the display derivative filename" do
       f = FtkFile.new
       f.filename = "NATHIN40.WPD"
-      f.display_derivative.should eql("NATHIN40.htm")
+      f.display_deriv_fname.should eql("NATHIN40.htm")
     end
     
     it "calculates the mime type from the file extension" do
@@ -43,20 +43,8 @@ describe FtkFile do
       f.mimetype.should eql("application/vnd.wordperfect")
       f.filename = "foo.WPD"
       f.mimetype.should eql("application/vnd.wordperfect")
-    end
-
-    it "calculates the mimetype from the file itself when there is no file extension" do
-      f = FtkFile.new
-      f.export_path = "../Rakefile"
-      f.filename = "Rakefile"
-      f.mimetype.should eql("text/plain")
-      f.export_path = "../spec/fixtures/ftk/files/BURCH1"
-      f.filename = "BURCH1"
-      f.mimetype.should eql("application/octet-stream")
-      # unrecognized extension
-      f.export_path = "../README.textile"
-      f.filename = "README.textile"
-      f.mimetype.should eql("text/plain")
+      f.filename = "foo"
+      f.mimetype.should be_nil
     end
     
   end
