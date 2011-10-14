@@ -53,4 +53,11 @@ module ApplicationHelper
     image_tag(url, addl_args)
   end
   
+  def render_facet_value(facet_solr_field, item, options ={})
+    if item.is_a? Array
+      link_to_unless(options[:suppress_link], t(item[0], :default=>item[0]), add_facet_params_and_redirect(facet_solr_field, item[0]), :class=>"facet_select") + " (" + format_num(item[1]) + ")" 
+    else
+      link_to_unless(options[:suppress_link], t(item.value, :default=>item.value), add_facet_params_and_redirect(facet_solr_field, item.value), :class=>"facet_select") + " (" + format_num(item.hits) + ")" 
+    end
+  end
 end
