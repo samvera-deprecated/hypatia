@@ -3,3 +3,8 @@
 
 en:
   hello: "Hello world"
+  "info:fedora/afmodel:HypatiaFtkItem" : "FTK Item"
+  "info:fedora/afmodel:HypatiaCollection" : "Collection"
+  "info:fedora/afmodel:HypatiaDiskImageItem" : "Disk Image"
+  "info:fedora/afmodel:HypatiaSet" : "Set"
+  
