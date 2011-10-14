@@ -405,31 +405,4 @@ class FtkItemAssembler
     return file_asset
   end
 
-# TODO:  remove this when other is working  
-  # Create a hypatia file level fedora object for an FTK file
-  # @param [HypatiaItem] hypatia_item
-  # @param [FtkFile] ff
-  # @return [FileAsset]
-  # @deprecated
-  def create_hypatia_file(hypatia_item,ff)
-    hypatia_file = FileAsset.new
-    hypatia_file.label="FileAsset for #{ff.filename}"
-    hypatia_file.add_relationship(:is_part_of,hypatia_item)
-    filepath = "#{@file_dir}/#{ff.export_path}"
-    file = File.new(filepath)
-    hypatia_file.add_file_datastream(file, {:dsid => "content", :label => ff.filename})
-    
-    if @display_derivative_dir 
-      html_filepath = "#{@display_derivative_dir}/#{ff.display_derivative}"
-      if File.file? html_filepath
-        html_file = File.new(html_filepath)
-        derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => "Display derivative for #{ff.filename}", :controlGroup => 'M', :blob => html_file)
-        hypatia_file.add_datastream(derivative_ds)
-      else
-        @logger.warn "Couldn't find expected display derivative file #{html_filepath}"
-      end
-    end
-    hypatia_file.save
-    return hypatia_file
-  end
 end
