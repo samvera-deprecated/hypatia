@@ -113,32 +113,19 @@ describe FtkItemAssembler do
       import_fixture(@coll_pid)
       @assembler = FtkItemAssembler.new(:collection_pid => "hypatia:fixture_coll2")
       @ftk_file_object = FactoryGirl.build(:ftk_file)
-      ftk_item_object = HypatiaFtkItem.new
+      @ftk_item_object = HypatiaFtkItem.new
       @assembler.file_dir = "spec/fixtures/ftk"
       @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
-      @file_asset = @assembler.create_file_asset(ftk_item_object, @ftk_file_object)
-      @ftk_item_pid = ftk_item_object.internal_uri
+      @file_asset = @assembler.create_file_asset(@ftk_item_object, @ftk_file_object)
+      @ftk_item_pid = @ftk_item_object.internal_uri
     end
-    
     after(:all) do
       @file_asset.delete
     end
     
-    it "creates the correct FileAsset object for the FTK file and its display derivative" do
+    it "creates a FileAsset object with the correct relationships and descriptive metadata" do
       @file_asset.should be_instance_of(FileAsset) # model
       @file_asset.relationships[:self][:is_part_of].should == ["#{@ftk_item_pid}"]
-      # datastreams:  DC, RELS-EXT, descMetadata, content, derivative-html
-      @file_asset.datastreams.size.should == 5
-      # content file datastream:
-      content_ds = @file_asset.datastreams["content"]
-      content_ds[:dsLabel].should ==  @ftk_file_object.filename 
-      content_ds[:dsLabel].should == "BURCH1" 
-      #  can't get mime_type here, even though it is set when the datastream is written to Fedora
-      # display derivative datastream
-      deriv_ds = @file_asset.datastreams["derivative_html"]
-      deriv_ds[:dsLabel].should ==  @ftk_file_object.display_deriv_fname
-      deriv_ds[:dsLabel].should == "BURCH1.htm"
-      deriv_ds[:mime_type].should == "text/html"
       # descMetadata:
       desc_md_ds_fields_hash = @file_asset.datastreams["descMetadata"].fields
       # extent value (file size) is computed by FileAsset.add_file_datastream
@@ -146,11 +133,44 @@ describe FtkItemAssembler do
       desc_md_ds_fields_hash[:title][:values].should == ["FileAsset for FTK file #{@ftk_file_object.filename}"]
     end
     
-    it "creates the correct FileAsset object when there is no display derivative" do
-      pending
+    it "creates the correct FileAsset object for the FTK file and its display derivative" do
+      # datastreams:  DC, RELS-EXT, descMetadata, content, derivative-html
+      @file_asset.datastreams.size.should == 5
+      # content file datastream:
+      content_ds = @file_asset.datastreams["content"]
+      content_ds[:dsLabel].should ==  @ftk_file_object.filename 
+      content_ds[:dsLabel].should == "BURCH1" 
+      #  can't get mimeType here, even though it is set when the datastream is written to Fedora
+      # display derivative datastream
+      deriv_ds = @file_asset.datastreams["derivative_html"]
+      deriv_ds[:dsLabel].should ==  @ftk_file_object.display_deriv_fname
+      deriv_ds[:dsLabel].should == "BURCH1.htm"
+      deriv_ds[:mimeType].should == "text/html"
     end
-    
-  end
+
+    it "creates the correct FileAsset object when there is no display derivative" do
+      @ftk_file_object.filename = "foofile.txt"
+      @ftk_file_object.export_path = "files/foofile.txt"
+      file_asset = @assembler.create_file_asset(@ftk_item_object, @ftk_file_object)
+      # datastreams:  DC, RELS-EXT, descMetadata, content
+      file_asset.datastreams.size.should == 4
+      content_ds = file_asset.datastreams["content"]
+      content_ds[:dsLabel].should ==  @ftk_file_object.filename 
+      content_ds[:dsLabel].should == "foofile.txt" 
+      content_ds[:mimeType].should == "text/plain"
+      file_asset.datastreams["derivative_html"].should be_nil
+      file_asset.delete
+     end
+     
+     it "creates the correct FileAsset object when the content file has no extension" do
+       # see  "creates the correct FileAsset object for the FTK file and its display derivative"
+     end
+     
+     it "creates the correct FileAsset object when the content file has an extension" do
+       # see "creates the correct FileAsset object when there is no display derivative"
+     end
+     
+  end  # context "FileAsset creation for FTK file"
 
 # 2011-09-29  Naomi commenting out because this now fails with new data models.
 =begin  

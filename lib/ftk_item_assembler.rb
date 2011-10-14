@@ -395,7 +395,7 @@ class FtkItemAssembler
       if File.file?(html_filepath)
         html_file = File.new(html_filepath)
         # NOTE:  if mime_type is not set explicitly, Fedora does it ... but it's not testable
-        derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => ftk_file_object.display_deriv_fname, :mime_type => "text/html", :blob => html_file, :controlGroup => 'M')
+        derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => ftk_file_object.display_deriv_fname, :mimeType => "text/html", :blob => html_file, :controlGroup => 'M')
         file_asset.add_datastream(derivative_ds)
 #      else
 #        @logger.warn "Couldn't find expected display derivative file #{html_filepath}"
