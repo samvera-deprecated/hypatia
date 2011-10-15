@@ -45,6 +45,7 @@ describe FtkItemAssembler do
       hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
     end
 =end
+=begin   # FIXME:  this is an important spec to replace!
     it "processes an FTK report" do
       hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
       hfo.expects(:create_hypatia_item).at_least(56).returns(nil)
@@ -53,7 +54,8 @@ describe FtkItemAssembler do
       hfo.file_dir.should eql(@file_dir)
       hfo.display_derivative_dir.should eql(@display_derivative_dir)
     end
-  end
+=end
+  end # context basic behavior
   
   context "creating datastreams" do
     before(:all) do
@@ -103,7 +105,7 @@ describe FtkItemAssembler do
       doc = Nokogiri::XML(@hfo.build_rels_ext(@ff))
       doc.xpath("/rdf:RDF/rdf:Description/hydra:isGovernedBy/@rdf:resource").to_s.should eql("info:fedora/hypatia:fixture_xanadu_apo")
     end
-  end
+  end  # context creating datastreams
   
   context "FtkItem FileAsset and its contentMetadata" do
 
@@ -327,7 +329,8 @@ describe FtkItemAssembler do
     end
   end
 =end
-  
+
+=begin # it doesn't seem we are creating bags anymore????  
   context "creating bags" do
     before(:all) do
       @ff = FactoryGirl.build(:ftk_file)
@@ -364,8 +367,9 @@ describe FtkItemAssembler do
         bag.valid?.should eql(true)
        }
     end
-  end
-end
+  end # content "creating bags"
+=end  
+end # describe FtkItemAssembler
 
 # Create a HypatiaDiskImageItem from the data in the FtkDiskImage fixture
 # @return [FtkDiskImageItem]
