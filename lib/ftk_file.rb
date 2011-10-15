@@ -98,5 +98,4 @@ class FtkFile
     mimetype
   end
 
-  
 end

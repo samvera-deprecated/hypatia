@@ -1,5 +1,5 @@
-require "rubygems"
-require "active-fedora"
+#require "rubygems"
+#require "active-fedora"
 require "digest/md5"
 require "digest/sha1"
 
@@ -218,7 +218,7 @@ class FtkDiskImageItemAssembler
   # Build the contentMetadata for HypatiaDiskImageItem as an xml object.  it should adhere to the 
   #  xml expected by model HypatiaDiskImgContentMetadataDS
   # @param [FtkDiskImage] the intermediate object for the FTK Disk Image that is being turned into a Fedora object
-  # @param [String] the Fedora pid of the DiskImageItem object
+  # @param [String] the Fedora pid of the HypatiaDiskImageItem object
   # @param [ActiveFedora::FileAsset] the FileAsset object for the disk image file itself
   # @param [Array] an array the FileAsset objects for the photos of the disk media
   # @return [Nokogiri::XML::Document] - the xmlContent for the contentMetadata datastream
