@@ -24,21 +24,20 @@ describe FtkItemAssembler do
       @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/files")
       @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives")
     end
-    after(:all) do
-      delete_fixture(@coll_pid)
-    end
     it "can instantiate" do
       hfo = FtkItemAssembler.new
       hfo.class.should eql(FtkItemAssembler)
     end
+=begin  no longer used?
     it "takes a fedora config file as an argument" do
       hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
       hfo.fedora_config.should eql(@fedora_config)
     end
+=end
     it "sets the pid of the collection object these items belong to" do
       hfo = FtkItemAssembler.new
-      hfo.collection_pid = "hypatia:fixture_coll"
-      hfo.collection_pid.should eql("hypatia:fixture_coll")
+      hfo.collection_pid = @coll_pid
+      hfo.collection_pid.should eql(@coll_pid)
     end
 =begin  no longer duplicated in item object
     it "gets the name of the collection it belongs to" do
@@ -62,13 +61,10 @@ describe FtkItemAssembler do
       import_fixture(@coll_pid)
       @ff = FactoryGirl.build(:ftk_file)
       @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
-      @hfo = FtkItemAssembler.new(:fedora_config => @fedora_config, :collection_pid => "hypatia:fixture_xanadu_collection")
-    end
-    after(:all) do
-      delete_fixture("hypatia:fixture_xanadu_collection")
+      @hfo = FtkItemAssembler.new(:fedora_config => @fedora_config, :collection_pid => @coll_pid)
     end
     it "creates a descMetadata file" do
-      doc = Nokogiri::XML(@hfo.buildDescMetadata(@ff))
+      doc = Nokogiri::XML(@hfo.build_desc_metadata(@ff))
 =begin  no longer duplicated in item object      
       @hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
 =end
@@ -83,8 +79,9 @@ describe FtkItemAssembler do
       doc.xpath("/mods:mods/mods:typeOfResource/text()").to_s.should eql(@ff.type)
       doc.xpath("/mods:mods/mods:physicalDescription/mods:form/text()").to_s.should eql(@ff.medium)
     end
+=begin # superceded
     it "creates a contentMetadata file" do
-      doc = Nokogiri::XML(@hfo.buildContentMetadata(@ff,"fake_pid","fake_object_id"))
+      doc = Nokogiri::XML(@hfo.build_content_metadata(@ff,"fake_pid","fake_object_id"))
       doc.xpath("/contentMetadata/@type").to_s.should eql("born-digital")
       doc.xpath("/contentMetadata/@objectId").to_s.should eql("fake_pid")
       doc.xpath("/contentMetadata/resource/@type").to_s.should eql("analysis")
@@ -96,81 +93,178 @@ describe FtkItemAssembler do
       doc.xpath("/contentMetadata/resource/file/checksum[@type='md5']/text()").to_s.should eql(@ff.md5)      
       doc.xpath("/contentMetadata/resource/file/checksum[@type='sha1']/text()").to_s.should eql(@ff.sha1)
     end
+=end    
     it "creates a rightsMetdata file" do
-      doc = Nokogiri::XML(@hfo.buildRightsMetadata(@ff))
+      doc = Nokogiri::XML(@hfo.build_rights_metadata(@ff))
       doc.xpath("/xmlns:rightsMetadata/xmlns:access[@type='discover']/xmlns:machine/xmlns:group/text()").to_s.should eql(@ff.access_rights.downcase)
       doc.xpath("/xmlns:rightsMetadata/xmlns:access[@type='read']/xmlns:machine/xmlns:group/text()").to_s.should eql(@ff.access_rights.downcase)
     end
     it "creates a RELS-EXT datastream" do
-      doc = Nokogiri::XML(@hfo.buildRelsExt(@ff))
+      doc = Nokogiri::XML(@hfo.build_rels_ext(@ff))
       doc.xpath("/rdf:RDF/rdf:Description/hydra:isGovernedBy/@rdf:resource").to_s.should eql("info:fedora/hypatia:fixture_xanadu_apo")
     end
   end
   
-  context "FileAsset creation for FTK file" do
+  context "FtkItem FileAsset and its contentMetadata" do
+
     before(:all) do
       delete_fixture(@coll_pid)
       import_fixture(@coll_pid)
       @assembler = FtkItemAssembler.new(:collection_pid => "hypatia:fixture_coll2")
-      @ftk_file_object = FactoryGirl.build(:ftk_file)
+      @ftk_file_intermed = FactoryGirl.build(:ftk_file)
       @ftk_item_object = HypatiaFtkItem.new
       @assembler.file_dir = "spec/fixtures/ftk"
       @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
-      @file_asset = @assembler.create_file_asset(@ftk_item_object, @ftk_file_object)
+      @file_asset = @assembler.create_file_asset(@ftk_item_object, @ftk_file_intermed)
       @ftk_item_pid = @ftk_item_object.internal_uri
-    end
-    after(:all) do
-      @file_asset.delete
-    end
-    
-    it "creates a FileAsset object with the correct relationships and descriptive metadata" do
-      @file_asset.should be_instance_of(FileAsset) # model
-      @file_asset.relationships[:self][:is_part_of].should == ["#{@ftk_item_pid}"]
-      # descMetadata:
-      desc_md_ds_fields_hash = @file_asset.datastreams["descMetadata"].fields
-      # extent value (file size) is computed by FileAsset.add_file_datastream
-      desc_md_ds_fields_hash[:extent][:values].first.should match(/(bytes|KB|MB|GB|TB)$/)
-      desc_md_ds_fields_hash[:title][:values].should == ["FileAsset for FTK file #{@ftk_file_object.filename}"]
-    end
-    
-    it "creates the correct FileAsset object for the FTK file and its display derivative" do
-      # datastreams:  DC, RELS-EXT, descMetadata, content, derivative-html
-      @file_asset.datastreams.size.should == 5
-      # content file datastream:
-      content_ds = @file_asset.datastreams["content"]
-      content_ds[:dsLabel].should ==  @ftk_file_object.filename 
-      content_ds[:dsLabel].should == "BURCH1" 
-      #  can't get mimeType here, even though it is set when the datastream is written to Fedora
-      # display derivative datastream
-      deriv_ds = @file_asset.datastreams["derivative_html"]
-      deriv_ds[:dsLabel].should ==  @ftk_file_object.display_deriv_fname
-      deriv_ds[:dsLabel].should == "BURCH1.htm"
-      deriv_ds[:mimeType].should == "text/html"
+      @content_file_ds = @file_asset.datastreams["content"]
+      @deriv_file_ds = @file_asset.datastreams["derivative_html"]
+      
+      @ftk_file_intermed_no_deriv = FactoryGirl.build(:ftk_file)
+      @ftk_file_intermed_no_deriv.filename = "foofile.txt"
+      @ftk_file_intermed_no_deriv.export_path = "files/foofile.txt"
+      @file_asset_no_deriv = @assembler.create_file_asset(@ftk_item_object, @ftk_file_intermed_no_deriv)
+      @content_file_ds_no_deriv = @file_asset_no_deriv.datastreams["content"]
     end
 
-    it "creates the correct FileAsset object when there is no display derivative" do
-      @ftk_file_object.filename = "foofile.txt"
-      @ftk_file_object.export_path = "files/foofile.txt"
-      file_asset = @assembler.create_file_asset(@ftk_item_object, @ftk_file_object)
-      # datastreams:  DC, RELS-EXT, descMetadata, content
-      file_asset.datastreams.size.should == 4
-      content_ds = file_asset.datastreams["content"]
-      content_ds[:dsLabel].should ==  @ftk_file_object.filename 
-      content_ds[:dsLabel].should == "foofile.txt" 
-      content_ds[:mimeType].should == "text/plain"
-      file_asset.datastreams["derivative_html"].should be_nil
-      file_asset.delete
-     end
-     
-     it "creates the correct FileAsset object when the content file has no extension" do
-       # see  "creates the correct FileAsset object for the FTK file and its display derivative"
-     end
-     
-     it "creates the correct FileAsset object when the content file has an extension" do
-       # see "creates the correct FileAsset object when there is no display derivative"
-     end
-     
-  end  # context "FileAsset creation for FTK file"
+    context "FileAsset creation for FTK file" do
+      it "creates a FileAsset object with the correct relationships and descriptive metadata" do
+        @file_asset.should be_instance_of(FileAsset) # model
+        @file_asset.relationships[:self][:is_part_of].should == ["#{@ftk_item_pid}"]
+        # descMetadata:
+        desc_md_ds_fields_hash = @file_asset.datastreams["descMetadata"].fields
+        # extent value (file size) is computed by FileAsset.add_file_datastream
+        desc_md_ds_fields_hash[:extent][:values].first.should match(/(bytes|KB|MB|GB|TB)$/)
+        desc_md_ds_fields_hash[:title][:values].should == ["FileAsset for FTK file #{@ftk_file_intermed.filename}"]
+      end
+      it "creates the correct FileAsset object for the FTK file and its display derivative" do
+        # datastreams:  DC, RELS-EXT, descMetadata, content, derivative-html
+        @file_asset.datastreams.size.should == 5
+        # content file datastream:
+        @content_file_ds[:dsLabel].should ==  @ftk_file_intermed.filename 
+        @content_file_ds[:dsLabel].should == "BURCH1" 
+        #  can't get mimeType here, even though it is set when the datastream is written to Fedora
+        # display derivative datastream
+        @deriv_file_ds[:dsLabel].should ==  @ftk_file_intermed.display_deriv_fname
+        @deriv_file_ds[:dsLabel].should == "BURCH1.htm"
+        @deriv_file_ds[:mimeType].should == "text/html"
+      end
+      it "creates the correct FileAsset object when there is no display derivative" do
+        # datastreams:  DC, RELS-EXT, descMetadata, content
+        @file_asset_no_deriv.datastreams.size.should == 4
+        @content_file_ds_no_deriv[:dsLabel].should ==  @ftk_file_intermed_no_deriv.filename 
+        @content_file_ds_no_deriv[:dsLabel].should == "foofile.txt" 
+        @content_file_ds_no_deriv[:mimeType].should == "text/plain"
+        @file_asset_no_deriv.datastreams["derivative_html"].should be_nil
+        @file_asset_no_deriv.delete
+       end
+       it "creates the correct FileAsset object when the content file has no extension" do
+         # see  "creates the correct FileAsset object for the FTK file and its display derivative"
+       end
+       it "creates the correct FileAsset object when the content file has an extension" do
+         # see "creates the correct FileAsset object when there is no display derivative"
+       end
+    end  # context "FileAsset creation for FTK file"
+
+    context "contentMetadata" do
+      before(:all) do
+        @content_md_doc = Nokogiri::XML(@assembler.build_content_metadata(@ftk_file_intermed, "ftk_item_pid", @file_asset))
+        @content_md_no_deriv_doc = Nokogiri::XML(@assembler.build_content_metadata(@ftk_file_intermed_no_deriv, "ftk_item_pid2", @file_asset_no_deriv))
+      end
+      it "creates the correct contentMetdata element" do
+        @content_md_doc.xpath("/contentMetadata/@objectId").to_s.should eql("ftk_item_pid")
+        @content_md_doc.xpath("/contentMetadata/@type").to_s.should eql("file")
+        @content_md_no_deriv_doc.xpath("/contentMetadata/@objectId").to_s.should eql("ftk_item_pid2")
+        @content_md_no_deriv_doc.xpath("/contentMetadata/@type").to_s.should eql("file")
+      end
+      it "creates the correct resource element" do
+        @content_md_doc.xpath("/contentMetadata/resource").size.should eql(1)
+        @content_md_doc.xpath("/contentMetadata/resource/@objectId").to_s.should eql(@file_asset.pid)
+        @content_md_doc.xpath("/contentMetadata/resource/@type").to_s.should eql("file")
+        # id attribute on resource element is just a unique identifier
+        @content_md_doc.xpath("/contentMetadata/resource/@id").to_s.should eql(@content_file_ds[:dsLabel])
+        @content_md_doc.xpath("/contentMetadata/resource/@id").to_s.should eql("BURCH1")
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource").size.should eql(1)
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/@objectId").to_s.should eql(@file_asset_no_deriv.pid)
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/@type").to_s.should eql("file")
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/@id").to_s.should eql(@content_file_ds_no_deriv[:dsLabel])
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/@id").to_s.should eql("foofile.txt")
+      end
+      it "creates the correct file elements when there is a display derivative" do
+        # id attribute on file element must match the label of the datastream in the FileAsset object
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='#{@content_file_ds[:dsLabel]}']").should_not be_nil
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']").should_not be_nil
+#        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/@format").to_s.should eql("BINARY")  # skipping for Hypatia demo
+#        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/@mimetype").to_s.should eql("application/octet-stream")  # skipping for Hypatia demo
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/@size").to_s.should match(/^\d+$/)
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/@preserve").to_s.should eql("yes")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/@publish").to_s.should eql("yes")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/@shelve").to_s.should eql("yes")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/location/@type").to_s.should eql("datastreamID")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/location/text()").to_s.should eql(@content_file_ds.dsid)
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/checksum[@type='md5']/text()").to_s.should eql(@ftk_file_intermed.md5)
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/checksum[@type='md5']/text()").to_s.should eql("4E1AA0E78D99191F4698EEC437569D23")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/checksum[@type='sha1']/text()").to_s.should eql(@ftk_file_intermed.sha1)
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1']/checksum[@type='sha1']/text()").to_s.should eql("B6373D02F3FD10E7E1AA0E3B3AE3205D6FB2541C")
+        # id attribute on file element must match the label of the datastream in the FileAsset object
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='#{@deriv_file_ds[:dsLabel]}']").should_not be_nil
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']").should_not be_nil
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/@format").to_s.should eql("HTML")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/@mimetype").to_s.should eql("text/html")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/@size").to_s.should match(/^\d+$/)
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/@preserve").to_s.should eql("yes")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/@publish").to_s.should eql("yes")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/@shelve").to_s.should eql("yes")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/location/@type").to_s.should eql("datastreamID")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/location/text()").to_s.should eql(@deriv_file_ds.dsid)
+# TODO:  compute md5 and sha1 for deriv html (?)
+#        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/checksum[@type='md5']/text()").to_s.should eql(Digest::MD5.hexdigest(@deriv_file_ds.blob.read))
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/checksum[@type='md5']/text()").to_s.should eql("906aec05a5a8de7391daec5681eedcf6")
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/checksum[@type='sha1']/text()").to_s.should eql(Digest::SHA1.hexdigest(@deriv_file_ds.blob.read))
+        @content_md_doc.xpath("/contentMetadata/resource/file[@id='BURCH1.htm']/checksum[@type='sha1']/text()").to_s.should eql("da39a3ee5e6b4b0d3255bfef95601890afd80709")
+      end
+      it "creates the correct file element for when there is no display derivative" do
+        # id attribute on file element must match the label of the datastream in the FileAsset object
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='#{@content_file_ds[:dsLabel]}']").should_not be_nil
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']").should_not be_nil
+#        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/@format").to_s.should eql("BINARY")  # skipping for Hypatia demo
+#        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/@mimetype").to_s.should eql("application/octet-stream")  # skipping for Hypatia demo
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/@size").to_s.should match(/^\d+$/)
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/@preserve").to_s.should eql("yes")
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/@publish").to_s.should eql("yes")
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/@shelve").to_s.should eql("yes")
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/location/@type").to_s.should eql("datastreamID")
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/location/text()").to_s.should eql(@content_file_ds_no_deriv.dsid)
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/checksum[@type='md5']/text()").to_s.should eql(@ftk_file_intermed_no_deriv.md5)
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/checksum[@type='md5']/text()").to_s.should eql("4E1AA0E78D99191F4698EEC437569D23")
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/checksum[@type='sha1']/text()").to_s.should eql(@ftk_file_intermed_no_deriv.sha1)
+        @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/checksum[@type='sha1']/text()").to_s.should eql("B6373D02F3FD10E7E1AA0E3B3AE3205D6FB2541C")
+      end
+=begin
+# FIXME:  this is an integration spec testing that the xml from the loader can be loaded into the app properly.  Not sure where to put this.
+      it "creates contentMetadata datastream that adheres to HypatiaDiskImageContentMetadataDS model" do
+        content_md_ds = HypatiaDiskImgContentMetadataDS.from_xml(@doc_one_image)
+        content_md_ds.term_values(:dd_fedora_pid).first.should match(/^hypatia:\d+$/) 
+        content_md_ds.term_values(:dd_ds_id).should == [@dd_file_ds.dsid]
+        content_md_ds.term_values(:dd_filename).should == ["CM5551212"]
+        content_md_ds.term_values(:dd_size).first.should match(/^\d+$/)
+        content_md_ds.term_values(:dd_mimetype).should == ["application/octet-stream"]
+        content_md_ds.term_values(:dd_md5).should == ["7d7abca99f383487e02ce7bf7c017267"]
+        content_md_ds.term_values(:dd_sha1).should == ["628ede981ad24c1655f7e37057355ca689dcb3a9"]
+
+        content_md_ds.term_values(:image_front_fedora_pid).first.should match(/^hypatia:\d+$/) 
+        content_md_ds.term_values(:image_front_ds_id).should == ["DS1"] # oops - hardcoded
+        content_md_ds.term_values(:image_front_filename).should == ["CM5551212.JPG"]
+        content_md_ds.term_values(:image_front_size).first.should match(/^\d+$/)
+        content_md_ds.term_values(:image_front_mimetype).should == ["image/jpeg"]
+        content_md_ds.term_values(:image_front_md5).should == ["812b53258f21ee250d17c9308d2099d9"]
+        content_md_ds.term_values(:image_front_sha1).should == ["da39a3ee5e6b4b0d3255bfef95601890afd80709"]
+      end
+=end
+    end  # context "contentMetadata"
+  end # context "FileAsset and its contentMetadata in the FtkItem"
+
+
 
 # 2011-09-29  Naomi commenting out because this now fails with new data models.
 =begin  
