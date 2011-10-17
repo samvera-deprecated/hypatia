@@ -1,5 +1,3 @@
-#require "rubygems"
-#require "active-fedora"
 require "digest/md5"
 require "digest/sha1"
 

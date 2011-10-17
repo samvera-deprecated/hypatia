@@ -1,9 +1,6 @@
 require "digest/md5"
 require "digest/sha1"
-# Dir[File.dirname(__FILE__) + '/*.rb'].each {|file| require file }
-# Dir[File.dirname(__FILE__) + '/../app/models/*.rb'].each {|file| require file }
 #require 'bagit'
-#require 'ftk_processor'
 
 # NAOMI:  revise these comments
 # Assemble FTK output into objects for Hypatia. 
@@ -91,6 +88,7 @@ class FtkItemAssembler
     
     @ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
     @ftk_processor.files.each do |ftk_file|
+# TODO: make this each with index or some such ...
       create_hypatia_ftk_item(ftk_file[1])
     end
   end
