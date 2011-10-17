@@ -1,16 +1,16 @@
-require 'nokogiri'
-require 'active-fedora'
-require 'ftk_file'
-require 'hypatia_ftk_item'
-
 class FtkProcessor
   
-  attr_accessor :ftk_report       # The location of the ftk xml file we're processing
-  attr_reader :collection_title # The name of the collection
-  attr_reader :call_number      # The call number of the collection
-  attr_reader :series           # The series
-  attr_reader :file_count       # The number of files described by this FTK report
-  attr_reader :files            # A Hash of all the file descriptions
+  # location of the xml report from FTK (from which we get all the info)
+  attr_accessor :ftk_report
+  # name of the collection
+  attr_reader :collection_title
+  # call number of the collection
+  attr_reader :call_number
+  # series of the collection
+  attr_reader :series
+# TODO: make this an array instead of a hash
+  # an array of FtkFile objects to use to create HypatiaFtkItem fedora objects
+  attr_reader :files
   
   # Initialize an FTK object. 
   # If you don't pass in any arguments, it won't do anything, and you'll need to manually set the FTK report location and run
@@ -20,13 +20,13 @@ class FtkProcessor
   #  r = FtkProcessor.new(:ftk_report => "/path/to/FTK_report.xml")
   def initialize(args = {})
     @files = {}
-    
+=begin    
     if args[:fedora_config]
       ActiveFedora.init(args[:fedora_config])
     else
       ActiveFedora.init
     end
-    
+=end    
     if args[:logfile]
       @logger = args[:logfile]
     else
@@ -62,7 +62,7 @@ class FtkProcessor
   
   def get_file_descriptions
     file_array = @doc.xpath("//fo:table-body[fo:table-row/fo:table-cell/fo:block[text()='File Comments']]")
-    @file_count = file_array.length
+#    @file_count = file_array.length
     file_array.each do |node|
       process_node(node)
     end
