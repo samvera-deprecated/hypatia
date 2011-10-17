@@ -1,14 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-#require File.join(File.dirname(__FILE__), "/../../lib/ftk_file")
-#require File.join(File.dirname(__FILE__), "/../../lib/ftk_processor")
-#require File.join(File.dirname(__FILE__), "/../../lib/ftk_item_assembler")
-#require File.join(File.dirname(__FILE__), "/../../app/models/hypatia_ftk_item")
-
-#require 'rubygems'
-#require 'ruby-debug'
 require 'factory_girl'
 require File.join(File.dirname(__FILE__), "/../fixtures/ftk/factories/ftk_files.rb")
-#require 'tempfile'
 
 describe FtkItemAssembler do
   before(:all) do
