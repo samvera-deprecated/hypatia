@@ -17,7 +17,7 @@ Feature: Disk Image Item Show page
     Then I should see "CM058"  # title
     Then I should see "M1437"  # local_id
     And I should see "3.5 inch Floppy Disk" # extent
-    And I should see "Born Digital" # digital_origin
+    And I should see "born digital" # digital_origin
 
   Scenario: all desired Repository metadata displays
     When I am on the document page for id "hypatia:fixture_media_item" 

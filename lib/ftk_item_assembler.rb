@@ -178,7 +178,7 @@ class FtkItemAssembler
         xml['mods'].physicalDescription {
           xml['mods'].extent ff_intermed.filesize
           xml['mods'].extent ff_intermed.medium
-          xml['mods'].digitalOrigin "Born Digital"
+          xml['mods'].digitalOrigin "born digital"
         }
         xml['mods'].originInfo {
           xml['mods'].dateCreated {

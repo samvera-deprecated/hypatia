@@ -61,7 +61,7 @@ describe FtkDiskImageItemAssembler do
       desc_md_doc.xpath("/mods/mods:titleInfo/mods:title/text()").to_s.should eql("CM5551212")
       desc_md_doc.xpath("/mods/mods:identifier[@type='local']/text()").to_s.should eql("M1437")
       desc_md_doc.xpath("/mods/mods:physicalDescription/mods:extent/text()").to_s.should eql("5.25 inch Floppy Disk")
-      desc_md_doc.xpath("/mods/mods:physicalDescription/mods:digitalOrigin/text()").to_s.should eql("Born Digital")
+      desc_md_doc.xpath("/mods/mods:physicalDescription/mods:digitalOrigin/text()").to_s.should eql("born digital")
     end
   end
   
@@ -404,7 +404,7 @@ describe FtkDiskImageItemAssembler do
           desc_md_ds = dio.datastreams["descMetadata"]
           if (desc_md_ds.term_values(:title).first == "CMno_txt")
             desc_md_ds.term_values(:display_name).should == ["CMno_txt"]
-            desc_md_ds.term_values(:digital_origin).should == ["Born Digital"]
+            desc_md_ds.term_values(:digital_origin).should == ["born digital"]
             desc_md_ds.term_values(:local_id).should == [""]
             desc_md_ds.term_values(:extent).should == [""]
           end

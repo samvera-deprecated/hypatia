@@ -78,7 +78,7 @@ describe FtkItemAssembler do
       values[0].should_not eql(values[1])
       values.include?(@ff_intermed.filesize).should be_true
       values.include?(@ff_intermed.medium).should be_true
-      desc_md_doc.xpath("/mods:mods/mods:physicalDescription/mods:digitalOrigin/text()").to_s.should eql("Born Digital")
+      desc_md_doc.xpath("/mods:mods/mods:physicalDescription/mods:digitalOrigin/text()").to_s.should eql("born digital")
       desc_md_doc.xpath("/mods:mods/mods:originInfo/mods:dateCreated/text()").to_s.should eql(@ff_intermed.file_creation_date)
       desc_md_doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_accessed']/text()").to_s.should eql(@ff_intermed.file_accessed_date)
       desc_md_doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_modified']/text()").to_s.should eql(@ff_intermed.file_modified_date)

@@ -20,7 +20,7 @@ Feature: Hypatia disk image item edit
     Then I should see "Not Born Digital"
     When I am on the edit description page for hypatia:fixture_media_item
     Then the "digital_origin" field within "#digital_origin_field" should contain "Not Born Digital"
-    Then I fill in "digital_origin" with "Born Digital"
+    Then I fill in "digital_origin" with "born digital"
     Then I press "Save and Finish"
   
   Scenario: File Edit

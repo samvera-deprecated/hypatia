@@ -180,7 +180,7 @@ class FtkDiskImageItemAssembler
         }
         xml['mods'].physicalDescription {
           xml['mods'].extent fdi.disk_type
-          xml['mods'].digitalOrigin "Born Digital"
+          xml['mods'].digitalOrigin "born digital"
         }
         xml['mods'].identifier("type"=>"local"){
           xml.text fdi.case_number

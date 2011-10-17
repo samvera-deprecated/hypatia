@@ -7,7 +7,7 @@ Feature: Edit Hypatia items
     Given I am logged in as the "archivist1" user
     When I am on the edit document page for hypatia:fixture_media_item
     Then I should see "Add Your Work"
-    And the "digital_origin" field within "#digital_origin_field" should contain "Born Digital"
+    And the "digital_origin" field within "#digital_origin_field" should contain "born digital"
     
     
   Scenario: Editing Description of Ftk (File) Item Object

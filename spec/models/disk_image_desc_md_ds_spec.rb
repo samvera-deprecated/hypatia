@@ -23,7 +23,7 @@ describe HypatiaDiskImgDescMetadataDS do
   end
 
   it "should have the correct :digital_origin term value" do
-    @desc_md_ds.term_values(:digital_origin).should == ["Born Digital"]
+    @desc_md_ds.term_values(:digital_origin).should == ["born digital"]
   end
 
 end
