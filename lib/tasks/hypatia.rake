@@ -128,9 +128,14 @@ namespace :hypatia do
         "hypatia_gallagher_collection.foxml.xml" => "hypatia:gallagher_collection",
         "hypatia_gould_collection.foxml.xml" => "hypatia:gould_collection",
         "hypatia_koch_collection.foxml.xml" => "hypatia:koch_collection",
+        "hypatia_lmaf_collection.foxml.xml" => "hypatia:lmaf_collection",
+        "hypatia_nhoa_collection.foxml.xml" => "hypatia:nhoa_collection",
+        "hypatia_pelli_collection.foxml.xml" => "hypatia:pelli_collection",
         "hypatia_sha_collection.foxml.xml" => "hypatia:sha_collection",
         "hypatia_tobin_collection.foxml.xml" => "hypatia:tobin_collection",
         "hypatia_turner_collection.foxml.xml" => "hypatia:turner_collection",
+        "hypatia_warner_collection.foxml.xml" => "hypatia:warner_collection",
+        "hypatia_welch_collection.foxml.xml" => "hypatia:welch_collection",
         "hypatia_xanadu_collection.foxml.xml" => "hypatia:xanadu_collection",
       }
 
