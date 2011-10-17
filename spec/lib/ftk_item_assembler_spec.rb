@@ -41,7 +41,7 @@ describe FtkItemAssembler do
     end
 =begin  no longer duplicated in item object
     it "gets the name of the collection it belongs to" do
-      hfo = FtkItemAssembler.new(:collection_pid => "hypatia:fixture_xanadu_collection")
+      hfo = FtkItemAssembler.new(:collection_pid => @coll_pid)
       hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
     end
 =end
@@ -57,6 +57,38 @@ describe FtkItemAssembler do
 =end
   end # context basic behavior
   
+  
+  context "descMetadata" do
+    before(:all) do
+      delete_fixture(@coll_pid)
+      import_fixture(@coll_pid)
+      @assembler = FtkItemAssembler.new(:collection_pid => @coll_pid)
+      @ff_intermed = FactoryGirl.build(:ftk_file)
+    end
+    it "creates the correct descMetadata" do
+      desc_md_doc = Nokogiri::XML(@assembler.build_desc_metadata(@ff_intermed))
+      desc_md_doc.namespaces.size.should eql(1)
+      desc_md_doc.namespaces["xmlns:mods"].should eql("http://www.loc.gov/mods/v3")
+      desc_md_doc.xpath("/mods:mods/mods:identifier[@type='filename']/text()").to_s.should eql(@ff_intermed.filename)
+      desc_md_doc.xpath("/mods:mods/mods:identifier[@type='ftk_id']/text()").to_s.should eql(@ff_intermed.id)
+      desc_md_doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='filepath']/text()").to_s.should eql(@ff_intermed.filepath)
+      nodeSet = desc_md_doc.xpath("/mods:mods/mods:physicalDescription/mods:extent")
+      nodeSet.size.should eql(2)
+      values = [nodeSet[0].text, nodeSet[1].text]
+      values[0].should_not eql(values[1])
+      values.include?(@ff_intermed.filesize).should be_true
+      values.include?(@ff_intermed.medium).should be_true
+      desc_md_doc.xpath("/mods:mods/mods:physicalDescription/mods:digitalOrigin/text()").to_s.should eql("Born Digital")
+      desc_md_doc.xpath("/mods:mods/mods:originInfo/mods:dateCreated/text()").to_s.should eql(@ff_intermed.file_creation_date)
+      desc_md_doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_accessed']/text()").to_s.should eql(@ff_intermed.file_accessed_date)
+      desc_md_doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_modified']/text()").to_s.should eql(@ff_intermed.file_modified_date)
+      desc_md_doc.xpath("/mods:mods/mods:relatedItem/mods:titleInfo/mods:title/text()").to_s.should eql(@ff_intermed.title)
+      desc_md_doc.xpath("/mods:mods/mods:note[@displayLabel='filetype']/text()").to_s.should eql(@ff_intermed.filetype)
+      desc_md_doc.xpath("/mods:mods/mods:note[not(@displayLabel)]/text()").to_s.should eql(@ff_intermed.type)
+    end
+  end
+  
+  
   context "creating datastreams" do
     before(:all) do
       delete_fixture(@coll_pid)
@@ -65,11 +97,11 @@ describe FtkItemAssembler do
       @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
       @hfo = FtkItemAssembler.new(:fedora_config => @fedora_config, :collection_pid => @coll_pid)
     end
+=begin  superceded
     it "creates a descMetadata file" do
       doc = Nokogiri::XML(@hfo.build_desc_metadata(@ff))
-=begin  no longer duplicated in item object      
-      @hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
-=end
+#no longer duplicated in item object      
+#      @hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
       doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.filename)
       doc.xpath("/mods:mods/mods:relatedItem[@displayLabel='Appears in']/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.title)
       doc.xpath("/mods:mods/mods:location/text()").to_s.should eql("CM5551212 (Punch Cards)")
@@ -81,6 +113,7 @@ describe FtkItemAssembler do
       doc.xpath("/mods:mods/mods:typeOfResource/text()").to_s.should eql(@ff.type)
       doc.xpath("/mods:mods/mods:physicalDescription/mods:form/text()").to_s.should eql(@ff.medium)
     end
+=end    
 =begin # superceded
     it "creates a contentMetadata file" do
       doc = Nokogiri::XML(@hfo.build_content_metadata(@ff,"fake_pid","fake_object_id"))
@@ -103,16 +136,15 @@ describe FtkItemAssembler do
     end
     it "creates a RELS-EXT datastream" do
       doc = Nokogiri::XML(@hfo.build_rels_ext(@ff))
-      doc.xpath("/rdf:RDF/rdf:Description/hydra:isGovernedBy/@rdf:resource").to_s.should eql("info:fedora/hypatia:fixture_xanadu_apo")
+#      doc.xpath("/rdf:RDF/rdf:Description/hydra:isGovernedBy/@rdf:resource").to_s.should eql("info:fedora/hypatia:fixture_xanadu_apo")
     end
   end  # context creating datastreams
   
   context "FtkItem FileAsset and its contentMetadata" do
-
     before(:all) do
       delete_fixture(@coll_pid)
       import_fixture(@coll_pid)
-      @assembler = FtkItemAssembler.new(:collection_pid => "hypatia:fixture_coll2")
+      @assembler = FtkItemAssembler.new(:collection_pid => @coll_pid)
       @ftk_file_intermed = FactoryGirl.build(:ftk_file)
       @ftk_item_object = HypatiaFtkItem.new
       @assembler.file_dir = "spec/fixtures/ftk"
@@ -275,7 +307,7 @@ describe FtkItemAssembler do
       @disk_object = build_fixture_disk_object
       
       @ff = FactoryGirl.build(:ftk_file)
-      @fia = FtkItemAssembler.new(:collection_pid => "hypatia:fixture_coll")  
+      @fia = FtkItemAssembler.new(:collection_pid => @coll_pid)  
       @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
       @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk") 
       @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives") 
@@ -311,7 +343,7 @@ describe FtkItemAssembler do
     end
     
     it "has an isMemberOfCollection relationship with a collection object" do
-      @hi.relationships[:self][:is_member_of_collection].first.gsub("info:fedora/",'').should eql("hypatia:fixture_coll")
+      @hi.relationships[:self][:is_member_of_collection].first.gsub("info:fedora/",'').should eql(@coll_pid)
     end
     
     it "has a FileAsset part" do
