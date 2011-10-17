@@ -3,15 +3,17 @@
   <span class="show-hide" style="display:none;">Hide Section</span>
   <div class="toggle-section">
     <div class="descMetadata metadata-subsection">
-      <h3 class="subsection-title">Disk Image</h3>
+      <h3 class="subsection-title">File (via FTK)</h3>
       <dl class="disk-image-metadata-list">
         <%= display_ds_values_as_dl_element("descMetadata", :filename, "File Name") %>
         <%= display_ds_values_as_dl_element("descMetadata", :filepath, "File Path") %>
         <%= display_ds_values_as_dl_element("descMetadata", :filetype, "File Type") %>
         <%= display_ds_values_as_dl_element("descMetadata", :extent, "Extent") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :digital_origin, "Digital Origin") %>
         <%= display_ds_values_as_dl_element("descMetadata", :date_created, "Date Created") %>
         <%= display_ds_values_as_dl_element("descMetadata", :date_last_modified, "Date Last Modified") %>
         <%= display_ds_values_as_dl_element("descMetadata", :date_last_accessed, "Date Last Accessed") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :note_plain, "Note") %>
         <%= display_ds_values_as_dl_element("descMetadata", :addl_title, "Title from Contents") %>
       </dl>
     </div>

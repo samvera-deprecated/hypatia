@@ -2,7 +2,7 @@
   <div class="descMetadata metadata-section">
     <h2 class="section-title">Description</h2>
     <div class="descMetadata metadata-subsection">
-      <h3 class="subsection-title">Disk Image</h3>
+      <h3 class="subsection-title">File</h3>
       <div>
         <p id="filename_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:filename], "File Name") %>
@@ -18,7 +18,11 @@
         </p>
         <p id="extent_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:extent], "Extent") %>
-          <%= fedora_text_field(@document_fedora,"descMetadata", [:extent], :multiple=>false, :required=>false ) %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:extent], :multiple=>true, :required=>false ) %>
+        </p>
+        <p id="digital_origin_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:digital_origin], "Digital Origin") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:digital_origin], :multiple=>false, :required=>false ) %>
         </p>
         <p id="date_created_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:date_created], "Date Created") %>
@@ -35,6 +39,10 @@
         <p id="addl_title_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:addl_title], "Title from Contents") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [:addl_title], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="note_plain_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:note_plain], "Note") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:note_plain], :multiple=>false, :required=>false ) %>
         </p>
       </div>
     </div>

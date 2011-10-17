@@ -17,8 +17,10 @@
     <file_creation_date>n/a</file_creation_date>
     <file_accessed_date>n/a</file_accessed_date>
     <file_modified_date>12/8/1988 6:48:48 AM (1988-12-08 14:48:48 UTC)</file_modified_date>
+    <medium>5 1/2 inch floppy disk</medium>
     <md5_hash>5E3A2508EA8A8D7E62657D99DAE503ED</md5_hash>
-    <type>Books</type>
+    <sha1_hash>B6373D02F3FD10E7E1AA0E3B3AE3205D6FB2541C</sha1_hash>
+    <type>Journal Article</type>
     <restricted>False</restricted>
     <access_rights>Public</access_rights>
     <title>The Burgess Shale and the Nature of History </title>
@@ -35,6 +37,8 @@
   </mods:location>
   <mods:physicalDescription>
     <mods:extent>35654</mods:extent>
+    <mods:extent>5 1/2 inch floppy disk</mods:extent>
+    <mods:digitalOrigin>born digital</mods:digitalOrigin>
   </mods:physicalDescription>
   <mods:originInfo>
     <!-- might be preferable to leave out elements with no value? -->
@@ -48,4 +52,5 @@
     </mods:titleInfo>
   </mods:relatedItem>
   <mods:note displayLabel="filetype">WordPerfect 4.2</mods:note>
+  <mods:note>Journal Article</mods:note>
 </mods:mods>

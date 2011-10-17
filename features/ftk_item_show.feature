@@ -13,10 +13,13 @@ Feature: FTK Item Object Show View
     Then I should see "BU3A5"  # filename, display_name
     And I should see "CM006.001/NONAME [FAT12]/[root]/BU3A5"  # filepath
     And I should see "35654" # extent
+    And I should see "Punch Cards" # extent
     And I should see "WordPerfect 4.2" # filetype
+    And I should see "born digital" # <digitalOrigin> (constant)
     And I should see "12/6/1988" # date_created
     And I should see "12/10/1988" # date_last_accessed
     And I should see "12/8/1988 6:48:48 AM (1988-12-08 14:48:48 UTC)" # date_last_modified
+    And I should see "Journal Article" # note_plain
     And I should see "The Burgess Shale and the Nature of History" # addl_title
 
   Scenario: all desired Repository metadata displays

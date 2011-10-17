@@ -18,11 +18,14 @@ class HypatiaFTKItemDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.filepath(:proxy=>[:location, :filepath], :index_as=>[:displayable])
     
     t.filetype(:path=>"note", :attributes=>{:displayLabel=>"filetype"}, :index_as=>[:searchable, :displayable, :facetable])
+    t.note_plain(:path=>"note", :attributes=>{:displayLabel=>:none}, :index_as=>[:searchable, :displayable, :facetable])
 
     t.physical_desc(:path=>"physicalDescription") {
-      t.extent(:path=>"extent", :index_as=>[:displayable])
+      t.extent(:path=>"extent", :index_as=>[:searchable, :displayable, :facetable])
+      t.digital_origin(:path=>"digitalOrigin", :index_as=>[:displayable])
     }
     t.extent(:proxy=>[:physical_desc, :extent])
+    t.digital_origin(:proxy=>[:physical_desc, :digital_origin])
 
     t.origin_info(:path=>"originInfo") {
       t.date_created(:path=>"dateCreated", :index_as=>[:displayable, :sortable])

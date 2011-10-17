@@ -23,7 +23,11 @@ describe HypatiaFTKItemDescMetadataDS do
   end
 
   it "should have the correct :extent value" do
-    @desc_md_ds.term_values(:extent).should == ["35654"]
+    @desc_md_ds.term_values(:extent).should == ["35654", "5 1/2 inch floppy disk"]
+  end
+
+  it "should have the correct :digital_origin term value" do
+    @desc_md_ds.term_values(:digital_origin).should == ["born digital"]
   end
 
   it "should have the correct :filetype value" do
@@ -38,6 +42,10 @@ describe HypatiaFTKItemDescMetadataDS do
   
   it "should have the correct :addl_title value" do
     @desc_md_ds.term_values(:addl_title).should == ["The Burgess Shale and the Nature of History"]
+  end
+
+  it "should have the correct :note_plain value" do
+    @desc_md_ds.term_values(:note_plain).should == ["Journal Article"]
   end
 
 end
