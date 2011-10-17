@@ -48,7 +48,6 @@ class FtkItemAssembler
 
     if args[:collection_pid]
       @collection_pid = args[:collection_pid]
-#      get_collection_info
     end
     
     set_bag_destination(args)
@@ -157,66 +156,56 @@ class FtkItemAssembler
     bag.add_file(ff.filename, source_file)
   end
   
-  # Build a MODS record for the FtkFile 
-  # @param [FtkFile] ff FTK file object
-  # @return [Nokogiri::XML::Document]
-  # @example document returned
-  #  <?xml version="1.0"?>
-  #  <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
-  #   <mods:titleInfo>
-  #     <mods:title>A Heartbreaking Work of Staggering Genius</mods:title>
-  #   </mods:titleInfo>
-  #   <mods:typeOfResource>Journal Article</mods:typeOfResource>
-  #   <mods:physicalDescription>
-  #     <mods:form>Punch Cards</mods:form>
-  #   </mods:physicalDescription>
-  #  </mods:mods>
-  def build_desc_metadata(ff)
-    @logger.debug "building desc metadata for #{ff.unique_combo} "
+  # Build a MODS record for the descMetadata datastream of the HypatiaFtkItem fedora object
+  # @param [FtkFile] the intermediate object for the FTK File that is being turned into a Fedora object
+  # @return [Nokogiri::XML::Document] - the xmlContent for the descMetadata datastream (a MODS document)
+  def build_desc_metadata(ff_intermed)
+    @logger.debug "building desc metadata for #{ff_intermed.unique_combo} "
     builder = Nokogiri::XML::Builder.new do |xml|
-      # Really, mods records should be in the mods namespace, 
-      # but it makes it a bit of a pain to query them. 
       xml.mods('xmlns:mods' => "http://www.loc.gov/mods/v3") {
         xml.parent.namespace = xml.parent.namespace_definitions.first
-        xml['mods'].titleInfo {
-          xml['mods'].title_ ff.filename
+        xml['mods'].identifier("type"=>"filename") {
+          xml.text ff_intermed.filename
         }
-        
+        xml['mods'].identifier("type"=>"ftk_id") {
+          xml.text ff_intermed.id
+        }
+        xml['mods'].location {
+          xml['mods'].physicalLocation("type"=>"filepath"){
+            xml.text ff_intermed.filepath
+          }
+        }
+        xml['mods'].physicalDescription {
+          xml['mods'].extent ff_intermed.filesize
+          xml['mods'].extent ff_intermed.medium
+          xml['mods'].digitalOrigin "Born Digital"
+        }
+        xml['mods'].originInfo {
+          xml['mods'].dateCreated {
+            xml.text ff_intermed.file_creation_date
+          }
+          xml['mods'].dateOther("type" => "last_accessed"){
+            xml.text ff_intermed.file_accessed_date
+          }
+          xml['mods'].dateOther("type" => "last_modified"){
+            xml.text ff_intermed.file_modified_date
+          }
+        }
         # If we have a title value, we know this item is part of a larger work
-        if ff.title
+        if ff_intermed.title
           xml['mods'].relatedItem('displayLabel' => 'Appears in', 'type' => 'host') {
             xml['mods'].titleInfo {
               xml['mods'].title {
-                xml.text ff.title
+                xml.text ff_intermed.title
               }
             }
           }
         end
-        
-        xml['mods'].location {
-#          xml.text "#{@collection_name} - #{ff.disk_image_number} (#{ff.medium})"
-          xml.text "#{ff.disk_image_number} (#{ff.medium})"
-          xml['mods'].physicalLocation("type"=>"disk"){
-            xml.text ff.disk_image_number
-          }
-          xml['mods'].physicalLocation("type"=>"filepath"){
-            xml.text ff.filepath
-          }
+        xml['mods'].note("displayLabel" => "filetype") {
+          xml.text ff_intermed.filetype
         }
-        xml['mods'].originInfo {
-          xml['mods'].dateCreated {
-            xml.text ff.file_creation_date
-          }
-          xml['mods'].dateOther("type" => "last_accessed"){
-            xml.text ff.file_accessed_date
-          }
-          xml['mods'].dateOther("type" => "last_modified"){
-            xml.text ff.file_modified_date
-          }
-        }
-        xml['mods'].typeOfResource_ ff.type
-        xml['mods'].physicalDescription {
-          xml['mods'].form_ ff.medium
+        xml['mods'].note {
+          xml.text ff_intermed.type
         }
       }
     end
@@ -377,6 +366,8 @@ class FtkItemAssembler
     else
       file_asset.add_file_datastream(file, {:dsid => "content", :label => ftk_file_intermed.filename})
     end
+
+# FIXME:  (sha1 and) md5 are avail from FtkFile object
 
     if @display_derivative_dir 
       html_filepath = "#{@display_derivative_dir}/#{ftk_file_intermed.display_deriv_fname}"

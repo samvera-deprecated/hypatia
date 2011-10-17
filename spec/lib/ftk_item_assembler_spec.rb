@@ -97,38 +97,6 @@ describe FtkItemAssembler do
       @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
       @hfo = FtkItemAssembler.new(:fedora_config => @fedora_config, :collection_pid => @coll_pid)
     end
-=begin  superceded
-    it "creates a descMetadata file" do
-      doc = Nokogiri::XML(@hfo.build_desc_metadata(@ff))
-#no longer duplicated in item object      
-#      @hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
-      doc.xpath("/mods:mods/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.filename)
-      doc.xpath("/mods:mods/mods:relatedItem[@displayLabel='Appears in']/mods:titleInfo/mods:title/text()").to_s.should eql(@ff.title)
-      doc.xpath("/mods:mods/mods:location/text()").to_s.should eql("CM5551212 (Punch Cards)")
-      doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='disk']/text()").to_s.should eql(@ff.disk_image_number)
-      doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='filepath']/text()").to_s.should eql(@ff.filepath)
-      doc.xpath("/mods:mods/mods:originInfo/mods:dateCreated/text()").to_s.should eql(@ff.file_creation_date)
-      doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_accessed']/text()").to_s.should eql(@ff.file_accessed_date)
-      doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_modified']/text()").to_s.should eql(@ff.file_modified_date)
-      doc.xpath("/mods:mods/mods:typeOfResource/text()").to_s.should eql(@ff.type)
-      doc.xpath("/mods:mods/mods:physicalDescription/mods:form/text()").to_s.should eql(@ff.medium)
-    end
-=end    
-=begin # superceded
-    it "creates a contentMetadata file" do
-      doc = Nokogiri::XML(@hfo.build_content_metadata(@ff,"fake_pid","fake_object_id"))
-      doc.xpath("/contentMetadata/@type").to_s.should eql("born-digital")
-      doc.xpath("/contentMetadata/@objectId").to_s.should eql("fake_pid")
-      doc.xpath("/contentMetadata/resource/@type").to_s.should eql("analysis")
-      doc.xpath("/contentMetadata/resource/file/@id").to_s.should eql(@ff.filename)
-      doc.xpath("/contentMetadata/resource/file/@objectId").to_s.should_not eql("fake_object_id")
-      doc.xpath("/contentMetadata/resource/file/@format").to_s.should eql(@ff.filetype)
-      doc.xpath("/contentMetadata/resource/file/location/@type").to_s.should eql("filesystem")
-      doc.xpath("/contentMetadata/resource/file/location/text()").to_s.should eql(@ff.export_path)      
-      doc.xpath("/contentMetadata/resource/file/checksum[@type='md5']/text()").to_s.should eql(@ff.md5)      
-      doc.xpath("/contentMetadata/resource/file/checksum[@type='sha1']/text()").to_s.should eql(@ff.sha1)
-    end
-=end    
     it "creates a rightsMetdata file" do
       doc = Nokogiri::XML(@hfo.build_rights_metadata(@ff))
       doc.xpath("/xmlns:rightsMetadata/xmlns:access[@type='discover']/xmlns:machine/xmlns:group/text()").to_s.should eql(@ff.access_rights.downcase)
