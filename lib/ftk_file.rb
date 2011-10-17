@@ -4,12 +4,12 @@ class FtkFile
   
   # The filename of the file. Not necessarily unique
   attr_accessor :filename
-  # The id number assigned by FTK
+  # The id number assigned by FTK (e.g. 1004)
   attr_accessor :id
   # The combination of the filename and the id ensures a unique identifier for the file
   attr_accessor :unique_combo
-  # The size of the file
-  attr_accessor :filesize
+  # The size of the file, in bytes (e.g. 3482 B)
+  attr_accessor :filesize 
   # The type of the file (e.g., "WordPerfect 5.1")
   attr_accessor :filetype
   # The path of the file when FTK processed it (e.g., "CM117.001/NONAME [FAT12]/[root]/NATHIN32")
