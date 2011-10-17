@@ -54,7 +54,7 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     }
     t.extent(:proxy=>[:physical_desc, :extent])
 
-    t.genre(:path=>"genre", :index_as=>[:searchable, :displayable, :facetable, :sortable])
+    t.genre(:path=>"genre", :index_as=>[:searchable, :displayable, :facetable])
 
     t.abstract(:path=>"abstract", :attributes=>{:displayLabel=>:none}, :index_as=>[:searchable, :displayable])
     t.biography(:path=>"abstract", :attributes=>{:displayLabel=>"Biography"}, :index_as=>[:searchable, :displayable])
