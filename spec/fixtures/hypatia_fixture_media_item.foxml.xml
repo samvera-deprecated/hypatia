@@ -87,7 +87,7 @@
   </foxml:datastream>
   
   <foxml:datastream ID="descMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
-    <foxml:datastreamVersion ID="descMetadata.1" LABEL="" CREATED="2011-09-16T17:58:21.618Z" MIMETYPE="text/xml" SIZE="365">
+    <foxml:datastreamVersion ID="descMetadata.0" LABEL="" CREATED="2011-09-16T17:58:21.618Z" MIMETYPE="text/xml" SIZE="365">
       <foxml:xmlContent>
         <mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
           <mods:titleInfo>
@@ -105,34 +105,6 @@
   
   <foxml:datastream ID="rightsMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
     <foxml:datastreamVersion ID="rightsMetadata.0" LABEL="" CREATED="2011-09-16T17:58:19.175Z" MIMETYPE="text/xml" SIZE="539">
-      <foxml:xmlContent>
-        <rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
-          <copyright>
-            <human/>
-            <machine>
-              <uvalicense>no</uvalicense>
-            </machine>
-          </copyright>
-          <access type="discover">
-            <human/>
-            <machine/>
-          </access>
-          <access type="read">
-            <human/>
-            <machine/>
-          </access>
-          <access type="edit">
-            <human/>
-            <machine/>
-          </access>
-          <embargo>
-            <human/>
-            <machine/>
-          </embargo>
-        </rightsMetadata>
-      </foxml:xmlContent>
-    </foxml:datastreamVersion>
-    <foxml:datastreamVersion ID="rightsMetadata.1" LABEL="" CREATED="2011-09-16T17:58:21.719Z" MIMETYPE="text/xml" SIZE="305">
       <foxml:xmlContent>
         <rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
           <access type="discover">
@@ -156,7 +128,7 @@
   </foxml:datastream>
 
   <foxml:datastream ID="contentMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
-    <foxml:datastreamVersion ID="contentMetadata.1" LABEL="" CREATED="2011-09-16T17:58:21.672Z" MIMETYPE="text/xml" SIZE="318">
+    <foxml:datastreamVersion ID="contentMetadata.0" LABEL="" CREATED="2011-09-16T17:58:21.672Z" MIMETYPE="text/xml" SIZE="318">
       <foxml:xmlContent>
         <contentMetadata objectId="hypatia:fixture_media_item" type="file">
           <resource type="media-file" id="CM058.dd" objectId="hypatia:fixture_file_asset_dd_for_media_item">

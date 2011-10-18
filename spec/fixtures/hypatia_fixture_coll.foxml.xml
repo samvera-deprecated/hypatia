@@ -49,7 +49,7 @@
   </foxml:datastream>
   
   <foxml:datastream ID="rightsMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
-    <foxml:datastreamVersion ID="rightsMetadata.0" LABEL="" CREATED="2011-07-18T12:34:56.789Z" MIMETYPE="text/xml" SIZE="302">
+    <foxml:datastreamVersion ID="rightsMetadata.0" LABEL="" CREATED="2011-09-16T17:58:19.175Z" MIMETYPE="text/xml" SIZE="539">
       <foxml:xmlContent>
         <rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
           <access type="discover">
@@ -60,6 +60,11 @@
           <access type="read">
             <machine>
               <group>public</group>
+            </machine>
+          </access>
+          <access type="edit">
+            <machine>
+              <group>archivist</group>
             </machine>
           </access>
         </rightsMetadata>
