@@ -9,9 +9,13 @@ Then /^I (should|should not) see a link to the show page for "([^"]*)"$/ do |boo
   end
 end
 
-Then /^I should see a link to the show page for "([^"]*)" with label "([^"]*)"$/ do |object_id, link_label|
+Then /^I (should|should not) see a link to the show page for "([^"]*)" with label "([^"]*)"$/ do |bool, object_id, link_label|
   path = "the show page for #{object_id}"
-  page.should have_xpath(".//a[@href=\"#{path_to(path)}\"]", :text=>link_label)  
+  if bool == "should"
+    page.should have_xpath(".//a[@href=\"#{path_to(path)}\"]", :text=>link_label)
+  else
+    page.should_not have_xpath(".//a[@href=\"#{path_to(path)}\"]", :text=>link_label)
+  end
 end
 
 
