@@ -67,7 +67,7 @@ Sample of info from FTK for a file:
   </foxml:datastream>
   
   <foxml:datastream ID="RELS-EXT" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
-    <foxml:datastreamVersion ID="RELS-EXT.1" LABEL="" CREATED="2011-09-20T23:57:12.445Z" MIMETYPE="text/xml" SIZE="438">
+    <foxml:datastreamVersion ID="RELS-EXT.0" LABEL="" CREATED="2011-09-20T23:57:12.445Z" MIMETYPE="text/xml" SIZE="438">
       <foxml:xmlContent>
         <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
           <rdf:Description rdf:about="info:fedora/hypatia:fixture_ftk_file_item">
@@ -81,7 +81,7 @@ Sample of info from FTK for a file:
   </foxml:datastream>
 
   <foxml:datastream ID="descMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
-    <foxml:datastreamVersion ID="descMetadata.1" LABEL="" CREATED="2011-09-20T23:57:12.311Z" MIMETYPE="text/xml" SIZE="809">
+    <foxml:datastreamVersion ID="descMetadata.0" LABEL="" CREATED="2011-09-20T23:57:12.311Z" MIMETYPE="text/xml" SIZE="809">
       <foxml:xmlContent>
         <mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
           <mods:identifier type="filename">BU3A5</mods:identifier>
@@ -113,7 +113,7 @@ Sample of info from FTK for a file:
   </foxml:datastream>
   
   <foxml:datastream ID="rightsMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
-    <foxml:datastreamVersion ID="rightsMetadata.1" LABEL="" CREATED="2011-09-20T23:57:12.379Z" MIMETYPE="text/xml" SIZE="305">
+    <foxml:datastreamVersion ID="rightsMetadata.0" LABEL="" CREATED="2011-09-20T23:57:12.379Z" MIMETYPE="text/xml" SIZE="305">
       <foxml:xmlContent>
         <rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
           <access type="discover">
@@ -137,7 +137,7 @@ Sample of info from FTK for a file:
   </foxml:datastream>
 
   <foxml:datastream ID="contentMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
-    <foxml:datastreamVersion ID="contentMetadata.1" LABEL="" CREATED="2011-09-20T23:57:12.348Z" MIMETYPE="text/xml" SIZE="475">
+    <foxml:datastreamVersion ID="contentMetadata.0" LABEL="" CREATED="2011-09-20T23:57:12.348Z" MIMETYPE="text/xml" SIZE="475">
       <foxml:xmlContent>
         <contentMetadata objectId="hypatia:fixture_ftk_file_item" type="file">
           <resource type="file" id="BU3A5" objectId="hypatia:fixture_file_asset_for_ftk_file_item">
@@ -156,4 +156,5 @@ Sample of info from FTK for a file:
       </foxml:xmlContent>
     </foxml:datastreamVersion>
   </foxml:datastream>
+  
 </foxml:digitalObject>
