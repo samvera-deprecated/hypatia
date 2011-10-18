@@ -41,7 +41,7 @@
             <mods:title>Collection</mods:title>
           </mods:titleInfo>
           <mods:typeOfResource collection="yes"/>
-          <mods:abstract displayLabel="Scope and Contents">This is a hypatia set object for the fake collection.  It contains set objects intermed1 and intermed3.</mods:abstract> 
+          <mods:abstract displayLabel="Collection Scope and Content Summary">This is a hypatia set object for a fake collection.  It contains set objects intermed1 and intermed3.</mods:abstract> 
           <mods:identifier type="local">coll</mods:identifier>
         </mods:mods>
       </foxml:xmlContent>
