@@ -27,7 +27,7 @@
         <rdf:RDF xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rel="info:fedora/fedora-system:def/relations-external#" xmlns:hydra="http://projecthydra.org/ns/relations#">
           <rdf:Description rdf:about="info:fedora/hypatia:fixture_item1">
             <isMemberOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/hypatia:fixture_intermed2" />
-            <hasModel xmlns="info:fedora/fedora-system:def/model#" rdf:resource="info:fedora/afmodel:HypatiaItem" />
+            <hasModel xmlns="info:fedora/fedora-system:def/model#" rdf:resource="info:fedora/afmodel:HypatiaDiskImageItem"/>
           </rdf:Description>
         </rdf:RDF> 
       </foxml:xmlContent>
@@ -41,7 +41,6 @@
           <mods:titleInfo>
             <mods:title>item 1</mods:title>
           </mods:titleInfo>
-          <mods:abstract displayLabel="Scope and Contents">This is the first item for a fake collection created for testing.</mods:abstract> 
           <mods:identifier type="local">item 1</mods:identifier>
         </mods:mods>
       </foxml:xmlContent>
@@ -51,12 +50,12 @@
   <foxml:datastream ID="contentMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
     <foxml:datastreamVersion ID="contentMetadata.0" LABEL="" CREATED="2011-07-18T12:34:56.789Z" MIMETYPE="text/xml" SIZE="276">
       <foxml:xmlContent>   
-        <contentMetadata type="born-digital" objectId="druid:tk694zs2244">
-          <resource id="analysis-text" type="analysis" data="metadata" objectId="druid:nd615pr9748">
-            <file id="item1.txt" format="TEXT" mimetype="text/plain" encoding="UTF-8" size="1250" preserve="yes" shelve="yes" deliver="yes">
-              <location type="url">http://stacks.stanford.edu/file/druid:nd615pr9748/item1.txt</location>
-              <checksum type="md5">37cf7f100f80d4088ca011ad977a154b</checksum>
-              <checksum type="sha1">a25bc23d85ac1d584bfdce4976149842e8280ad6</checksum>
+        <contentMetadata objectId="hypatia:fixture_item3" type="file">
+          <resource type="media-file" id="item3.dd" objectId="hypatia:fixture_ignored3">
+            <file id="item3.dd" format="BINARY" mimetype="application/octet-stream" size="47570" preserve="yes" publish="yes" shelve="yes">
+              <location type="datastreamID">DS1</location>
+              <checksum type="md5">856d7efe922f80e68c954d2e3521f74a</checksum>
+              <checksum type="sha1">1a79f23e7827ee62370850def76afdeccf3fbadb</checksum>
             </file>
           </resource>
         </contentMetadata> 

@@ -28,7 +28,7 @@
           <rdf:Description rdf:about="info:fedora/hypatia:fixture_item3">
             <isMemberOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/hypatia:fixture_intermed2" />
             <isMemberOf xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/hypatia:fixture_intermed3" />
-            <hasModel xmlns="info:fedora/fedora-system:def/model#" rdf:resource="info:fedora/afmodel:HypatiaItem" />
+            <hasModel xmlns="info:fedora/fedora-system:def/model#" rdf:resource="info:fedora/afmodel:HypatiaFtkItem"/>
           </rdf:Description> 
         </rdf:RDF> 
       </foxml:xmlContent>
@@ -43,8 +43,14 @@
             <mods:title>item 3</mods:title>
           </mods:titleInfo>
           <mods:abstract displayLabel="Scope and Contents">This is the third item for a fake collection created for testing.</mods:abstract> 
-          <mods:identifier type="local">item 3</mods:identifier>
-        </mods:mods> 
+          <mods:identifier type="filename">item3.txt</mods:identifier>
+          <mods:identifier type="ftk_id">666</mods:identifier>
+          <mods:physicalDescription>
+            <mods:extent>66666</mods:extent>
+            <mods:digitalOrigin>born digital</mods:digitalOrigin>
+          </mods:physicalDescription>
+          <mods:note>a note</mods:note>
+        </mods:mods>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
   </foxml:datastream>
@@ -52,15 +58,15 @@
   <foxml:datastream ID="contentMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
     <foxml:datastreamVersion ID="contentMetadata.0" LABEL="" CREATED="2011-07-18T12:34:56.789Z" MIMETYPE="text/xml" SIZE="276">
       <foxml:xmlContent> 
-        <contentMetadata type="born-digital" objectId="druid:tk694zs2244">
-          <resource id="analysis-text" type="analysis" data="metadata" objectId="druid:nd123pr4567">
-            <file id="item3.txt" format="TEXT" mimetype="text/plain" encoding="UTF-8" size="1250" preserve="yes" shelve="yes" deliver="yes">
-              <location type="url">http://stacks.stanford.edu/file/druid:nd123pr4567/item3.txt</location>
-              <checksum type="md5">37cf7f100f80d4088ca011ad977a154b</checksum>
-              <checksum type="sha1">a25bc23d85ac1d584bfdce4976149842e8280ad6</checksum>
+        <contentMetadata objectId="hypatia:fixture_item3" type="file">
+          <resource type="file" id="item3.txt" objectId="hypatia:ignored">
+            <file id="item3.txt" mimetype="text/plain" size="35654" public="yes" preserve="yes" shelve="yes">
+              <location type="datastreamID">content</location>
+              <checksum type="md5">5E3A2508EA8A8D7E62657D99DAE503ED</checksum>
+              <checksum type="sha1">E876FA363FAFDC6784C5EE75E8F9EA9FF11EC9FF</checksum>
             </file>
           </resource>
-        </contentMetadata> 
+        </contentMetadata>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
   </foxml:datastream>
