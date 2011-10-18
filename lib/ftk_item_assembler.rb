@@ -79,6 +79,9 @@ class FtkItemAssembler
       @display_derivative_dir = display_derivative_dir
     end
     
+    # rights metadata is the same for all the files at this time
+    @rights_metadata = build_rights_metadata
+    
     @ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
     @ftk_processor.files.each do |ftk_file|
       create_hypatia_ftk_item(ftk_file)
@@ -103,8 +106,8 @@ class FtkItemAssembler
     fileAsset = create_hypatia_file(hypatia_item,ff)
     
     build_ng_xml_datastream(hypatia_item, "descMetadata", build_desc_metadata(ff))
-    build_ng_xml_datastream(hypatia_item, "contentMetadata", build_content_metadata(ff,hypatia_item.pid,fileAsset.pid))
-    build_ng_xml_datastream(hypatia_item, "rightsMetadata", build_rights_metadata(ff))
+    build_ng_xml_datastream(hypatia_item, "contentMetadata", build_content_metadata(ff, hypatia_item.pid, fileAsset.pid))
+    build_ng_xml_datastream(hypatia_item, "rightsMetadata", @rights_metadata)
     
     hypatia_item.save
     return hypatia_item
@@ -251,27 +254,33 @@ class FtkItemAssembler
     end
     builder.to_xml
   end
-  
-  # Build rightsMetadata datastream
-  # @param [FtkFile] ff FTK file object
-  # @return [Nokogiri::XML::Document]
-  def build_rights_metadata(ff)
+
+  # Build rightsMetadata datastream for HypatiaFtkItem;  discover and read permissions allowed for all, edit permissions for archivist group
+  # @return [Nokogiri::XML::Document] - the xmlContent for the rightsMetadata datastream
+  def build_rights_metadata
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.rightsMetadata("xmlns" => "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1", "version" => "0.1"){
-        xml.access("type" => "discover"){
+        xml.access("type" => "discover") {
           xml.machine {
             xml.group "public"
           }
         }
-        xml.access("type" => "read"){
+        xml.access("type" => "read") {
           xml.machine {
             xml.group "public"
+          }
+        }
+        xml.access("type" => "edit") {
+          xml.machine {
+            xml.group "archivist"
           }
         }
       }
     end
     builder.to_xml
   end
+  
+  
   
   # Build the RELS-EXT datastream
   # @param [FtkFile] ff FTK file object

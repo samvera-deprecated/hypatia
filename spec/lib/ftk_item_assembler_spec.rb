@@ -50,13 +50,14 @@ describe FtkItemAssembler do
   end # context basic behavior
   
   
-  context "descMetadata" do
+  context "metadata datastreams" do
     before(:all) do
       delete_fixture(@coll_pid)
       import_fixture(@coll_pid)
       @assembler = FtkItemAssembler.new(:collection_pid => @coll_pid)
       @ff_intermed = FactoryGirl.build(:ftk_file)
     end
+    
     it "creates the correct descMetadata" do
       desc_md_doc = Nokogiri::XML(@assembler.build_desc_metadata(@ff_intermed))
       desc_md_doc.namespaces.size.should eql(1)
@@ -78,7 +79,19 @@ describe FtkItemAssembler do
       desc_md_doc.xpath("/mods:mods/mods:note[@displayLabel='filetype']/text()").to_s.should eql(@ff_intermed.filetype)
       desc_md_doc.xpath("/mods:mods/mods:note[not(@displayLabel)]/text()").to_s.should eql(@ff_intermed.type)
     end
+
+    it "creates the correct rightsMetadata" do
+      rights_md_doc = Nokogiri::XML(@assembler.build_rights_metadata)
+      rights_md_doc.namespaces.size.should eql(1)
+      ns = "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1"
+      rights_md_doc.namespaces["xmlns"].should eql(ns)
+      rights_md_doc.xpath("/ns:rightsMetadata/ns:access", {"ns" => ns}).size.should eql(3)
+      rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='discover']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("public")
+      rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='read']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("public")
+      rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='edit']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("archivist")
+    end
   end
+  
   
   
   context "creating datastreams" do
@@ -88,11 +101,6 @@ describe FtkItemAssembler do
       @ff = FactoryGirl.build(:ftk_file)
       @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
       @hfo = FtkItemAssembler.new(:fedora_config => @fedora_config, :collection_pid => @coll_pid)
-    end
-    it "creates a rightsMetdata file" do
-      doc = Nokogiri::XML(@hfo.build_rights_metadata(@ff))
-      doc.xpath("/xmlns:rightsMetadata/xmlns:access[@type='discover']/xmlns:machine/xmlns:group/text()").to_s.should eql(@ff.access_rights.downcase)
-      doc.xpath("/xmlns:rightsMetadata/xmlns:access[@type='read']/xmlns:machine/xmlns:group/text()").to_s.should eql(@ff.access_rights.downcase)
     end
     it "creates a RELS-EXT datastream" do
       doc = Nokogiri::XML(@hfo.build_rels_ext(@ff))
