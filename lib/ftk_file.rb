@@ -14,8 +14,8 @@ class FtkFile
   attr_accessor :filetype
   # The path of the file when FTK processed it (e.g., "CM117.001/NONAME [FAT12]/[root]/NATHIN32")
   attr_accessor :filepath
-  # The number of the disk image where this file was stored (e.g., "CM117")
-  attr_accessor :disk_image_number
+  # The name of the disk image where this file was stored (e.g., "CM117")
+  attr_accessor :disk_image_name
   # The date of the file's creation, as reported by FTK
   attr_accessor :file_creation_date
   # The file's last accessed date, as reported by FTK

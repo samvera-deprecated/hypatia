@@ -103,7 +103,7 @@ class FtkItemAssembler
     
     link_to_disk(hypatia_item,ff)
     link_to_collection(hypatia_item)
-    fileAsset = create_hypatia_file(hypatia_item,ff)
+    fileAsset = create_hypatia_file(hypatia_item, ff)
     
     build_ng_xml_datastream(hypatia_item, "descMetadata", build_desc_metadata(ff))
     build_ng_xml_datastream(hypatia_item, "contentMetadata", build_content_metadata(ff, hypatia_item.pid, fileAsset.pid))
@@ -280,8 +280,6 @@ class FtkItemAssembler
     builder.to_xml
   end
   
-  
-  
   # Build the RELS-EXT datastream
   # @param [FtkFile] ff FTK file object
   # @return [Nokogiri::XML::Document]
@@ -316,20 +314,20 @@ class FtkItemAssembler
   # @return [Boolean] true for success, false for failure
   def link_to_disk(hypatia_item,ff)
     solr_params={}
-    solr_params[:q]="file_id_t:#{ff.disk_image_number}"
+    solr_params[:q]="file_id_t:#{ff.disk_image_name}"
     solr_params[:qt]='standard'
     solr_params[:fl]='id'
     solr_response = Blacklight.solr.find(solr_params)
     
     # Log a message if we can't find any disk images that this file belongs to
     if solr_response.docs.count == 0
-      raise "No disk image objects matching #{ff.disk_image_number}. #{hypatia_item.pid} has not been correctly populated"
+      raise "No disk image objects matching #{ff.disk_image_name}. #{hypatia_item.pid} has not been correctly populated"
     elsif solr_response.docs.count > 1
-      raise "Too many disk image objects matching #{ff.disk_image_number}. #{hypatia_item.pid} has not been correctly populated"
+      raise "Too many disk image objects matching #{ff.disk_image_name}. #{hypatia_item.pid} has not been correctly populated"
     else
       document = solr_response.docs.first      
       foo = HypatiaDiskImageItem.load_instance(document[:id])
-      hypatia_item.add_relationship(:is_member_of,foo)
+      hypatia_item.add_relationship(:is_member_of, foo)
       hypatia_item.save
       @logger.debug "HypatiaFtkItem #{hypatia_item.pid} is now a member of HypatiaDiskImageItem #{foo.pid}"
     end

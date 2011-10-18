@@ -8,7 +8,7 @@ FactoryGirl.define do
     filesize '504 B'
     filetype "WordPerfect 5.1"
     filepath "CM5551212.001/NONAME [FAT12]/[root]/NATHIN32"
-    disk_image_number "CM5551212"
+    disk_image_name "CM5551212"
     file_creation_date "6/14/1996 4:46:26 AM (1996-06-14 11:46:26 UTC)"
     file_accessed_date "12/8/1998 6:48:48 AM (1998-12-08 14:48:48 UTC)"
     file_modified_date "10/20/1998 10:44:46 AM (1998-10-20 17:44:46 UTC)"

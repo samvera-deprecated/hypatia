@@ -11,7 +11,7 @@ describe FtkFile do
     it "responds to all of the fields a file object needs" do
       # @ff.send("#{key}=".to_sym, value)
       
-      fields = [:filename=,:id=,:filesize=,:filetype=,:filepath=,:disk_image_number=,
+      fields = [:filename=,:id=,:filesize=,:filetype=,:filepath=,:disk_image_name=,
           :file_creation_date=,:file_accessed_date=,:file_modified_date=,:medium=,:title=,
           :access_rights=,:duplicate=,:restricted=,:md5=,:sha1=,:export_path=,:unique_combo=,:type=]
       fields.each do |field|
