@@ -3,33 +3,14 @@
   <span class="show-hide" style="display:none;">Hide Section</span>
   <div class="toggle-section">
     <div class="descMetadata metadata-subsection">
-      <h3 class="subsection-title">Collection</h3>
+      <h3 class="subsection-title">Set (Series)</h3>
       <dl class="collection-metadata-list">
         <%= display_ds_values_as_dl_element("descMetadata", :local_id, "Local Identifier") %>
-        <%= display_ds_values_as_dl_element("descMetadata", :genre, "Genre") %>
         <%= display_ds_values_as_dl_element("descMetadata", :create_date, "Created") %>
         <%= display_ds_values_as_dl_element("descMetadata", :extent, "Extent") %>
-        <%= display_ds_values_as_dl_element("descMetadata", :abstract, "Description") %>
-        <%= display_ds_values_as_dl_element("descMetadata", :scope_and_summary, "Summary") %>
-        <%= display_ds_values_as_dl_element("descMetadata", :citation, "Preferred Citation") %>
-        <%= display_ds_values_as_dl_element("descMetadata", :topic, "Subject") %>
-      </dl>
-    </div>
-    <div class="descMetadata metadata-subsection">
-      <h3 class="subsection-title">Creator</h3>
-      <dl class="collection-metadata-list">
-        <%= display_ds_values_as_dl_element("descMetadata", :person, "Creator") %>
-        <%= display_ds_values_as_dl_element("descMetadata", :biography, "Biography") %>
-      </dl>
-    </div>
-    <div class="descMetadata metadata-subsection">
-      <h3 class="subsection-title">Repository</h3>
-      <dl class="collection-metadata-list">
-        <%= display_ds_values_as_dl_element("descMetadata", :organization, "Repository") %>
-        <%= display_ds_values_as_dl_element("descMetadata", :use_and_repro_rights, "Publication Rights") %>
-        <%= display_ds_values_as_dl_element("descMetadata", :access, "Access Notes") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :scope_and_content, "Summary") %>
+        <%= display_ds_values_as_dl_element("descMetadata", :note, "Note") %>
       </dl>
     </div>
   </div>
 </div>
-
