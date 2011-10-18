@@ -27,21 +27,14 @@ class FtkItemAssembler
 #  attr_accessor :fedora_config
   # The collection these files belong to
   attr_accessor :collection_pid
-  
+
+# NAOMI:  fix this comment  
+# NAOMI:  change the args to just be a collection_pid instead of a hash
   # @param [Hash] args 
-  # @param [Hash[:fedora_config]] 
+  # @param [Hash[:collection_pid]] 
   def initialize(args={})
     @logger = Logger.new('log/ftk_item_assembler.log')
     @logger.debug 'Initializing Hypatia File Object Assembler'
-
-=begin    # from before this was run within the rails environment
-    if args[:fedora_config]
-      @fedora_config = args[:fedora_config]
-      ActiveFedora.init(args[:fedora_config])
-    else
-      ActiveFedora.init
-    end
-=end
 
     if args[:collection_pid]
       @collection_pid = args[:collection_pid]
@@ -88,8 +81,7 @@ class FtkItemAssembler
     
     @ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
     @ftk_processor.files.each do |ftk_file|
-# TODO: make this each with index or some such ...
-      create_hypatia_ftk_item(ftk_file[1])
+      create_hypatia_ftk_item(ftk_file)
     end
   end
   
