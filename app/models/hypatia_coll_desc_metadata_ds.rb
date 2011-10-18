@@ -8,13 +8,13 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-3.xsd", :namespace_prefix => "mods")
 
     t.title_info(:path=>"titleInfo") {
-      t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable], :label=>"title")
+      t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable, :facetable], :label=>"title")
     }
     t.title(:proxy=>[:title_info, :title])
-    t.display_name(:proxy=>[:title_info, :title], :index_as=>[:searchable, :displayable, :sortable])
+    t.display_name(:proxy=>[:title_info, :title], :index_as=>[:searchable, :displayable, :sortable, :facetable])
     
     t.name_ {
-      t.name_part(:path=>"namePart")
+      t.name_part(:path=>"namePart", :index_as=>[:facetable, :displayable])
       t.family_name(:path=>"namePart", :attributes=>{:type=>"family"})
       t.given_name(:path=>"namePart", :attributes=>{:type=>"given"}, :label=>"first name")
       t.terms_of_address(:path=>"namePart", :attributes=>{:type=>"termsOfAddress"})
@@ -32,7 +32,7 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.corporate(:proxy=>[:corporate_full, :name_part])
     t.repository(:ref=>:corporate, :path=>'name[mods:role/mods:roleTerm="repository"]', :xmlns=>"http://www.loc.gov/mods/v3", :namespace_prefix => "mods")
 
-    t.local_id(:path=>"identifier", :attributes=>{:type=>"local"}, :index_as=>[:searchable, :displayable, :sortable])
+    t.local_id(:path=>"identifier", :attributes=>{:type=>"local"}, :index_as=>[:searchable, :displayable, :sortable, :facetable])
 
     t.origin_info(:path=>"originInfo") {
       t.date_created(:path=>"dateCreated", :index_as=>[:searchable, :displayable, :facetable, :sortable])
@@ -40,7 +40,7 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.create_date(:proxy=>[:origin_info, :date_created])
 
     t.location(:path=>"location") {
-      t.located_in(:path=>"physicalLocation", :attributes=>{:displayLabel=>"Located in"})
+      t.located_in(:path=>"physicalLocation", :attributes=>{:displayLabel=>"Located in"}, :index_as=>[:facetable,:displayable])
     }
     t.located_in(:proxy=>[:location, :located_in])
 

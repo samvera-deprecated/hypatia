@@ -4,14 +4,14 @@ Feature: Facets on Home Page and Search Results
   Scenario: home page facets
     When I am on the home page
     Then I should see "Browse Results:"
-    And I should see "Format"
+    And I should see "Repository"
   
   Scenario: search results facets
     When I am on the home page
     And I fill in "q" with "hypatia"
     And I press "Search"
     Then I should see "Filter Results:"
-    And I should see "Format"
+    And I should see "Repository"
 
   Scenario: i18n translations
     When I am on the home page

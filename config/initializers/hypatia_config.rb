@@ -24,17 +24,25 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:facet] = {
    :field_names => (facet_fields = [
-     "subject_topic_facet",
-     "genre_facet",
-     "format_facet",
-     "mimetype_facet",
+     "repository_facet",
+     "display_name_facet",
+     "local_id_facet",
+     "located_in_facet",
+     "create_date_facet",
+     "creator_facet",
+     "filetype_facet",
+     "topic_facet",
      "has_model_s"
      ]),
    :labels => {
-     "subject_topic_facet"=>"Topic",
-     "genre_facet"=>"Genre",
-     "format_facet"=>"Format",
-     "mimetype_facet"=>"MIME Type",
+     "repository_facet"=>"Repository",
+     "display_name_facet"=>"Display Name",
+     "local_id_facet"=>"Local ID",
+     "located_in_facet"=>"Located In",
+     "create_date_facet"=>"Create Date",
+     "creator_facet"=>"Creator",
+     "filetype_facet"=>"Filetype",
+     "topic_facet"=>"Topic",
      "has_model_s"=>"Object Type"
    },
 

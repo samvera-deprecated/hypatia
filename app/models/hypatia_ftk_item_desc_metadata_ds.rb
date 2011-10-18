@@ -8,7 +8,7 @@ class HypatiaFTKItemDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-3.xsd")
 
     t.filename(:path=>"identifier", :attributes=>{:type=>"filename"}, :index_as=>[:searchable, :displayable, :sortable])
-    t.display_name(:proxy=>[:filename], :index_as=>[:searchable, :displayable, :sortable])
+    t.display_name(:proxy=>[:filename], :index_as=>[:searchable, :displayable, :sortable, :facetable])
     
     t.ftk_id(:path=>"identifier", :attributes=>{:type=>"ftk_id"}, :index_as=>[:searchable, :displayable, :sortable])
 
