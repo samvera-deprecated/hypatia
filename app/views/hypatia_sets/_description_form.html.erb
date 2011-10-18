@@ -1,14 +1,10 @@
 <%- form_tag(url_for(:controller=>"assets", :action=>"update", :id=>params[:id]), :class => "step") do -%>
-  <div class="descMetadata metadata-subsection">
-    <h3 class="subsection-title">Collection</h3>
+  <div class="descMetadata metadata-section">
+    <h2 class="section-title">Description</h2>
+
     <p id="local_id_field" class="fedora-text-field">
       <%= fedora_field_label("descMetadata", [:local_id], "Local Identifier") %>
       <%= fedora_text_field(@document_fedora,"descMetadata", [:local_id], :multiple=>false, :required=>false ) %>
-    </p>
-  
-    <p id="genre_field" class="fedora-text-field">
-      <%= fedora_field_label("descMetadata", [:genre], "Genre") %>
-      <%= fedora_text_field(@document_fedora,"descMetadata", [:genre], :multiple=>false, :required=>false ) %>
     </p>
   
     <p id="create_date_field" class="fedora-text-field">
@@ -36,39 +32,12 @@
       <%= fedora_text_field(@document_fedora,"descMetadata", [:citation], :multiple=>false, :required=>false ) %>
     </p>
   
-    <p id="topic_field" class="fedora-text-field">
-      <%= fedora_field_label("descMetadata", [:topic], "Subject") %>
+    <p id="not_field" class="fedora-text-field">
+      <%= fedora_field_label("descMetadata", [:note], "Note") %>
       <%= fedora_text_field(@document_fedora,"descMetadata", [:topic], :multiple=>false, :required=>false ) %>
     </p>
   </div>
   
-  <div class="descMetadata metadata-subsection">
-    <h3 class="subsection-title">Creator</h3>
-    <p id="person_field" class="fedora-text-field">
-      <%= fedora_field_label("descMetadata", [:person], "Creator") %>
-      <%= fedora_text_field(@document_fedora,"descMetadata", [:person], :multiple=>false, :required=>false ) %>
-    </p>
-    <p id="biography_field" class="fedora-text-field">
-      <%= fedora_field_label("descMetadata", [:biography], "Preferred Citation") %>
-      <%= fedora_text_field(@document_fedora,"descMetadata", [:biography], :multiple=>false, :required=>false ) %>
-    </p>
-  </div>
-  
-  <div class="descMetadata metadata-subsection">
-    <h3 class="subsection-title">Repository</h3>
-    <p id="organization_field" class="fedora-text-field">
-      <%= fedora_field_label("descMetadata", [:organization], "Repository") %>
-      <%= fedora_text_field(@document_fedora,"descMetadata", [:organization], :multiple=>false, :required=>false ) %>
-    </p>
-    <p id="use_and_repro_rights_field" class="fedora-text-field">
-      <%= fedora_field_label("descMetadata", [:use_and_repro_rights], "Publication Rights") %>
-      <%= fedora_text_field(@document_fedora,"descMetadata", [:use_and_repro_rights], :multiple=>false, :required=>false ) %>
-    </p>
-    <p id="access_field" class="fedora-text-field">
-      <%= fedora_field_label("descMetadata", [:access], "Access Notes") %>
-      <%= fedora_text_field(@document_fedora,"descMetadata", [:access], :multiple=>false, :required=>false ) %>
-    </p>
-  </div>
   
   <%= hidden_field_tag("_method","put", :id=>"description_method") %>
   <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "description_wf_step") %>
