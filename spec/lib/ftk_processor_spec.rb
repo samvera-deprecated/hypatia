@@ -70,10 +70,14 @@ describe FtkProcessor do
 
       it "has the correct filepath" do
         @burch3_ftkfile.filepath.should eql("CM005.001/NONAME [FAT12]/[root]/BURCH3")
+        @desc_txt_ftkfile.filepath.should eql("CM144.ad1/Description.txt")
+        @bur3_1_ftkfile.filepath.should eql("CM005.001/NONAME [FAT12]/[root]/BUR3-1")
       end
 
       it "has the correct disk image name" do
         @burch3_ftkfile.disk_image_name.should eql("CM005")
+        @desc_txt_ftkfile.disk_image_name.should eql("CM144")
+        @bur3_1_ftkfile.disk_image_name.should eql("CM005")
       end
 
       it "has the correct file creation date" do
