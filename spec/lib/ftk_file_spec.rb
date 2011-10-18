@@ -25,8 +25,12 @@ describe FtkFile do
     
     it "calculates a title when there isn't one" do
       ff = FtkFile.new
+      ff.title.should eql("Unknown file name")
+      # it uses type when there is no title or filename  
+      ff.type = "type"
+      ff.title.should eql(ff.type)
+      # it uses filename when there is no title
       ff.filename = "NATHIN40.WPD"
-      # ff.type="Natural History Magazine Column"
       ff.title.should eql(ff.filename)
     end
     
