@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+  <mods:titleInfo>
+    <mods:title>set title</mods:title>
+  </mods:titleInfo>
+  <mods:abstract displayLabel="Scope and Contents">scope and contents</mods:abstract> 
+  <mods:identifier type="local">local id</mods:identifier>
+  <mods:originInfo>
+    <mods:dateCreated>create date</mods:dateCreated>
+  </mods:originInfo>
+  <mods:physicalDescription>
+    <mods:extent>extent1</mods:extent>
+    <mods:extent>extent2</mods:extent>
+  </mods:physicalDescription>
+  <mods:note>note1</mods:note>
+  <mods:note>note2</mods:note>
+  <mods:note>note3</mods:note>
+</mods:mods>
