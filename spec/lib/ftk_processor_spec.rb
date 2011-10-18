@@ -120,6 +120,7 @@ describe FtkProcessor do
 
       it "has the correct duplicate file value" do
         @bu3a5_ftkfile.duplicate.should eql(" ")
+        # actual values for duplicate would be "M" or "D" ...
        # @ftkp.files["SJG&amp;BR.W50_111004"].duplicate.should eql("M")
        # @ftkp.files["SJG&amp;BR.W50_118007"].duplicate.should eql("D")
       end

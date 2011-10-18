@@ -12,7 +12,7 @@ class FtkProcessor
   # an array of FtkFile objects to use to create HypatiaFtkItem fedora objects
   attr_reader :files
 
-# NAOMI:  make the args positional, rather than a hash?  
+# TODO:  could make the args positional, rather than a hash
   # Initialize an FTKProcessor object. 
   # If you don't pass in any arguments, it won't do anything, and you'll need to manually set the FTK report location and run
   # "process_ftk_report" yourself.
@@ -73,7 +73,6 @@ class FtkProcessor
     ff = FtkFile.new
     ff.filename = node.xpath("fo:table-row[fo:table-cell/fo:block[text()='Name']]/fo:table-cell[2]/fo:block/text()").to_s
     ff.id = node.xpath("fo:table-row[fo:table-cell/fo:block[text()='Item Number']]/fo:table-cell[2]/fo:block/text()").to_s
-#    ff.unique_combo = "#{ff.filename}_#{ff.id}"  
     ff.filesize = node.xpath("fo:table-row[fo:table-cell/fo:block[text()='Logical Size']]/fo:table-cell[2]/fo:block/text()").to_s
     ff.filetype = node.xpath("fo:table-row[fo:table-cell/fo:block[text()='File Type']]/fo:table-cell[2]/fo:block/text()").to_s
     ff.filepath = node.xpath("fo:table-row[fo:table-cell/fo:block[text()='Path']]/fo:table-cell[2]/fo:block/text()").to_s
