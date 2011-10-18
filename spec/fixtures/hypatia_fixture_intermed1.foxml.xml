@@ -42,14 +42,16 @@
             <mods:title>Intermediate Set 1</mods:title>
           </mods:titleInfo>
           <mods:abstract displayLabel="Scope and Contents">This is a hypatia set object containing intermed2 set object, and is a member of fixture_coll object.</mods:abstract> 
-          <mods:identifier type="local">intermed1</mods:identifier>
+          <mods:identifier type="local">local id</mods:identifier>
           <mods:originInfo>
             <mods:dateCreated>circa 1977-1997</mods:dateCreated>
           </mods:originInfo>
           <mods:physicalDescription>
-            <mods:extent>13.35&apos; (32 boxes)</mods:extent>
+            <mods:extent>extent1</mods:extent>
+            <mods:extent>extent2</mods:extent>
           </mods:physicalDescription>
-          <mods:note>I am a note</mods:note>
+          <mods:note>note1</mods:note>
+          <mods:note>note2</mods:note>
         </mods:mods>
       </foxml:xmlContent>
     </foxml:datastreamVersion>
