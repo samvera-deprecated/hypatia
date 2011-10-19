@@ -23,19 +23,28 @@ Feature: HTML validity
 #    And I follow "Article"
 #    Then the page should be HTML5 valid
 
-  Scenario: Xanadu item show view (unauthenticated)
-    When I am on the document page for id "hypatia:fixture_xanadu_drive1"
+  Scenario: Collection show view (unauthenticated)
+    When I am on the document page for id "hypatia:fixture_coll2"
     Then the page should be HTML5 valid
 
-#  Scenario: Xanadu item show view (authenticated)
-#    Given I am logged in as "archivist1" 
-#    When I am on the document page for id "hypatia:fixture_xanadu_drive1"
-#    Then the page should be HTML5 valid
-    
-# Xanadu collection view
-  Scenario: Xanadu collection show view (unauthenticated)
-    When I am on the document page for id "hypatia:fixture_xanadu_collection"
+  # TODO:  collection object authenticated;  collection edit
+
+  Scenario: Hypatia set show view (unauthenticated)
+    When I am on the document page for id "hypatia:fixture_intermed1"
     Then the page should be HTML5 valid
 
+  # TODO:  set object authenticated;  set edit
 
-# other collections item and sets
+
+  Scenario: Hypatia Disk Image show view (unauthenticated)
+    When I am on the document page for id "hypatia:fixture_media_item"
+    Then the page should be HTML5 valid
+
+  # TODO:  disk image object authenticated;  disk image edit
+
+
+  Scenario: Hypatia Ftk File show view (unauthenticated)
+    When I am on the document page for id "hypatia:fixture_ftk_file_item"
+    Then the page should be HTML5 valid
+
+  # TODO:  ftk file object authenticated;  ftk file edit
