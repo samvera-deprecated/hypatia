@@ -168,82 +168,43 @@ namespace :hypatia do
 
 #============= FIXTURE TASKS ================
   namespace :fixtures do
+    FIXTURE_PIDS = [
+      "hypatia:fixture_coll",
+      "hypatia:fixture_intermed1",
+      "hypatia:fixture_intermed2",
+      "hypatia:fixture_intermed3",
+      "hypatia:fixture_item1",
+      "hypatia:fixture_item2",
+      "hypatia:fixture_item3",
+      
+      "hypatia:fixture_coll2",
+      "hypatia:fixture_file_asset_ead_for_coll",
+      "hypatia:fixture_file_asset_image_for_coll",
+
+      "hypatia:fixture_media_item",
+      "hypatia:fixture_file_asset_dd_for_media_item",
+      "hypatia:fixture_file_asset_image1_for_media_item",
+      "hypatia:fixture_file_asset_image2_for_media_item",
+      
+      "hypatia:fixture_ftk_file_item",
+      "hypatia:fixture_file_asset_for_ftk_file_item",
+    ]
+
+    desc "Load Hypatia fixtures"
+    task :load do
+      # pids are converted to file names by substituting : for _
+      load_fixtures(FIXTURE_PIDS)
+    end
     
-    desc "Load all Hypatia fixtures"
-    task :load => ['ftk:load', 'noname:load'] 
-
-    desc "Remove all Hypatia fixtures"
-    task :delete => ['ftk:delete', 'noname:delete']
-
+    desc "Remove Hypatia fixtures"
+    task :delete do
+      delete_all(FIXTURE_PIDS)
+    end
+    
     desc "Remove then load all Hypatia fixtures"
-    task :refresh => ['ftk:refresh', 'noname:refresh'] 
-
-    namespace :ftk do
-      FTK_FIXTURE_PIDS = [
-        "hypatia:fixture_ftk_txt_item",
-        "hypatia:fixture_ftk_wp6_item",
-        "hypatia:fixture_ftk_unknown_item",
-        "hypatia:fixture_ftk_file_factory",
-        "hypatia:fixture_ftk_item_factory"
-      ]
-    
-      desc "Load Hypatia FTK fixtures"
-      task :load do
-        # pids are converted to file names by substituting : for _
-        load_fixtures(FTK_FIXTURE_PIDS)
-      end
-
-      desc "Remove Hypatia FTK fixtures"
-      task :delete do
-        delete_all(FTK_FIXTURE_PIDS)
-      end
-
-      desc "Remove then load Hypatia FTK fixtures"
-      task :refresh do
-        refresh_fixtures(FTK_FIXTURE_PIDS)
-      end
-    end # hypatia:fixtures:ftk namespace
-
-    namespace :noname do
-      NONAME_FIXTURE_PIDS = [
-        "hypatia:fixture_coll",
-        "hypatia:fixture_intermed1",
-        "hypatia:fixture_intermed2",
-        "hypatia:fixture_intermed3",
-        "hypatia:fixture_item1",
-        "hypatia:fixture_item2",
-        "hypatia:fixture_item3",
-        
-        "hypatia:fixture_coll2",
-        "hypatia:fixture_file_asset_ead_for_coll",
-        "hypatia:fixture_file_asset_image_for_coll",
-
-        "hypatia:fixture_media_item",
-        "hypatia:fixture_file_asset_dd_for_media_item",
-        "hypatia:fixture_file_asset_image1_for_media_item",
-        "hypatia:fixture_file_asset_image2_for_media_item",
-        
-        "hypatia:fixture_ftk_file_item",
-        "hypatia:fixture_file_asset_for_ftk_file_item",
-      ]
-
-      desc "Load Hypatia No Name fixtures"
-      task :load do
-        # pids are converted to file names by substituting : for _
-        load_fixtures(NONAME_FIXTURE_PIDS)
-      end
-
-      desc "Remove Hypatia No Name fixtures"
-      task :delete do
-        delete_all(NONAME_FIXTURE_PIDS)
-      end
-
-      desc "Remove then load Hypatia No Name fixtures"
-      task :refresh do
-        refresh_fixtures(NONAME_FIXTURE_PIDS)
-      end
-    end # hypatia:fixtures:noname namespace
-
+    task :refresh do
+      refresh_fixtures(FIXTURE_PIDS)
+    end
   end # hypatia:fixtures namespace
 
 
