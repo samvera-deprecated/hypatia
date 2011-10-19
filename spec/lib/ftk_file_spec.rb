@@ -5,19 +5,20 @@ describe FtkFile do
     before(:all) do
       @ff = FtkFile.new
     end
+    
     it "can instantiate" do
       @ff.class.should eql(FtkFile)
     end
+    
     it "responds to all of the fields a file object needs" do
-      # @ff.send("#{key}=".to_sym, value)
-      
       fields = [:filename=,:id=,:filesize=,:filetype=,:filepath=,:disk_image_name=,
           :file_creation_date=,:file_accessed_date=,:file_modified_date=,:medium=,:title=,
           :access_rights=,:duplicate=,:restricted=,:md5=,:sha1=,:export_path=,:unique_combo=,:type=]
       fields.each do |field|
-        @ff.send(field,"foo").should eql("foo")
+        @ff.send(field, "foo").should eql("foo")
       end
     end
+    
     it "updates the destination_file when export_path is set" do
       @ff.export_path = "/really/long/path/to/filename.txt"
       @ff.destination_file.should eql("filename.txt")
