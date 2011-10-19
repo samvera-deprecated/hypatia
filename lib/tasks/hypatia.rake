@@ -116,56 +116,6 @@ namespace :hypatia do
         
   end # namespace hypatia:jetty
 
-#============= DATA (NON-FIXTURE) TASKS ================
-  namespace :data do
-    namespace :coll do
-      
-      # FIXME:  should perhaps just grab all foxml.xml objects or all hypatia_*_collection.foxml.xml in a directory??
-      #   except also need pids for solrizing ...
-      COLL_OBJS = {
-        "hypatia_cheuse_collection.foxml.xml" => "hypatia:cheuse_collection",
-        "hypatia_creeley_collection.foxml.xml" => "hypatia:creeley_collection",
-        "hypatia_gallagher_collection.foxml.xml" => "hypatia:gallagher_collection",
-        "hypatia_gould_collection.foxml.xml" => "hypatia:gould_collection",
-        "hypatia_koch_collection.foxml.xml" => "hypatia:koch_collection",
-        "hypatia_lmaf_collection.foxml.xml" => "hypatia:lmaf_collection",
-        "hypatia_nhoa_collection.foxml.xml" => "hypatia:nhoa_collection",
-        "hypatia_pelli_collection.foxml.xml" => "hypatia:pelli_collection",
-        "hypatia_sha_collection.foxml.xml" => "hypatia:sha_collection",
-        "hypatia_tobin_collection.foxml.xml" => "hypatia:tobin_collection",
-        "hypatia_turner_collection.foxml.xml" => "hypatia:turner_collection",
-        "hypatia_warner_collection.foxml.xml" => "hypatia:warner_collection",
-        "hypatia_welch_collection.foxml.xml" => "hypatia:welch_collection",
-        "hypatia_xanadu_collection.foxml.xml" => "hypatia:xanadu_collection",
-      }
-
-      desc "Load all collection objects"
-      task :load do
-        if !ENV["dir"].nil? 
-          directory = ENV["dir"]
-        else
-          puts "You must specify the directory containing the Hypatia collection objects.  Example: rake hypatia:load:coll_objs dir=/data_raw/hypatia_coll_objs/foxml"
-        end
-
-        if !directory.nil?
-          COLL_OBJS.each { |fname, pid|
-            filename = File.join("#{directory}", "#{fname}")
-            load_foxml(filename, pid)
-          }
-        end
-      end
-
-      desc "Delete all collection objects"
-      task :delete do
-        delete_all(COLL_OBJS.values)
-      end
-      
-      desc "Refresh all collection objects"
-      task :refresh => [:delete, :load]
-    end # namespace hypatia:data:collection
-    
-  end # namespace hypatia:data
-
 #============= FIXTURE TASKS ================
   namespace :fixtures do
     FIXTURE_PIDS = [
