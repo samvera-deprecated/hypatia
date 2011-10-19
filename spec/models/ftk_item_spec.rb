@@ -4,7 +4,6 @@ require "active_fedora"
 describe HypatiaFtkItem do
   
   before(:each) do
-    # Fedora::Repository.stubs(:instance).returns(stub('item_stub').as_null_object)
     @hypatia_ftk_item = HypatiaFtkItem.new
   end
   
