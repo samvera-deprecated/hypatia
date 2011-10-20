@@ -7,10 +7,10 @@ class HypatiaSetDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-3.xsd", :namespace_prefix => "mods")
 
     t.title_info(:path=>"titleInfo") {
-      t.title(:index_as=>[:searchable, :displayable, :sortable])
+      t.title(:index_as=>[:searchable, :displayable, :sortable, :facetable])
     }
     t.title(:proxy=>[:title_info, :title])
-    t.display_name(:proxy=>[:title_info, :title], :index_as=>[:searchable, :displayable, :sortable])
+    t.display_name(:proxy=>[:title_info, :title], :index_as=>[:searchable, :displayable, :sortable, :facetable])
     
     t.origin_info(:path=>"originInfo") {
       t.date_created(:path=>"dateCreated", :index_as=>[:searchable, :displayable, :facetable, :sortable])
@@ -24,7 +24,7 @@ class HypatiaSetDescMetadataDS < ActiveFedora::NokogiriDatastream
 
     t.scope_and_content(:path=>"abstract", :attributes=>{:displayLabel=>"Scope and Contents"}, :index_as=>[:searchable, :displayable])
 
-    t.local_id(:path=>"identifier", :attributes=>{:type=>"local"}, :index_as=>[:searchable, :displayable, :sortable])
+    t.local_id(:path=>"identifier", :attributes=>{:type=>"local"}, :index_as=>[:searchable, :displayable, :sortable, :facetable])
 
     t.note(:index_as=>[:searchable, :displayable])
 
