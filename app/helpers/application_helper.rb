@@ -60,4 +60,21 @@ module ApplicationHelper
       link_to_unless(options[:suppress_link], t(item.value, :default=>item.value), add_facet_params_and_redirect(facet_solr_field, item.value), :class=>"facet_select") + " (" + format_num(item.hits) + ")" 
     end
   end
+  
+  def get_values_from_index(doc,field,options={})
+    if doc.has_key?(field)
+      if doc[field].is_a?(Array)
+        return doc[field].join(options.has_key?(:delimiter) ? options[:delimiter] : ", ")
+      else
+        return doc[field]
+      end
+    end
+  end
+  
+  def render_field_from_index(doc,field,label,options={})
+    values = get_values_from_index(doc,field,options)
+    return nil if values.nil?
+    "<dt>#{label}</dt><dd>#{values}</dd>"
+  end
+  
 end
