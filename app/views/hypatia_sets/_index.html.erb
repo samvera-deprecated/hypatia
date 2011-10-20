@@ -1,0 +1,16 @@
+<div class="document <%= cycle("even","odd") %>">
+  <%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %>
+  <dl>
+    <%= render_field_from_index(document,"local_id_display", "Local Identifier:") %>
+    <%= render_field_from_index(document,"create_date_display", "Create Date:") %>
+    <%= render_field_from_index(document,"extent_t", "Extent:", :delimiter=>"<br/>") %>
+    <%-# we need to add a toggle here -%>
+    <%#= render_field_from_index(document,"scope_and_content_display", "Summary:") %>
+    <%= render_field_from_index(document,"note_display", "Note:", :delimiter=>"<br/>") %>
+    <%- members = get_members_from_solr(document).hits.length -%>
+    <%- unless members < 1 -%>
+      <dt>Members:</dt>
+      <dd><%= members %></dd>
+    <%- end -%>    
+  </dl>
+</div>
