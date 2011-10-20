@@ -77,4 +77,11 @@ module ApplicationHelper
     "<dt>#{label}</dt><dd>#{values}</dd>"
   end
   
+  def get_members_from_solr(document)
+    af_base = load_af_instance_from_solr(document)
+    the_model = ActiveFedora::ContentModel.known_models_for( af_base ).first    
+    obj = the_model.load_instance(document[:id])
+    return obj.members(:response_format=>:solr)
+  end
+  
 end
