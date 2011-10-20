@@ -61,8 +61,8 @@ Blacklight.configure(:shared) do |config|
 
   # "sort results by" select (pulldown)
   config[:sort_fields] ||= []
-#  config[:sort_fields] << ['relevance', 'score desc, year_facet desc, month_facet asc, title_facet asc']
-#  config[:sort_fields] << ['date -', 'year_facet desc, month_facet asc, title_facet asc']
+  config[:sort_fields] << ["relevance", "score desc"]
+  config[:sort_fields] << ["title", "display_name_sort asc"]
 
   # number of facets to show before adding a more link
   config[:facet_more_num] = 5
