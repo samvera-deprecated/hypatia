@@ -11,4 +11,10 @@ $(document).ready(function(){
 			toggle_link.text(toggle_text);
 		});
 	});
+	
+	//add ajaxy dialogs to certain links, using the ajaxyDialog widget.
+   $( "a.more_facets_link" ).ajaxyDialog({
+       width: $(window).width() / 2,  
+       chainAjaxySelector: "a.next_page, a.prev_page, a.sort_change"        
+   });  
 });
