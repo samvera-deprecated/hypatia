@@ -24,9 +24,11 @@ FactoryGirl.define do
     type "Journal Article"
   end
   factory :ftk_disk_image do
-    txt_file File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images/CM006.001.txt")
-    disk_number "CM5551212"
-    disk_type "5.25 inch Floppy Disk"
-    md5 "4E1AA0E78D99191F4698EEC437569D23"
+    txt_file File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images/CM5551212.001.txt")
+    disk_name "CM5551212"
+    case_number "case_number"
+    disk_type "disk_type"
+    md5 "md5"
+    sha1 "sha1"
   end
 end
