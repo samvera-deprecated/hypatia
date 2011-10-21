@@ -1,0 +1,9 @@
+<div class="document <%= cycle("even","odd") %>">
+  <%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %>
+  <dl>
+    <%= render_field_from_index(document,"filename_display", "File Name:") %>
+    <%= render_field_from_index(document,"filetype_display", "File Type:") %>
+    <%= render_field_from_index(document,"date_created_display", "Date Created:") %>
+    <%= render_field_from_index(document,"note_plain_display", "Note:") %>
+  </dl>
+</div>
