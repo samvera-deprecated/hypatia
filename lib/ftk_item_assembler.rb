@@ -226,58 +226,32 @@ class FtkItemAssembler
     builder.to_xml
   end
   
-  # Build the RELS-EXT datastream
-  # @param [FtkFile] ff FTK file object
-  # @return [Nokogiri::XML::Document]
-  # @example document returned
-  #  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:hydra="http://projecthydra.org/ns/relations#" xmlns:rel="info:fedora/fedora-system:def/relations-external#" xmlns:fedora-model="info:fedora/fedora-system:def/model#">
-  #    <rdf:Description rdf:about="foofile.txt_9999">
-  #      <hydra:isGovernedBy rdf:resource="info:fedora/hypatia:fixture_xanadu_apo"/>
-  #      <rel:isMemberOf rdf:resource="PARENT OBJECT GOES HERE"/>
-  #      <rel:hasModel rdf:resource="OBJECT MODEL GOES HERE"/>
-  #    </rdf:Description>
-  #  </rdf:RDF>
-  def build_rels_ext(ff)
-    builder = Nokogiri::XML::Builder.new do |xml|
-      xml.RDF("xmlns:rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-      "xmlns:fedora-model" => "info:fedora/fedora-system:def/model#", 
-      "xmlns:rel"=>"info:fedora/fedora-system:def/relations-external#",
-      "xmlns:hydra"=>"http://projecthydra.org/ns/relations#") {
-        xml.parent.namespace = xml.parent.namespace_definitions.first
-        xml['rdf'].Description("rdf:about" => ff.unique_combo) {
-          xml['hydra'].isGovernedBy("rdf:resource" => "info:fedora/hypatia:fixture_xanadu_apo")
-          xml['rel'].isMemberOf("rdf:resource" => "PARENT OBJECT GOES HERE")
-          xml['rel'].hasModel("rdf:resource" => "OBJECT MODEL GOES HERE")
-        }
-      }
-    end
-    builder.to_xml
-  end
-  
   # Find the object for the disk image that this file came from. 
-  # Create a relationship between this object and that one.
-  # @param [HypatiaFtkItem] hypatia_item
-  # @return [Boolean] true for success, false for failure
-  def link_to_disk(hypatia_item,ff)
-    solr_params={}
-    solr_params[:q]="file_id_t:#{ff.disk_image_name}"
-    solr_params[:qt]='standard'
-    solr_params[:fl]='id'
+  # Create a relationship between the ftk file item object and the disk image object.
+  #   Side Effect:  alters passed HypatiaFtkItem (if it finds the correct disk image object)
+  # @param [HypatiaFtkItem] the object for the file
+  # @param [FtkFile] the intermediate object for the FTK File that is being turned into a Fedora object
+  def link_to_disk(hypatia_ftk_item, ff_intermed)
+    solr_params = {}
+    solr_params[:q] = "dd_filename_t:#{ff_intermed.disk_image_name}"
+    solr_params[:qt] = 'standard'
+    solr_params[:fl] = 'id'
     solr_response = Blacklight.solr.find(solr_params)
+    solr_docs = solr_response.docs
     
-    # Log a message if we can't find any disk images that this file belongs to
-    if solr_response.docs.count == 0
-      raise "No disk image objects matching #{ff.disk_image_name}. #{hypatia_item.pid} has not been correctly populated"
-    elsif solr_response.docs.count > 1
-      raise "Too many disk image objects matching #{ff.disk_image_name}. #{hypatia_item.pid} has not been correctly populated"
+    if solr_docs.count == 0
+puts "DEBUG: no docs"
+      @logger.warn "No disk image objects match #{ff_intermed.disk_image_name}. #{hypatia_ftk_item.pid} may not have been correctly populated"
+    elsif solr_docs.count > 1
+puts "DEBUG: mult docs"
+      @logger.warn "More than one disk image object matches #{ff_intermed.disk_image_name}. #{hypatia_ftk_item.pid} may not have been correctly populated"
     else
-      document = solr_response.docs.first      
-      foo = HypatiaDiskImageItem.load_instance(document[:id])
-      hypatia_item.add_relationship(:is_member_of, foo)
-      hypatia_item.save
-      @logger.debug "HypatiaFtkItem #{hypatia_item.pid} is now a member of HypatiaDiskImageItem #{foo.pid}"
+puts "DEBUG: one doc"
+      hdii = HypatiaDiskImageItem.load_instance(solr_docs.first[:id])
+      hypatia_ftk_item.add_relationship(:is_member_of, hdii)
+      hypatia_ftk_item.save
+      @logger.debug "HypatiaFtkItem #{hypatia_ftk_item.pid} is now a member of HypatiaDiskImageItem #{hdii.pid}"
     end
-    return true
   end
   
   # Create a Nokogiri XML Datastream on the hypatia_item object
@@ -294,7 +268,7 @@ class FtkItemAssembler
 
   # Create a hypatia file level fedora object for an FTK file
   # @param [HypatiaFtkItem] this is the object of an _is_part_of relationship from the FileAsset we are creating
-  # @param [FtkFile] object populated from the FTK report
+  # @param [FtkFile] the intermediate object for the FTK File that is being turned into a Fedora object
   # @return [FileAsset] the FileAsset object that is_part_of the HypatiaFtkItem object
   def create_file_asset(hypatia_ftk_item, ftk_file_intermed)
     file_asset = FileAsset.new

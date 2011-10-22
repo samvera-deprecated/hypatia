@@ -78,25 +78,76 @@ describe FtkItemAssembler do
       rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='read']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("public")
       rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='edit']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("archivist")
     end
-  end
+    
+    context "RELS-EXT" do
+      before(:all) do
+        @assembler.file_dir = "spec/fixtures/ftk"
+        @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
+        @ftk_item_object = HypatiaFtkItem.new
+      end
+
+      context "link_to_disk method" do
+        before(:all) do
+#          @disk_objects = build_fixture_disk_objects
+        end
+        
+        it "disambiguates multiple matches with the collection pid" do
+          pending
+          @assembler.link_to_disk(@hypat_ftk_item, @ff_intermed)
+          pending
+        end
+        it "creates a member_of relationship with the right disk image item" do
+          pending
+          @assembler.link_to_disk(@hypat_ftk_item, @ff_intermed)
+          pending
+        end
+        it "does not create an is_part_of relationship when no disk image matches" do
+          @ff_intermed.disk_image_name = "nomatch"
+          @assembler.link_to_disk(@ftk_item_object, @ff_intermed)
+          @ftk_item_object.relationships[:self][:is_member_of].should be_nil
+        end
+        
+      end
+
+      
+      it "finds the correct disk image object to link to" do
+        pending
+        # solr field name:  dd_filename_t
+#        @hypat_ftk_item.relationships[:self][:is_member_of].first.should eql("info:fedora/#{@disk_objects.first.pid}")
+      end
+
+=begin # are these more for the whole thing later??      
+      it "has a FileAsset object with an inbound isPartOf relationship" do
+        @hi.inbound_relationships[:is_part_of].length.should eql(1)
+      end
+      it "has a FileAsset part" do
+        @hi.parts.first.should be_instance_of(FileAsset)
+      end
+=end
+
+      it "has an isMemberOf relationship with a disk object" do
+        pending
+#        @hypat_ftk_item.relationships[:self][:is_member_of].first.gsub("info:fedora/",'').should eql(@ff_intermed.disk_image_name)
+        @hypat_ftk_item.relationships[:self][:is_member_of].first.should eql("info:fedora/#{@disk_objects.first.pid}")
+      end
+
+      it "does not have an isMemberOfCollection relationship with a collection object" do
+        pending
+        @hypat_ftk_item.relationships[:self][:is_member_of].first.should_not eql("info:fedora/#{@coll_pid}")
+      end
+      it "creates isMemberOfCollection relationship only when it can't compute isMemberOf disk image item" do
+        pending
+      end
+      
+      it "does not have an isGovernedBy relationship" do
+        pending
+      end
+      
+    end # context  RELS-EXT
+
+  end # context  metadata datastreams
   
-  
-  
-  context "creating datastreams" do
-    before(:all) do
-      delete_fixture(@coll_pid)
-      import_fixture(@coll_pid)
-      @ff = FactoryGirl.build(:ftk_file)
-      @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
-      @hfo = FtkItemAssembler.new(:fedora_config => @fedora_config, :collection_pid => @coll_pid)
-    end
-    it "creates a RELS-EXT datastream" do
-      doc = Nokogiri::XML(@hfo.build_rels_ext(@ff))
-#      doc.xpath("/rdf:RDF/rdf:Description/hydra:isGovernedBy/@rdf:resource").to_s.should eql("info:fedora/hypatia:fixture_xanadu_apo")
-    end
-  end  # context creating datastreams
-  
-  context "FtkItem FileAsset and its contentMetadata" do
+  context "FtkItem assets" do
     before(:all) do
       delete_fixture(@coll_pid)
       import_fixture(@coll_pid)
@@ -252,7 +303,7 @@ describe FtkItemAssembler do
       end
 =end
     end  # context "contentMetadata"
-  end # context "FileAsset and its contentMetadata in the FtkItem"
+  end # context "FtkItem assets"
 
 
 
