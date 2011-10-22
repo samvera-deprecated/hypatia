@@ -88,17 +88,17 @@ describe FtkItemAssembler do
 
       context "link_to_disk method" do
         before(:all) do
-#          @disk_objects = build_fixture_disk_objects
+          @disk_objects = build_fixture_disk_objects
         end
         
         it "disambiguates multiple matches with the collection pid" do
-          pending
-          @assembler.link_to_disk(@hypat_ftk_item, @ff_intermed)
+          @assembler.link_to_disk(@ftk_item_object, @ff_intermed)
+          @ftk_item_object.relationships[:self][:is_member_of].should be_nil
           pending
         end
         it "creates a member_of relationship with the right disk image item" do
           pending
-          @assembler.link_to_disk(@hypat_ftk_item, @ff_intermed)
+          @assembler.link_to_disk(@ftk_item_object, @ff_intermed)
           pending
         end
         it "does not create an is_part_of relationship when no disk image matches" do
@@ -376,19 +376,22 @@ end # describe FtkItemAssembler
 # Create three HypatiaDiskImageItems via FactoryGirl
 # @return [Array] of three FtkDiskImageItema
 def build_fixture_disk_objects
+  # ensure we don't have duplicates when we don't want to
   clean_fixture_disk_objects 
-#  @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
-#  @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
-#  @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+
+  di_txt_file = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images/CM5551212.001.txt")
+  fdi_intermed = FtkDiskImage.new(di_txt_file)
+
   di_assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => ".", :computer_media_photos_dir => ".")
-  fdi = FactoryGirl.build(:ftk_disk_image)
-  fdi.case_number = "cn1"
-  hdii1 = di_assembler.build_object(fdi)
-  fdi.case_number = "cn2"
-  hdii1 = di_assembler.build_object(fdi)
-  fdi.case_number = "cn3"
-  fdi.disk_name = "not-a-match"
-  hdii1 = di_assembler.build_object(fdi)
+
+# #  fdi = FactoryGirl.build(:ftk_disk_image)
+  fdi_intermed.case_number = "cn1"
+  hdii1 = di_assembler.build_object(fdi_intermed)
+  fdi_intermed.case_number = "cn2"
+  hdii2 = di_assembler.build_object(fdi_intermed)
+  fdi_intermed.case_number = "cn3"
+  fdi_intermed.disk_name = "not-a-match"
+  hdii3 = di_assembler.build_object(fdi_intermed)
   return [hdii1, hdii2, hdii3]
 end
 
@@ -396,11 +399,11 @@ end
 # that matches a given disk number. Ensure we remove all instances of the disk object
 # fixture before running any test that requires disk to file linking. 
 def clean_fixture_disk_objects
-  fdi = FactoryGirl.build(:ftk_disk_image)
-  solr_params={}
-  solr_params[:q]="file_id_t:#{fdi.disk_number}"
-  solr_params[:qt]='standard'
-  solr_params[:fl]='id'
+#  fdi = FactoryGirl.build(:ftk_disk_image)
+  solr_params = {}
+  solr_params[:q] = "local_id_t:(cn1 OR cn2 OR cn3)"
+  solr_params[:qt] = 'standard'
+  solr_params[:fl] = 'id'
   solr_response = Blacklight.solr.find(solr_params)
   solr_response.docs.each do |doc|
     ActiveFedora::Base.load_instance(doc[:id]).delete    
