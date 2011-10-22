@@ -11,7 +11,6 @@ describe FtkItemAssembler do
     before(:all) do
       delete_fixture(@coll_pid)
       import_fixture(@coll_pid)
-      @fedora_config = File.join(File.dirname(__FILE__), "/../../config/fedora.yml")
       @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
       @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/files")
       @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives")
@@ -20,24 +19,13 @@ describe FtkItemAssembler do
       hfo = FtkItemAssembler.new
       hfo.class.should eql(FtkItemAssembler)
     end
-=begin  no longer used?
-    it "takes a fedora config file as an argument" do
-      hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
-      hfo.fedora_config.should eql(@fedora_config)
-    end
-=end
     it "sets the pid of the collection object these items belong to" do
       hfo = FtkItemAssembler.new
       hfo.collection_pid = @coll_pid
       hfo.collection_pid.should eql(@coll_pid)
     end
-=begin  no longer duplicated in item object
-    it "gets the name of the collection it belongs to" do
-      hfo = FtkItemAssembler.new(:collection_pid => @coll_pid)
-      hfo.collection_name.should eql("Keith Henson. Papers relating to Project Xanadu, XOC and Eric Drexler")
-    end
-=end
-=begin   # FIXME:  this is an important spec to replace!
+=begin   
+# FIXME:  this is an important spec to replace!
     it "processes an FTK report" do
       hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
       hfo.expects(:create_hypatia_item).at_least(56).returns(nil)
@@ -330,57 +318,27 @@ describe FtkItemAssembler do
   end
 =end
 
-=begin # it doesn't seem we are creating bags anymore????  
-  context "creating bags" do
-    before(:all) do
-      @ff = FactoryGirl.build(:ftk_file)
-      @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
-      @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/")
-    end
-    it "knows where to put bags it creates" do
-      Dir.mktmpdir {|dir|
-        hfo = FtkItemAssembler.new(:bag_destination => dir)
-        hfo.bag_destination.should eql(dir)
-       }
-    end
-    
-    it "throws an exception if you try to create a bag without telling it where the payload files are" do
-      Dir.mktmpdir { |dir|
-        hfo = FtkItemAssembler.new(:bag_destination => dir)
-        lambda { hfo.create_bag(@ff) }.should raise_exception
-      }
-    end
-    
-    it "creates a bagit package for an ftk object" do
-      Dir.mktmpdir {|dir|
-        # dir = Dir.mktmpdir
-        # puts "\n\n<br><br>dir = #{dir}<br><br>\n\n"
-        hfo = FtkItemAssembler.new(:bag_destination => dir)
-        hfo.file_dir = @file_dir
-        bag = hfo.create_bag(@ff)
-        
-        File.file?(File.join(dir,@ff.unique_combo,"/data/contentMetadata.xml")).should eql(true)
-        File.file?(File.join(dir,@ff.unique_combo,"/data/descMetadata.xml")).should eql(true)
-        File.file?(File.join(dir,@ff.unique_combo,"/data/RELS-EXT.xml")).should eql(true)
-        File.file?(File.join(dir,@ff.unique_combo,"/data/rightsMetadata.xml")).should eql(true)
-        File.file?(File.join(dir,@ff.unique_combo,"/data/#{@ff.destination_file}")).should eql(true)
-        bag.valid?.should eql(true)
-       }
-    end
-  end # content "creating bags"
-=end  
 end # describe FtkItemAssembler
 
-# Create a HypatiaDiskImageItem from the data in the FtkDiskImage fixture
-# @return [FtkDiskImageItem]
-def build_fixture_disk_object
+#------------- supporting methods
+
+# Create three HypatiaDiskImageItems via FactoryGirl
+# @return [Array] of three FtkDiskImageItema
+def build_fixture_disk_objects
   clean_fixture_disk_objects 
+#  @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
+#  @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
+#  @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
+  di_assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => ".", :computer_media_photos_dir => ".")
   fdi = FactoryGirl.build(:ftk_disk_image)
-  @disk_image_files_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images")
-  @computer_media_photos_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/computer_media_photos")
-  @foo = FtkDiskImageItemAssembler.new(:disk_image_files_dir => @disk_image_files_dir, :computer_media_photos_dir => @computer_media_photos_dir)
-  @disk_object = @foo.build_object(fdi)
-  return @disk_object
+  fdi.case_number = "cn1"
+  hdii1 = di_assembler.build_object(fdi)
+  fdi.case_number = "cn2"
+  hdii1 = di_assembler.build_object(fdi)
+  fdi.case_number = "cn3"
+  fdi.disk_name = "not-a-match"
+  hdii1 = di_assembler.build_object(fdi)
+  return [hdii1, hdii2, hdii3]
 end
 
 # Tying a file object to a disk object relies on having only one solr document 
