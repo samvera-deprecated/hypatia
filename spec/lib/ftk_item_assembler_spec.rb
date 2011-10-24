@@ -38,7 +38,7 @@ describe FtkItemAssembler do
   end # context basic behavior
   
   
-  context "metadata datastreams" do
+  context "metadata (and RELS-EXT) datastreams" do
     before(:all) do
       delete_fixture(@coll_pid)
       import_fixture(@coll_pid)
@@ -79,71 +79,53 @@ describe FtkItemAssembler do
       rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='edit']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("archivist")
     end
     
-    context "RELS-EXT" do
+    context "link_to_disk method for RELS-EXT" do
       before(:all) do
         @assembler.file_dir = "spec/fixtures/ftk"
         @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
         @ftk_item_object = HypatiaFtkItem.new
-      end
-
-      context "link_to_disk method" do
-        before(:all) do
-          @disk_objects = build_fixture_disk_objects
-        end
-        
-        it "disambiguates multiple matches with the collection pid" do
-          @assembler.link_to_disk(@ftk_item_object, @ff_intermed)
-          @ftk_item_object.relationships[:self][:is_member_of].should be_nil
-          pending
-        end
-        it "creates a member_of relationship with the right disk image item" do
-          pending
-          @assembler.link_to_disk(@ftk_item_object, @ff_intermed)
-          pending
-        end
-        it "does not create an is_part_of relationship when no disk image matches" do
-          @ff_intermed.disk_image_name = "nomatch"
-          @assembler.link_to_disk(@ftk_item_object, @ff_intermed)
-          @ftk_item_object.relationships[:self][:is_member_of].should be_nil
-        end
-        
-      end
-
-      
-      it "finds the correct disk image object to link to" do
-        pending
-        # solr field name:  dd_filename_t
-#        @hypat_ftk_item.relationships[:self][:is_member_of].first.should eql("info:fedora/#{@disk_objects.first.pid}")
-      end
-
-=begin # are these more for the whole thing later??      
-      it "has a FileAsset object with an inbound isPartOf relationship" do
-        @hi.inbound_relationships[:is_part_of].length.should eql(1)
-      end
-      it "has a FileAsset part" do
-        @hi.parts.first.should be_instance_of(FileAsset)
-      end
-=end
-
-      it "has an isMemberOf relationship with a disk object" do
-        pending
-#        @hypat_ftk_item.relationships[:self][:is_member_of].first.gsub("info:fedora/",'').should eql(@ff_intermed.disk_image_name)
-        @hypat_ftk_item.relationships[:self][:is_member_of].first.should eql("info:fedora/#{@disk_objects.first.pid}")
-      end
-
-      it "does not have an isMemberOfCollection relationship with a collection object" do
-        pending
-        @hypat_ftk_item.relationships[:self][:is_member_of].first.should_not eql("info:fedora/#{@coll_pid}")
-      end
-      it "creates isMemberOfCollection relationship only when it can't compute isMemberOf disk image item" do
-        pending
+        @disk_objects = build_fixture_disk_objects
+        # @disk_object title_sort (match fields) are:  single_match, mult_match, mult_match, no_match
       end
       
-      it "does not have an isGovernedBy relationship" do
-        pending
+      it "creates a member_of relationship with a single matching disk image item" do
+        ff_intermed = FactoryGirl.build(:ftk_file)
+        ff_intermed.disk_image_name = "single_match"
+        ftk_item_object = HypatiaFtkItem.new
+        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        ftk_item_object.relationships[:self][:is_member_of].size.should be(1)
+        ftk_item_object.relationships[:self][:is_member_of].first.should eql("info:fedora/#{@disk_objects.first.pid}")
       end
-      
-    end # context  RELS-EXT
+      it "disambiguates multiple matches with the collection pid" do
+        ff_intermed = FactoryGirl.build(:ftk_file)
+        ff_intermed.disk_image_name = "mult_match"
+        ftk_item_object = HypatiaFtkItem.new
+        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        ftk_item_object.relationships[:self][:is_member_of].size.should be(1)
+        ftk_item_object.relationships[:self][:is_member_of].first.should eql("info:fedora/#{@disk_objects[2].pid}")
+      end
+      it "does not create an is_member_of relationship when no disk image matches" do
+        ff_intermed = FactoryGirl.build(:ftk_file)
+        ff_intermed.disk_image_name = "will_not_match"
+        ftk_item_object = HypatiaFtkItem.new
+        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        ftk_item_object.relationships[:self][:is_member_of].should be_nil
+      end
+      it "creates an is_member_of_collection relationship when no disk image matches" do
+        ff_intermed = FactoryGirl.build(:ftk_file)
+        ff_intermed.disk_image_name = "will_not_match"
+        ftk_item_object = HypatiaFtkItem.new
+        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        ftk_item_object.relationships[:self][:is_member_of_collection].first.should eql("info:fedora/#{@coll_pid}")
+      end
+      it "does not create an is_member_of_collection relationship when a disk image matches" do
+        ff_intermed = FactoryGirl.build(:ftk_file)
+        ff_intermed.disk_image_name = "single_match"
+        ftk_item_object = HypatiaFtkItem.new
+        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        ftk_item_object.relationships[:self][:is_member_of_collection].should be_nil
+      end
+    end # context  link_to_disk method for RELS-EXT
 
   end # context  metadata datastreams
   
@@ -344,6 +326,9 @@ describe FtkItemAssembler do
     it "has a file object with an isPartOf relationship" do
       @hi.inbound_relationships[:is_part_of].length.should eql(1)
     end
+    it "has a FileAsset part" do
+      @hi.parts.first.should be_instance_of(FileAsset)
+    end
     
     it "has an isMemberOf relationship with a disk object" do
       @hi.relationships[:self][:is_member_of].first.gsub("info:fedora/",'').should eql(@disk_object.pid)
@@ -373,8 +358,8 @@ end # describe FtkItemAssembler
 
 #------------- supporting methods
 
-# Create three HypatiaDiskImageItems via FactoryGirl
-# @return [Array] of three FtkDiskImageItema
+# Create four HypatiaDiskImageItem fixture objects for testing is_member_of relationships
+# @return [Array] of four FtkDiskImageItema
 def build_fixture_disk_objects
   # ensure we don't have duplicates when we don't want to
   clean_fixture_disk_objects 
@@ -384,24 +369,29 @@ def build_fixture_disk_objects
 
   di_assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => ".", :computer_media_photos_dir => ".")
 
-# #  fdi = FactoryGirl.build(:ftk_disk_image)
+  fdi_intermed.disk_name = "single_match"
   fdi_intermed.case_number = "cn1"
-  hdii1 = di_assembler.build_object(fdi_intermed)
+  di1 = di_assembler.build_object(fdi_intermed)
+  fdi_intermed.disk_name = "mult_match"
   fdi_intermed.case_number = "cn2"
-  hdii2 = di_assembler.build_object(fdi_intermed)
+  di2 = di_assembler.build_object(fdi_intermed)
+  fdi_intermed.disk_name = "mult_match"
   fdi_intermed.case_number = "cn3"
-  fdi_intermed.disk_name = "not-a-match"
-  hdii3 = di_assembler.build_object(fdi_intermed)
-  return [hdii1, hdii2, hdii3]
+  di3 = di_assembler.build_object(fdi_intermed)
+  di3.add_relationship(:is_member_of_collection, @coll_pid)
+  di3.save
+  fdi_intermed.disk_name = "no_match"
+  fdi_intermed.case_number = "cn4"
+  di4 = di_assembler.build_object(fdi_intermed)
+  di4.add_relationship(:is_member_of_collection, @coll_pid)
+  di4.save
+  return [di1, di2, di3, di4]
 end
 
-# Tying a file object to a disk object relies on having only one solr document 
-# that matches a given disk number. Ensure we remove all instances of the disk object
-# fixture before running any test that requires disk to file linking. 
+# Remove all instances of the HypatiaDiskImageItem fixtures from Fedora/Solr
 def clean_fixture_disk_objects
-#  fdi = FactoryGirl.build(:ftk_disk_image)
   solr_params = {}
-  solr_params[:q] = "local_id_t:(cn1 OR cn2 OR cn3)"
+  solr_params[:q] = "title_t:(single_match OR mult_match OR no_match)"
   solr_params[:qt] = 'standard'
   solr_params[:fl] = 'id'
   solr_response = Blacklight.solr.find(solr_params)

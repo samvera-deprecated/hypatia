@@ -23,12 +23,4 @@ FactoryGirl.define do
     unique_combo "foofile.txt_9999"
     type "Journal Article"
   end
-  factory :ftk_disk_image do
-    txt_file File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images/CM5551212.001.txt")
-    disk_name "CM5551212"
-    case_number "case_number"
-    disk_type "disk_type"
-    md5 "md5"
-    sha1 "sha1"
-  end
 end

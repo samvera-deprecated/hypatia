@@ -35,6 +35,8 @@ class FtkItemAssembler
     end
   end
 
+
+# FIXME:  actually, do NOT want this unless it doesn't link to a single disk image
   # Create an "is_member_of_collection" relationship
   # @param [HypatiaFtkItem]
   def link_to_collection(hypatia_item)
@@ -233,25 +235,43 @@ class FtkItemAssembler
   # @param [FtkFile] the intermediate object for the FTK File that is being turned into a Fedora object
   def link_to_disk(hypatia_ftk_item, ff_intermed)
     solr_params = {}
-    solr_params[:q] = "dd_filename_t:#{ff_intermed.disk_image_name}"
+    # sneaky way of finding the disk image title as a string for an exact match
+    solr_params[:q] = "title_sort:#{ff_intermed.disk_image_name}"
     solr_params[:qt] = 'standard'
     solr_params[:fl] = 'id'
     solr_response = Blacklight.solr.find(solr_params)
     solr_docs = solr_response.docs
     
     if solr_docs.count == 0
-puts "DEBUG: no docs"
       @logger.warn "No disk image objects match #{ff_intermed.disk_image_name}. #{hypatia_ftk_item.pid} may not have been correctly populated"
-    elsif solr_docs.count > 1
-puts "DEBUG: mult docs"
-      @logger.warn "More than one disk image object matches #{ff_intermed.disk_image_name}. #{hypatia_ftk_item.pid} may not have been correctly populated"
-    else
-puts "DEBUG: one doc"
+    elsif solr_docs.count == 1   # single match -- Yay!
       hdii = HypatiaDiskImageItem.load_instance(solr_docs.first[:id])
       hypatia_ftk_item.add_relationship(:is_member_of, hdii)
       hypatia_ftk_item.save
       @logger.debug "HypatiaFtkItem #{hypatia_ftk_item.pid} is now a member of HypatiaDiskImageItem #{hdii.pid}"
+    else    #  solr_docs.count > 1, disambiguate on coll pid
+      @logger.warn "More than one disk image object matches #{ff_intermed.disk_image_name}. #{hypatia_ftk_item.pid} may not have been correctly populated"
+      matching_hdii_objects = []
+      solr_docs.each { | sd | 
+        matching_hdii_objects.push(HypatiaDiskImageItem.load_instance(sd[:id]))
+      }
+      matching_hdii_objects.each { |hdii|  
+        if hdii.relationships[:self][:is_member_of_collection].include?("info:fedora/#{@collection_pid}")
+          hypatia_ftk_item.add_relationship(:is_member_of, hdii)
+          hypatia_ftk_item.save
+          @logger.debug "HypatiaFtkItem #{hypatia_ftk_item.pid} is now a member of HypatiaDiskImageItem #{hdii.pid}"
+          break
+        end
+      }
     end
+    
+    if hypatia_ftk_item.sets.size == 0
+      coll_obj = HypatiaCollection.load_instance(@collection_pid)
+      hypatia_ftk_item.add_relationship(:is_member_of_collection, coll_obj)
+      hypatia_ftk_item.save
+      @logger.debug "HypatiaFtkItem #{hypatia_ftk_item.pid} is now a member of HypatiaCollection #{@collection_pid}"
+    end
+    
   end
   
   # Create a Nokogiri XML Datastream on the hypatia_item object
