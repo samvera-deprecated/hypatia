@@ -16,5 +16,21 @@ $(document).ready(function(){
    $( "a.more_facets_link" ).ajaxyDialog({
        width: $(window).width() / 2,  
        chainAjaxySelector: "a.next_page, a.prev_page, a.sort_change"        
-   });  
+   });
+
+  $("#facets h3").each(function(){
+	  var h3 = $(this);
+	  h3.click(function(){
+		  h3.next("ul").each(function(){
+				$(this).slideToggle();
+		  });
+	  });
+	  if(h3.attr("id") != "facet_repository"){
+		  h3.next("ul").each(function(){
+			  if($('span.selected', $(this)).length == 0){
+				  $(this).toggle();
+			  }
+		  });
+	  }
+  });
 });
