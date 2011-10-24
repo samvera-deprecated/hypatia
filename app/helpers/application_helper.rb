@@ -50,7 +50,14 @@ module ApplicationHelper
     filename = get_values_from_datastream(fedora_obj, "contentMetadata", [resource_ref_symbol, :file, :filename])
     url = get_datastream_url_from_content_md(fedora_obj, filename, [resource_ref_symbol, :fedora_pid], [resource_ref_symbol, :file, :ds_id])
     addl_args[:alt] = filename
-    image_tag(url, addl_args)
+    image_tag(url, addl_args) unless filename.to_s.blank?
+  end
+  
+  def get_image_tag_from_solr(doc,resource_ref_symbol, addl_args={})
+    af_base = load_af_instance_from_solr(doc)
+    the_model = ActiveFedora::ContentModel.known_models_for( af_base ).first    
+    obj = the_model.load_instance(doc[:id])
+    get_image_tag_from_content_md(obj, resource_ref_symbol, addl_args)
   end
   
   def render_facet_value(facet_solr_field, item, options ={})
