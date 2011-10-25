@@ -281,7 +281,7 @@ describe FtkDiskImageItemAssembler do
   end # context "FileAssets and their contentMetadata in the DiskImageItem"
   
   
-  context "HypatiaDiskImageItem object" do
+  context "build_object method" do
     before(:all) do
       delete_fixture(@collection_pid)
       import_fixture(@collection_pid)
@@ -339,7 +339,7 @@ describe FtkDiskImageItemAssembler do
       pending
     end
 =end
-  end # context "building an object"
+  end # context "build_object method"
    
   context "processing a directory" do
     before(:all) do
