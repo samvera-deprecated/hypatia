@@ -351,53 +351,33 @@ describe FtkItemAssembler do
       @assembler.process(ftk_report, ftk_file_dir, display_derivative_dir)
       solr_response = get_solr_response_for_ftk_report_objects
       @solr_docs = solr_response.docs
-      @hfi_docs = []
-      @solr_docs.each do |doc|
-        @hfi_docs.push(HypatiaFtkItem.load_instance(doc[:id]))
-      end
-      @exp_filenames = ["BU3A5", "BUR3-1", "BURCH1", "BURCH2", "BURCH3", "Description.txt"]
       # BURCH1 is the only document with an actual file and a display derivative
-      @BURCH1_doc = @solr_docs.find { |d| d[:filename_display].first == "BURCH1"}
+      @burch1_solr_doc = @solr_docs.find { |d| d[:filename_display].first == "BURCH1"}
+      @burch1_hfi = HypatiaFtkItem.load_instance(@burch1_solr_doc[:id])
     end
 
-    it "creates all the HypatiaFtkItem objects indicated in FTK report, with correct filenames" do
-      @solr_docs.size.should be(6)
-      @solr_docs.each do |doc|
-        @exp_filenames.include?(doc[:filename_display].first).should be_true
-        doc[:has_model_s].first.should == "info:fedora/afmodel:HypatiaFtkItem"
-      end
+    it "creates the HypatiaFtkItem objects for the existing file indicated in FTK report, with correct filenames" do
+      @solr_docs.size.should be(1)
+      @burch1_solr_doc.should_not be_nil
+      @burch1_solr_doc[:has_model_s].first.should == "info:fedora/afmodel:HypatiaFtkItem"
     end
     
     it "creates correct rightsMetadata for each file in the FTK report" do
-      @hfi_docs.each do |hfi|  
-        rights_md_ds = hfi.datastreams["rightsMetadata"]
-        rights_md_ds.term_values(:discover_access).first.should match(/^\s*public\s*$/)
-        rights_md_ds.term_values(:read_access).first.should match(/^\s*public\s*$/)
-        rights_md_ds.term_values(:edit_access).first.should match(/^\s*archivist\s*$/)
-      end
+      rights_md_ds = @burch1_hfi.datastreams["rightsMetadata"]
+      rights_md_ds.term_values(:discover_access).first.should match(/^\s*public\s*$/)
+      rights_md_ds.term_values(:read_access).first.should match(/^\s*public\s*$/)
+      rights_md_ds.term_values(:edit_access).first.should match(/^\s*archivist\s*$/)
     end
     it "creates correct descMetadata for each file in the FTK report" do
-      @hfi_docs.each do |hfi|  
-        desc_md_ds = hfi.datastreams["descMetadata"]
-        desc_md_ds.term_values(:digital_origin).should == ["born digital"]
-        @exp_filenames.include?(desc_md_ds.term_values(:display_name).first).should be_true
-      end
+      desc_md_ds = @burch1_hfi.datastreams["descMetadata"]
+      desc_md_ds.term_values(:digital_origin).should == ["born digital"]
     end
     it "creates correct RELS-EXT for each file in the FTK report" do
-      @hfi_docs.each do |hfi|  
-        rels_ext_ds = hfi.datastreams["RELS-EXT"]
-        # all files in the FTK report match no disk image
-        hfi.collections.size.should be(1)
-        hfi.sets.size.should be(0)
-        pending
-        if hfi.pid == @BURCH1_doc[:id]
-          # BURCH1 is the only file with actual stuff
-          hfi.parts.size.should be(1)
-        else
-          hfi.parts.size.should be(0)
-        end
-      end
-      pending
+      rels_ext_ds = @burch1_hfi.datastreams["RELS-EXT"]
+      # all files in the FTK report match no disk image
+      @burch1_hfi.collections.size.should be(1)
+      @burch1_hfi.sets.size.should be(0)
+      @burch1_hfi.parts.size.should be(1)
     end
     it "creates the expected fileassets for each file in the FTK report" do
       pending
