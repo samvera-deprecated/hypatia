@@ -91,4 +91,10 @@ module ApplicationHelper
     return obj.members(:response_format=>:solr)
   end
   
+  def featured_collections
+    records = []
+    response,docs = get_solr_response_for_field_values("id",Blacklight.config[:featured_collections])
+    return docs
+  end
+  
 end

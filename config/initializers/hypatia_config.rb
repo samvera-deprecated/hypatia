@@ -67,4 +67,5 @@ Blacklight.configure(:shared) do |config|
   # number of facets to show before adding a more link
   config[:facet_more_num] = 5
   
+  config[:featured_collections] = ["hypatia:gould_collection", "hypatia:creeley_collection"]
 end

@@ -6,20 +6,15 @@
   <div class="home-text-container">
     <p class="home-intro"><a class="hypatia-home-link" href="https://wiki.duraspace.org/display/HYPAT/Home">Hypatia</a>&mdash;a 
       <a href="https://wiki.duraspace.org/display/hydra/The+Hydra+Project">Hydra</a> application&mdash;supports accessioning, arrangement, description, discovery, delivery, and long term preservation of born digital collections. Hypatia is being developed as part of the <a href="http://www2.lib.virginia.edu/aims/">AIMS Project</a> (&ldquo;Born-Digital Collections: An Inter-Institutional Model for Stewardship&rdquo;), funded by the Andrew W. Mellon Foundation.</p>
-    <div class="home-featured">
-      <h2 class="home-featured-title"><a href="#">Featured Collection One</a></h2>
-      <div class="home-featured-media">
-        <a href="#"><img alt="" src="#" /></a>
+    <%- featured_collections.each do |collection| -%>
+      <div class="home-featured">
+        <h2 class="home-featured-title"><%= link_to(collection["display_name_display"], catalog_path(collection["id"])) %></h2>
+        <div class="home-featured-media">
+          <%= link_to(get_image_tag_from_solr(collection,:image, :width=>"120", :height=>"120"), catalog_path(collection["id"])) %>
+        </div>
+        <p class="home-featured-description"><%= collection["abstract_display"]  %></p>
       </div>
-      <p class="home-featured-description">Integer suscipit enim ut metus viverra condimentum. In ut malesuada lectus. Vestibulum suscipit, nulla quis cursus porttitor, velit libero rutrum sapien, at imperdiet dolor massa vel lectus. In tellus est, elementum vitae ultricies vitae, porta et justo.</p>
-    </div>
-    <div class="home-featured">
-      <h2 class="home-featured-title"><a href="#">Featured Collection Two</a></h2>
-      <div class="home-featured-media">
-        <a href="#"><img alt="" src="#" /></a>
-      </div>
-      <p class="home-featured-description">Pellentesque orci justo, tincidunt sit amet condimentum ultricies, euismod ac justo. Etiam hendrerit nulla a leo aliquet rhoncus. Maecenas nec velit quam, a pellentesque dolor. Duis non odio at nisl auctor posuere ut sit amet ligula. Nulla facilisi.  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-    </div>
+    <%- end -%>
   </div>
 
 </div>
