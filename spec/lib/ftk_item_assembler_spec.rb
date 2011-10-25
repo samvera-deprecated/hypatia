@@ -11,9 +11,6 @@ describe FtkItemAssembler do
     before(:all) do
       delete_fixture(@coll_pid)
       import_fixture(@coll_pid)
-      @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
-      @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/files")
-      @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives")
     end
     it "can instantiate" do
       hfo = FtkItemAssembler.new
@@ -24,19 +21,7 @@ describe FtkItemAssembler do
       hfo.collection_pid = @coll_pid
       hfo.collection_pid.should eql(@coll_pid)
     end
-=begin   
-# FIXME:  this is an important spec to replace!
-    it "processes an FTK report" do
-      hfo = FtkItemAssembler.new(:fedora_config => @fedora_config)
-      hfo.expects(:create_hypatia_item).at_least(56).returns(nil)
-      hfo.process(@ftk_report,@file_dir,@display_derivative_dir)
-      hfo.ftk_report.should eql(@ftk_report)
-      hfo.file_dir.should eql(@file_dir)
-      hfo.display_derivative_dir.should eql(@display_derivative_dir)
-    end
-=end
   end # context basic behavior
-  
   
   context "metadata (and RELS-EXT) datastreams" do
     before(:all) do
@@ -79,7 +64,7 @@ describe FtkItemAssembler do
       rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='edit']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("archivist")
     end
     
-    context "link_to_disk method for RELS-EXT" do
+    context "link_to_parent method for RELS-EXT" do
       before(:all) do
         @assembler.file_dir = "spec/fixtures/ftk"
         @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
@@ -92,7 +77,7 @@ describe FtkItemAssembler do
         ff_intermed = FactoryGirl.build(:ftk_file)
         ff_intermed.disk_image_name = "single_match"
         ftk_item_object = HypatiaFtkItem.new
-        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        @assembler.link_to_parent(ftk_item_object, ff_intermed)
         ftk_item_object.relationships[:self][:is_member_of].size.should be(1)
         ftk_item_object.relationships[:self][:is_member_of].first.should eql("info:fedora/#{@disk_objects.first.pid}")
       end
@@ -100,7 +85,7 @@ describe FtkItemAssembler do
         ff_intermed = FactoryGirl.build(:ftk_file)
         ff_intermed.disk_image_name = "mult_match"
         ftk_item_object = HypatiaFtkItem.new
-        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        @assembler.link_to_parent(ftk_item_object, ff_intermed)
         ftk_item_object.relationships[:self][:is_member_of].size.should be(1)
         ftk_item_object.relationships[:self][:is_member_of].first.should eql("info:fedora/#{@disk_objects[2].pid}")
       end
@@ -108,24 +93,24 @@ describe FtkItemAssembler do
         ff_intermed = FactoryGirl.build(:ftk_file)
         ff_intermed.disk_image_name = "will_not_match"
         ftk_item_object = HypatiaFtkItem.new
-        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        @assembler.link_to_parent(ftk_item_object, ff_intermed)
         ftk_item_object.relationships[:self][:is_member_of].should be_nil
       end
       it "creates an is_member_of_collection relationship when no disk image matches" do
         ff_intermed = FactoryGirl.build(:ftk_file)
         ff_intermed.disk_image_name = "will_not_match"
         ftk_item_object = HypatiaFtkItem.new
-        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        @assembler.link_to_parent(ftk_item_object, ff_intermed)
         ftk_item_object.relationships[:self][:is_member_of_collection].first.should eql("info:fedora/#{@coll_pid}")
       end
       it "does not create an is_member_of_collection relationship when a disk image matches" do
         ff_intermed = FactoryGirl.build(:ftk_file)
         ff_intermed.disk_image_name = "single_match"
         ftk_item_object = HypatiaFtkItem.new
-        @assembler.link_to_disk(ftk_item_object, ff_intermed)
+        @assembler.link_to_parent(ftk_item_object, ff_intermed)
         ftk_item_object.relationships[:self][:is_member_of_collection].should be_nil
       end
-    end # context  link_to_disk method for RELS-EXT
+    end # context  link_to_parent method for RELS-EXT
 
   end # context  metadata datastreams
   
@@ -265,8 +250,8 @@ describe FtkItemAssembler do
       end
 =begin
 # FIXME:  this is an integration spec testing that the xml from the loader can be loaded into the app properly.  Not sure where to put this.
-      it "creates contentMetadata datastream that adheres to HypatiaDiskImageContentMetadataDS model" do
-        content_md_ds = HypatiaDiskImgContentMetadataDS.from_xml(@doc_one_image)
+      it "creates contentMetadata datastream that adheres to HypatiaFtkItemContentMetadataDS model" do
+        content_md_ds = HypatiaFtkItemContentMetadataDS.from_xml(@doc_one_image)
         content_md_ds.term_values(:dd_fedora_pid).first.should match(/^hypatia:\d+$/) 
         content_md_ds.term_values(:dd_ds_id).should == [@dd_file_ds.dsid]
         content_md_ds.term_values(:dd_filename).should == ["CM5551212"]
@@ -287,72 +272,60 @@ describe FtkItemAssembler do
     end  # context "contentMetadata"
   end # context "FtkItem assets"
 
-
-
-# 2011-09-29  Naomi commenting out because this now fails with new data models.
-=begin  
-  context "creating fedora objects" do
+  context "create_hypatia_ftk_item" do
     before(:all) do
-      @disk_object = build_fixture_disk_object
-      
-      @ff = FactoryGirl.build(:ftk_file)
-      @fia = FtkItemAssembler.new(:collection_pid => @coll_pid)  
-      @ftk_report = File.join(File.dirname(__FILE__), "/../fixtures/ftk/Gould_FTK_Report.xml")
-      @file_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk") 
-      @display_derivative_dir = File.join(File.dirname(__FILE__), "/../fixtures/ftk/display_derivatives") 
-      @fia.file_dir = @file_dir
-      @fia.display_derivative_dir = @display_derivative_dir
-      @hi = @fia.create_hypatia_item(@ff)  
-      @hi.save
+      delete_fixture(@coll_pid)
+      import_fixture(@coll_pid)
+      @assembler = FtkItemAssembler.new(:collection_pid => @coll_pid)
+      @assembler.ftk_report = "spec/fixtures/ftk/Gould_FTK_Report.xml"
+      @assembler.file_dir = "spec/fixtures/ftk"
+      @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
+      @ff_intermed = FactoryGirl.build(:ftk_file)
+      @ftk_item = @assembler.create_hypatia_ftk_item(@ff_intermed)
     end
-    
-    after(:all) do
-      @disk_object.parts.first.delete
-      @disk_object.delete
-      @hi.parts.first.delete
-      @hi.delete
+    it "is a kind of HypatiaFtkItem object" do
+      @ftk_item.should be_kind_of(HypatiaFtkItem)
     end
-    
-    it "accepts an FtkFile as an argument and returns a HypatiaItem object" do
-      @hi.should be_instance_of(HypatiaFtkItem)
-    end
-    
     it "includes all the expected metadata datastreams" do
       ['contentMetadata','descMetadata','rightsMetadata','DC','RELS-EXT'].each do |datastream_name|
-        @hi.datastreams[datastream_name].should_not eql(nil)
+         @ftk_item.datastreams[datastream_name].should_not eql(nil)
       end
+      # NOTE:  rights metadata is actually populated in the process method, as it is constant for all objects
+      #  it is just a nil or empty object here
     end
-    
+    it "has correct descMetadata" do
+      desc_md_ds = @ftk_item.datastreams["descMetadata"]
+      desc_md_ds.term_values(:display_name).should == [@ff_intermed.filename]
+      desc_md_ds.term_values(:ftk_id).should == [@ff_intermed.id]
+      desc_md_ds.term_values(:date_last_modified).should == [@ff_intermed.file_modified_date]
+    end
+    it "has correct RELS-EXT" do
+      # our factory ftk file isn't matching any disk images, so relationship to collection object
+      @ftk_item.relationships[:self][:is_member_of_collection].size.should be(1)
+      @ftk_item.relationships[:self][:is_member_of_collection].first.should eql("info:fedora/#{@coll_pid}")
+    end
+    it "has correct contentMetadata" do
+      content_md_ds = @ftk_item.datastreams["contentMetadata"]
+      content_md_ds.term_values(:content_filename).should == [@ff_intermed.filename]
+      content_md_ds.term_values(:content_size).first.should match(/^\d+$/)
+      content_md_ds.term_values(:content_md5).should == [@ff_intermed.md5]
+      content_md_ds.term_values(:html_filename).should == ["#{@ff_intermed.filename}.htm"]
+      content_md_ds.term_values(:html_format).should == ["HTML"]
+    end
     it "has a file object with an isPartOf relationship" do
-      @hi.inbound_relationships[:is_part_of].length.should eql(1)
+      @ftk_item.inbound_relationships[:is_part_of].length.should eql(1)
     end
-    it "has a FileAsset part" do
-      @hi.parts.first.should be_instance_of(FileAsset)
+    it "has parts populated with FileAsset for file and display derivative" do
+      @ftk_item.parts.size.should be(1)
+      part = @ftk_item.parts.first
+      part.should be_kind_of(FileAsset)
+      content_ds = part.datastreams["content"]
+      # the (file) datastream of a FileAsset part object should have a label value = filename
+      content_ds[:dsLabel].should == @ff_intermed.filename
+      html_ds = part.datastreams["derivative_html"]
+      html_ds[:dsLabel].should == "#{@ff_intermed.filename}.htm"
     end
-    
-    it "has an isMemberOf relationship with a disk object" do
-      @hi.relationships[:self][:is_member_of].first.gsub("info:fedora/",'').should eql(@disk_object.pid)
-    end
-    
-    it "has an isMemberOfCollection relationship with a collection object" do
-      @hi.relationships[:self][:is_member_of_collection].first.gsub("info:fedora/",'').should eql(@coll_pid)
-    end
-    
-    it "has a FileAsset part" do
-      @hi.parts.first.should be_instance_of(FileAsset)
-    end
-
-    # This is the binary file for an FTK object
-    # It needs a better test at some point
-    it "has a member object with a file payload" do
-      @hi.parts.first.datastreams['content'].content.should_not eql(nil)
-    end
-    
-    it "has a member object with an html payload" do
-      @hi.parts.first.datastreams['derivative_html'].content.should_not eql(nil)
-    end
-  end
-=end
+  end # context "create_hypatia_ftk_item"
 
 end # describe FtkItemAssembler
 

@@ -10,6 +10,8 @@ require "digest/sha1"
 #  hfo = HypatiaFileObjectAssembler.new(:fedora_config => my_fedora_config, :bag_destination => my_bag_dir)
 #  hfo.process(ftk_report, file_dir)
 class FtkItemAssembler
+
+# FIXME:  are some of these attributes basically redundant with method params?
   
   # The FTK report to process
   attr_accessor :ftk_report
@@ -23,7 +25,8 @@ class FtkItemAssembler
   attr_accessor :collection_pid
 
 # NAOMI:  fix this comment  
-# NAOMI:  change the args to just be a collection_pid instead of a hash
+# NAOMI:  change the args to just be a collection_pid instead of a hash 
+#  OR take the other attributes here ...
   # @param [Hash] args 
   # @param [Hash[:collection_pid]] 
   def initialize(args={})
@@ -32,16 +35,6 @@ class FtkItemAssembler
 
     if args[:collection_pid]
       @collection_pid = args[:collection_pid]
-    end
-  end
-
-
-# FIXME:  actually, do NOT want this unless it doesn't link to a single disk image
-  # Create an "is_member_of_collection" relationship
-  # @param [HypatiaFtkItem]
-  def link_to_collection(hypatia_item)
-    if @collection_pid
-      hypatia_item.add_relationship(:is_member_of_collection,@collection_pid)
     end
   end
 
@@ -72,9 +65,10 @@ class FtkItemAssembler
     end
   end
   
-  # Create a HypatiaFtkItem object for an FTK file
+  # Create a HypatiaFtkItem object for an FtkFile object
   # @param [FtkFile] the intermediate object for the FTK File
-  # @return [HypatiaFtkItem] the populated HypatiaFtkItem object
+  # @return [HypatiaFtkItem] the populated HypatiaFtkItem object, which 
+  #   has been saved to Fedora/Solr
   def create_hypatia_ftk_item(ff_intermed)    
     # Don't create objects for files that don't really exist
     # filepath = "#{@file_dir}/#{ff_intermed.export_path}"
@@ -85,14 +79,12 @@ class FtkItemAssembler
     hypatia_item.save
     raise "Couldn't save new hypatia item" unless !hypatia_item.pid.nil?
     
-    link_to_disk(hypatia_item, ff_intermed)
-    link_to_collection(hypatia_item)
-    fileAsset = create_file_asset(hypatia_item, ff_intermed)
-    
+    link_to_parent(hypatia_item, ff_intermed)
     build_ng_xml_datastream(hypatia_item, "descMetadata", build_desc_metadata(ff_intermed))
-    build_ng_xml_datastream(hypatia_item, "contentMetadata", build_content_metadata(ff_intermed, hypatia_item.pid, fileAsset.pid))
     build_ng_xml_datastream(hypatia_item, "rightsMetadata", @rights_metadata)
-    
+    fileAsset = create_file_asset(hypatia_item, ff_intermed)
+    build_ng_xml_datastream(hypatia_item, "contentMetadata", build_content_metadata(ff_intermed, hypatia_item.pid, fileAsset))
+
     hypatia_item.save
     return hypatia_item
   end
@@ -101,7 +93,6 @@ class FtkItemAssembler
   # @param [FtkFile] the intermediate object for the FTK File that is being turned into a Fedora object
   # @return [Nokogiri::XML::Document] - the xmlContent for the descMetadata datastream (a MODS document)
   def build_desc_metadata(ff_intermed)
-    @logger.debug "building desc metadata for #{ff_intermed.unique_combo} "
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.mods('xmlns:mods' => "http://www.loc.gov/mods/v3") {
         xml.parent.namespace = xml.parent.namespace_definitions.first
@@ -230,10 +221,11 @@ class FtkItemAssembler
   
   # Find the object for the disk image that this file came from. 
   # Create a relationship between the ftk file item object and the disk image object.
+  #  if there is no match, link to the collection object
   #   Side Effect:  alters passed HypatiaFtkItem (if it finds the correct disk image object)
   # @param [HypatiaFtkItem] the object for the file
   # @param [FtkFile] the intermediate object for the FTK File that is being turned into a Fedora object
-  def link_to_disk(hypatia_ftk_item, ff_intermed)
+  def link_to_parent(hypatia_ftk_item, ff_intermed)
     solr_params = {}
     # sneaky way of finding the disk image title as a string for an exact match
     solr_params[:q] = "title_sort:#{ff_intermed.disk_image_name}"
@@ -271,8 +263,7 @@ class FtkItemAssembler
       hypatia_ftk_item.save
       @logger.debug "HypatiaFtkItem #{hypatia_ftk_item.pid} is now a member of HypatiaCollection #{@collection_pid}"
     end
-    
-  end
+  end # end link_to_parent
   
   # Create a Nokogiri XML Datastream on the hypatia_item object
   # @param [HypatiaFtkItem] the HypatiaFtkItem object getting the datastream
