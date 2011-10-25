@@ -66,8 +66,6 @@ describe FtkItemAssembler do
     
     context "link_to_parent method for RELS-EXT" do
       before(:all) do
-        @assembler.file_dir = "spec/fixtures/ftk"
-        @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
         @ftk_item_object = HypatiaFtkItem.new
         @disk_objects = build_fixture_disk_objects
         # @disk_object title_sort (match fields) are:  single_match, mult_match, mult_match, no_match
@@ -327,6 +325,135 @@ describe FtkItemAssembler do
     end
   end # context "create_hypatia_ftk_item"
 
+
+  context "processing a directory" do
+    before(:all) do
+      delete_fixture(@coll_pid)
+      import_fixture(@coll_pid)
+      remove_fixture_ftk_report_objects
+      @assembler = FtkItemAssembler.new(:collection_pid => @coll_pid)
+      ftk_report = File.join(File.dirname(__FILE__), "../fixtures/ftk/Gould_FTK_Report.xml")
+      ftk_file_dir = File.join(File.dirname(__FILE__), "../fixtures/ftk")
+      display_derivative_dir = File.join(File.dirname(__FILE__), "../fixtures/ftk/display_derivatives")
+      @assembler.process(ftk_report, ftk_file_dir, display_derivative_dir)
+    end
+
+    it "creates all the HypatiaFtkItem objects indicated in FTK report" do
+      solr_response = get_solr_response_for_ftk_report_objects
+      solr_docs = solr_response.docs
+      solr_docs.size.should be(6)
+      exp_filenames = ["BU3A5", "BUR3-1", "BURCH1", "BURCH2", "BURCH3", "Description.txt"]
+      solr_docs.each do |doc|
+        exp_filenames.include?(doc[:filename_display].first).should be_true
+        doc[:has_model_s].first.should == "info:fedora/afmodel:HypatiaFtkItem"
+      end
+    end
+    
+    it "creates (the same) rightsMetadata for all the objects" do
+      pending
+    end
+    
+    it "each object created has its goodies" do
+      pending
+    end
+    it "creates the expected fileassets" do
+      pending
+    end
+    
+    
+    
+# type of object    
+# descMetadata
+# rightsMetadata
+# RELS-EXT
+# contentMetadata
+# FileAsset:  content, derivative_html
+    
+=begin
+# rights metadata is the same for all the files at this time
+@rights_metadata = build_rights_metadata
+
+@ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
+@ftk_processor.files.each do |ftk_file|
+  create_hypatia_ftk_item(ftk_file)
+end
+=end
+
+=begin    
+    it "correctly determines the disk names" do
+      disk_names = []
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/) 
+          disk_names << dio.datastreams["descMetadata"].term_values(:title).first
+        end
+      }
+      disk_names.size.should be(5)
+      disk_names.member?("CM5551212").should be_true # disk name CM5551212.001
+      disk_names.member?("CMno_txt").should be_true 
+      disk_names.member?("CM070").should be_true # disk name "hasSpace CM070.ad1"
+      disk_names.member?("ddExt").should be_true # disk name "ddExt.dd"
+      disk_names.member?("hasMultPeriods").should be_true # disk name "hasMultPeriods.one.two"
+    end
+    it "builds HypatiaDiskImageItems" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          dio.should be_kind_of(HypatiaDiskImageItem)
+        end
+      }
+    end
+    it "creates full descMetadta when there is a .txt file" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          desc_md_ds = dio.datastreams["descMetadata"]
+          if (desc_md_ds.term_values(:title).first == "CM5551212")
+            desc_md_ds.term_values(:local_id).should == ["M1437"]
+            desc_md_ds.term_values(:extent).should == ["5.25 inch Floppy Disk"]
+          end
+        end
+      }
+    end
+    it "creates sparse descMetadata when there is no .txt file" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          desc_md_ds = dio.datastreams["descMetadata"]
+          if (desc_md_ds.term_values(:title).first == "CMno_txt")
+            desc_md_ds.term_values(:display_name).should == ["CMno_txt"]
+            desc_md_ds.term_values(:digital_origin).should == ["born digital"]
+            desc_md_ds.term_values(:local_id).should == [""]
+            desc_md_ds.term_values(:extent).should == [""]
+          end
+        end
+      }
+    end
+    it "creates full contentMetadta for disk image file when there is a .txt file" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          desc_md_ds = dio.datastreams["descMetadata"]
+          if (desc_md_ds.term_values(:title).first == "CM5551212")
+            content_md_ds = dio.datastreams["contentMetadata"]
+            content_md_ds.term_values(:dd_filename).should == ["CM5551212"]
+            content_md_ds.term_values(:dd_md5).should == ["7d7abca99f383487e02ce7bf7c017267"]
+            content_md_ds.term_values(:dd_sha1).should == ["628ede981ad24c1655f7e37057355ca689dcb3a9"]
+          end
+        end
+      }
+    end
+    it "creates sparse contentMetadata for disk image file when there is no .txt file" do
+      @disk_image_objects.each { |dio|
+        if (dio.pid !~ /fixture/)
+          desc_md_ds = dio.datastreams["descMetadata"]
+          if (desc_md_ds.term_values(:title).first == "CMno_txt")
+            content_md_ds = dio.datastreams["contentMetadata"]
+            content_md_ds.term_values(:dd_filename).should == ["CMno_txt"]
+            content_md_ds.term_values(:dd_md5).should == [""]
+            content_md_ds.term_values(:dd_sha1).should == [""]
+          end
+        end
+      }
+    end
+=end
+  end # context "processing a directory" 
+
 end # describe FtkItemAssembler
 
 #------------- supporting methods
@@ -361,7 +488,7 @@ def build_fixture_disk_objects
   return [di1, di2, di3, di4]
 end
 
-# Remove all instances of the HypatiaDiskImageItem fixtures from Fedora/Solr
+# Remove from Fedora/Solr all instances of the HypatiaDiskImageItem fixtures
 def clean_fixture_disk_objects
   solr_params = {}
   solr_params[:q] = "title_t:(single_match OR mult_match OR no_match)"
@@ -371,4 +498,36 @@ def clean_fixture_disk_objects
   solr_response.docs.each do |doc|
     ActiveFedora::Base.load_instance(doc[:id]).delete    
   end
+end
+
+=begin
+# return the object ids from objects generated by calling @assembler.process 
+# on the fixture FTK report file 
+def get_ftk_report_object_ids_from_solr
+  doc_ids = []
+  solr_response = get_solr_response_for_ftk_report_objects
+  solr_response.docs.each do |doc| 
+    doc_ids.push(doc[:id])
+  end
+  doc_ids
+end
+=end
+
+# Remove from Fedora/Solr all instances of the HypatiaFtkItem fixtures from the fixture FTK report
+def remove_fixture_ftk_report_objects
+  solr_response = get_solr_response_for_ftk_report_objects
+  solr_response.docs.each do |doc|
+    ActiveFedora::Base.load_instance(doc[:id]).delete    
+  end
+end
+
+# do a Solr query to get the objects generated by calling @assembler.process 
+# on the fixture FTK report file
+def get_solr_response_for_ftk_report_objects
+  solr_params = {}
+  solr_params[:q] = "filename_t:(BU3A5 OR BUR3-1 OR BURCH1 OR BURCH2 OR BURCH3 OR Description.txt)"
+  solr_params[:qt] = 'standard'
+  solr_params[:fl] = 'id,filename_display,has_model_s'
+  solr_params[:rows] = '50'
+  solr_response = Blacklight.solr.find(solr_params)
 end
