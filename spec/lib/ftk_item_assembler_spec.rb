@@ -379,17 +379,16 @@ describe FtkItemAssembler do
       @burch1_hfi.sets.size.should be(0)
       @burch1_hfi.parts.size.should be(1)
     end
-    it "creates the expected fileassets for each file in the FTK report" do
-      pending
-    end
-    it "creates the expected contentMetadata for each file in the FTK report" do
-      pending
+    it "creates correct contentMetadta for FileAsset with file and display derivative file" do
+      content_md_ds = @burch1_hfi.datastreams["contentMetadata"]
+      content_md_ds.term_values(:content_filename).should == ["BURCH1"]
+      content_md_ds.term_values(:content_ds_id).should == ["content"]
+      content_md_ds.term_values(:content_md5).should == ["E769B03076214F30766258C8BC857F7E"]
+      content_md_ds.term_values(:html_filename).should == ["BURCH1.htm"]
+      content_md_ds.term_values(:html_ds_id).should == ["derivative_html"]
+      content_md_ds.term_values(:html_mimetype).should == ["text/html"]
     end
     
-    
-# contentMetadata
-# FileAsset:  content, derivative_html
-
   end # context "processing a directory" 
 
 end # describe FtkItemAssembler
