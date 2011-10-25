@@ -9,4 +9,10 @@ describe ApplicationHelper do
     end
   end
   
+  describe "Image Helpers" do
+    it "should return an empty string when there is no filename (e.g. no image)" do
+      helper.expects(:get_values_from_datastream).returns("")
+      helper.get_image_tag_from_content_md({:id=>"fake"},:reference,{}).should == ""
+    end
+  end
 end
