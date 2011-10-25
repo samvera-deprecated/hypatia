@@ -11,12 +11,11 @@ require "digest/sha1"
 #  hfo.process(ftk_report, file_dir)
 class FtkItemAssembler
 
-# FIXME:  are some of these attributes basically redundant with method params?
+# FIXME:  which of these attributes aren't really attributes b/c they are redundant with method params?
+#   which of these should be passed in as an arg at .new?
   
   # The FTK report to process
   attr_accessor :ftk_report
-  # The FtkProcessor object used to parse the FTK report
-  attr_accessor :ftk_processor
   # Where should I copy the files from?
   attr_accessor :file_dir
   # Where should I copy the display derivative HTML from?
@@ -59,8 +58,8 @@ class FtkItemAssembler
     # rights metadata is the same for all the files at this time
     @rights_metadata = build_rights_metadata
     
-    @ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
-    @ftk_processor.files.each do |ftk_file|
+    ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
+    ftk_processor.files.each do |ftk_file|
       create_hypatia_ftk_item(ftk_file)
     end
   end
@@ -69,10 +68,13 @@ class FtkItemAssembler
   # @param [FtkFile] the intermediate object for the FTK File
   # @return [HypatiaFtkItem] the populated HypatiaFtkItem object, which 
   #   has been saved to Fedora/Solr
-  def create_hypatia_ftk_item(ff_intermed)    
-    # Don't create objects for files that don't really exist
-    # filepath = "#{@file_dir}/#{ff_intermed.export_path}"
-    # return unless File.file? filepath
+  def create_hypatia_ftk_item(ff_intermed)
+    # don't create objects for files that don't exist
+    filepath = "#{@file_dir}/#{ff_intermed.export_path}"
+    if !File.exists?(filepath)
+      @logger.error "Couldn't create HypatiaFtkItem: couldn't find #{filepath}"
+      return nil
+    end
     
     hypatia_item = HypatiaFtkItem.new
     hypatia_item.label = ff_intermed.filename
@@ -151,6 +153,7 @@ class FtkItemAssembler
   # @param [ActiveFedora::FileAsset] the FileAsset object for the ftk file itself, and the display derivative file, if there is one
   # @return [Nokogiri::XML::Document] - the xmlContent for the contentMetadata datastream
   def build_content_metadata(ftk_file_intermed, ftk_item_pid, file_asset)
+    return nil unless file_asset
     content_ds = file_asset.datastreams["content"]
     deriv_ds = file_asset.datastreams["derivative_html"]
     builder = Nokogiri::XML::Builder.new do |xml|
@@ -282,34 +285,36 @@ class FtkItemAssembler
   # @param [FtkFile] the intermediate object for the FTK File that is being turned into a Fedora object
   # @return [FileAsset] the FileAsset object that is_part_of the HypatiaFtkItem object
   def create_file_asset(hypatia_ftk_item, ftk_file_intermed)
-    file_asset = FileAsset.new
-    # the label value ends up in DC dc:title and descMetadata  title ??
-    file_asset.label="FileAsset for FTK file #{ftk_file_intermed.filename}"
-    file_asset.add_relationship(:is_part_of, hypatia_ftk_item)
-    
     filepath = "#{@file_dir}/#{ftk_file_intermed.export_path}"
-    file = File.new(filepath)
-    if (ftk_file_intermed.mimetype)
-      file_asset.add_file_datastream(file, {:dsid => "content", :label => ftk_file_intermed.filename, :mimeType => ftk_file_intermed.mimetype})
-    else
-      file_asset.add_file_datastream(file, {:dsid => "content", :label => ftk_file_intermed.filename})
-    end
-
-# FIXME:  (sha1 and) md5 are avail from FtkFile object
-
-    if @display_derivative_dir 
-      html_filepath = "#{@display_derivative_dir}/#{ftk_file_intermed.display_deriv_fname}"
-      if File.file?(html_filepath)
-        html_file = File.new(html_filepath)
-        # NOTE:  if mime_type is not set explicitly, Fedora does it ... but it's not testable
-        derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => ftk_file_intermed.display_deriv_fname, :mimeType => "text/html", :blob => html_file, :controlGroup => 'M')
-        file_asset.add_datastream(derivative_ds)
-#      else
-#        @logger.warn "Couldn't find expected display derivative file #{html_filepath}"
+    if (File.exists?(filepath))
+      file = File.new(filepath)
+      file_asset = FileAsset.new
+      # the label value ends up in DC dc:title and descMetadata  title ??
+      file_asset.label="FileAsset for FTK file #{ftk_file_intermed.filename}"
+      file_asset.add_relationship(:is_part_of, hypatia_ftk_item)
+  
+      if (ftk_file_intermed.mimetype)
+        file_asset.add_file_datastream(file, {:dsid => "content", :label => ftk_file_intermed.filename, :mimeType => ftk_file_intermed.mimetype})
+      else
+        file_asset.add_file_datastream(file, {:dsid => "content", :label => ftk_file_intermed.filename})
       end
-    end
-    file_asset.save
-    return file_asset
+
+      if @display_derivative_dir 
+        html_filepath = "#{@display_derivative_dir}/#{ftk_file_intermed.display_deriv_fname}"
+        if File.file?(html_filepath)
+          html_file = File.new(html_filepath)
+          # NOTE:  if mime_type is not set explicitly, Fedora does it ... but it's not testable
+          derivative_ds =  ActiveFedora::Datastream.new(:dsID => "derivative_html", :dsLabel => ftk_file_intermed.display_deriv_fname, :mimeType => "text/html", :blob => html_file, :controlGroup => 'M')
+          file_asset.add_datastream(derivative_ds)
+#       else
+#         @logger.warn "Couldn't find expected display derivative file #{html_filepath}"
+        end
+      end
+
+      file_asset.save
+      return file_asset
+    end    # if file exists
+    return nil
   end
 
 end

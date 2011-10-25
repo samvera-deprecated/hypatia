@@ -66,8 +66,6 @@ describe FtkItemAssembler do
     
     context "link_to_parent method for RELS-EXT" do
       before(:all) do
-        @assembler.file_dir = "spec/fixtures/ftk"
-        @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
         @ftk_item_object = HypatiaFtkItem.new
         @disk_objects = build_fixture_disk_objects
         # @disk_object title_sort (match fields) are:  single_match, mult_match, mult_match, no_match
@@ -136,6 +134,11 @@ describe FtkItemAssembler do
     end
 
     context "FileAsset creation for FTK file" do
+      it "creates no FileAsset object if the file doesn't exist" do
+        ff_intermed = FactoryGirl.build(:ftk_file)
+        ff_intermed.export_path = "non_existing_file"
+        @assembler.create_file_asset(@ftk_item_object, ff_intermed).should be_nil
+      end
       it "creates a FileAsset object with the correct relationships and descriptive metadata" do
         @file_asset.should be_instance_of(FileAsset) # model
         @file_asset.relationships[:self][:is_part_of].should == ["#{@ftk_item_pid}"]
@@ -178,6 +181,9 @@ describe FtkItemAssembler do
       before(:all) do
         @content_md_doc = Nokogiri::XML(@assembler.build_content_metadata(@ftk_file_intermed, "ftk_item_pid", @file_asset))
         @content_md_no_deriv_doc = Nokogiri::XML(@assembler.build_content_metadata(@ftk_file_intermed_no_deriv, "ftk_item_pid2", @file_asset_no_deriv))
+      end
+      it "creates no contentMetadata if there is no FileAsset" do
+        @assembler.build_content_metadata(@ftk_file_intermed, "ftk_item_pid", nil).should be_nil
       end
       it "creates the correct contentMetdata element" do
         @content_md_doc.xpath("/contentMetadata/@objectId").to_s.should eql("ftk_item_pid")
@@ -248,27 +254,6 @@ describe FtkItemAssembler do
         @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/checksum[@type='sha1']/text()").to_s.should eql(@ftk_file_intermed_no_deriv.sha1)
         @content_md_no_deriv_doc.xpath("/contentMetadata/resource/file[@id='foofile.txt']/checksum[@type='sha1']/text()").to_s.should eql("B6373D02F3FD10E7E1AA0E3B3AE3205D6FB2541C")
       end
-=begin
-# FIXME:  this is an integration spec testing that the xml from the loader can be loaded into the app properly.  Not sure where to put this.
-      it "creates contentMetadata datastream that adheres to HypatiaFtkItemContentMetadataDS model" do
-        content_md_ds = HypatiaFtkItemContentMetadataDS.from_xml(@doc_one_image)
-        content_md_ds.term_values(:dd_fedora_pid).first.should match(/^hypatia:\d+$/) 
-        content_md_ds.term_values(:dd_ds_id).should == [@dd_file_ds.dsid]
-        content_md_ds.term_values(:dd_filename).should == ["CM5551212"]
-        content_md_ds.term_values(:dd_size).first.should match(/^\d+$/)
-        content_md_ds.term_values(:dd_mimetype).should == ["application/octet-stream"]
-        content_md_ds.term_values(:dd_md5).should == ["7d7abca99f383487e02ce7bf7c017267"]
-        content_md_ds.term_values(:dd_sha1).should == ["628ede981ad24c1655f7e37057355ca689dcb3a9"]
-
-        content_md_ds.term_values(:image_front_fedora_pid).first.should match(/^hypatia:\d+$/) 
-        content_md_ds.term_values(:image_front_ds_id).should == ["DS1"] # oops - hardcoded
-        content_md_ds.term_values(:image_front_filename).should == ["CM5551212.JPG"]
-        content_md_ds.term_values(:image_front_size).first.should match(/^\d+$/)
-        content_md_ds.term_values(:image_front_mimetype).should == ["image/jpeg"]
-        content_md_ds.term_values(:image_front_md5).should == ["812b53258f21ee250d17c9308d2099d9"]
-        content_md_ds.term_values(:image_front_sha1).should == ["da39a3ee5e6b4b0d3255bfef95601890afd80709"]
-      end
-=end
     end  # context "contentMetadata"
   end # context "FtkItem assets"
 
@@ -282,6 +267,11 @@ describe FtkItemAssembler do
       @assembler.display_derivative_dir = "spec/fixtures/ftk/display_derivatives" 
       @ff_intermed = FactoryGirl.build(:ftk_file)
       @ftk_item = @assembler.create_hypatia_ftk_item(@ff_intermed)
+    end
+    it "doesn't build an object if the file doesn't exist" do
+      ff_intermed = FactoryGirl.build(:ftk_file)
+      ff_intermed.export_path = "non_existing_file"
+      @assembler.create_hypatia_ftk_item(ff_intermed).should be_nil
     end
     it "is a kind of HypatiaFtkItem object" do
       @ftk_item.should be_kind_of(HypatiaFtkItem)
@@ -327,9 +317,61 @@ describe FtkItemAssembler do
     end
   end # context "create_hypatia_ftk_item"
 
+
+  context "processing a directory" do
+    before(:all) do
+      delete_fixture(@coll_pid)
+      import_fixture(@coll_pid)
+      remove_fixture_ftk_report_objects
+      @assembler = FtkItemAssembler.new(:collection_pid => @coll_pid)
+      ftk_report = File.join(File.dirname(__FILE__), "../fixtures/ftk/Gould_FTK_Report.xml")
+      ftk_file_dir = File.join(File.dirname(__FILE__), "../fixtures/ftk")
+      display_derivative_dir = File.join(File.dirname(__FILE__), "../fixtures/ftk/display_derivatives")
+      @assembler.process(ftk_report, ftk_file_dir, display_derivative_dir)
+      solr_response = get_solr_response_for_ftk_report_objects
+      @solr_docs = solr_response.docs
+      # BURCH1 is the only document with an actual file and a display derivative
+      @burch1_solr_doc = @solr_docs.find { |d| d[:filename_display].first == "BURCH1"}
+      @burch1_hfi = HypatiaFtkItem.load_instance(@burch1_solr_doc[:id])
+    end
+
+    it "creates the HypatiaFtkItem objects for the existing file indicated in FTK report, with correct filenames" do
+      @solr_docs.size.should be(1)
+      @burch1_solr_doc.should_not be_nil
+      @burch1_solr_doc[:has_model_s].first.should == "info:fedora/afmodel:HypatiaFtkItem"
+    end
+    
+    it "creates correct rightsMetadata for each file in the FTK report" do
+      rights_md_ds = @burch1_hfi.datastreams["rightsMetadata"]
+      rights_md_ds.term_values(:discover_access).first.should match(/^\s*public\s*$/)
+      rights_md_ds.term_values(:read_access).first.should match(/^\s*public\s*$/)
+      rights_md_ds.term_values(:edit_access).first.should match(/^\s*archivist\s*$/)
+    end
+    it "creates correct descMetadata for each file in the FTK report" do
+      desc_md_ds = @burch1_hfi.datastreams["descMetadata"]
+      desc_md_ds.term_values(:digital_origin).should == ["born digital"]
+    end
+    it "creates correct RELS-EXT for each file in the FTK report" do
+      rels_ext_ds = @burch1_hfi.datastreams["RELS-EXT"]
+      # all files in the FTK report match no disk image
+      @burch1_hfi.collections.size.should be(1)
+      @burch1_hfi.sets.size.should be(0)
+      @burch1_hfi.parts.size.should be(1)
+    end
+    it "creates correct contentMetadta for FileAsset with file and display derivative file" do
+      content_md_ds = @burch1_hfi.datastreams["contentMetadata"]
+      content_md_ds.term_values(:content_filename).should == ["BURCH1"]
+      content_md_ds.term_values(:content_ds_id).should == ["content"]
+      content_md_ds.term_values(:content_md5).should == ["E769B03076214F30766258C8BC857F7E"]
+      content_md_ds.term_values(:html_filename).should == ["BURCH1.htm"]
+      content_md_ds.term_values(:html_ds_id).should == ["derivative_html"]
+      content_md_ds.term_values(:html_mimetype).should == ["text/html"]
+    end
+  end # context "processing a directory" 
+
 end # describe FtkItemAssembler
 
-#------------- supporting methods
+#------------- supporting methods --------------------
 
 # Create four HypatiaDiskImageItem fixture objects for testing is_member_of relationships
 # @return [Array] of four FtkDiskImageItema
@@ -339,7 +381,6 @@ def build_fixture_disk_objects
 
   di_txt_file = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images/CM5551212.001.txt")
   fdi_intermed = FtkDiskImage.new(di_txt_file)
-
   di_assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => ".", :computer_media_photos_dir => ".")
 
   fdi_intermed.disk_name = "single_match"
@@ -361,7 +402,7 @@ def build_fixture_disk_objects
   return [di1, di2, di3, di4]
 end
 
-# Remove all instances of the HypatiaDiskImageItem fixtures from Fedora/Solr
+# Remove from Fedora/Solr all instances of the HypatiaDiskImageItem fixtures
 def clean_fixture_disk_objects
   solr_params = {}
   solr_params[:q] = "title_t:(single_match OR mult_match OR no_match)"
@@ -371,4 +412,23 @@ def clean_fixture_disk_objects
   solr_response.docs.each do |doc|
     ActiveFedora::Base.load_instance(doc[:id]).delete    
   end
+end
+
+# Remove from Fedora/Solr all instances of the HypatiaFtkItem fixtures from the fixture FTK report
+def remove_fixture_ftk_report_objects
+  solr_response = get_solr_response_for_ftk_report_objects
+  solr_response.docs.each do |doc|
+    ActiveFedora::Base.load_instance(doc[:id]).delete    
+  end
+end
+
+# do a Solr query to get the objects generated by calling @assembler.process 
+# on the fixture FTK report file
+def get_solr_response_for_ftk_report_objects
+  solr_params = {}
+  solr_params[:q] = "filename_t:(BU3A5 OR BUR3-1 OR BURCH1 OR BURCH2 OR BURCH3 OR Description.txt)"
+  solr_params[:qt] = 'standard'
+  solr_params[:fl] = 'id,filename_display,has_model_s'
+  solr_params[:rows] = '50'
+  solr_response = Blacklight.solr.find(solr_params)
 end
