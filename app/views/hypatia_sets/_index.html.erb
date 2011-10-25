@@ -1,4 +1,5 @@
 <div class="document <%= cycle("even","odd") %>">
+  <%= render :partial => "catalog/folder_control", :locals=>{:document=>document} %>
   <%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %>
   <dl>
     <%= render_field_from_index(document,"local_id_display", "Local Identifier:") %>

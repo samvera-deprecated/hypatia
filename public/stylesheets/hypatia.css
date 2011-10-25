@@ -277,6 +277,8 @@ a.hypatia-home-link:hover {color: #698F92;}
   -moz-border-radius:    0 4px 0 0;
   border-radius:         0 4px 0 0; }
 
+form.folder_toggle {float:right; margin-left:10px;}
+label.toggle_folder {min-width:4em;}
 /* Results List */
 #results {  padding: 25px 25px 0 10px; }
 #bd #documents {  

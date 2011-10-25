@@ -33,4 +33,19 @@ $(document).ready(function(){
 		  });
 	  }
   });
+
+  $( "form.folder_toggle" ).bl_checkbox_submit({
+      checked_label: "Selected",
+      unchecked_label: "Select",
+      css_class: "toggle_folder",
+      success: function(new_state) {
+        
+        if (new_state) {
+           $("#folder_number").text(parseInt($("#folder_number").text()) + 1);
+        }
+        else {
+           $("#folder_number").text(parseInt($("#folder_number").text()) - 1);
+        }
+      }
+  });
 });
