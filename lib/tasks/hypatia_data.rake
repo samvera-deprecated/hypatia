@@ -1,3 +1,4 @@
+Dir[File.dirname(__FILE__) + '/../*.rb'].each {|file| require file }
 # FIXME: this will need a rewrite when the hydra head rake repo tasks are rewritten
 
 namespace :hypatia do
