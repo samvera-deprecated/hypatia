@@ -342,13 +342,13 @@ describe FtkItemAssembler do
       @solr_docs.each do |doc|
         @hfi_docs.push(HypatiaFtkItem.load_instance(doc[:id]))
       end
+      @exp_filenames = ["BU3A5", "BUR3-1", "BURCH1", "BURCH2", "BURCH3", "Description.txt"]
     end
 
     it "creates all the HypatiaFtkItem objects indicated in FTK report" do
       @solr_docs.size.should be(6)
-      exp_filenames = ["BU3A5", "BUR3-1", "BURCH1", "BURCH2", "BURCH3", "Description.txt"]
       @solr_docs.each do |doc|
-        exp_filenames.include?(doc[:filename_display].first).should be_true
+        @exp_filenames.include?(doc[:filename_display].first).should be_true
         doc[:has_model_s].first.should == "info:fedora/afmodel:HypatiaFtkItem"
       end
     end
@@ -365,30 +365,9 @@ describe FtkItemAssembler do
       pending
       @hfi_docs.each do |hfi|  
         desc_md_ds = hfi.datastreams["descMetadata"]
-        desc_md_ds.term_values(:title).should == ["CM5551212"]
-        desc_md_ds.term_values(:local_id).should == ["M1437"]
-        
-        
-        
-        desc_md_doc.xpath("/mods:mods/mods:identifier[@type='filename']/text()").to_s.should eql(@ff_intermed.filename)
-        desc_md_doc.xpath("/mods:mods/mods:identifier[@type='ftk_id']/text()").to_s.should eql(@ff_intermed.id)
-        desc_md_doc.xpath("/mods:mods/mods:location/mods:physicalLocation[@type='filepath']/text()").to_s.should eql(@ff_intermed.filepath)
-        nodeSet = desc_md_doc.xpath("/mods:mods/mods:physicalDescription/mods:extent")
-        nodeSet.size.should eql(2)
-        values = [nodeSet[0].text, nodeSet[1].text]
-        values[0].should_not eql(values[1])
-        values.include?(@ff_intermed.filesize).should be_true
-        values.include?(@ff_intermed.medium).should be_true
-        desc_md_doc.xpath("/mods:mods/mods:physicalDescription/mods:digitalOrigin/text()").to_s.should eql("born digital")
-        desc_md_doc.xpath("/mods:mods/mods:originInfo/mods:dateCreated/text()").to_s.should eql(@ff_intermed.file_creation_date)
-        desc_md_doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_accessed']/text()").to_s.should eql(@ff_intermed.file_accessed_date)
-        desc_md_doc.xpath("/mods:mods/mods:originInfo/mods:dateOther[@type='last_modified']/text()").to_s.should eql(@ff_intermed.file_modified_date)
-        desc_md_doc.xpath("/mods:mods/mods:relatedItem/mods:titleInfo/mods:title/text()").to_s.should eql(@ff_intermed.title)
-        desc_md_doc.xpath("/mods:mods/mods:note[@displayLabel='filetype']/text()").to_s.should eql(@ff_intermed.filetype)
-        desc_md_doc.xpath("/mods:mods/mods:note[not(@displayLabel)]/text()").to_s.should eql(@ff_intermed.type)
-        
+        desc_md_ds.term_values(:digital_origin).should == ["born digital"]
+        @exp_filenames.include?(desc_md_ds.term_values(:display_name).first).should be_true
       end
-      pending
     end
     it "each object created has its goodies" do
       pending
@@ -399,7 +378,6 @@ describe FtkItemAssembler do
     
     
     
-# descMetadata
 # RELS-EXT
 # contentMetadata
 # FileAsset:  content, derivative_html
