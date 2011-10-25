@@ -11,12 +11,11 @@ require "digest/sha1"
 #  hfo.process(ftk_report, file_dir)
 class FtkItemAssembler
 
-# FIXME:  are some of these attributes basically redundant with method params?
+# FIXME:  which of these attributes aren't really attributes b/c they are redundant with method params?
+#   which of these should be passed in as an arg at .new?
   
   # The FTK report to process
   attr_accessor :ftk_report
-  # The FtkProcessor object used to parse the FTK report
-  attr_accessor :ftk_processor
   # Where should I copy the files from?
   attr_accessor :file_dir
   # Where should I copy the display derivative HTML from?
@@ -59,8 +58,8 @@ class FtkItemAssembler
     # rights metadata is the same for all the files at this time
     @rights_metadata = build_rights_metadata
     
-    @ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
-    @ftk_processor.files.each do |ftk_file|
+    ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
+    ftk_processor.files.each do |ftk_file|
       create_hypatia_ftk_item(ftk_file)
     end
   end
