@@ -134,6 +134,11 @@ describe FtkItemAssembler do
     end
 
     context "FileAsset creation for FTK file" do
+      it "creates no FileAsset object if the file doesn't exist" do
+        ff_intermed = FactoryGirl.build(:ftk_file)
+        ff_intermed.export_path = "non_existing_file"
+        @assembler.create_file_asset(@ftk_item_object, ff_intermed).should be_nil
+      end
       it "creates a FileAsset object with the correct relationships and descriptive metadata" do
         @file_asset.should be_instance_of(FileAsset) # model
         @file_asset.relationships[:self][:is_part_of].should == ["#{@ftk_item_pid}"]
@@ -176,6 +181,9 @@ describe FtkItemAssembler do
       before(:all) do
         @content_md_doc = Nokogiri::XML(@assembler.build_content_metadata(@ftk_file_intermed, "ftk_item_pid", @file_asset))
         @content_md_no_deriv_doc = Nokogiri::XML(@assembler.build_content_metadata(@ftk_file_intermed_no_deriv, "ftk_item_pid2", @file_asset_no_deriv))
+      end
+      it "creates no contentMetadata if there is no FileAsset" do
+        @assembler.build_content_metadata(@ftk_file_intermed, "ftk_item_pid", nil).should be_nil
       end
       it "creates the correct contentMetdata element" do
         @content_md_doc.xpath("/contentMetadata/@objectId").to_s.should eql("ftk_item_pid")
@@ -281,6 +289,11 @@ describe FtkItemAssembler do
       @ff_intermed = FactoryGirl.build(:ftk_file)
       @ftk_item = @assembler.create_hypatia_ftk_item(@ff_intermed)
     end
+    it "doesn't build an object if the file doesn't exist" do
+      ff_intermed = FactoryGirl.build(:ftk_file)
+      ff_intermed.export_path = "non_existing_file"
+      @assembler.create_hypatia_ftk_item(ff_intermed).should be_nil
+    end
     it "is a kind of HypatiaFtkItem object" do
       @ftk_item.should be_kind_of(HypatiaFtkItem)
     end
@@ -343,9 +356,11 @@ describe FtkItemAssembler do
         @hfi_docs.push(HypatiaFtkItem.load_instance(doc[:id]))
       end
       @exp_filenames = ["BU3A5", "BUR3-1", "BURCH1", "BURCH2", "BURCH3", "Description.txt"]
+      # BURCH1 is the only document with an actual file and a display derivative
+      @BURCH1_doc = @solr_docs.find { |d| d[:filename_display].first == "BURCH1"}
     end
 
-    it "creates all the HypatiaFtkItem objects indicated in FTK report" do
+    it "creates all the HypatiaFtkItem objects indicated in FTK report, with correct filenames" do
       @solr_docs.size.should be(6)
       @solr_docs.each do |doc|
         @exp_filenames.include?(doc[:filename_display].first).should be_true
@@ -353,7 +368,7 @@ describe FtkItemAssembler do
       end
     end
     
-    it "creates correct rightsMetadata for all the objects" do
+    it "creates correct rightsMetadata for each file in the FTK report" do
       @hfi_docs.each do |hfi|  
         rights_md_ds = hfi.datastreams["rightsMetadata"]
         rights_md_ds.term_values(:discover_access).first.should match(/^\s*public\s*$/)
@@ -361,110 +376,40 @@ describe FtkItemAssembler do
         rights_md_ds.term_values(:edit_access).first.should match(/^\s*archivist\s*$/)
       end
     end
-    it "creates correct descMetadata for all the objects" do
-      pending
+    it "creates correct descMetadata for each file in the FTK report" do
       @hfi_docs.each do |hfi|  
         desc_md_ds = hfi.datastreams["descMetadata"]
         desc_md_ds.term_values(:digital_origin).should == ["born digital"]
         @exp_filenames.include?(desc_md_ds.term_values(:display_name).first).should be_true
       end
     end
-    it "each object created has its goodies" do
+    it "creates correct RELS-EXT for each file in the FTK report" do
+      @hfi_docs.each do |hfi|  
+        rels_ext_ds = hfi.datastreams["RELS-EXT"]
+        # all files in the FTK report match no disk image
+        hfi.collections.size.should be(1)
+        hfi.sets.size.should be(0)
+        pending
+        if hfi.pid == @BURCH1_doc[:id]
+          # BURCH1 is the only file with actual stuff
+          hfi.parts.size.should be(1)
+        else
+          hfi.parts.size.should be(0)
+        end
+      end
       pending
     end
-    it "creates the expected fileassets" do
+    it "creates the expected fileassets for each file in the FTK report" do
+      pending
+    end
+    it "creates the expected contentMetadata for each file in the FTK report" do
       pending
     end
     
     
-    
-# RELS-EXT
 # contentMetadata
 # FileAsset:  content, derivative_html
-    
-=begin
-# rights metadata is the same for all the files at this time
-@rights_metadata = build_rights_metadata
 
-@ftk_processor = FtkProcessor.new(:ftk_report => @ftk_report, :logfile => @logger)
-@ftk_processor.files.each do |ftk_file|
-  create_hypatia_ftk_item(ftk_file)
-end
-=end
-
-=begin    
-    it "correctly determines the disk names" do
-      disk_names = []
-      @disk_image_objects.each { |dio|
-        if (dio.pid !~ /fixture/) 
-          disk_names << dio.datastreams["descMetadata"].term_values(:title).first
-        end
-      }
-      disk_names.size.should be(5)
-      disk_names.member?("CM5551212").should be_true # disk name CM5551212.001
-      disk_names.member?("CMno_txt").should be_true 
-      disk_names.member?("CM070").should be_true # disk name "hasSpace CM070.ad1"
-      disk_names.member?("ddExt").should be_true # disk name "ddExt.dd"
-      disk_names.member?("hasMultPeriods").should be_true # disk name "hasMultPeriods.one.two"
-    end
-    it "builds HypatiaDiskImageItems" do
-      @disk_image_objects.each { |dio|
-        if (dio.pid !~ /fixture/)
-          dio.should be_kind_of(HypatiaDiskImageItem)
-        end
-      }
-    end
-    it "creates full descMetadta when there is a .txt file" do
-      @disk_image_objects.each { |dio|
-        if (dio.pid !~ /fixture/)
-          desc_md_ds = dio.datastreams["descMetadata"]
-          if (desc_md_ds.term_values(:title).first == "CM5551212")
-            desc_md_ds.term_values(:local_id).should == ["M1437"]
-            desc_md_ds.term_values(:extent).should == ["5.25 inch Floppy Disk"]
-          end
-        end
-      }
-    end
-    it "creates sparse descMetadata when there is no .txt file" do
-      @disk_image_objects.each { |dio|
-        if (dio.pid !~ /fixture/)
-          desc_md_ds = dio.datastreams["descMetadata"]
-          if (desc_md_ds.term_values(:title).first == "CMno_txt")
-            desc_md_ds.term_values(:display_name).should == ["CMno_txt"]
-            desc_md_ds.term_values(:digital_origin).should == ["born digital"]
-            desc_md_ds.term_values(:local_id).should == [""]
-            desc_md_ds.term_values(:extent).should == [""]
-          end
-        end
-      }
-    end
-    it "creates full contentMetadta for disk image file when there is a .txt file" do
-      @disk_image_objects.each { |dio|
-        if (dio.pid !~ /fixture/)
-          desc_md_ds = dio.datastreams["descMetadata"]
-          if (desc_md_ds.term_values(:title).first == "CM5551212")
-            content_md_ds = dio.datastreams["contentMetadata"]
-            content_md_ds.term_values(:dd_filename).should == ["CM5551212"]
-            content_md_ds.term_values(:dd_md5).should == ["7d7abca99f383487e02ce7bf7c017267"]
-            content_md_ds.term_values(:dd_sha1).should == ["628ede981ad24c1655f7e37057355ca689dcb3a9"]
-          end
-        end
-      }
-    end
-    it "creates sparse contentMetadata for disk image file when there is no .txt file" do
-      @disk_image_objects.each { |dio|
-        if (dio.pid !~ /fixture/)
-          desc_md_ds = dio.datastreams["descMetadata"]
-          if (desc_md_ds.term_values(:title).first == "CMno_txt")
-            content_md_ds = dio.datastreams["contentMetadata"]
-            content_md_ds.term_values(:dd_filename).should == ["CMno_txt"]
-            content_md_ds.term_values(:dd_md5).should == [""]
-            content_md_ds.term_values(:dd_sha1).should == [""]
-          end
-        end
-      }
-    end
-=end
   end # context "processing a directory" 
 
 end # describe FtkItemAssembler
@@ -479,7 +424,6 @@ def build_fixture_disk_objects
 
   di_txt_file = File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images/CM5551212.001.txt")
   fdi_intermed = FtkDiskImage.new(di_txt_file)
-
   di_assembler = FtkDiskImageItemAssembler.new(:disk_image_files_dir => ".", :computer_media_photos_dir => ".")
 
   fdi_intermed.disk_name = "single_match"
