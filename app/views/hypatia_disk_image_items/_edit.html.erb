@@ -1,3 +1,4 @@
+<%- sidebar_items << render("shared/show_members") -%>
 <% if !session[:scripts] %>
   <%= render_previous_workflow_steps %>
   <%= render_submission_workflow_step -%>

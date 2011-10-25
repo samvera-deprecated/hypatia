@@ -34,22 +34,22 @@
 
 <div class="relationship-pane member-pane">
   <h2 class="list-title">In this Collection</h2>
-  <%- if member_objects.hits.empty? -%>
-    <p class="no-relationship-items">No Marked Items</p>
-  <%- else -%>
-    <ul id="member-list">
+  <ul id="member-list">
+    <%- if member_objects.hits.empty? -%>
+      <p class="no-relationship-items">No Marked Items</p>
+    <%- else -%>
       <%- member_objects.each do |member| -%>
         <li class="member" id="<%= member["id"] %>"><%= member[solr_name("display_name", :string)] %> <%= link_to "Info", catalog_path(:id=>member["id"]), :target => "_blank" %> <a href="#" class="remove-relationship">Remove</a></li>
       <%- end -%>
-    </ul>	
-  <%- end -%>	
+    <%- end -%>	
+  </ul>	
 </div>	
 
 <% sidebar_items << capture do %>
   <div class="sets members sidebar-section first">
     <h2 class="sidebar-title">Edit Relationships for <%= params[:id] %></h2>
     <div class="relationship-utils">
-      <button id="relationship-save">Save</button>
+      <button id="relationship-save" data-update-path="<%= update_members_catalog_path %>">Save</button>
       <%= link_to "Cancel", catalog_path(:id=>params["id"]) %>
     </div>
   </div>

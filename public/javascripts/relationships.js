@@ -21,9 +21,14 @@ $(document).ready(function() {
 	$("#relationship-save").click(function() {
 	  var pids = [];
 	  $("#member-list li").each(function(index) {
-	    pids.push($(this).attr("id"));
+	    pids.push("child_ids[]=" + $(this).attr("id"));
 	  });
-	  alert("Here's the array of PIDs for this item's child assets: \n\n" + pids + "\n\nSave 'em somewhere!");
+	  $.ajax({
+		  url: $(this).attr("data-update-path") + "?" + pids.join("&"),
+		  error: function() {
+			  alert("Error");
+		  }
+		});
 	});
 	
 	// Moves item back to list of origin when removed

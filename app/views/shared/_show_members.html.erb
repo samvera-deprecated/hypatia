@@ -1,6 +1,6 @@
 <% member_objects = @document_fedora.members(:response_format=>:solr) -%>
-<% unless member_objects.hits.empty? -%>
-  <div class="sets members sidebar-section<%= " first" if @document_fedora.sets(:response_format=>:solr).hits.empty? %>">
+<% if !member_objects.hits.empty? -%>
+  <div class="sets members sidebar-section<%= " first" if (!@document_fedora.respond_to?(:sets) or @document_fedora.sets(:response_format=>:solr).hits.empty?) %>">
     <h2 class="sidebar-title">In this Collection:</h2>
     <ul>
       <%- member_objects.each do |result| -%>
@@ -11,4 +11,8 @@
 		  <a class="edit-relationships" href="edit_members">Edit Relationships &rarr;</a>
 		<% end %>
 	</div>	
+<%- elsif controller.action_name == "edit" && editor? -%>
+  <div class="sets members sidebar-section<%= " first" if (!@document_fedora.respond_to?(:sets) or @document_fedora.sets(:response_format=>:solr).hits.empty?) %>">
+    <a class="edit-relationships" href="edit_members">Edit Relationships &rarr;</a>
+  </div>
 <% end -%>
