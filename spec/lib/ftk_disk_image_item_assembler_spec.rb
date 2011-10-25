@@ -281,7 +281,7 @@ describe FtkDiskImageItemAssembler do
   end # context "FileAssets and their contentMetadata in the DiskImageItem"
   
   
-  context "HypatiaDiskImageItem object" do
+  context "build_object method" do
     before(:all) do
       delete_fixture(@collection_pid)
       import_fixture(@collection_pid)
@@ -331,15 +331,7 @@ describe FtkDiskImageItemAssembler do
         file_ds[:dsLabel].should match(/^CM555121|(CM5551212(_1|_2)?\.JPG)$/)
       }
     end
-=begin    
-    it "creates photo file assets and their content metadata when they exist" do
-      pending
-    end
-    it "smoothly skips photo file processing if there are none" do
-      pending
-    end
-=end
-  end # context "building an object"
+  end # context "build_object method"
    
   context "processing a directory" do
     before(:all) do

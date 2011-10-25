@@ -311,6 +311,10 @@ a.hypatia-home-link:hover {color: #698F92;}
   padding: 0;
 }
 
+#bd #documents .document img.disk-image {
+	float:right;
+}
+
 /* =GENERAL ITEM INFO & LAYOUT
 -------------------------------------------------------------- */
 

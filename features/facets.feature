@@ -16,7 +16,7 @@ Feature: Facets on Home Page and Search Results
   Scenario: i18n translations
     When I am on the home page
     Then I should not see "info:fedora/afmodel:HypatiaDiskImageItem"
-    And I should see "Disk Image"
-    When I follow "Disk Image" within "#facets"
+    And I should see "Disk Images"
+    When I follow "Disk Images" within "#facets"
     Then I should not see "info:fedora/afmodel:HypatiaDiskImageItem"
-    And I should see "Disk Image"
+    And I should see "Disk Images"

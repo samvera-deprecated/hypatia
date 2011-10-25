@@ -4,7 +4,6 @@ require "active_fedora"
 describe HypatiaFtkItem do
   
   before(:each) do
-    # Fedora::Repository.stubs(:instance).returns(stub('item_stub').as_null_object)
     @hypatia_ftk_item = HypatiaFtkItem.new
   end
   
@@ -31,7 +30,7 @@ describe HypatiaFtkItem do
     @hypatia_ftk_item.datastreams["rightsMetadata"].should be_instance_of(Hydra::RightsMetadata)
   end
     
-  it "should have a collection relationship (an ftk item can belong to a collection)" do
+  it "should have a collection relationship (an ftk item can belong to collections)" do
     @hypatia_ftk_item.should respond_to(:collections)
   end
 

@@ -48,9 +48,17 @@ module ApplicationHelper
   # @param [Hash] any additional args to be used in the image tag
   def get_image_tag_from_content_md(fedora_obj, resource_ref_symbol, addl_args)
     filename = get_values_from_datastream(fedora_obj, "contentMetadata", [resource_ref_symbol, :file, :filename])
+    return "" if filename.to_s.blank?
     url = get_datastream_url_from_content_md(fedora_obj, filename, [resource_ref_symbol, :fedora_pid], [resource_ref_symbol, :file, :ds_id])
     addl_args[:alt] = filename
     image_tag(url, addl_args)
+  end
+  
+  def get_image_tag_from_solr(doc,resource_ref_symbol, addl_args={})
+    af_base = load_af_instance_from_solr(doc)
+    the_model = ActiveFedora::ContentModel.known_models_for( af_base ).first    
+    obj = the_model.load_instance(doc[:id])
+    get_image_tag_from_content_md(obj, resource_ref_symbol, addl_args)
   end
   
   def render_facet_value(facet_solr_field, item, options ={})
@@ -82,6 +90,12 @@ module ApplicationHelper
     the_model = ActiveFedora::ContentModel.known_models_for( af_base ).first    
     obj = the_model.load_instance(document[:id])
     return obj.members(:response_format=>:solr)
+  end
+  
+  def featured_collections
+    records = []
+    response,docs = get_solr_response_for_field_values("id",Blacklight.config[:featured_collections])
+    return docs
   end
   
 end

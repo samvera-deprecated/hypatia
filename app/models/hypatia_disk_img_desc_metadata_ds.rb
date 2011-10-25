@@ -8,6 +8,7 @@ class HypatiaDiskImgDescMetadataDS < ActiveFedora::NokogiriDatastream
     t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-3.xsd")
 
     t.title_info(:path=>"titleInfo") {
+      # ftk item loader looks for matching disk image on this field; it needs a string so it uses title_sort
       t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable], :label=>"title")
     }
     t.title(:proxy=>[:title_info, :title])

@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'factory_girl'
 # This will guess the FtkFile class
 FactoryGirl.define do
@@ -20,13 +19,6 @@ FactoryGirl.define do
     md5 "4E1AA0E78D99191F4698EEC437569D23"
     sha1 "B6373D02F3FD10E7E1AA0E3B3AE3205D6FB2541C"
     export_path "files/BURCH1"
-    unique_combo "foofile.txt_9999"
     type "Journal Article"
-  end
-  factory :ftk_disk_image do
-    txt_file File.join(File.dirname(__FILE__), "/../fixtures/ftk/disk_images/CM006.001.txt")
-    disk_number "CM5551212"
-    disk_type "5.25 inch Floppy Disk"
-    md5 "4E1AA0E78D99191F4698EEC437569D23"
   end
 end
