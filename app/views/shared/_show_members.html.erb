@@ -7,5 +7,8 @@
         <li><%= link_to result[solr_name("display_name", :string)], catalog_path(:id=>result["id"]) %></li>
 			<%- end -%>
 		</ul>		
+		<% if controller.action_name == "edit" && editor? %>
+		  <a class="edit-relationships" href="edit_members">Edit Relationships &rarr;</a>
+		<% end %>
 	</div>	
 <% end -%>

@@ -68,7 +68,7 @@ body {
 /* =MAIN HEADER
 -------------------------------------------------------------- */
 
-#hd .user-util-links {line-height: 20px;}
+#hd .user-util-links {line-height: 16px; padding-top: 5px;}
 #hd .user-util-links a {  color: #F6F8F7; }
 .site-heading {
   color: #F6F8F7;
@@ -85,7 +85,7 @@ body {
 #hd #select-item-box {
   border: 1px solid #4e7268;
   float: right;
-  margin-top: 0;
+  margin-top: -3px;
   background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgba(44,44,44, 0.4)), color-stop(1, rgba(44,44,44,0)) );
   background-image: -moz-linear-gradient(center bottom, rgba(44, 44, 44, 0.4) 0%, rgba(44,44,44, 0) 100% ); }
 .user-util-links #select-item-box a {color: #444;  text-decoration: none;}
@@ -271,6 +271,7 @@ a.hypatia-home-link:hover {color: #698F92;}
   border-top: 1px solid #AAA;
   float: right; 
   height: 20px;
+  padding: 8px;
   width: 450px; 
   -webkit-border-radius: 0 4px 0 0;
   -moz-border-radius:    0 4px 0 0;
@@ -480,6 +481,7 @@ a.hypatia-home-link:hover {color: #698F92;}
   display: block;
   padding: 1em 1em 1em 36px;
   text-decoration: none; }
+.sidebar .edit-relationships {display: block; font-size: 13px; text-align: right; padding: 1em 1em 0.25em;}
 
 
 /* =FEATURED MEDIA SIDEBAR
@@ -609,6 +611,36 @@ a.hypatia-home-link:hover {color: #698F92;}
   border-bottom: 1px dotted #ACB;
   text-decoration: none; }
 #hydra_logo {  float: right; }
+
+
+/* =RELATIONSHIP EDITOR
+-------------------------------------------------------------- */
+#relationship-editor .relationship-pane {background: #f8f8f8; border: 1px solid #DDD; float: left; margin: 20px 10px; padding: 0 16px 16px 16px; position: relative; width: 300px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius:    12px;
+  border-radius:         12px;   }
+.relationship-pane .list-title {text-align: center; }
+.relationship-pane ul {margin: 8px 0; position: relative;}
+.relationship-pane li {background: #EEE; border: 1px solid #aaa; color: #222; cursor: move; font-size: 14px; line-height: 1.2em; list-style: none; margin: 10px 0; padding: 10px; text-decoration: none;
+  background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgba(88,88,88, 0.2)), color-stop(1, rgba(88,88,88,0)) );
+  background-image: -moz-linear-gradient(center bottom, rgba(88, 88, 88, 0.2) 0%, rgba(88,88,88, 0) 100% );
+  -webkit-border-radius: 8px;
+  -moz-border-radius:    8px;
+  border-radius:         8px;
+  -webkit-text-shadow: 0 1px 0 #FFF;
+  -moz-text-shadow:    0 1px 0 #FFF;
+  text-shadow:         0 1px 0 #FFF; 
+  -webkit-box-shadow: 0 1px 3px #CCC;
+  -moz-box-shadow:    0 1px 3px #CCC;
+  box-shadow:         0 1px 3px #CCC; }
+.relationship-pane li a {color: #555; font-size: 12px; padding: 2px 0 2px 10px;}
+.relationship-pane li.ui-draggable-dragging {position: relative !important; z-index: 999;}
+.relationship-pane .ui-sortable-placeholder {background: #f5f5f5; border: 1px dashed #777; visibility: visible !important;}
+.relationship-pane .ui-sortable-placeholder a {display: none;}
+.relationship-utils {clear: both; margin: 1em 2em;}
+.relationship-utils button {margin-right: 1em;}
+.no-relationship-items {color: #5F5F5F; font-style: italic; text-align: center;}
+
 
 
 /* =IE FIXES

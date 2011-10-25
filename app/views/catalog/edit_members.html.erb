@@ -1,0 +1,59 @@
+<% javascript_includes << ["relationships"] %>
+
+<% member_objects = @document_fedora.members(:response_format=>:solr) -%>
+
+<div id="relationship-editor">
+<div class="relationship-pane item-pane">
+  <h2 class="list-title">Selected Items</h2>
+  <%- if @folder_list.blank? -%>
+    <p class="no-relationship-items">No Selected Items</p>
+  <%- else -%>
+    <ul id="marked-list">
+      <%- @folder_list.each do |marked| -%>
+        <%- unless member_objects.any? { |obj| obj["id"] === marked["id"] || obj["id"] === params[:id] } -%>
+          <li class="marked" id="<%= marked["id"] %>"><%= marked[solr_name("display_name", :string)] %> <%= link_to "Info", catalog_path(:id=>marked["id"]), :target => "_blank" %></li>
+        <%- end -%>
+      <%- end -%>
+    </ul>
+  <%- end -%>
+
+  <h2 class="list-title">Other Available Items</h2>
+  <%- if @document_list.blank? -%>
+    <p class="no-relationship-items">No Other Available Items</p>
+  <%- else -%>
+    <ul id="item-list">
+      <%- @document_list.each do |doc| -%>
+        <%- unless member_objects.any? { |obj| obj["id"] === doc["id"] || obj["id"] === params[:id] } -%>
+          <li class="item" id="<%= doc["id"] %>"><%= doc[solr_name("display_name", :string)] %> <%= link_to "Info", catalog_path(:id=>doc["id"]), :target => "_blank" %></li>
+        <%- end -%>
+      <%- end -%>
+    </ul>
+  <%- end -%>
+</div>
+
+
+<div class="relationship-pane member-pane">
+  <h2 class="list-title">In this Collection</h2>
+  <%- if member_objects.hits.empty? -%>
+    <p class="no-relationship-items">No Marked Items</p>
+  <%- else -%>
+    <ul id="member-list">
+      <%- member_objects.each do |member| -%>
+        <li class="member" id="<%= member["id"] %>"><%= member[solr_name("display_name", :string)] %> <%= link_to "Info", catalog_path(:id=>member["id"]), :target => "_blank" %> <a href="#" class="remove-relationship">Remove</a></li>
+      <%- end -%>
+    </ul>	
+  <%- end -%>	
+</div>	
+
+<% sidebar_items << capture do %>
+  <div class="sets members sidebar-section first">
+    <h2 class="sidebar-title">Edit Relationships for <%= params[:id] %></h2>
+    <div class="relationship-utils">
+      <button id="relationship-save">Save</button>
+      <%= link_to "Cancel", catalog_path(:id=>params["id"]) %>
+    </div>
+  </div>
+<% end %>
+
+
+</div>

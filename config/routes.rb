@@ -40,6 +40,8 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
+  map.edit_members_catalog 'catalog/:id/edit_members', :controller=>:catalog, :action=>:edit_members
+  
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end
