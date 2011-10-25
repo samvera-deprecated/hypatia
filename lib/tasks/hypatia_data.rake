@@ -61,16 +61,16 @@ namespace :hypatia do
     end # namespace collection
 
     namespace :ftk_file_items do
-      desc "Create HypatiaFtkItem objects. Require args pid, dir:  pid='hypatia:gould_collection' dir=/data_raw/Stanford/M1437\ Gould' " 
+      desc "Create HypatiaFtkItem objects. Require args coll_pid, dir:  coll_pid='hypatia:gould_collection' dir=/data_raw/Stanford/M1437\ Gould' " 
       task :build do
         if !ENV["dir"].nil? 
           parent_dir = ENV["dir"]
         end
         if !ENV["coll_pid"].nil? 
-          collection_pid = ENV["coll_pid"]
+          coll_pid = ENV["coll_pid"]
         end
-        if (collection_pid.nil? || collection_pid.size == 0 || parent_dir.nil? || parent_dir.size == 0)
-          puts "You must specify the collection pid and the directory containing the 'FTK xml' and 'Display Derivatives' dirs.  Example: 'rake hypatia:repo:ftk_file_items:build pid='hypatia:gould_collection' dir=/data_raw/Stanford/M1437\ Gould' "
+        if (coll_pid.nil? || coll_pid.size == 0 || parent_dir.nil? || parent_dir.size == 0)
+          puts "You must specify the collection pid and the directory containing the 'FTK xml' and 'Display Derivatives' dirs.  Example: 'rake hypatia:repo:ftk_file_items:build coll_pid='hypatia:gould_collection' dir=/data_raw/Stanford/M1437\ Gould' "
         else
           ftk_xml_file_dir = parent_dir + "/FTK\ xml"
           ftk_report = ftk_xml_file_dir + "/Report.xml"
@@ -85,20 +85,20 @@ namespace :hypatia do
     end # namespace :ftk_file_items
 
     namespace :disk_image_items do
-      desc "Create HypatiaDiskImageItem objects. Requires args pid, dir:  pid='hypatia:xanadu_collection' dir=/data_raw/Stanford/M1292\ Xanadu' " 
+      desc "Create HypatiaDiskImageItem objects. Requires args coll_pid, dir:  pid='hypatia:xanadu_collection' dir=/data_raw/Stanford/M1292\ Xanadu' " 
       task :build do
         if !ENV["dir"].nil? 
           parent_dir = ENV["dir"]
         end
         if !ENV["coll_pid"].nil? 
-          collection_pid = ENV["coll_pid"]
+          coll_pid = ENV["coll_pid"]
         end
-        if (collection_pid.nil? || collection_pid.size == 0 || parent_dir.nil? || parent_dir.size == 0)
+        if (coll_pid.nil? || coll_pid.size == 0 || parent_dir.nil? || parent_dir.size == 0)
           puts "You must specify the collection pid and the directory containing the disk image dirs, etc.  Example: 'rake hypatia:repo:disk_image_items:build coll_pid='hypatia:xanadu_collection' dir=/data_raw/Stanford/M1292\ Xanadu' "
         else
           disk_image_files_dir = parent_dir + "/Disk\ Image" 
           computer_media_photos_dir = parent_dir + "/Computer\ Media\ Photo"
-          build_ftk_disk_items(collection_pid, disk_image_files_dir, computer_media_photos_dir)
+          build_ftk_disk_items(coll_pid, disk_image_files_dir, computer_media_photos_dir)
         end
       end
 
