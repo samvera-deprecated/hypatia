@@ -6,8 +6,6 @@ class FtkFile
   attr_accessor :filename
   # The id number assigned by FTK (e.g. 1004)
   attr_accessor :id
-  # The combination of the filename and the id ensures a unique identifier for the file
-  attr_accessor :unique_combo
   # The size of the file, in bytes (e.g. 3482 B)
   attr_accessor :filesize 
   # The type of the file (e.g., "WordPerfect 5.1")
