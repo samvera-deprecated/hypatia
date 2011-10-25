@@ -27,7 +27,6 @@ Blacklight.configure(:shared) do |config|
      "repository_facet",
      "display_name_facet",
      "local_id_facet",
-     "located_in_facet",
      "create_date_facet",
      "creator_facet",
      "filetype_facet",
@@ -36,13 +35,12 @@ Blacklight.configure(:shared) do |config|
      ]),
    :labels => {
      "repository_facet"=>"Repository",
-     "display_name_facet"=>"Display Name",
-     "local_id_facet"=>"Local ID",
-     "located_in_facet"=>"Located In",
-     "create_date_facet"=>"Create Date",
+     "display_name_facet"=>"Collection Title",
+     "local_id_facet"=>"Call Number",
+     "create_date_facet"=>"Date of Collections",
      "creator_facet"=>"Creator",
      "filetype_facet"=>"Filetype",
-     "topic_facet"=>"Topic",
+     "topic_facet"=>"Subject",
      "has_model_s"=>"Object Type"
    },
 
