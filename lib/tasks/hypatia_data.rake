@@ -61,29 +61,31 @@ namespace :hypatia do
     end # namespace collection
 
     namespace :ftk_file_items do
-# FIXME: needs to get collection_pid as argument
-      desc "Create ftk_item objects in Fedora (and Solr) from parent dir of 'FTK xml' and 'Display Derivatives' dirs. Example: 'rake hypatia:repo:ftk_file_items:build dir=/data_raw/Stanford/M1437\ Gould' " 
+      desc "Create HypatiaFtkItem objects. Require args pid, dir:  pid='hypatia:gould_collection' dir=/data_raw/Stanford/M1437\ Gould' " 
       task :build do
         if !ENV["dir"].nil? 
           parent_dir = ENV["dir"]
-        else
-          puts "You must specify the directory containing the FTK xml dirs, etc. Example: 'rake hypatia:repo:ftk_file_items:build dir=/data_raw/Stanford/M1437\ Gould' "
         end
-        if !parent_dir.nil?
+        if !ENV["coll_pid"].nil? 
+          collection_pid = ENV["coll_pid"]
+        end
+        if (collection_pid.nil? || collection_pid.size == 0 || parent_dir.nil? || parent_dir.size == 0)
+          puts "You must specify the collection pid and the directory containing the 'FTK xml' and 'Display Derivatives' dirs.  Example: 'rake hypatia:repo:ftk_file_items:build pid='hypatia:gould_collection' dir=/data_raw/Stanford/M1437\ Gould' "
+        else
           ftk_xml_file_dir = parent_dir + "/FTK\ xml"
           ftk_report = ftk_xml_file_dir + "/Report.xml"
           display_derivative_dir = parent_dir + "/Display\ Derivatives"
-          build_ftk_file_items(ftk_report, ftk_xml_file_dir, display_derivative_dir)
+          build_ftk_file_items(coll_pid, ftk_report, ftk_xml_file_dir, display_derivative_dir)
         end
       end
-
+      
 #      use 'task :t, [args] => [deps]' 
 #      desc "delete a range of objects, then create the ftk file items per the directory indicated.  Example: 'rake hypatia:repo:ftk_file_items:refresh[22, 50] dir=/data_raw/Stanford/\"M1437\ Gould\"'"
 #      task :refresh, [:first, :last] => ["hypatia:repo:delete", :build]
     end # namespace :ftk_file_items
 
     namespace :disk_image_items do
-      desc "Create HypatiaDiskImageItem objects. Example: 'rake hypatia:repo:disk_image_items:build pid='hypatia:xanadu_collection' dir=/data_raw/Stanford/M1292\ Xanadu' " 
+      desc "Create HypatiaDiskImageItem objects. Requires args pid, dir:  pid='hypatia:xanadu_collection' dir=/data_raw/Stanford/M1292\ Xanadu' " 
       task :build do
         if !ENV["dir"].nil? 
           parent_dir = ENV["dir"]
@@ -98,30 +100,6 @@ namespace :hypatia do
           computer_media_photos_dir = parent_dir + "/Computer\ Media\ Photo"
           build_ftk_disk_items(collection_pid, disk_image_files_dir, computer_media_photos_dir)
         end
-      end
-      
-      desc "Create Cheuse DiskImageItem objects"
-      task :cheuse => ["hypatia:repo:cheuse:build_disks"] do
-      end
-
-      desc "Create Creeley DiskImageItem objects"
-      task :creeley => ["hypatia:repo:creeley:build_disks"] do
-      end
-
-      desc "Create Gould DiskImageItem objects"
-      task :gould => ["hypatia:repo:gould:build_disks"] do
-      end
-
-      desc "Create Koch DiskImageItem objects"
-      task :koch => ["hypatia:repo:koch:build_disks"] do
-      end
-
-      desc "Create Koch DiskImageItem objects"
-      task :tobin => ["hypatia:repo:tobin:build_disks"] do
-      end
-
-      desc "Create Xanadu DiskImageItem objects"
-      task :xanadu => ["hypatia:repo:xanadu:build_disks"] do
       end
 
 #      desc "delete a range of objects, then create the disk image items per the directory indicated. Example: 'rake hypatia:repo:disk_image_items:refresh[22, 50] dir=/data_raw/Stanford/\"M1292\ Xanadu\"'"
@@ -164,13 +142,13 @@ namespace :hypatia do
         Rake::Task["hypatia:repo:disk_image_items:build"].invoke
       end
 
-#      desc "Create Gould File Item objects.  Assumes data is in #{gould_dir}"
-#      task :build_files do
-#        ENV["coll_pid"] = gould_coll_pid
-#        ENV["dir"] = gould_dir
-#        Rake::Task["hypatia:repo:ftk_file_items:build"].reenable
-#        Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
-#      end
+      desc "Create Gould File Item objects.  Assumes data is in #{gould_dir}"
+      task :build_files do
+        ENV["coll_pid"] = gould_coll_pid
+        ENV["dir"] = gould_dir
+        Rake::Task["hypatia:repo:ftk_file_items:build"].reenable
+        Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
+      end
       
 #      desc "Delete Gould objects indicated by range, then create Gould FTK Item objects in Fedora (and Solr).  Example: 'rake hypatia:repo:gould:refresh[22, 50]' "
 #      task :refresh, [:first, :last] => ["hypatia:repo:delete", :build_disks, :build_files] 
@@ -218,28 +196,21 @@ end # namespace hypatia
 
 #-------------- SUPPORTING METHODS -------------
 
-
-# FIXME: needs to get collection_pid as argument
-
 # build hypatia_ftk_item objects in Fedora (and Solr) indicated by Rails environment
+# @param [String] pid of collection object to "contain" these disk image items
 # @param [String] path to FTK's Report.xml file
 # @param [String] path to directory containing FTK files (usually .../FTK xml)
 # @param [String] path to directory containing FTK created display derivatives
-def build_ftk_file_items(ftk_report, ftk_xml_file_dir, display_derivative_dir)
-  # FIXME:  could rewrite the processing so it doesn't need RAILS environment:
-  #   load foxml into fedora, then call Solrizer::Fedora::Solrizer.solrize(pid)
-  f = FtkItemAssembler.new
-#  f.collection_pid = coll_pid
-  f.process(ftk_report, ftk_xml_file_dir, display_derivative_dir)
+def build_ftk_file_items(coll_pid, ftk_report, ftk_xml_file_dir, display_derivative_dir)
+  assembler = FtkItemAssembler.new(:collection_pid => coll_pid)
+  assembler.process(ftk_report, ftk_xml_file_dir, display_derivative_dir)
 end
 
 # build hypatia_disk_image objects in Fedora (and Solr) indicated by Rails environment
 # @param [String] pid of collection object to "contain" these disk image items
 # @param [String] path to directory containing disk image files
 # @param [String] path to directory containing photos of the computer media
-def build_ftk_disk_items(collection_pid, disk_image_files_dir, computer_media_photos_dir)
-  # FIXME:  could rewrite the processing so it doesn't need RAILS environment:
-  #   load foxml into fedora, then call Solrizer::Fedora::Solrizer.solrize(pid)
-  assembler = FtkDiskImageItemAssembler.new(:collection_pid => collection_pid, :disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
+def build_ftk_disk_items(coll_pid, disk_image_files_dir, computer_media_photos_dir)
+  assembler = FtkDiskImageItemAssembler.new(:collection_pid => coll_pid, :disk_image_files_dir => disk_image_files_dir, :computer_media_photos_dir => computer_media_photos_dir)
   assembler.process
 end
