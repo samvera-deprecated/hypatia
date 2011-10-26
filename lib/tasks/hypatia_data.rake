@@ -128,6 +128,15 @@ namespace :hypatia do
         Rake::Task["hypatia:repo:disk_image_items:build"].reenable
         Rake::Task["hypatia:repo:disk_image_items:build"].invoke
       end
+      
+      desc "Create Creeley File Item objects.  Assumes data is in #{creeley_dir}"
+      task :build_files do
+        ENV["coll_pid"] = creeley_coll_pid
+        ENV["dir"] = creeley_dir
+        Rake::Task["hypatia:repo:ftk_file_items:build"].reenable
+        Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
+      end
+      
     end
 
     namespace :gould do
