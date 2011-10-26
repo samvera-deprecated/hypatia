@@ -107,14 +107,24 @@ namespace :hypatia do
     end # namespace :disk_items
 
     namespace :cheuse do
+      cheuse_coll_pid = "hypatia:cheuse_collection"
+
       desc "Create Cheuse DiskImageItem objects.  Assumes data is in /data_raw/Virginia ..." 
       task :build_disks do
-        cheuse_coll_pid = "hypatia:cheuse_collection"
         parent_dir = top_data_dir + "Virginia/oldFiles/"
         cheuse_disk_image_files_dir = parent_dir + "diskImages" 
         cheuse_photos_dir = parent_dir + "photos"
         build_ftk_disk_items(cheuse_coll_pid, cheuse_disk_image_files_dir, cheuse_photos_dir)
       end
+      
+      desc "Create Cheuse File Item objects.  Assumes data is in /data_raw/Virginia"
+      task :build_files do
+        ENV["coll_pid"] = cheuse_coll_pid
+        ENV["dir"] = top_data_dir + "Virginia"
+        Rake::Task["hypatia:repo:ftk_file_items:build"].reenable
+        Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
+      end
+      
     end
     
     namespace :creeley do
