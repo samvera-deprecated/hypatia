@@ -13,7 +13,7 @@ describe FtkFile do
     it "responds to all of the fields a file object needs" do
       fields = [:filename=,:id=,:filesize=,:filetype=,:filepath=,:disk_image_name=,
           :file_creation_date=,:file_accessed_date=,:file_modified_date=,:medium=,:title=,
-          :access_rights=,:duplicate=,:restricted=,:md5=,:sha1=,:export_path=,:type=]
+          :access_rights=,:duplicate=,:restricted=,:md5=,:sha1=,:export_path=,:type=,:event=]
       fields.each do |field|
         @ff.send(field, "foo").should eql("foo")
       end

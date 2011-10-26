@@ -20,14 +20,8 @@ class FtkFile
   attr_accessor :file_accessed_date
   # The file's last modified date, as reported by FTK
   attr_accessor :file_modified_date
-  # The medium of the file's storage (e.g., "5.25 inch Floppy Disks")
-  attr_accessor :medium
   # The file's title, if known (e.g., "The Burgess Shale and the Nature of History")
   attr_accessor :title
-  # The type of file, if known (e.g., "Journal Article")
-  attr_accessor :type
-  # The access rights for the file (e.g., "Public")
-  attr_accessor :access_rights
   # Did FTK determine that this was a duplicate file? Duplicate files are detected
   # by comparing their checksums. If a duplicate is discovered, the first file that
   # FTK encounters is marked with an 'M' and the second file is marked with a 'D'. If
@@ -46,6 +40,15 @@ class FtkFile
   # the mimetype of the file.  Computed from the file extension, or if no extension, by using ruby-filemagic
   attr_reader   :mimetype
   
+  # the following attributes are populated from "labels" in the Ftk report.
+
+  # The medium of the file's storage (e.g., "5.25 inch Floppy Disks")
+  attr_accessor :medium
+  # The access rights for the file (e.g., "Public")
+  attr_accessor :access_rights
+  # The type of file, if known (e.g., "Journal Article")
+  attr_accessor :type
+  attr_accessor :event
   
   def initialize(args = {})
   end
