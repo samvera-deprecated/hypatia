@@ -130,7 +130,7 @@ class FtkDiskImageItemAssembler
     dd_file_asset.add_relationship(:is_part_of, hypatia_disk_image_item)
 
     # For now, only add the dd file for the Xanadu collection, since other dd files are not for public viewing
-    if @collection_pid =~ /(xanadu|fixture)/
+    if @collection_pid =~ /(gould|xanadu|fixture)/
       file = File.new(@files_hash[fdi.disk_name.to_sym][:dd])
       dd_file_asset.add_file_datastream(file, {:mimeType => "application/octet-stream", :label => fdi.disk_name})
     end
