@@ -1,4 +1,3 @@
-Dir[File.dirname(__FILE__) + '/../*.rb'].each {|file| require file }
 # FIXME: this will need a rewrite when the hydra head rake repo tasks are rewritten
 
 namespace :hypatia do
@@ -37,7 +36,7 @@ namespace :hypatia do
       }
 
       desc "Load all collection objects"
-      task :load do
+      task :load => :environment do
         if !ENV["dir"].nil? 
           directory = ENV["dir"]
         else
@@ -53,7 +52,7 @@ namespace :hypatia do
       end
 
       desc "Delete all collection objects"
-      task :delete do
+      task :delete => :environment do
         delete_all(COLL_OBJS.values)
       end
 
@@ -63,7 +62,7 @@ namespace :hypatia do
 
     namespace :ftk_file_items do
       desc "Create HypatiaFtkItem objects. Require args coll_pid, dir:  coll_pid='hypatia:gould_collection' dir=/data_raw/Stanford/M1437\ Gould' " 
-      task :build do
+      task :build => :environment do
         if !ENV["dir"].nil? 
           parent_dir = ENV["dir"]
         end
@@ -87,7 +86,7 @@ namespace :hypatia do
 
     namespace :disk_image_items do
       desc "Create HypatiaDiskImageItem objects. Requires args coll_pid, dir:  pid='hypatia:xanadu_collection' dir=/data_raw/Stanford/M1292\ Xanadu' " 
-      task :build do
+      task :build => :environment do
         if !ENV["dir"].nil? 
           parent_dir = ENV["dir"]
         end
