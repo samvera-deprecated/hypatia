@@ -44,7 +44,15 @@ Blacklight.configure(:shared) do |config|
      "has_model_s"=>"Object Type"
    },
 
-   :limits=> {nil=>10}
+   :limits=> {"repository_facet"=>100,
+              "display_name_facet"=>10,
+              "local_id_facet"=>10,
+              "create_date_facet"=>10,
+              "creator_facet"=>10,
+              "filetype_facet"=>10,
+              "topic_facet"=>10,
+              "has_model_s"=>10
+             }
   }
 
   # Have BL send all facet field names to Solr. 
