@@ -110,7 +110,7 @@ namespace :hypatia do
       cheuse_coll_pid = "hypatia:cheuse_collection"
 
       desc "Create Cheuse DiskImageItem objects.  Assumes data is in /data_raw/Virginia ..." 
-      task :build_disks do
+      task :build_disks => :environment do
         parent_dir = top_data_dir + "Virginia/oldFiles/"
         cheuse_disk_image_files_dir = parent_dir + "diskImages" 
         cheuse_photos_dir = parent_dir + "photos"
@@ -118,13 +118,13 @@ namespace :hypatia do
       end
       
       desc "Create Cheuse File Item objects.  Assumes data is in /data_raw/Virginia"
-      task :build_files do
-        ENV["coll_pid"] = cheuse_coll_pid
-        ENV["dir"] = top_data_dir + "Virginia"
-        Rake::Task["hypatia:repo:ftk_file_items:build"].reenable
-        Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
+      task :build_files => :environment do
+        parent_dir = top_data_dir + "Virginia"
+        ftk_xml_file_dir = parent_dir + "/FTK\ xml"
+        ftk_report = ftk_xml_file_dir + "/Report.xml"
+        display_derivative_dir = parent_dir  # there are no display derivatives - just need a valid directory
+        build_ftk_file_items(cheuse_coll_pid, ftk_report, ftk_xml_file_dir, display_derivative_dir)
       end
-      
     end
     
     namespace :creeley do
@@ -146,7 +146,6 @@ namespace :hypatia do
         Rake::Task["hypatia:repo:ftk_file_items:build"].reenable
         Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
       end
-      
     end
 
     namespace :gould do
