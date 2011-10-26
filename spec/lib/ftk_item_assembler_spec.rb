@@ -13,13 +13,13 @@ describe FtkItemAssembler do
       import_fixture(@coll_pid)
     end
     it "can instantiate" do
-      hfo = FtkItemAssembler.new
-      hfo.class.should eql(FtkItemAssembler)
+      assembler = FtkItemAssembler.new
+      assembler.class.should eql(FtkItemAssembler)
     end
     it "sets the pid of the collection object these items belong to" do
-      hfo = FtkItemAssembler.new
-      hfo.collection_pid = @coll_pid
-      hfo.collection_pid.should eql(@coll_pid)
+      assembler = FtkItemAssembler.new
+      assembler.collection_pid = @coll_pid
+      assembler.collection_pid.should eql(@coll_pid)
     end
   end # context basic behavior
   
