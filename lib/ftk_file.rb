@@ -49,6 +49,7 @@ class FtkFile
   # The type of file, if known (e.g., "Journal Article")
   attr_accessor :type
   attr_accessor :event
+  attr_accessor :subject
   
   def initialize(args = {})
   end
