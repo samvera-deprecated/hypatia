@@ -187,7 +187,7 @@ namespace :hypatia do
     
     namespace :tobin do
       desc "Create Tobin DiskImageItem objects" 
-      task :build_disks do
+      task :build_disks => :environment do
         tobin_coll_pid = "hypatia:tobin_collection"
         tobin_dir = top_data_dir + "Yale/mssa.ms.1746/data/"
         build_ftk_disk_items(tobin_coll_pid, tobin_dir, tobin_dir)
