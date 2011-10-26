@@ -4,7 +4,7 @@ namespace :hypatia do
   namespace :repo do
 
     desc "Delete a range of objects from Fedora and Solr. Example: 'rake hypatia:repo:delete[22, 50]' will delete hypatia:22 thru hypatia:50, inclusive"
-    task :delete, [:first, :last] do |t, args|
+    task :delete, [:first, :last] => :environment do |t, args|
       ENV["namespace"] = "hypatia"
       ENV["start"] = args[:first]
       ENV["stop"] = args[:last]
