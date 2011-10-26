@@ -71,7 +71,7 @@ class FtkItemAssembler
   def create_hypatia_ftk_item(ff_intermed)
     # don't create objects for files that don't exist
     filepath = "#{@file_dir}/#{ff_intermed.export_path}"
-    if !File.exists?(filepath)
+    if !File.file?(filepath)
       @logger.error "Couldn't create HypatiaFtkItem: couldn't find #{filepath}"
       return nil
     end
