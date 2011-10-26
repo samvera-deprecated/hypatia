@@ -647,6 +647,9 @@ label.toggle_folder {min-width:4em;}
 .relationship-utils button {margin-right: 1em;}
 .no-relationship-items {color: #5F5F5F; font-style: italic; text-align: center;}
 
+/* =jQuery UI Widgets
+-------------------------------------------------------------- */
+a:link, a:visited, a:active {vertical-align:inherit;}
 
 
 /* =IE FIXES
