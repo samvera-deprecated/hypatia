@@ -72,7 +72,7 @@
         </p>
         <p id="located_in_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:located_in], "Physical Location") %>
-          <%= fedora_text_field(@document_fedora,"descMetadata", [:located_in], :multiple=>false ) %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:located_in], :multiple=>false, :required=>false ) %>
         </p>
         <p id="acquisition_info_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:acquisition_info], "Acquisition Information") %>
@@ -80,7 +80,7 @@
         </p>
         <p id="pub_rights_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:pub_rights], "Publication Rights") %>
-          <%= fedora_text_field(@document_fedora,"descMetadata", [:pub_rights], :multiple=>false ) %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:pub_rights], :multiple=>false, :required=>false ) %>
         </p>
         <p id="access_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:access], "Access Notes") %>
