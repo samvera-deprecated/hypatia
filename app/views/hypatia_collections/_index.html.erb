@@ -1,15 +1,15 @@
 <div class="document <%= cycle("even","odd") %>">
-  <%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %>
+  <h3 class="document-title"><%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %></h3>
   <dl>
-    <%= render_field_from_index(document,"repository_display", "Repository:") %>
-    <%= render_field_from_index(document,"creator_display", "Creator:") %>
-    <%= render_field_from_index(document,"create_date_display", "Create Date:") %>
+    <%= render_field_from_index(document,"repository_display", "Repository") %>
+    <%= render_field_from_index(document,"creator_display", "Creator") %>
+    <%= render_field_from_index(document,"create_date_display", "Creation Date") %>
     <%- num_files = get_file_asset_count(document) -%>
     <%- unless num_files == 0 -%>
-      <dt>Files:</dt>
+      <dt>Files</dt>
       <dd><%= num_files %></dd>
     <%- end -%>
-    <%= render_field_from_index(document,"extent_t", "Extent:", :delimiter=>"<br/>") %>
-    <%= render_field_from_index(document,"local_id_display", "Local Identifier:") %>
+    <%= render_field_from_index(document,"extent_t", "Extent", :delimiter=>"<br/>") %>
+    <%= render_field_from_index(document,"local_id_display", "Local Identifier") %>
   </dl>
 </div>

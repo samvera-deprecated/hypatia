@@ -171,7 +171,7 @@ a.hypatia-home-link:hover {color: #698F92;}
 .home-featured a {
   border: none;
   text-decoration: none; }
-.home-featured-title {  margin: 1em 0 0.4em;}
+.home-featured-title {  line-height: 1.5em; margin: 1em 0 0.4em;}
 .home-featured-title a {
   color: #62686b;
   font-family: "Copse",Georgia,serif;
@@ -232,7 +232,8 @@ a.hypatia-home-link:hover {color: #698F92;}
   position: relative; }
 #appliedParams .appliedFilter {  
   border: 1px solid #ABA;
-  padding: 4px 4px 4px 1em; }
+  max-width: 490px;
+  padding: 4px 24px 4px 1em; }
 #startOverLink {    
   background: url('/images/start-over.png') no-repeat scroll 8px 16px #949596;
   border-left: 1px solid #FFF;
@@ -254,6 +255,8 @@ a.hypatia-home-link:hover {color: #698F92;}
   -moz-text-shadow:    0 -1px 0 #444;
   text-shadow:         0 -1px 0 #444; }
 #startOverLink:hover {  background: url('/images/start-over.png') no-repeat scroll 8px 16px #848886; }
+.pageEntriesInfo,
+#sortAndPerPage {  border-bottom: 1px solid #BBB; }
 .pageEntriesInfo { 
   border-right: none; 
   float: left; 
@@ -266,7 +269,6 @@ a.hypatia-home-link:hover {color: #698F92;}
   -moz-border-radius:    4px 0 0 0;
   border-radius:         4px 0 0 0; }
 #sortAndPerPage { 
-  border-bottom: none;
   border-left: none; 
   border-top: 1px solid #AAA;
   float: right; 
@@ -292,30 +294,37 @@ label.toggle_folder {min-width:4em;}
   font-size: 12px;
   font-weight: normal;
   text-transform: uppercase; }
-#bd .document.odd {  background: #f2f2f2; }
-.document-title {width: 50%;}
+#bd .document.odd {  background: #f7f7f7; }
+.document-title {
+  font-size: 16px;
+  margin-top: 0;
+  width: 80%; }
+.document-title a {text-decoration: none;}
 #bd #documents .document {
-	padding:5px;
+	padding: 5px;
 }
 #bd #documents .document dl {
-	margin: 0 0 1em 1.5em;
-  padding: 0 0.5em;
+	margin: 0 0 1em 0;
+  padding: 0;
 }
 #bd #documents .document dt {
 	color: #555555;
   float: left;
   min-width: 7.5em;
-  padding: 0 5px 0 0;
+  padding: 0 1em 0 0;
   text-align: left;
 }
 #bd #documents .document dd {
-	margin-left: 8em;
+	margin-left: 8.5em;
   padding: 0;
 }
 
 #bd #documents .document img.disk-image {
-	float:right;
-}
+	float: right;
+  border: 6px solid #fff;
+  -webkit-box-shadow: 1px 1px 4px #BBB;
+  -moz-box-shadow:    1px 1px 4px #BBB;
+  box-shadow:         1px 1px 4px #BBB; }
 
 /* =GENERAL ITEM INFO & LAYOUT
 -------------------------------------------------------------- */
@@ -598,7 +607,7 @@ label.toggle_folder {min-width:4em;}
 .partner-info h3 {
   color: #DFE;
   font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
-  margin: 0 0 0.33em 0;
+  margin: 0 0 0.8em 0;
   font-size: 17px;
   font-weight: 400;
   -webkit-text-shadow: 0 -1px 0 #4e7268;
@@ -610,7 +619,7 @@ label.toggle_folder {min-width:4em;}
   float: left;
   font-size: 14px;
   list-style: none;
-  margin: 0 1em 0.4em 0;
+  margin: 0 1em 0.8em 0;
   display: block;
   width: 145px; }
 .partner-info li a {

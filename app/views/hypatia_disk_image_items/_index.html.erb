@@ -1,11 +1,11 @@
 <div class="document <%= cycle("even","odd") %>">
   <%= render :partial => "catalog/folder_control", :locals=>{:document=>document} %>
-  <%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %>
+  <h3 class="document-title"><%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %></h3>
   <%= get_image_tag_from_solr(document, :image_front, :width=>"150", :class=>"disk-image") %>
   <dl>
-    <%= render_field_from_index(document,"dd_filename_t", "File Name:") %>
-    <%= render_field_from_index(document,"dd_size_t", "Size:") %>
-    <%= render_field_from_index(document,"dd_mimetype_t", "Mimetype:") %>
+    <%= render_field_from_index(document,"dd_filename_t", "File Name") %>
+    <%= render_field_from_index(document,"dd_size_t", "Size") %>
+    <%= render_field_from_index(document,"dd_mimetype_t", "Mimetype") %>
   </dl>
   <div style="clear:right;"></div>
 </div>
