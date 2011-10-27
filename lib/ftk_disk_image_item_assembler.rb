@@ -86,6 +86,7 @@ class FtkDiskImageItemAssembler
     Dir["#{@disk_image_files_dir}/*"].each { |filename|
       disk_name = filename.split('/').last.split('.').first
       # if disk_name contains a space, take the part after the space
+      #   and the part before the first period.
       disk_name = disk_name.split(' ').last
       disk_name_sym = disk_name.to_sym
 
