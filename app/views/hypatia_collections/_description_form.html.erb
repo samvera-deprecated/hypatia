@@ -64,7 +64,7 @@
       <div>
         <p id="repository_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:repository], "Repository") %>
-          <%= fedora_text_field(@document_fedora,"descMetadata", [:repository], :multiple=>false ) %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:repository], :multiple=>true ) %>
         </p>
         <p id="local_id_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:local_id], "Call Number") %>
