@@ -175,7 +175,9 @@ namespace :hypatia do
     namespace :koch do
       koch_dir = top_data_dir + "Stanford/M1584\ Koch"
       koch_coll_pid = "hypatia:koch_collection"
-      
+
+=begin
+# Koch file names are non-standard for now, so not loading Koch disk images
       desc "Create Koch DiskImageItem objects.  Assumes data is in #{koch_dir}" 
       task :build_disks do
         ENV["coll_pid"] = koch_coll_pid
@@ -183,6 +185,16 @@ namespace :hypatia do
         Rake::Task["hypatia:repo:disk_image_items:build"].reenable
         Rake::Task["hypatia:repo:disk_image_items:build"].invoke
       end
+=end
+      
+      desc "Create Koch File Item objects.  Assumes data is in #{koch_dir}"
+      task :build_files do
+        ENV["coll_pid"] = koch_coll_pid
+        ENV["dir"] = koch_dir
+        Rake::Task["hypatia:repo:ftk_file_items:build"].reenable
+        Rake::Task["hypatia:repo:ftk_file_items:build"].invoke
+      end
+      
     end
     
     namespace :tobin do
