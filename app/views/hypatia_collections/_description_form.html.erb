@@ -5,6 +5,10 @@
       <h3 class="subsection-title">Collection</h3>
       <div>
         <p id="abstract_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:title], "Title") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:title], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="abstract_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:abstract], "Abstract") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [:abstract], :multiple=>false, :required=>false ) %>
         </p>
@@ -18,10 +22,10 @@
         </p>
         <p id="extent_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:extent], "Extent") %>
-          <%= fedora_text_field(@document_fedora,"descMetadata", [:extent], :multiple=>false, :required=>false ) %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:extent], :multiple=>true, :required=>false ) %>
         </p>
         <p id="scope_and_content_field" class="fedora-text-field">
-          <%= fedora_field_label("descMetadata", [:scope_and_content], "Summary") %>
+          <%= fedora_field_label("descMetadata", [:scope_and_content], "Scope and Content Note") %>
           <%= fedora_text_area(@document_fedora,"descMetadata", [:scope_and_content], :multiple=>false, :required=>false ) %>
         </p>
         <p id="description_field" class="fedora-text-field">
@@ -63,7 +67,7 @@
           <%= fedora_text_field(@document_fedora,"descMetadata", [:repository], :multiple=>false ) %>
         </p>
         <p id="local_id_field" class="fedora-text-field">
-          <%= fedora_field_label("descMetadata", [:local_id], "Local Identifier") %>
+          <%= fedora_field_label("descMetadata", [:local_id], "Call Number") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [:local_id], :multiple=>false ) %>
         </p>
         <p id="located_in_field" class="fedora-text-field">
