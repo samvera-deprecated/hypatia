@@ -1,38 +1,34 @@
 <div class="files metadata-section">
   <h2 class="section-title">Files</h2>
   <span class="show-hide" style="display:none;">Hide Section</span>
-  
-  <div id="fileDownloads" class="downloads toggle-section">	
-  <table id="file_assets" class="files">
-    <thead>
-      <tr>
-        <th>File</th>
-        <th>Size</th>
-        <th>Access</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% file_objects = @document_fedora.parts(:response_format=>:solr) -%>
-    <% unless file_objects.hits.empty? -%>
-  	  <% file_objects.each_with_index do |file_object, index| -%>
-	      <%#= file_object["id"] %>
-    	  <tr class="file_asset<%= cycle(" odd", " even") -%>" >
-        	  <td>
-        	    <%# FIXME:  need to get this from label in FileAsset datastream because order of contentMetadata might not match file_objects %>
-              <%= get_values_from_datastream(@document_fedora, "contentMetadata", :file_id)[index] %>
-            </td>
-        	  <td>
-        	    <%# FIXME: extent is an ARRAY?  is that a poor OM declaration, or a MODs thing? %>
-              <%#= FileAsset.bits_to_human_readable(get_values_from_datastream(@document_fedora, "contentMetadata", :size)[index].to_i) %>
-              <%= file_object["extent_t"] unless file_object["extent_t"].nil? %>
-        	  </td>
-        	  <td>
-              <%= link_to "download", asset_downloads_path(file_object["id"], :download_id=>"DS1") %>
-        	  </td>
-        	</tr>
-  		<% end -%>
-    <% end -%>
-    </tbody>
-  </table>
+  <div class="toggle-section">
+    <table id="file_assets" class="files">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Mimetype</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%- file_objects = @document_fedora.parts(:response_format=>:solr) -%>
+        <%- unless file_objects.hits.empty? -%>
+          <%- file_objects.each_with_index do |file_object, index| -%>
+            <%- attributes = get_file_attributes_from_fedora(file_object["id"]) -%>
+            <tr class="file_asset<%= cycle(" odd", " even") -%>" >
+              <td>
+                <%= link_to(attributes["label"], asset_downloads_path(attributes[:pid], :download_id=>attributes["dsid"])) -%>
+              </td>
+              <td>
+                <%= file_object["extent_t"] unless file_object["extent_t"].nil? %>
+              </td>
+              <td>
+                <%= attributes["mimeType"] if attributes.has_key?("mimeType") %>
+              </td>
+            </tr>
+          <%- end -%>
+        <%- end -%>
+      </tbody>
+    </table>
   </div>
 </div>

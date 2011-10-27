@@ -89,7 +89,6 @@ Feature: Collection Show page
   Scenario: collection image should display
     When I am on the document page for id "hypatia:fixture_coll2" 
     Then I should see "fixture_coll_image.jpg"  # alt text?
-    Then I should not see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_image_for_coll"
 
 #  Scenario: searching for coll record -- put this in a separate searching feature?
 #    Given pending

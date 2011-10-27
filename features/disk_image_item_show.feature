@@ -64,6 +64,4 @@ Feature: Disk Image Item Show page
     When I am on the document page for id "hypatia:fixture_media_item" 
     Then I should see "fixture_media_item_front.jpg"  # alt text?
     Then I should see "fixture_media_item_back.jpg"  # alt text?
-    Then I should not see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_image1_for_media_item"
-    Then I should not see a link to datastream "DS1" in FileAsset object "hypatia:fixture_file_asset_image2_for_media_item"
     
