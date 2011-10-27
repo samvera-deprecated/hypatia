@@ -8,7 +8,7 @@ Feature: Hypatia collection edit
     When I am on the edit description page for hypatia:fixture_coll2
     Then I should see "Description"
     And I should see "Collection"
-    And the "extent" field within "#extent_field" should contain "564.5 Linear feet"
+    And the "extent_0" field within "#extent_field" should contain "564.5 Linear feet"
     Then I should see "Creator"
     And the "creator" field within "#creator_field" should contain "Creator, Name of"
     Then I should see "Repository"
