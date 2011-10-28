@@ -15,17 +15,19 @@
         <%- unless file_objects.hits.empty? -%>
           <%- file_objects.each_with_index do |file_object, index| -%>
             <%- attributes = get_file_attributes_from_fedora(file_object["id"]) -%>
-            <tr class="file_asset<%= cycle(" odd", " even") -%>" >
-              <td>
-                <%= link_to(attributes["label"], asset_downloads_path(attributes[:pid], :download_id=>attributes["dsid"])) -%>
-              </td>
-              <td>
-                <%= file_object["extent_t"] unless file_object["extent_t"].nil? %>
-              </td>
-              <td>
-                <%= attributes["mimeType"] if attributes.has_key?("mimeType") %>
-              </td>
-            </tr>
+            <%- unless attributes.nil? -%>
+              <tr class="file_asset<%= cycle(" odd", " even") -%>" >
+                <td>
+                  <%= link_to(attributes["label"], asset_downloads_path(attributes[:pid], :download_id=>attributes["dsid"])) -%>
+                </td>
+                <td>
+                  <%= file_object["extent_t"] unless file_object["extent_t"].nil? %>
+                </td>
+                <td>
+                  <%= attributes["mimeType"] if attributes.has_key?("mimeType") %>
+                </td>
+              </tr>
+            <%- end -%>
           <%- end -%>
         <%- end -%>
       </tbody>
