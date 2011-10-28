@@ -48,8 +48,11 @@ class FtkFile
   attr_accessor :access_rights
   # The type of file, if known (e.g., "Journal Article")
   attr_accessor :type
+  
+  # NOTE: these fields turned up when loading files into the hypatia app
   attr_accessor :event
   attr_accessor :subject
+  attr_accessor :organization
   
   def initialize(args = {})
   end
