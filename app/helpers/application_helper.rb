@@ -98,7 +98,7 @@ module ApplicationHelper
   end
   
   def featured_collections
-    response,docs = get_solr_response_for_field_values("id",Blacklight.config[:featured_collections])
+    response,docs = get_solr_response_for_field_values("id",Blacklight.config[:featured_collections], {:sort=>"title_sort desc"})
     return docs
   end
   
