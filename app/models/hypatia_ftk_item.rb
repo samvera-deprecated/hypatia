@@ -1,5 +1,8 @@
 # a Fedora object for the Hypatia Ftk ITEM hydra content type
 class HypatiaFtkItem < ActiveFedora::Base
+  # adds helpful methods for basic hydra objects, like permissions manipulations
+  include Hydra::ModelMethods
+  
   has_metadata :name => "descMetadata", :type=> HypatiaFTKItemDescMetadataDS
   has_metadata :name => "contentMetadata", :type=> HypatiaFTKItemContentMetadataDS
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata

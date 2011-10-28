@@ -1,5 +1,8 @@
 # an ActiveFedora model for a Hypatia COLLECTION object
 class HypatiaCollection < ActiveFedora::Base
+  # adds helpful methods for basic hydra objects, like permissions manipulations
+  include Hydra::ModelMethods
+  
   has_metadata :name => "descMetadata", :type=> HypatiaCollDescMetadataDS
   has_metadata :name => "contentMetadata", :type=> HypatiaCollContentMetadataDS
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata

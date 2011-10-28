@@ -1,5 +1,8 @@
 # an ActiveFedora model for a Hypatia Disk Image ITEM object
 class HypatiaDiskImageItem < ActiveFedora::Base
+  # adds helpful methods for basic hydra objects, like permissions manipulations
+  include Hydra::ModelMethods
+
   has_metadata :name => "descMetadata", :type=> HypatiaDiskImgDescMetadataDS
   has_metadata :name => "contentMetadata", :type=> HypatiaDiskImgContentMetadataDS
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata

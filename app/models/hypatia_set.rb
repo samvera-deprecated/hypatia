@@ -1,5 +1,8 @@
 # a Fedora object for the Hypatia SET hydra content type
 class HypatiaSet < ActiveFedora::Base
+  # adds helpful methods for basic hydra objects, like permissions manipulations
+  include Hydra::ModelMethods
+
   has_metadata :name => "descMetadata", :type=> HypatiaSetDescMetadataDS
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata
 
