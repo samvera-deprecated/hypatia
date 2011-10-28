@@ -48,4 +48,15 @@ $(document).ready(function(){
         }
       }
   });
+
+  $("a.destructive").each(function(){
+	  var link = $(this);
+	  link.click(function(){
+		  var prev_input = link.prev("input")
+		  prev_input.val("");
+		  link.toggle();
+		  prev_input.toggle();
+		  return false;
+	  });
+  });
 });
