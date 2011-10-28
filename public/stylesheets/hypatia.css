@@ -172,12 +172,16 @@ a.hypatia-home-link:hover {color: #698F92;}
   border: none;
   text-decoration: none; }
 .home-featured-title {  line-height: 1.5em; margin: 1em 0 0.4em;}
-.home-featured-title a {
+.home-featured-title a, .home-featured-header {
   color: #62686b;
   font-family: "Copse",Georgia,serif;
   font-size: 22px; 
   font-weight: normal; }
 .home-featured-title a:hover {  color: #32383b; }
+.home-featured-header {
+	font-size: 28px;
+	
+}
 .home-featured-media {
   background: #EEE;
   border: 1px solid #AAA;
