@@ -5,7 +5,7 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
 # TODO: what should really be searchable, facetable, displayable, sortable?
 
   set_terminology do |t|
-    t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-3.xsd", :namespace_prefix => "mods")
+    t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-3.xsd", :namespace_prefix => "mods", "xmlns:mods" => "http://www.loc.gov/mods/v3")
 
     t.title_info(:path=>"titleInfo") {
       t.title(:path=>"title", :index_as=>[:searchable, :displayable, :sortable, :facetable], :label=>"title")
