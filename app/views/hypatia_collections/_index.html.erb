@@ -1,5 +1,6 @@
 <div class="document <%= cycle("even","odd") %>">
   <h3 class="document-title"><%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %></h3>
+  <%= get_iamge_for_collection(document, :class=>"disk-image") -%>
   <dl>
     <%= render_field_from_index(document,"repository_display", "Repository") %>
     <%= render_field_from_index(document,"creator_display", "Creator") %>
