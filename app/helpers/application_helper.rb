@@ -92,6 +92,22 @@ module ApplicationHelper
     return obj.members(:response_format=>:solr)
   end
   
+  def get_parts_from_solr(document)
+    af_base = load_af_instance_from_solr(document)
+    the_model = ActiveFedora::ContentModel.known_models_for( af_base ).first    
+    obj = the_model.load_instance(document[:id])
+    return obj.parts(:response_format=>:solr)
+  end
+  
+  def get_iamge_for_collection(document, opts={})
+    img = ""
+    get_parts_from_solr(document).hits.each do |hit|
+      img = image_tag(asset_downloads_path(:asset_id=>hit["id"], :download_id=>"DS1"), opts) if hit["title_t"].to_s.match(/-thumb\.jpg$/)
+    end
+    return nil if img.blank?
+    img
+  end
+  
   def get_file_attributes_from_fedora(asset_id)
     ds = FileAsset.load_instance(asset_id).datastreams
     return ds["DS1"].attributes if ds.has_key?("DS1")
