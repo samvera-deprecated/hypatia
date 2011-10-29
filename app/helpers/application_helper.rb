@@ -118,4 +118,40 @@ module ApplicationHelper
     return docs
   end
   
+  # return an object's repository name as a string.  The repository name 
+  #  comes from a HypatiaCollection object's descMetadata datastream
+  # @param [ActiveFedora::ContentModel] the fedora object for the show view
+  def get_repository_name(fedora_obj)
+    return (get_coll_field_val(fedora_obj, :repository))
+  end
+
+  # return an object's collection's title as a string.  The collection title
+  #  comes from a HypatiaCollection object's descMetadata datastream
+  # @param [ActiveFedora::ContentModel] the fedora object for the show view
+  def get_coll_title(fedora_obj)
+    return (get_coll_field_val(fedora_obj, :title))
+  end
+  
+  # return an object's (first) collection's (first) field value from the
+  #  collection object's descMetadtata.  We go up the tree of sets until 
+  #  we get to a HypatiaCollection object, then we get the field from that 
+  #  collection object's descMetadata datastream.
+  # @param [ActiveFedora::ContentModel] the fedora object for the show view
+  # @return [String] value of field from ancestor collection object's descMetadata
+  #  or an empty string if there is no value the ancestral chain of relationships
+  #  ends without a HypatiaCollection object
+  def get_coll_field_val(fedora_obj, desired_field)
+    if (desired_field.is_a?(String))
+      desired_field = desired_field.to_sym
+    end
+    if (fedora_obj.collections.size > 0)
+      coll_obj = HypatiaCollection.load_instance(fedora_obj.collections[0].pid)
+      return get_values_from_datastream(coll_obj, "descMetadata", desired_field).first
+    elsif (fedora_obj.sets.size > 0)
+      # we can load the parent object as a set because we are only going to check "collections" and "sets"
+      return values = get_coll_field_val(HypatiaSet.load_instance(fedora_obj.sets[0].pid), desired_field)
+    end
+    return ""
+  end
+  
 end
