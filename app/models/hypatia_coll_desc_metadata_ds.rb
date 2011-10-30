@@ -41,8 +41,12 @@ class HypatiaCollDescMetadataDS < ActiveFedora::NokogiriDatastream
 
     t.location(:path=>"location") {
       t.located_in(:path=>"physicalLocation", :attributes=>{:displayLabel=>"Located in"}, :index_as=>[:facetable,:displayable])
+      t.institution_ead(:path=>"url", :attributes=>{:note=>"institutionally hosted EAD"}, :index_as=>[:not_searchable, :displayable])
+      t.institution_repos(:path=>"url", :attributes=>{:note=>"institutional repository"}, :index_as=>[:not_searchable, :displayable])
     }
     t.located_in(:proxy=>[:location, :located_in])
+    t.institution_ead(:proxy=>[:location, :institution_ead])
+    t.institution_repos(:proxy=>[:location, :institution_repos])
 
     t.language_info(:path=>"language") {
       t.language_code(:path=>"languageTerm", :index_as=>[:searchable, :displayable, :facetable, :sortable])

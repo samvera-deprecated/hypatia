@@ -17,6 +17,11 @@
     </mods:role>
   </mods:name>
   
+  <mods:location>
+    <mods:url note="institutionally hosted EAD">http://inst.edu/collrepos/ead.xml</mods:url>
+    <mods:url note="institutional repository">http://inst.edu/collrepos/</mods:url>
+  </mods:location>
+  
   <mods:identifier type="local">M666</mods:identifier>
   <mods:typeOfResource collection="yes"/>
   <mods:originInfo>

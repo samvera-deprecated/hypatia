@@ -40,6 +40,14 @@ describe HypatiaCollDescMetadataDS do
     @desc_md_ds.term_values(:corporate).should == ["Corporate Name"]
   end
   
+  it "should have the corrent :institution_repos term value" do
+    @desc_md_ds.term_values(:institution_repos).should == ["http://inst.edu/collrepos/"]
+  end
+  
+  it "should have the correct :institution_ead term value" do
+    @desc_md_ds.term_values(:institution_ead).should == ["http://inst.edu/collrepos/ead.xml"]
+  end
+
   it "should have the correct :local_id term value" do
     @desc_md_ds.term_values(:local_id).should == ["M666"]
   end
