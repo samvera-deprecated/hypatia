@@ -14,7 +14,7 @@
         <div class="home-featured">
           <h2 class="home-featured-title"><%= link_to(collection["display_name_display"], catalog_path(collection["id"])) %></h2>
           <div class="home-featured-media">
-            <%- img = get_iamge_for_collection(collection) -%>
+            <%- img = get_image_for_collection(collection) -%>
             <%= link_to(img, catalog_path(collection["id"])) %>
           </div>
           <p class="home-featured-description"><%= collection["abstract_display"]  %></p>

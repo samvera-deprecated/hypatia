@@ -89,7 +89,7 @@ module ApplicationHelper
     return obj.parts(:response_format=>:solr)
   end
   
-  def get_iamge_for_collection(document, opts={})
+  def get_image_for_collection(document, opts={})
     img = ""
     get_parts_from_solr(document).hits.each do |hit|
       img = image_tag(asset_downloads_path(:asset_id=>hit["id"], :download_id=>"DS1"), opts) if hit["title_t"].to_s.match(/-thumb\.jpg$/)
