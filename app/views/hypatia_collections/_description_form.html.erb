@@ -74,6 +74,14 @@
           <%= fedora_field_label("descMetadata", [:located_in], "Physical Location") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [:located_in], :multiple=>false, :required=>false ) %>
         </p>
+        <p id="institution_repos_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:institution_repos], "Repository URL") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:institution_repos], :multiple=>false, :required=>false ) %>
+        </p>
+        <p id="institution_ead_field" class="fedora-text-field">
+          <%= fedora_field_label("descMetadata", [:institution_ead], "Collection EAD") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:institution_ead], :multiple=>false, :required=>false ) %>
+        </p>
         <p id="acquisition_info_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [:acquisition_info], "Acquisition Information") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [:acquisition_info], :multiple=>false ) %>
