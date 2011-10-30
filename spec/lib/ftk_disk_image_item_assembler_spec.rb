@@ -72,7 +72,8 @@ describe FtkDiskImageItemAssembler do
     ns = "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1"
     rights_md_doc.namespaces["xmlns"].should eql(ns)
     rights_md_doc.xpath("/ns:rightsMetadata/ns:access", {"ns" => ns}).size.should eql(3)
-    rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='discover']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("public")
+    # "public" group can only have one permission group:  read, not discover
+    rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='discover']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should_not eql("public")
     rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='read']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("public")
     rights_md_doc.xpath("/ns:rightsMetadata/ns:access[@type='edit']/ns:machine/ns:group/text()", {"ns" => ns}).to_s.should eql("archivist")
   end
@@ -309,7 +310,9 @@ describe FtkDiskImageItemAssembler do
     end
     it "has correct rightsMetadata" do
       rights_md_ds = @disk_image_item.datastreams["rightsMetadata"]
-      rights_md_ds.term_values(:discover_access).first.should match(/^\s*public\s*$/)
+      # "public" group can only have one permission group:  read, not discover
+      rights_md_ds.term_values(:discover_access).first.should_not match(/^\s*public\s*$/)
+      rights_md_ds.term_values(:read_access).first.should match(/^\s*public\s*$/)
       rights_md_ds.term_values(:edit_access).first.should match(/^\s*archivist\s*$/)
     end
     it "has correct contentMetadata" do
