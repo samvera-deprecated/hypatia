@@ -3,8 +3,7 @@
   <div class="sets members sidebar-section<%= " first" if (!@document_fedora.respond_to?(:sets) or @document_fedora.sets(:response_format=>:solr).hits.empty?) %>">
     <h2 class="sidebar-title">In this Collection:</h2>
     <ul>
-      <%- member_objects.hits.sort! { |x,y| x["display_name_display"] <=> y["display_name_display"]}%>
-      <%- member_objects.each do |result| -%>
+      <%- sort_by_display_name(member_objects.hits).each do |result| -%>
         <li><%= link_to result[solr_name("display_name", :string)], catalog_path(:id=>result["id"]) %></li>
 			<%- end -%>
 		</ul>		

@@ -108,6 +108,12 @@ module ApplicationHelper
     return docs
   end
   
+  # given an array of Solr objects**, sort them by display_name_display value
+  #  **actually, any object that has a hash containing a field "display_name_display"
+  def sort_by_display_name(object_array)
+     object_array.sort! { |x,y| x["display_name_display"] <=> y["display_name_display"]}
+  end
+  
   # return an object's repository name as a string.  The repository name 
   #  comes from a HypatiaCollection object's descMetadata datastream
   # @param [ActiveFedora::ContentModel] the fedora object for the show view
