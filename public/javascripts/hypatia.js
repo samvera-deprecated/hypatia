@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function(){	
 	$(".start-shut").each(function(){
 		$(this).toggle();
 	});
@@ -20,10 +20,19 @@ $(document).ready(function(){
 
   $("#facets h3").each(function(){
 	  var h3 = $(this);
+	  var toggle_span = $(".facet-toggle", h3);
+	  var toggle_open = "[+]";
+	  var toggle_closed = "[-]";
+	  toggle_span.toggle();
 	  h3.click(function(){
 		  h3.next("ul").each(function(){
 				$(this).slideToggle();
 		  });
+		  if(toggle_span.text() == toggle_open) {
+			  toggle_span.text(toggle_closed);
+		  }else{
+			  toggle_span.text(toggle_open);
+		  }
 	  });
 	  if(h3.attr("id") != "facet_repository"){
 		  h3.next("ul").each(function(){
@@ -31,6 +40,8 @@ $(document).ready(function(){
 				  $(this).toggle();
 			  }
 		  });
+	  }else{
+		  toggle_span.text(toggle_closed);
 	  }
   });
 

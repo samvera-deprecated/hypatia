@@ -13,7 +13,7 @@
     <div>
       <% display_facet = @response.facets.detect {|f| f.name == solr_fname} -%>
       <% if display_facet && display_facet.items.length > 0 %>
-        <h3 id="facet_<%= facet_field_labels[solr_fname].downcase.gsub(/ /, '_') -%>"><%= facet_field_labels[solr_fname] -%></h3>
+        <h3 id="facet_<%= facet_field_labels[solr_fname].downcase.gsub(/ /, '_') -%>"><%= facet_field_labels[solr_fname] -%> <span class="facet-toggle" style="display:none;">[+]</span></h3>
         <ul>
           <% paginator =    
               Blacklight::Solr::FacetPaginator.new(display_facet.items,        
