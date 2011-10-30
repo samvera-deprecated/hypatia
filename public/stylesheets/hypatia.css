@@ -359,6 +359,9 @@ label.toggle_folder {min-width:4em;}
   border-bottom: none;
   overflow: hidden; 
   width: 100%; }
+.show_image {
+	cursor:pointer;
+}
 .image-lightbox {
 	position:absolute;
   top:0;
@@ -368,11 +371,13 @@ label.toggle_folder {min-width:4em;}
   background:#CCCCCC;
   opacity:0.8;
   z-index:500;
+  cursor:pointer;
 }
 .image-lightbox img {
 	z-index:501;
 	opacity:1;
 	margin-top:10%;
+	cursor:pointer;
 }
 
 
