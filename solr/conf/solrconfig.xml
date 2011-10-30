@@ -30,9 +30,7 @@
   <jmx />
 
   <!-- the default high-performance update handler -->
-  <updateHandler class="solr.DirectUpdateHandler2">
-  </updateHandler>
-
+  <updateHandler class="solr.DirectUpdateHandler2" />
 
   <query>
     <maxBooleanClauses>1024</maxBooleanClauses>
@@ -55,18 +53,18 @@
 
     <listener event="newSearcher" class="solr.QuerySenderListener">
       <arr name="queries">
-        <lst> <str name="q">hydrus</str></lst>
+        <lst><str name="q">hypatia</str></lst>
       </arr>
     </listener>
 
     <listener event="firstSearcher" class="solr.QuerySenderListener">
       <arr name="queries">
-        <lst> <str name="q">hydrus</str></lst>
+        <lst> <str name="q">hypatia</str></lst>
       </arr>
     </listener>
 
     <useColdSearcher>false</useColdSearcher>
-    <maxWarmingSearchers>2</maxWarmingSearchers>
+    <maxWarmingSearchers>4</maxWarmingSearchers>
   </query>
 
   <requestDispatcher handleSelect="true" >
