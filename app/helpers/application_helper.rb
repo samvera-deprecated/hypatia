@@ -111,7 +111,25 @@ module ApplicationHelper
   # given an array of Solr objects**, sort them by display_name_display value
   #  **actually, any object that has a hash containing a field "display_name_display"
   def sort_by_display_name(object_array)
-     object_array.sort! { |x,y| x["display_name_display"] <=> y["display_name_display"]}
+    object_array.sort { |x,y| 
+      xdn = x["display_name_display"]
+      ydn = y["display_name_display"]
+      if (xdn && ydn)
+        if (xdn.is_a?(Array))
+          xdn = xdn.first
+        end
+        if (ydn.is_a?(Array))
+          ydn = ydn.first
+        end
+        xdn <=> ydn
+      elsif xdn
+        -1
+      elsif ydn
+        1
+      else # both nil
+        0
+      end
+    }
   end
   
   # return an object's repository name as a string.  The repository name 
