@@ -359,6 +359,21 @@ label.toggle_folder {min-width:4em;}
   border-bottom: none;
   overflow: hidden; 
   width: 100%; }
+.image-lightbox {
+	position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background:#CCCCCC;
+  opacity:0.8;
+  z-index:500;
+}
+.image-lightbox img {
+	z-index:501;
+	opacity:1;
+	margin-top:10%;
+}
 
 
 /* =METADATA DISPLAY

@@ -1,6 +1,10 @@
 <%# FIXME:  what if there is no image? -%>
 <h4>Front of Disk</h4>
-<%= get_image_tag_from_content_md(@document_fedora, :image_front, {:height=>"100", :class=>"coll_image"}) %>
+<div class="show_image">
+  <%= get_image_tag_from_content_md(@document_fedora, :image_front, {:height=>"100", :class=>"coll_image"}) %>
+</div>
 
 <h4>Back of Disk</h4>
-<%= get_image_tag_from_content_md(@document_fedora, :image_back, {:height=>"100", :class=>"coll_image"}) %>
+<div class="show_image">
+  <%= get_image_tag_from_content_md(@document_fedora, :image_back, {:height=>"100", :class=>"coll_image"}) %>
+</div>
