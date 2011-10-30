@@ -3,6 +3,10 @@
     <h2 class="section-title">Description</h2>
     <div class="descMetadata metadata-subsection">
       <h3 class="subsection-title">Set (Series)</h3>
+      <p id="title_field" class="fedora-text-field">
+        <%= fedora_field_label("descMetadata", [:title], "Title") %>
+        <%= fedora_text_field(@document_fedora,"descMetadata", [:title], :multiple=>false, :required=>false ) %>
+      </p>
       <p id="local_id_field" class="fedora-text-field">
         <%= fedora_field_label("descMetadata", [:local_id], "Local Identifier") %>
         <%= fedora_text_field(@document_fedora,"descMetadata", [:local_id], :multiple=>false, :required=>false ) %>
