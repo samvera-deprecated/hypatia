@@ -6,16 +6,6 @@ module ApplicationHelper
   def application_name
     'Hypatia'
   end
-  
-  # display the Solr values populated per the datastream model within a fieldset html tag
-  #  this is a local helper method created to avoid all the repeated stuff in hydra-head/app/views/mods_assets/_show_description.html.erb
-  def display_ds_values_as_fieldset(dsid, solr_fld_sym, display_label)
-    values = get_values_from_datastream(@document_fedora, dsid, [solr_fld_sym])
-    unless values.first.empty?
-      result = "<fieldset><legend>#{display_label}</legend><div class=\"browse_value\">#{values.join(', ')}</div></fieldset>"
-    end
-    result 
-  end
 
   # display the Solr values populated per the datastream model with dt and dd html tags
   def display_ds_values_as_dl_element(dsid, solr_fld_sym, display_label)
@@ -99,7 +89,7 @@ module ApplicationHelper
     return obj.parts(:response_format=>:solr)
   end
   
-  def get_iamge_for_collection(document, opts={})
+  def get_image_for_collection(document, opts={})
     img = ""
     get_parts_from_solr(document).hits.each do |hit|
       img = image_tag(asset_downloads_path(:asset_id=>hit["id"], :download_id=>"DS1"), opts) if hit["title_t"].to_s.match(/-thumb\.jpg$/)
@@ -116,6 +106,42 @@ module ApplicationHelper
   def featured_collections
     response,docs = get_solr_response_for_field_values("id",Blacklight.config[:featured_collections], {:sort=>"title_sort desc"})
     return docs
+  end
+  
+  # return an object's repository name as a string.  The repository name 
+  #  comes from a HypatiaCollection object's descMetadata datastream
+  # @param [ActiveFedora::ContentModel] the fedora object for the show view
+  def get_repository_name(fedora_obj)
+    return (get_coll_field_val(fedora_obj, :repository))
+  end
+
+  # return an object's collection's title as a string.  The collection title
+  #  comes from a HypatiaCollection object's descMetadata datastream
+  # @param [ActiveFedora::ContentModel] the fedora object for the show view
+  def get_coll_title(fedora_obj)
+    return (get_coll_field_val(fedora_obj, :title))
+  end
+  
+  # return an object's (first) collection's (first) field value from the
+  #  collection object's descMetadtata.  We go up the tree of sets until 
+  #  we get to a HypatiaCollection object, then we get the field from that 
+  #  collection object's descMetadata datastream.
+  # @param [ActiveFedora::ContentModel] the fedora object for the show view
+  # @return [String] value of field from ancestor collection object's descMetadata
+  #  or an empty string if there is no value the ancestral chain of relationships
+  #  ends without a HypatiaCollection object
+  def get_coll_field_val(fedora_obj, desired_field)
+    if (desired_field.is_a?(String))
+      desired_field = desired_field.to_sym
+    end
+    if (fedora_obj.collections.size > 0)
+      coll_obj = HypatiaCollection.load_instance(fedora_obj.collections[0].pid)
+      return get_values_from_datastream(coll_obj, "descMetadata", desired_field).first
+    elsif (fedora_obj.sets.size > 0)
+      # we can load the parent object as a set because we are only going to check "collections" and "sets"
+      return values = get_coll_field_val(HypatiaSet.load_instance(fedora_obj.sets[0].pid), desired_field)
+    end
+    return ""
   end
   
 end

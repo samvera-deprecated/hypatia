@@ -203,9 +203,7 @@ class FtkItemAssembler
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.rightsMetadata("xmlns" => "http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1", "version" => "0.1"){
         xml.access("type" => "discover") {
-          xml.machine {
-            xml.group "public"
-          }
+          xml.machine 
         }
         xml.access("type" => "read") {
           xml.machine {

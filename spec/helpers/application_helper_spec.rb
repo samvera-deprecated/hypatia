@@ -15,4 +15,5 @@ describe ApplicationHelper do
       helper.get_image_tag_from_content_md({:id=>"fake"},:reference,{}).should == ""
     end
   end
+  
 end
