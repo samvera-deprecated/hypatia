@@ -30,4 +30,17 @@ class HypatiaSetDescMetadataDS < ActiveFedora::NokogiriDatastream
 
   end # set_terminology
 
+  # Generates an empty Mods record (used when you call HypatiaSet.new without passing in existing xml)
+  def self.xml_template
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.mods(:version=>"3.3", "xmlns:xlink"=>"http://www.w3.org/1999/xlink",
+         "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+         "xmlns"=>"http://www.loc.gov/mods/v3",
+         "xsi:schemaLocation"=>"http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd",
+         :namespace_prefix => "mods", "xmlns:mods" => "http://www.loc.gov/mods/v3") {
+      }
+    end
+    return builder.doc
+  end
+
 end # class
