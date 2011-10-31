@@ -33,7 +33,9 @@
 
 
 <div class="relationship-pane member-pane">
-  <h2 class="list-title">In this <%= @document_fedora.is_a?(HypatiaCollection) ? "Collection" : "Set" %></h2>
+  <h2 class="list-title">
+    Add items to <%= get_values_from_datastream(@document_fedora, "descMetadata", [:display_name]) %>
+  </h2>
   <ul id="member-list">
     <%- if member_objects.hits.empty? -%>
       <p class="no-relationship-items">No Marked Items</p>
