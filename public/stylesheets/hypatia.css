@@ -373,10 +373,11 @@ label.toggle_folder {min-width:4em;}
   z-index:500;
   cursor:pointer;
 }
-.image-lightbox img {
+img.lb-img {
+	position:absolute;
+	top:10%;
+	left:33%;
 	z-index:501;
-	opacity:1;
-	margin-top:10%;
 	cursor:pointer;
 }
 

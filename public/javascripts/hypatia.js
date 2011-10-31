@@ -3,14 +3,21 @@ $(document).ready(function(){
 	  var image_el = $(this);
 	  var image = image_el.html();
 	  image_el.click(function(){
-		  $("body").append("<div class='image-lightbox'>" + image + "</div>");
+		  $("body").append("<div class='image-lightbox'></div>" + image);
 		  $(".image-lightbox").each(function(){
 				var lightbox = $(this);
-				var lb_img = $("img",lightbox);
+				var lb_img = lightbox.next("img");
+				//var lb_img = $("img",lightbox);
 				// How can we remove the attributes all together?
 				lb_img.attr("height",lb_img.height() * 4);
+				lb_img.addClass("lb-img");
 				lightbox.click(function(){
 					lightbox.remove();
+					lb_img.remove();
+				});
+				lb_img.click(function(){
+				  lightbox.remove()	;
+				  lb_img.remove();
 				});
 			});
 	  });
