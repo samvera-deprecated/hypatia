@@ -24,4 +24,21 @@
       </dl>
     </div>
   </div>
+  <%- coll_title = get_coll_title(@document_fedora)  -%>
+  <%- repo_name = get_repository_name(@document_fedora) -%>
+  <%- unless coll_title.blank? and repo_name.blank? -%>
+  <div class="descMetadata metadata-subsection">
+      <h3 class="subsection-title">Collection</h3>
+      <dl>
+        <%- unless coll_title.blank? -%>
+          <dt>Collection Title</dt>
+          <dd><%= coll_title %></dd>
+        <%- end -%>
+        <%- unless repo_name.blank? -%>
+          <dt>Repository Name</dt>
+          <dd><%= repo_name %></dd>
+        <%- end -%>
+      </dl>
+    </div>
+  <%- end -%>
 </div>
