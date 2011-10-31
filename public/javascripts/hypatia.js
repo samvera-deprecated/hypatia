@@ -16,6 +16,21 @@ $(document).ready(function(){
 	  });
 	});
 	
+	/* Add field link */
+	$(".add-field").each(function(){
+		var link = $(this);
+		link.click(function(){
+			var i = $(this).attr("data-iterate");
+			var last_input = link.parent("p").children("input:last");
+			var new_inputs = link.parent().children(".new-fields");
+			var new_input_name = last_input.attr("name").replace(/\d/,i)
+			var new_input_id = last_input.attr("id").replace(/\d/,i)
+			new_inputs.append("<input type='" + last_input.attr("type") + "' name='" + new_input_name + "' data-datastream-name='" + last_input.attr("data-datastream-name") + "' id='" + new_input_id + "' class='" + last_input.attr("class") + "'/><a href='' class='destructive field'>Delete</a>")
+			link.attr("data-iterate", parseInt(i)+1);
+			return false;
+		});
+	});
+	
 	$(".start-shut").each(function(){
 		$(this).toggle();
 	});
