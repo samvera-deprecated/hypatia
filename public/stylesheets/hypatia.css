@@ -666,6 +666,7 @@ img.lb-img {
   -moz-border-radius:    12px;
   border-radius:         12px;   }
 .relationship-pane .list-title {text-align: center; }
+#relationship-editor .unsaved {border: 2px solid #990000;}
 .relationship-pane ul {margin: 8px 0; position: relative;}
 .relationship-pane li {background: #EEE; border: 1px solid #aaa; color: #222; cursor: move; font-size: 14px; line-height: 1.2em; list-style: none; margin: 10px 0; padding: 10px; text-decoration: none;
   background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgba(88,88,88, 0.2)), color-stop(1, rgba(88,88,88,0)) );

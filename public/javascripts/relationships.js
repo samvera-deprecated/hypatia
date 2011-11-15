@@ -5,6 +5,8 @@ $(document).ready(function() {
     revert: false,
     revertDuration: false,
     update: function(event, ui) {
+	 		// Add unsaved class so the user knows that they need to save.
+	 		$("#relationship-editor .member-pane").addClass("unsaved");
       // Ensure that all items have a "remove" link
       $('.remove-relationship').remove();
       var members = $("#member-list li");
@@ -25,6 +27,10 @@ $(document).ready(function() {
 	  });
 	  $.ajax({
 		  url: $(this).attr("data-update-path") + "?" + pids.join("&"),
+		  success: function() {
+			  // remove the unsaved class so the user knows that the relationships were properly saved.
+			  $("#relationship-editor .member-pane").removeClass("unsaved");
+		  },
 		  error: function() {
 			  alert("Error");
 		  }
@@ -34,6 +40,8 @@ $(document).ready(function() {
 	// Moves item back to list of origin when removed
 	// or just delete it if it started in member list
 	$(".remove-relationship").live('click', function() {
+		// Add unsaved class so the user knows that they need to save.
+ 		$("#relationship-editor .member-pane").addClass("unsaved");
 	  var removed = $(this).parent();
 	  removed.fadeOut('300', function(){
 	    removed.children('.remove-relationship').remove();
