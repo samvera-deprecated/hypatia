@@ -1,7 +1,6 @@
 source "http://rubygems.org"
-source 'http://gemcutter.org'
 
-gem 'rails', '2.3.11'
+gem 'rails', '2.3.18'
 
 gem 'active-fedora', '>=2.1.0'  
 gem 'bagit'
