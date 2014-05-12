@@ -1,3 +1,11 @@
+h1. NOTICE: THIS PROJECT IS DEPRECATED
+
+h4. This project, and all others in "projecthydra-deprecated":http://github.com/projecthydra-deprecated, have been deprecated and are no longer actively maintained by the Hydra Project developer community. See the Hydra Project's main Github page at "projecthydra":http://github.com/projecthydra/ for projects that are actively maintained.
+
+_Original README is below_
+
+----------------------------
+
 h1. Hypatia
 
 Hypatia (see "https://wiki.duraspace.org/display/HYPAT/Home":https://wiki.duraspace.org/display/HYPAT/Home) is a Hydra application (see "https://wiki.duraspace.org/display/hydra/The+Hydra+Project":https://wiki.duraspace.org/display/hydra/The+Hydra+Project) which supports accessioning, arrangement, description, discovery, delivery, and long term preservation of born digital collections. 
